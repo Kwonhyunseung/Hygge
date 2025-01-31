@@ -17,49 +17,63 @@ textarea:focus, input:focus { outline: none; }
 
 /* Navigation */
 .navbar {
-	background-color: #fcfafb;
-	font-weight: 500;
-	font-size: 0.875rem;
-	line-height: 0.2rem;
-	box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.05);
+   background-color: #fcfafb;
+   font-weight: 500;
+   font-size: 0.875rem;
+   line-height: 0.2rem;
+   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.05);
 }
 
 .navbar .navbar-nav {
-	margin-top: 0.75rem;
-	margin-bottom: 0.5rem;
+   margin-top: 0.75rem;
+   margin-bottom: 0.5rem;
 }
 
+.navbar .nav-item {
+   display: flex;
+   align-items: center;
+}
 .navbar .nav-item .nav-link {
-	color: #5e6576;
-	transition: all 0.2s ease;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+   color: #000;
+   transition: all 0.2s ease;
+   padding-top: 0.5rem;
+   padding-bottom: 0.5rem;
 }
 
-.navbar .nav-item .nav-link:hover,
-.navbar .nav-item .nav-link.active {
-	color: #0d6efd;
-	text-decoration: none;
+.navbar .nav-item .nav-link:hover:not(.nav-project-upload),
+.navbar .nav-item .nav-link.active:not(.nav-project-upload) {
+   color: #008000;
+   text-decoration: none;
+}
+
+.navbar .nav-item .nav-project-upload {
+   color: #fff;
+   text-decoration: none;
+}
+
+.navbar .nav-item .div-project-upload:hover {
+   background-color: #10620A !important;
+   cursor: pointer;
 }
 
 .navbar .dropdown-menu {
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
+   margin-top: 0.25rem;
+   margin-bottom: 0.25rem;
 }
 
 .navbar .dropdown-item {
-	color: #5e6576;
-	font-weight: 500;
-	font-size: 0.875rem;
-	line-height: 0.875rem;
-	padding-top: 0.625rem;
-	padding-bottom: 0.625rem;	
+   color: #5e6576;
+   font-weight: 500;
+   font-size: 0.875rem;
+   line-height: 0.875rem;
+   padding-top: 0.625rem;
+   padding-bottom: 0.625rem;   
 }
 
 .navbar .dropdown-item:hover {
-	background-color: #fcfafb;
-	color: #0092ff;
-	text-decoration: none;
+   background-color: #fcfafb;
+   color: #008000;
+   text-decoration: none;
 }
 
 /* body */
@@ -90,9 +104,9 @@ textarea:focus, input:focus { outline: none; }
 
 /* 페이징 */
 .page-navigation {
-	clear: both;
-	padding: 20px 0;
-	text-align: center;
+   clear: both;
+   padding: 20px 0;
+   text-align: center;
 }
 
 /* AJAX loading */
