@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <head>
 	<title>hygge</title>
-	<link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.png" type="image/png">
+	<link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">
 	<style type="text/css">
 	.nav-menu-self {
 		font-size: 17px;
@@ -19,7 +19,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light" style="height: 50px; background-color: white; box-shadow: none;">
 	<div class="container">
-		<a class="navbar-brand" href="${pageContext.request.contextPath}/" style="width: 10%;"><img src="${pageContext.request.contextPath}/dist/images/hygge_logo.png" style="width: 100%;"></a>
+		<a class="navbar-brand" href="${pageContext.request.contextPath}/" style="width: 5%;"><img src="${pageContext.request.contextPath}/dist/images/hygge_logo.png" style="width: 100%;"></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
