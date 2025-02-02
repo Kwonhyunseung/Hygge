@@ -42,7 +42,7 @@
             <div class="notification-item">
                 <div class="notification-title">
                     <i class="bi bi-person-plus-fill notification-icon"></i>
-                    <span>팔로잉 알림</span>
+                    <span>메이커 알림</span>
                 </div>
                 <span class="notification-date">1시간 전</span>
             </div>
