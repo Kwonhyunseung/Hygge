@@ -47,6 +47,22 @@
     .bold-text {
         font-weight: bold;
     }
+    
+	footer {
+	    background-color: #DDECB8;
+	    padding: 20px;
+	    font-size: 14px;
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    width: 100%;
+	    box-sizing: border-box;
+	}
+	
+	/* 메인 콘텐츠가 푸터에 가려지지 않도록 마진 추가 */
+	body {
+	    margin-bottom: 150px; /* footer의 높이보다 크게 설정 */
+	}
 </style>
 
 <footer>

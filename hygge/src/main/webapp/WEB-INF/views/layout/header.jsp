@@ -55,8 +55,8 @@
 			</ul>
 			<ul class="navbar-nav ms-auto flex-nowrap">
 				<li class="nav-item"><a class="nav-link" href="#">팔로잉</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">알림</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">위시리스트</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/alarm">알림</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/wishlist">위시리스트</a></li>
 				<li class="nav-item"><a class="nav-link" href="javascript:dialogLogin();">로그인</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/account">회원가입</a></li>
 				<li class="nav-item">
