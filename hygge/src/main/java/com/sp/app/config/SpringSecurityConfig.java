@@ -48,7 +48,7 @@ public class SpringSecurityConfig {
 	    http.formLogin(form -> form
 	        .loginPage("/member/login")                    // 로그인 페이지 경로
 	        .loginProcessingUrl("/member/login")           // 로그인 처리 URL
-	        .usernameParameter("id")                 	   // 아이디 파라미터명 (기본값 username을 userId로 변경)
+	        .usernameParameter("id")                 	   // 아이디 파라미터명 (기본값 username을 id로 변경)
 	        .passwordParameter("pwd")                      // 비밀번호 파라미터명
 	        .successHandler(loginSuccessHandler())         // 로그인 성공 핸들러
 	        .failureHandler(loginFailureHandler())         // 로그인 실패 핸들러
