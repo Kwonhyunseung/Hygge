@@ -26,7 +26,8 @@ body {
 h3 { margin-top: 30px; color: #333; }
 h5 { color: #555; }
 
-.row { display: flex; flex-wrap: wrap; margin-bottom: 20px; }
+/* .row { display: flex; flex-wrap: wrap; margin-bottom: 20px; } */
+.row { display: flex; flex-wrap: wrap; }
 .col { flex: 1; padding: 10px; }
 .col-3 { flex: 0 0 calc(25% - 20px); margin: 0 10px; box-sizing: border-box; }
 .col-4 { flex: 0 0 calc(33.33% - 20px); margin: 0 10px; box-sizing: border-box; }
