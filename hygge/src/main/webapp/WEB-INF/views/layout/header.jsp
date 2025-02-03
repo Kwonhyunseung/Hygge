@@ -206,31 +206,31 @@ menuItems.forEach(item => {
 <!-- Login Modal -->
 <script type="text/javascript">
 function dialogLogin() {
-	$('form[name=modelLoginForm] input[name=userId]').val('');
-	$('form[name=modelLoginForm] input[name=userPwd]').val('');
+	$('form[name=modelLoginForm] input[name=id]').val('');
+	$('form[name=modelLoginForm] input[name=pwd]').val('');
 	 
 	$('#loginModal').modal('show');   
 	
-	$('form[name=modelLoginForm] input[name=userId]').focus();
+	$('form[name=modelLoginForm] input[name=id]').focus();
 }
 
 function sendModelLogin() {
 	var f = document.modelLoginForm;
 	var str;
 	
-	str = f.userId.value;
+	str = f.id.value;
 	if(!str) {
-		f.userId.focus();
+		f.id.focus();
 		return;
 	}
 	
-	str = f.userPwd.value;
+	str = f.pwd.value;
 	if(!str) {
-		f.userPwd.focus();
+		f.pwd.focus();
 		return;
 	}
 	
-	f.action = '${pageContext.request.contextPath}/';
+	f.action = '${pageContext.request.contextPath}/member/login';
 	f.submit();
 }
 
@@ -261,8 +261,9 @@ $(function(){
 					</div>
 
 					<form name="modelLoginForm" action="" method="post">
-						<input type="text" name="userId" class="form-control"
-							placeholder="아이디"> <input type="password" name="userPwd"
+						<input type="text" name=id class="form-control"
+							placeholder="아이디"> 
+							<input type="password" name="pwd"
 							class="form-control" autocomplete="off" placeholder="패스워드">
 
 						<div class="form-check"
