@@ -58,7 +58,7 @@
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/alarm">알림</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/wishlist">위시리스트</a></li>
 				<li class="nav-item"><a class="nav-link" href="javascript:dialogLogin();">로그인</a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/account">회원가입</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/account">회원가입</a></li>
 				<li class="nav-item">
 					<div class="rounded p-1 m-3 div-project-upload" style="background-color: #82B10C;"><a class="nav-link nav-project-upload" href="#">프로젝트 올리기</a></div>
 				</li>
