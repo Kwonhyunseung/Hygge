@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>spring</title>
 
-<%-- <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 <style type="text/css">
 .body-container {
@@ -19,7 +19,7 @@
 <body>
 
 <header>
-	<%-- <jsp:include page="/WEB-INF/views/layout/header.jsp"/> --%>
+	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
 	
 <main>
@@ -72,15 +72,15 @@ function sendOk() {
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/';
+	f.action = '${pageContext.request.contextPath}/member/pwd';
 	f.submit();
 }
 </script>
 
 <footer>
-	<%-- <jsp:include page="/WEB-INF/views/layout/footer.jsp"/> --%>
+	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </footer>
 
-<%-- <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
 </body>
 </html>

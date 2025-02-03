@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>spring</title>
 
-<%-- <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 <style type="text/css">
 .body-container {
@@ -19,7 +19,7 @@
 <body>
 
 <header>
-	<%-- <jsp:include page="/WEB-INF/views/layout/header.jsp"/> --%>
+	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
 	
 <main>
@@ -54,7 +54,7 @@
 	                    <div class="col-12">
 	                        <p class="text-center mb-0">
 	                        	<a href="#" class="text-decoration-none me-2">아이디 찾기</a>
-	                        	<a href="#" class="text-decoration-none me-2">패스워드 찾기</a>
+	                        	<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none me-2">패스워드 찾기</a>
 	                        	<a href="${pageContext.request.contextPath}/member/account" class="text-decoration-none">회원가입</a>
 	                        </p>
 	                    </div>
@@ -93,9 +93,9 @@ function sendLogin() {
 </script>
 
 <footer>
-	<%-- <jsp:include page="/WEB-INF/views/layout/footer.jsp"/> --%>
+	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </footer>
 
-<%-- <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
 </body>
 </html>
