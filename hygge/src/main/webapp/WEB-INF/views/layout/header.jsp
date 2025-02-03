@@ -116,22 +116,28 @@ $(function(){
             </div>
             <div class="modal-body">
                 <div class="login-container">
-                    <div class="logo">hygge</div>
+                    <div class="logo-container">
+                        <img src="${pageContext.request.contextPath}/dist/images/hygge_logo.png" class="logo-img">
+                    </div>
+                    
                     <form name="modelLoginForm" action="" method="post">
                         <input type="text" name="userId" class="form-control" placeholder="아이디">
                         <input type="password" name="userPwd" class="form-control" autocomplete="off" placeholder="패스워드">
                         
                         <div class="form-check" style="display: flex; align-items: center;">
                             <input class="form-check-input" type="checkbox" id="rememberMeModel">
-                            <label class="form-check-label" for="rememberMeModel" style="margin-left: 10px;">아이디 저장</label>
+                            <label class="form-check-label" for="rememberMeModel" style="margin-left: 8px;">아이디 저장</label>
                         </div>
                         
-                        <button type="button" class="btn btn-primary w-100" style="background-color: #75A400; color: white;" onclick="sendModelLogin();">회원 로그인</button>
+                        <button type="button" class="btn btn-primary w-100" style="background-color: #75A400; color: white; margin-top: 10px;" onclick="sendModelLogin();">회원 로그인</button>
                         
                         <button type="button" class="kakao-login w-100 mt-3">
                             <i class="bi bi-chat-fill" style="font-size: 20px; margin-right: 10px;"></i>
                             카카오로 로그인
                         </button>
+
+                        <!-- 여백 추가 -->
+                        <div class="spacer"></div>
 
                         <p class="form-control-plaintext text-center">
                             <a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
@@ -139,8 +145,8 @@ $(function(){
                     </form>
                     <hr class="mt-3">
                     <div>
-                        <p class="form-control-plaintext mb-0">
-                            아직 회원이 아니세요 ?
+                        <p class="form-control-plaintext">
+                            아직 회원이 아니세요 ? 
                             <a href="${pageContext.request.contextPath}/member/account" class="text-decoration-none">회원가입</a>
                         </p>
                     </div>
@@ -151,12 +157,23 @@ $(function(){
 </div>
 
 <style type="text/css">
-    .form-control {
-        margin-bottom: 10px; /* 아이디/패스워드 입력창 사이 여백 */
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
     }
-    
+
+    .logo-img {
+        width: auto; 
+        height: 50px;
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+
     .btn-primary, .kakao-login {
-        border: none; /* 버튼 테두리 제거 */
+        border: none;
     }
 
     .kakao-login {
@@ -167,12 +184,37 @@ $(function(){
         background-color: #FEE500;
         border-radius: 10px;
         font-weight: bold;
-        margin-top: 15px;
         cursor: pointer;
     }
 
+    .spacer {
+        height: 10px;
+    }
+
     .form-control-plaintext {
-        text-align: center; /* 회원가입 안내 문구 가운데 정렬 */
+        text-align: center;
+    }
+
+    .btn-primary, .kakao-login {
+        height: 50px; 
+        border-radius: 10px;
+        font-size: 16px;
+    }
+    .btn-primary:hover {
+        color: black !important;
+        border: 1px solid #5C7F00;
+    }
+
+    .kakao-login:hover {
+        color: white !important;
+        border: 1px solid #E6C200;
+    }
+	.kakao-login:hover i {
+    color: white !important;
+	}
+    .kakao-login i {
+        color: black;
+
+    .btn-primary {
     }
 </style>
-
