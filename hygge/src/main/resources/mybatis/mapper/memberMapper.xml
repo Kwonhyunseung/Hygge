@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.MemberMapper">
+
+<!-- 회원 가입 -->
+<insert id="insertMember" parameterType="com.sp.app.model.Member">
+    INSERT INTO member1(memberIdx, id, pwd, name, userLevel, nickName)
+    VALUES (#{memberIdx}, #{id}, #{pwd}, #{name}, #{userLevel}, #{nickName})
+</insert>
+
+<!-- ID로 회원 조회 -->
+<select id="findById" parameterType="String" resultType="com.sp.app.model.Member">
+    SELECT m1.memberIdx, m1.id, m1.pwd, m1.name, m1.userLevel, 
+           m1.nickName, m1.reg_date, m1.mod_date, m1.last_login,
+           m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3
+    FROM member1 m1
+    LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+    WHERE m1.id = #{id}
+</select>
+
+<!-- 권한 목록 -->
+<select id="listAuthority" parameterType="String" resultType="String">
+    SELECT authority
+    FROM memberAuthority ma
+    JOIN member1 m ON ma.memberIdx = m.memberIdx
+    WHERE m.id = #{id}
+</select>
+
+<!-- 마지막 로그인 시간 업데이트 -->
+<update id="updateLastLogin" parameterType="String">
+    UPDATE member1 SET last_login = SYSDATE
+    WHERE id = #{id}
+</update>
+
+<!-- 회원 삭제 -->
+<delete id="deleteMember" parameterType="String">
+    DELETE FROM member1 WHERE id = #{id}
+</delete>
+
+</mapper>

@@ -49,6 +49,15 @@ dependencies {
 
 	// 재실행 없이 프론트 반영
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'	
+	
+	
+	// Spring Security 관련 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+    
+    // JSP에서 Spring Security 태그를 사용하기 위한 의존성
+    implementation 'org.springframework.security:spring-security-taglibs'
+    
 }
 
 tasks.named('test') {
