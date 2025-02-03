@@ -21,44 +21,55 @@ public class SpringSecurityConfig {
 	// SecurityFilterChain : 보안 필터를 체인 형태로 구성
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		// Security 환경 설정
-		
-		// ?continue 제거
-		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-		requestCache.setMatchingRequestParameterName(null);
-		
-		/*
-		String[] excludeUri = {"/", "/index.jsp", "/member/login", 
-				"/member/member", "/member/complete", "/member/pwdFind"
-				, "member/expired", "/member/emailCheck", "/dist/**", "/uploads/photo/**",
-				"/favicon.ico"};
-		*/
-		
-		http.cors(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable)
-        .requestCache(request->request.requestCache(requestCache));
-    
-	    http.cors(Customizer.withDefaults())
+	    // ?continue 제거
+	    HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+	    requestCache.setMatchingRequestParameterName(null);
+	    
+	    http
+	        .cors(Customizer.withDefaults())
 	        .csrf(AbstractHttpConfigurer::disable)
+	        .requestCache(request -> request.requestCache(requestCache))
 	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/**").permitAll()
+	            .requestMatchers(
+	                "/",                    // 메인 페이지
+	                "/main",               // 메인 페이지 alternate
+	                "/index",              // 메인 페이지 alternate
+	                "/index.jsp",          // JSP 메인 페이지
+	                "/member/login",        // 로그인
+	                "/member/account",      // 회원가입
+	                "/dist/**",            // 정적 리소스
+	                "/uploads/photo/**",    // 업로드된 사진
+	                "/favicon.ico"          // 파비콘
+	            ).permitAll()
+	            .requestMatchers(
+	                "/following/**",
+	                "/alarm/**",
+	                "/wishlist/**",
+	                "/mypage/**"
+	            ).authenticated()
+	            .requestMatchers("/admin/**").hasRole("ADMIN")
+	            .anyRequest().permitAll()    // 다른 모든 요청은 허용
+	        )
+	        .formLogin(form -> form
+	            .loginPage("/member/login")
+	            .loginProcessingUrl("/member/login")
+	            .usernameParameter("id")
+	            .passwordParameter("pwd")
+	            .successHandler(loginSuccessHandler())
+	            .failureHandler(loginFailureHandler())
+	        )
+	        .logout(logout -> logout
+	            .logoutUrl("/member/logout")
+	            .logoutSuccessUrl("/")
+	            .invalidateHttpSession(true)
+	            .deleteCookies("JSESSIONID")
+	            .clearAuthentication(true)
+	        )
+	        .exceptionHandling(exception -> exception
+	            .accessDeniedPage("/member/noAuthorized")
 	        );
 	    
-	    // 로그인 설정 추가
-	    http.formLogin(form -> form
-	        .loginPage("/member/login")                    // 로그인 페이지 경로
-	        .loginProcessingUrl("/member/login")           // 로그인 처리 URL
-	        .usernameParameter("id")                 	   // 아이디 파라미터명 (기본값 username을 id로 변경)
-	        .passwordParameter("pwd")                      // 비밀번호 파라미터명
-	        .successHandler(loginSuccessHandler())         // 로그인 성공 핸들러
-	        .failureHandler(loginFailureHandler())         // 로그인 실패 핸들러
-	    );
-		
-		// 권한이 없는 경우
-		http.exceptionHandling((exceptionConfig) -> exceptionConfig
-				.accessDeniedPage("/member/noAuthorized"));
-		
-		return http.build();
+	    return http.build();
 	}
 	
 	// BCryptPasswordEncoder : 암호화 클래스, 패스워드 암호화에 특화됨

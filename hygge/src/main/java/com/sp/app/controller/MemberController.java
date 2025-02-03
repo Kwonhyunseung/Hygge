@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sp.app.service.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,6 +31,14 @@ public class MemberController {
 		return "member/login";
 	}
 	
+	@GetMapping("logout")
+	public String logout(HttpServletRequest request) throws Exception {
+	    HttpSession session = request.getSession();
+	    session.removeAttribute("member");
+	    session.invalidate();
+	    
+	    return "redirect:/";  // 메인 페이지로 리다이렉트
+	}	
 	/*
 	@GetMapping(value = "noAuthorized")
 	public String noAuthorized() {

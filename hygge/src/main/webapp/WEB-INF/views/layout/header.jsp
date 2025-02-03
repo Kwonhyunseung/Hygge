@@ -184,8 +184,19 @@
 					<a class="nav-link"
 						href="${pageContext.request.contextPath}/wishlist">위시리스트</a>
 				</div>
-				<a href="javascript:dialogLogin();">로그인</a> <a
-					href="${pageContext.request.contextPath}/member/account">회원가입</a>
+				
+				<c:choose>
+			        <c:when test="${not empty member}">
+			            <span class="nav-link me-2">${member.name}님</span>
+			            <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+			        </c:when>
+			        <c:otherwise>
+			            <a href="javascript:dialogLogin();">로그인</a>
+			            <a href="${pageContext.request.contextPath}/member/account">회원가입</a>
+			        </c:otherwise>
+    			</c:choose>
+				
+				<a href="${pageContext.request.contextPath}/member/account">회원가입</a>
 				<button class="btn btn-upload">프로젝트 올리기</button>
 			</div>
 		</div>
