@@ -142,15 +142,15 @@ h5 { color: #555; }
 
 /* 하위 카테고리 스타일 */
 .hr {
-    margin: 0;
+    margin: 0; /* <hr> 위아래 공백 제거 */
     padding: 0;
 }
 
 .sub-categories {
-    display: none;
-    background-color: #f8f9fa;
+    display: none; /* 초기 숨김 */
+    background-color: #f8f9fa; /* 배경색 (원하는 색상으로 변경 가능) */
     padding: 10px 15px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd; /* 구분선 */
 }
 
 .sub-categories h4 {
@@ -184,8 +184,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const categories = document.querySelectorAll(".categories div");
     const subCategoryContainer = document.createElement("div");
     subCategoryContainer.classList.add("sub-categories");
+    subCategoryContainer.style.display = "none";
     document.querySelector(".hr").prepend(subCategoryContainer);
-
+    
     const subCategories = {
         "가전": ["TV", "냉장고", "세탁기", "에어컨", "청소기/건조기", "공기청정기", "전자레인지", "안마물품", "가습기"],
         "패션": ["남성 의류", "여성 의류", "신발", "가방"],
@@ -199,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     categories.forEach(category => {
-        category.addEventListener("mouseenter", function (event) {
+        category.addEventListener("click", function (event) {
             let categoryName = event.currentTarget.textContent.trim();
             
             if (subCategories[categoryName]) {
@@ -215,12 +216,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     list.appendChild(li);
                 });
                 subCategoryContainer.appendChild(list);
-                subCategoryContainer.style.display = "block";
-            }
-        });
 
-        category.addEventListener("mouseleave", function () {
-            subCategoryContainer.style.display = "none";
+                subCategoryContainer.style.display = subCategoryContainer.style.display === "none" ? "block" : "none";
+            }
         });
     });
 });
