@@ -11,7 +11,7 @@
 				<h4>HYGGE 고객센터</h4>
 				<a href="#">채팅 상담하기 ></a> <br>
 				<a href="#">문의 등록하기 ></a>
-				<br><br><br><br>
+				<br><br><br><br><br>
 				<p>
 					<strong>고객지원</strong><br>평일 10:00 ~ 17:00 (12:00 ~ 14:00 제외)
 				</p>
@@ -41,6 +41,7 @@
 					<a href="#">프로젝트 심사 기준</a>
 				</div>
 			</div>
+			<br>
 			<div class="row second-section">
 				<div class="col second">
 					<p>
@@ -50,10 +51,5 @@
 				</div>
 			</div>
 		</div>
-	</div>	
-	<div class="highlight">
-		<p>HYGGE는 창작자와 프로젝트의 성공을 돕는 플랫폼일 뿐이며, 직접적인 심사와 관여를
-			하지 않습니다. 프로젝트 내용 및 진행 과정은 해당 프로젝트 창작자의 책임 하에 진행되며, <br>
-			플랫폼은 책임을 지지 않습니다. 후원 전 모든 내용을 신중히 검토하시기 바랍니다.</p>
 	</div>
 </footer>

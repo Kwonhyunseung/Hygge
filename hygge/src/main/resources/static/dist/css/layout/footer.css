@@ -5,6 +5,7 @@ footer {
 	box-sizing: border-box;
 	background-color: #fff;
 	border-top: 1px solid #DDECB8;
+	background-color: #ebf1db;
 }
 
 .footer {
@@ -21,6 +22,8 @@ footer {
 
 .main-section > a {
 	font-size: 14px;
+	color: #000;
+	text-decoration: none;
 }
 
 .main-section > p {
@@ -35,24 +38,11 @@ footer {
 
 .section > a {
 	font-size: 14px;
+	color: #000;
+	text-decoration: none;
 }
 
 footer a:hover {
 	text-decoration: underline;
 	color: green;
-}
-
-.highlight {
-	background-color: #DDECB8;
-	width: 100%;
-	box-sizing: border-box;
-	padding: 7px 5px;
-}
-
-.highlight > p {
-    margin: 0 auto;
-	max-width: 1200px;
-	padding: 0 10px;
-	font-size: 14px;
-	color: #727272;
 }
