@@ -109,49 +109,70 @@ $(function(){
 </script>
 
 <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="loginModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="loginViewerModalLabel">Login</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="p-3">
-					<form name="modelLoginForm" action="" method="post" class="row g-3">
-						<div class="mt-0">
-						    <p class="form-control-plaintext">계정으로 로그인 하세요</p>
-						</div>
-						<div class="mt-0">
-							<input type="text" name="userId" class="form-control" placeholder="아이디">
-						</div>
-						<div>
-							<input type="password" name="userPwd" class="form-control" autocomplete="off" placeholder="패스워드">
-						</div>
-						<div>
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="rememberMeModel">
-								<label class="form-check-label" for="rememberMeModel"> 아이디 저장</label>
-							</div>
-						</div>
-						<div>
-							<button type="button" class="btn btn-primary w-100" onclick="sendModelLogin();">Login</button>
-						</div>
-						<div>
-							<p class="form-control-plaintext text-center">
-							<a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
-							</p>
-						</div>
-					</form>
-					<hr class="mt-3">
-					<div>
-						<p class="form-control-plaintext mb-0">
-							아직 회원이 아니세요 ?
-							<a href="${pageContext.request.contextPath}/" class="text-decoration-none">회원가입</a>
-						</p>
-					</div>
-				</div>
-			
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="login-container">
+                    <div class="logo">hygge</div>
+                    <form name="modelLoginForm" action="" method="post">
+                        <input type="text" name="userId" class="form-control" placeholder="아이디">
+                        <input type="password" name="userPwd" class="form-control" autocomplete="off" placeholder="패스워드">
+                        
+                        <div class="form-check" style="display: flex; align-items: center;">
+                            <input class="form-check-input" type="checkbox" id="rememberMeModel">
+                            <label class="form-check-label" for="rememberMeModel" style="margin-left: 10px;">아이디 저장</label>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary w-100" style="background-color: #75A400; color: white;" onclick="sendModelLogin();">회원 로그인</button>
+                        
+                        <button type="button" class="kakao-login w-100 mt-3">
+                            <i class="bi bi-chat-fill" style="font-size: 20px; margin-right: 10px;"></i>
+                            카카오로 로그인
+                        </button>
+
+                        <p class="form-control-plaintext text-center">
+                            <a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
+                        </p>
+                    </form>
+                    <hr class="mt-3">
+                    <div>
+                        <p class="form-control-plaintext mb-0">
+                            아직 회원이 아니세요 ?
+                            <a href="${pageContext.request.contextPath}/member/account" class="text-decoration-none">회원가입</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style type="text/css">
+    .form-control {
+        margin-bottom: 10px; /* 아이디/패스워드 입력창 사이 여백 */
+    }
+    
+    .btn-primary, .kakao-login {
+        border: none; /* 버튼 테두리 제거 */
+    }
+
+    .kakao-login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        background-color: #FEE500;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    .form-control-plaintext {
+        text-align: center; /* 회원가입 안내 문구 가운데 정렬 */
+    }
+</style>
+
