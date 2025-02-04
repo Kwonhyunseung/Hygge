@@ -11,79 +11,186 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 <style type="text/css">
+/* 로그인 css */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* viewport height의 100% */
+}
+
+main {
+    flex: 1 0 auto; /* 남은 공간을 모두 차지하도록 설정 */
+    padding: 20px 0; /* 위아래 여백 추가 */
+}
+
+footer {
+    flex-shrink: 0; /* 푸터 크기 고정 */
+}
+
 .body-container {
-	max-width: 800px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.login-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 50px;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: auto;
+    height: 50px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    border: none;
+}
+
+.kakao-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background-color: #FEE500;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    height: 50px;
+    font-size: 16px;
+}
+
+.spacer {
+    height: 10px;
+}
+
+.form-control-plaintext {
+    text-align: center;
+}
+
+.btn-primary {
+    height: 50px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    color: black !important;
+    border: 1px solid #5C7F00;
+}
+
+.kakao-login:hover {
+    color: white !important;
+    border: 1px solid #E6C200;
+}
+
+.kakao-login:hover i {
+    color: white !important;
+}
+
+.kakao-login i {
+    color: black;
+}
+
+.body-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.login-container {
+    padding: 20px;
 }
 </style>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+    <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
-	
+
 <main>
-	<div class="container">
-		<div class="body-container">	
+    <div class="container">
+        <div class="body-container">
+            <div class="login-container">
+                <div class="logo-container">
+                    <img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" class="logo-img">
+                </div>
 
-			<div class="row">
-				<div class="col-md-6 offset-md-3">
-					<div class="border mt-5 p-4">
-	                    <form name="loginForm" action="" method="post" class="row g-3">
-	                        <h3 class="text-center"><i class="bi bi-lock"></i> 회원 로그인</h3>
-	                        <div class="col-12">
-	                            <label class="mb-1">아이디</label>
-	                            <input type="text" name="userId" class="form-control" placeholder="아이디">
-	                        </div>
-	                        <div class="col-12">
-	                            <label class="mb-1">패스워드</label>
-	                            <input type="password" name="userPwd" class="form-control" autocomplete="off" 
-	                            	placeholder="패스워드">
-	                        </div>
-	                        <div class="col-12">
-	                            <div class="form-check">
-	                                <input class="form-check-input" type="checkbox" id="rememberMe">
-	                                <label class="form-check-label" for="rememberMe"> 아이디 저장</label>
-	                            </div>
-	                        </div>
-	                        <div class="col-12">
-	                            <button type="button" class="btn btn-primary float-end" onclick="sendLogin();">&nbsp;Login&nbsp;<i class="bi bi-check2"></i></button>
-	                        </div>
-	                    </form>
-	                    <hr class="mt-4">
-	                    <div class="col-12">
-	                        <p class="text-center mb-0">
-	                        	<a href="#" class="text-decoration-none me-2">아이디 찾기</a>
-	                        	<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none me-2">패스워드 찾기</a>
-	                        	<a href="${pageContext.request.contextPath}/member/account" class="text-decoration-none">회원가입</a>
-	                        </p>
-	                    </div>
-	                </div>
-	
-	                <div class="d-grid">
-	                    <p class="form-control-plaintext text-center text-primary">${message}</p>
-					</div>
-				</div>
-			</div>
+                <form name="loginForm" action="" method="post">
+                    <input type="text" name="id" class="form-control" placeholder="아이디">
+                    <input type="password" name="pwd" class="form-control" autocomplete="off" placeholder="패스워드">
 
-		</div>
-	</div>
+                    <div class="form-check" style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe" style="margin-left: 8px;">아이디 저장</label>
+                    </div>
+
+                    <button type="button" class="btn btn-primary w-100" 
+                            style="background-color: #75A400; color: white; margin-top: 10px;"
+                            onclick="sendLogin();">회원 로그인</button>
+
+                    <button type="button" class="kakao-login w-100 mt-3">
+                        <i class="bi bi-chat-fill" style="font-size: 20px; margin-right: 10px;"></i>
+                        카카오로 로그인
+                    </button>
+
+                    <div class="spacer"></div>
+
+                    <p class="form-control-plaintext text-center">
+                        <a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
+                    </p>
+
+                    <hr class="mt-3">
+                    
+                    <div>
+                        <p class="form-control-plaintext">
+                            아직 회원이 아니세요 ? 
+                            <a href="${pageContext.request.contextPath}/member/account" class="text-decoration-none">회원가입</a>
+                        </p>
+                    </div>
+                </form>
+                
+                <div class="d-grid">
+                    <p class="form-control-plaintext text-center text-primary">${message}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <script type="text/javascript">
 function sendLogin() {
     const f = document.loginForm;
-	let str;
-	
-	str = f.userId.value.trim();
-    if( !str ) {
-        f.userId.focus();
+    let str;
+
+    str = f.id.value.trim();
+    if(!str) {
+        f.id.focus();
         return;
     }
 
-    str = f.userPwd.value.trim();
-    if( !str ) {
-        f.userPwd.focus();
+    str = f.pwd.value.trim();
+    if(!str) {
+        f.pwd.focus();
         return;
     }
 
@@ -93,9 +200,9 @@ function sendLogin() {
 </script>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
+
 </body>
 </html>
