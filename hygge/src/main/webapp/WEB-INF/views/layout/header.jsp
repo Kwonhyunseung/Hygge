@@ -137,7 +137,7 @@
 <header>
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
-			<a class="navbar-brand" href="#"> <img
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
 				src="${pageContext.request.contextPath}/dist/images/main/main_logo.png"
 				style="width: 100px;">
 			</a>
