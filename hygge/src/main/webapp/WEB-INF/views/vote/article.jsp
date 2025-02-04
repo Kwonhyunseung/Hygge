@@ -22,26 +22,31 @@
 }
 
 .body-container {
+	display: flex;
+	flex-direction: column;
 	max-width: 1200px;
+	margin: auto;
 }
 
 .notice {
 	font-size: 20px;
 	font-weight: 700;
 	padding-bottom: 20px;
+	margin: 20px;
 }
 
 /* 후보 리스트: 제목 크기에 맞춤 */
 .candidate-list {
     display: flex;
-    flex-direction: row;
-    gap: 15px;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
     width: 100%;
     margin: 20px auto;
     flex-wrap: wrap;
 }
 
-label {width: 49%;}
+label {width: 55%;}
 
 /* 개별 후보: 가로 정렬 */
 .candidate {
@@ -51,18 +56,16 @@ label {width: 49%;}
     justify-content: space-between; /* 이미지와 버튼을 양 끝으로 배치 */
     background: #fff;
     padding: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.candidate .left {width: 90%; text-align: center; font-weight: bold; font-size: 16px;}
-.candidate .right {width: 10%; display: flex; justify-content: center; align-items: center;}
+.candidate .left {width: 80%; text-align: center; font-weight: bold; font-size: 16px;}
+.candidate .right {width: 20%; display: flex; justify-content: center; align-items: center;}
 
 /* 이미지 컨테이너: 전체 박스의 3/4 비율 유지 */
 .candidate-img-container {
     width: 100%;
     height: 300px; /* 고정 높이 지정 */
     overflow: hidden;
-    border-radius: 5px;
     margin-bottom: 10px;
 }
 

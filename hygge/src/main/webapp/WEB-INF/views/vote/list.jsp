@@ -16,18 +16,25 @@ body {
     background-color: #fff;
 }
 
+.body-main {
+	display: flex;
+	flex-direction: column;
+}
+
+.body-title {
+	width: 1000px;
+	margin: 20px auto;
+}
+
 /* 제목 스타일 */
 .title {
-    text-align: center;
+    text-align: left;
     font-size: 30px;
     font-weight: bold;
     padding: 20px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-    border: 1px solid green;
-    max-width: 400px;
-    margin: 40px auto;
+    border-bottom: 2px solid green;
+    max-width: 1000px;
 }
 
 /* 본문 컨테이너 */
@@ -82,6 +89,10 @@ body {
     margin-bottom: 5px; /* 기간과 이미지 사이 간격 */
 }
 
+.body-main a:hover {
+	color: #82B10C;
+}
+
 /* 링크 스타일 */
 .event a {
     display: block;
@@ -121,53 +132,56 @@ body {
 
 <main>
 
-<div class="title">투표선정</div>
-
-<div class="body-container">
-	<div class="event">
-	<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-		<div class="event-img-div">
-			<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-				<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
-			</a>
-		</div>
-		<a href="${pageContext.request.contextPath}/vote/article" class="">이달의 투표(2025.01)</a>
+<div class="body-main">
+	<div class="body-title">
+		<div class="title">투표</div>
 	</div>
-	<div class="event">
-	<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-		<div class="event-img-div">
-			<a href="${pageContext.request.contextPath}/vote/result" class="event-img">
-				<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
-			</a>
+	<div class="body-container">
+		<div class="event">
+		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
+			<div class="event-img-div">
+				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
+					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+				</a>
+			</div>
+			<a href="${pageContext.request.contextPath}/vote/article" class="">이달의 투표(2025.01)</a>
 		</div>
-		<a href="${pageContext.request.contextPath}/vote/result" class="">이달의 투표(2025.01)</a>
-	</div>
-	<div class="event">
-	<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-		<div class="event-img-div">
-			<a href="#" class="event-img">
-				<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
-			</a>
+		<div class="event">
+		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
+			<div class="event-img-div">
+				<a href="${pageContext.request.contextPath}/vote/result" class="event-img">
+					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+				</a>
+			</div>
+			<a href="${pageContext.request.contextPath}/vote/result" class="">이달의 투표(2025.01)</a>
 		</div>
-		<a href="#" class="">이달의 투표(2025.01)</a>
-	</div>
-	<div class="event">
-	<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-		<div class="event-img-div">
-			<a href="#" class="event-img">
-				<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
-			</a>
+		<div class="event">
+		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
+			<div class="event-img-div">
+				<a href="#" class="event-img">
+					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+				</a>
+			</div>
+			<a href="#" class="">이달의 투표(2025.01)</a>
 		</div>
-		<a href="#" class="">이달의 투표(2025.01)</a>
-	</div>
-	<div class="event">
-	<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-		<div class="event-img-div">
-			<a href="#" class="event-img">
-				<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
-			</a>
+		<div class="event">
+		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
+			<div class="event-img-div">
+				<a href="#" class="event-img">
+					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+				</a>
+			</div>
+			<a href="#" class="">이달의 투표(2025.01)</a>
 		</div>
-		<a href="#" class="">이달의 투표(2025.01)</a>
+		<div class="event">
+		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
+			<div class="event-img-div">
+				<a href="#" class="event-img">
+					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+				</a>
+			</div>
+			<a href="#" class="">이달의 투표(2025.01)</a>
+		</div>
 	</div>
 </div>
 
