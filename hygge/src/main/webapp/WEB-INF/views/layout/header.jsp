@@ -3,9 +3,17 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <head>
-<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout/header.css" type="text/css"> --%>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
+<script src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/dist/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
+<!-- 더보기 메뉴 CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout/moreMenu.css" type="text/css">
+
 <title>hygge</title>
 <link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">
+
 <style>
 .navbar-expand-lg {
 	max-width: 1300px;
@@ -152,8 +160,11 @@
 						href="#">공개예정</a></li>
 					<li class="nav-item"><a class="nav-link" aria-current="page"
 						href="#">마감임박</a></li>
-					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="#">더보기</a></li>
+					<li class="nav-item position-relative">
+	                    <a class="nav-link" aria-current="page" id="moreMenuBtn">더보기</a>
+	                    <jsp:include page="/WEB-INF/views/layout/moreMenu.jsp"/>
+               		</li>
+					
 					<%--
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -198,11 +209,11 @@
 			        </c:otherwise>
     			</c:choose>
 				
-				<a href="${pageContext.request.contextPath}/member/account">회원가입</a>
 				<button class="btn btn-upload">프로젝트 올리기</button>
 			</div>
 		</div>
 	</nav>
+	
 </header>
 
 <script>
@@ -213,6 +224,35 @@ menuItems.forEach(item => {
         menuItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
     });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const moreMenuBtn = document.getElementById('moreMenuBtn');
+    const moreMenuContainer = document.querySelector('.more-menu-container');
+
+    if (moreMenuBtn && moreMenuContainer) {  // 요소가 존재하는지 확인
+        // 더보기 버튼 클릭 이벤트
+        moreMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isDisplayed = moreMenuContainer.style.display === 'block';
+            moreMenuContainer.style.display = isDisplayed ? 'none' : 'block';
+            
+            // active 클래스 토글 (blur 효과를 위해)
+            moreMenuContainer.classList.toggle('active');
+        });
+
+        // 외부 클릭시 메뉴 닫기
+        document.addEventListener('click', function(e) {
+            if (!moreMenuBtn.contains(e.target) && !moreMenuContainer.contains(e.target)) {
+                moreMenuContainer.style.display = 'none';
+                moreMenuContainer.classList.remove('active');
+            }
+        });
+    }
 });
 </script>
 
@@ -274,16 +314,15 @@ $(function(){
 					</div>
 
 					<form name="modelLoginForm" action="" method="post">
-						<input type="text" name="id" class="form-control"
+						<input type="text" name=id class="form-control"
 							placeholder="아이디"> 
-						<input type="password" name="pwd"
+							<input type="password" name="pwd"
 							class="form-control" autocomplete="off" placeholder="패스워드">
 
 						<div class="form-check"
 							style="display: flex; align-items: center;">
 							<input class="form-check-input" type="checkbox"
-								id="rememberMeModel"> 
-							<label class="form-check-label"
+								id="rememberMeModel"> <label class="form-check-label"
 								for="rememberMeModel" style="margin-left: 8px;">아이디 저장</label>
 						</div>
 
@@ -300,8 +339,7 @@ $(function(){
 						<div class="spacer"></div>
 
 						<p class="form-control-plaintext text-center">
-							<a href="${pageContext.request.contextPath}/member/idFind" class="text-decoration-none me-2">아이디 찾기</a>
-							<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none">비밀번호 찾기</a>
+							<a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
 						</p>
 					</form>
 					<hr class="mt-3">

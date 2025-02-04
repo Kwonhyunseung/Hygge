@@ -9,7 +9,10 @@
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/core.css" type="text/css"> --%>
 
+<%--더보기 --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout/moreMenu.css" type="text/css">
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/util-jquery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/menu.js"></script>
+// <script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/menu.js"></script>
