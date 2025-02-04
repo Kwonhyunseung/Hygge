@@ -113,6 +113,53 @@ label {
 	margin-top: 3px;
 	margin-bottom: 10px;
 }
+
+.category-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.category-item {
+	background-color: #e0e0e0;
+	padding: 12px 25px;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.category-item:hover {
+	background-color: #b2cc85;
+	color: white;
+}
+
+.gender-label {
+	margin-right: 20px;
+	font-size: 1rem;
+}
+
+.gender-divider {
+	border-top: 1.5px solid #82B10C;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.terms p {
+	font-size: 1.2rem;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.terms div {
+	margin-bottom: 10px; /* 각 항목 사이에 간격을 추가 */
+	font-size: 0.9rem; /* 항목 텍스트 폰트 사이즈 작게 */
+}
+
+.terms label {
+	margin-left: 10px; /* 체크박스와 텍스트 간의 간격 */
+	font-weight: normal; /* 텍스트 굵기 제거 */
+}
+
 </style>
 </head>
 <body>
@@ -136,9 +183,9 @@ label {
 			<div class="mb-3">
 				<label for="username">아이디 *</label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" id="username" required>
+					<input type="text" class="form-control me-2" id="username" placeholder="아이디를 입력하세요" required>
 					<button type="button" class="btn btn-secondary"
-						onclick="checkUsername()">중복확인</button>
+						onclick="checkUsername()" style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">중복확인</button>
 
 				</div>
 				<span id="usernameStatus"></span>
@@ -147,22 +194,23 @@ label {
 
 			<div class="mb-3">
 				<label for="name">이름 *</label> <input type="text"
-					class="form-control" id="name" required>
+					class="form-control" id="name" placeholder="이름을 입력하세요" required>
+					
 			</div>
 
 			<div class="mb-3">
 				<label for="nickname">닉네임 *</label> <input type="text"
-					class="form-control" id="nickname" required>
+					class="form-control" id="nickname" placeholder="닉네임을 입력하세요" required>
 			</div>
 
 			<div class="mb-3">
 				<label for="password">비밀번호 *</label> <input type="password"
-					class="form-control" id="password" required>
+					class="form-control" id="password" placeholder="비밀번호를 입력하세요" required>
 			</div>
 
 			<div class="mb-3">
 				<label for="passwordConfirm">비밀번호 확인 *</label> <input
-					type="password" class="form-control" id="passwordConfirm" required>
+					type="password" class="form-control" id="passwordConfirm" placeholder="비밀번호 확인" required>
 			</div>
 
 			<div class="mb-3">
@@ -187,63 +235,89 @@ label {
 				<div class="d-flex">
 					<!-- 이메일 앞부분 입력란 -->
 					<input type="email" class="form-control me-2" id="emailPrefix"
-						placeholder="이메일 앞부분" required>
+						placeholder="이메일 앞부분" style="flex: 2;" required>
 
 					<!-- @ 기호 고정 -->
 					<span class="me-2" style="line-height: 2.3;">@</span>
 
 					<!-- 도메인 선택 또는 직접 입력란 -->
-					<div class="d-flex">
-						<select class="form-select me-2" id="emailDomain"
-							onchange="updateEmail()">
-							<option value="">직접 선택</option>
-							<option value="naver.com">naver.com</option>
-							<option value="daum.com">daum.com</option>
-							<option value="hanmail.com">hanmail.com</option>
-							<option value="google.com">google.com</option>
-							<option value="custom">직접 입력</option>
-						</select> <input type="text" class="form-control" id="customDomain"
-							placeholder="직접 입력" style="display: none;"
-							onchange="updateEmail()">
-					</div>
+					<select class="form-select" id="emailDomain"
+						onchange="handleDomainChange()" style="flex: 2;">
+						<option value="">선택</option>
+						<option value="naver.com">naver.com</option>
+						<option value="daum.com">daum.com</option>
+						<option value="hanmail.com">hanmail.com</option>
+						<option value="google.com">google.com</option>
+						<option value="custom">직접 입력</option>
+					</select>
+
+					<!-- 직접 입력 옵션을 위한 추가 입력란 -->
+					<input type="text" class="form-control" id="customDomain"
+						placeholder="직접 입력" style="display: none; flex: 2;"
+						onchange="updateEmail()">
 				</div>
 			</div>
 
 			<div class="mb-3">
 				<label for="address">주소 *</label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" id="address" required>
-					<button type="button" class="btn-check" onclick="findAddress()">주소찾기</button>
+					<input type="text" class="form-control me-2" id="address"
+						placeholder="주소를 입력하세요" required readonly>
+					<button type="button" class="btn btn-primary"
+						onclick="daumPostcode()"style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">주소찾기</button>
 				</div>
+			</div>
+
+			<div class="mb-3">
+				<label for="detailAddress">상세주소 *</label> <input type="text"
+					class="form-control" id="detailAddress" placeholder="상세 주소를 입력하세요"
+					required>
 			</div>
 
 			<div class="mb-3">
 				<label>선호 카테고리 *</label>
 				<div class="category-container">
-					<input type="checkbox" id="cat1" name="category"><label
-						for="cat1">가전</label> <input type="checkbox" id="cat2"
-						name="category"><label for="cat2">패션</label> <input
-						type="checkbox" id="cat3" name="category"><label
-						for="cat3">뷰티</label> <input type="checkbox" id="cat4"
-						name="category"><label for="cat4">홈·리빙</label> <input
-						type="checkbox" id="cat5" name="category"><label
-						for="cat5">푸드</label>
+					<div class="category-item">가전</div>
+					<div class="category-item">패션</div>
+					<div class="category-item">뷰티</div>
+					<div class="category-item">홈·리빙</div>
+					<div class="category-item">푸드</div>
 				</div>
 			</div>
+
 
 			<div class="mb-3">
 				<label>성별 *</label>
 				<div>
 					<input type="radio" id="male" name="gender" value="남자"> <label
-						for="male">남자</label> <input type="radio" id="female"
-						name="gender" value="여자"> <label for="female">여자</label>
+						for="male" class="gender-label">남자</label> <input type="radio"
+						id="female" name="gender" value="여자"> <label for="female"
+						class="gender-label">여자</label>
 				</div>
+				<div class="gender-divider"></div>
 			</div>
 
 			<div class="mb-3 terms">
-				<input type="checkbox" required> 이용약관 동의 (필수) <br> <input
-					type="checkbox" required> 개인정보 수집 이용 동의 (필수) <br> <input
-					type="checkbox"> 무료혜택 및 할인쿠폰 수신 동의 (선택)
+				<p>이용약관</p>
+				<div>
+					<input type="checkbox" required> <label style="font-size: 1.2rem; font-weight: bold; margin-bottom:1px;">전체 동의합니다.</label>
+				</div>
+				<div>
+					<input type="checkbox" required> <label>이용약관 동의
+						(필수)</label>
+				</div>
+				<div>
+					<input type="checkbox" required> <label>개인정보 수집 이용
+						동의 (필수)</label>
+				</div>
+				<div>
+					<input type="checkbox"> <label>무료배송, 할인쿠폰 등 혜택/정보
+						수신 동의 (선택)</label>
+				</div>
+				<div>
+					<input type="checkbox" required> <label>본인은 만 14세
+						이상입니다. (필수)</label>
+				</div>
 			</div>
 
 			<div class="mb-3">
@@ -255,6 +329,8 @@ label {
 			</div>
 		</form>
 	</div>
+
+
 
 	<script>
 		// 아이디 중복 확인 함수
@@ -272,33 +348,35 @@ label {
 				usernameStatus.innerText = '아이디를 입력해 주세요.';
 			}
 		}
-		<div class="mb-3">
-	    <label for="email">이메일 *</label>
-	    <div class="d-flex">
-	        <!-- 이메일 앞부분 입력란 (길이를 줄여서 균형 맞춤) -->
-	        <input type="email" class="form-control me-2" id="emailPrefix" placeholder="이메일 앞부분" style="flex: 2;" required>
-	        
-	        <!-- @ 기호 고정 -->
-	        <span class="me-2" style="line-height: 2.3;">@</span>
-	        
-	        <!-- 도메인 선택 또는 직접 입력란 -->
-	        <div class="d-flex" style="flex: 3;">
-	            <select class="form-select me-2" id="emailDomain" onchange="updateEmail()">
-	                <option value="">직접 선택</option>
-	                <option value="naver.com">naver.com</option>
-	                <option value="daum.com">daum.com</option>
-	                <option value="hanmail.com">hanmail.com</option>
-	                <option value="google.com">google.com</option>
-	                <option value="custom">직접 입력</option>
-	            </select>
-	            <input type="text" class="form-control" id="customDomain" placeholder="직접 입력" style="display:none;" onchange="updateEmail()">
-	        </div>
-	    </div>
-	</div>
 
-		// 주소찾기 버튼 클릭 시 동작
-		function findAddress() {
-			alert("주소찾기 버튼이 클릭되었습니다. (주소 찾기 로직 추가 필요)");
+		function handleDomainChange() {
+			var emailPrefix = document.getElementById('emailPrefix').value;
+			var emailDomain = document.getElementById('emailDomain').value;
+			var customDomain = document.getElementById('customDomain').value;
+
+			if (emailDomain === "custom") {
+				// "직접 입력"을 선택한 경우 도메인 입력란을 보이게 함
+				document.getElementById('customDomain').style.display = "inline-block";
+			} else {
+				// "직접 입력"을 선택하지 않으면 도메인 입력란 숨김
+				document.getElementById('customDomain').style.display = "none";
+				if (emailPrefix && emailDomain) {
+					// 선택된 도메인을 이메일 앞부분에 추가
+					document.getElementById('emailPrefix').value = emailPrefix
+							+ '@' + emailDomain;
+				}
+			}
+		}
+
+		function updateEmail() {
+			var emailPrefix = document.getElementById('emailPrefix').value;
+			var customDomain = document.getElementById('customDomain').value;
+
+			if (customDomain) {
+				// "직접 입력"한 도메인과 이메일 앞부분을 합침
+				document.getElementById('emailPrefix').value = emailPrefix
+						+ '@' + customDomain;
+			}
 		}
 
 		// 폼 제출 시 비밀번호 확인
@@ -312,6 +390,51 @@ label {
 			}
 		}
 	</script>
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+	<script>
+		function daumPostcode() {
+			new daum.Postcode({
+				oncomplete : function(data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var fullAddr = ''; // 최종 주소 변수
+					var extraAddr = ''; // 조합형 주소 변수
+
+					// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+						fullAddr = data.roadAddress;
+
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+						fullAddr = data.jibunAddress;
+					}
+
+					// 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+					if (data.userSelectedType === 'R') {
+						//법정동명이 있을 경우 추가한다.
+						if (data.bname !== '') {
+							extraAddr += data.bname;
+						}
+						// 건물명이 있을 경우 추가한다.
+						if (data.buildingName !== '') {
+							extraAddr += (extraAddr !== '' ? ', '
+									+ data.buildingName : data.buildingName);
+						}
+						// 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+						fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')'
+								: '');
+					}
+
+					// 우편번호와 주소 정보를 해당 필드에 넣는다.
+					document.getElementById('zip').value = data.zonecode; //5자리 새우편번호 사용
+					document.getElementById('addr1').value = fullAddr;
+
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById('addr2').focus();
+				}
+			}).open();
+		}
+	</script>
 </body>
 </html>
