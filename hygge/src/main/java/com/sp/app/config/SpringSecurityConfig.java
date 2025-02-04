@@ -41,6 +41,7 @@ public class SpringSecurityConfig {
 	                "/uploads/photo/**",    // 업로드된 사진
 	                "/favicon.ico"          // 파비콘
 	            ).permitAll()
+	            
 	            .requestMatchers(
 	                "/following/**",
 	                "/alarm/**",

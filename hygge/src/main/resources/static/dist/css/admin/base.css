@@ -1,0 +1,34 @@
+﻿@charset "UTF-8";
+
+/* 전체 레이아웃 컨테이너 */
+.container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding-top: 60px; /* 헤더 높이만큼 여백 추가 */
+}
+
+/* 좌측 사이드바 */
+.left-side-bar {
+    width: 250px;
+    min-width: 250px; /* flex 축소 방지 */
+    background: #34495e;
+    color: #fff;
+    padding: 20px 0;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
+
+/* 메인 컨텐츠 영역 */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: #f5f6fa;
+    margin-left: 250px;
+    min-height: calc(100vh - 60px); /* 헤더 높이 제외 */
+    width: calc(100% - 250px);
+}

@@ -1,0 +1,48 @@
+﻿@charset "UTF-8";
+
+.left-side-bar {
+    width: 250px;
+    min-width: 250px;
+    background: #34495e;
+    color: #fff;
+    padding: 20px 0;
+    height: calc(100vh - 60px); /* 헤더 높이 제외 */
+    position: fixed;
+    left: 0;
+    top: 60px; /* 헤더 높이만큼 아래로 */
+    overflow-y: auto;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 10px 20px;
+}
+
+.menu-title {
+    cursor: pointer;
+    display: block;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+.sub-menu {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.sub-menu li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 5px 0;
+    display: block;
+}
+
+.sub-menu li a:hover {
+    color: #3498db;
+}
