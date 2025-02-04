@@ -274,15 +274,16 @@ $(function(){
 					</div>
 
 					<form name="modelLoginForm" action="" method="post">
-						<input type="text" name=id class="form-control"
+						<input type="text" name="id" class="form-control"
 							placeholder="아이디"> 
-							<input type="password" name="pwd"
+						<input type="password" name="pwd"
 							class="form-control" autocomplete="off" placeholder="패스워드">
 
 						<div class="form-check"
 							style="display: flex; align-items: center;">
 							<input class="form-check-input" type="checkbox"
-								id="rememberMeModel"> <label class="form-check-label"
+								id="rememberMeModel"> 
+							<label class="form-check-label"
 								for="rememberMeModel" style="margin-left: 8px;">아이디 저장</label>
 						</div>
 
@@ -299,7 +300,8 @@ $(function(){
 						<div class="spacer"></div>
 
 						<p class="form-control-plaintext text-center">
-							<a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
+							<a href="${pageContext.request.contextPath}/member/idFind" class="text-decoration-none me-2">아이디 찾기</a>
+							<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none">비밀번호 찾기</a>
 						</p>
 					</form>
 					<hr class="mt-3">

@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -6,21 +6,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>비밀번호 찾기</title>
+<title>아이디 찾기</title>
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 <style>
     body {
-    	 height: 100vh;
+        height: 100vh;
         text-align: center;
         font-family: Arial, sans-serif;
         margin-bottom: 150px;
     }
-	.logo img {
-    width: 200px;
-    height: auto;
-	}
+    .logo img {
+        width: 200px;
+        height: auto;
+    }
     
     .box-container {
         max-width: 400px;
@@ -81,12 +81,8 @@
     <div class="logo"><img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" class="login-logo" alt="로고"></div>
 
     <div class="box-container">
-        <div class="box-header">비밀번호 찾기</div>
-        <form name="pwdForm" method="post">
-            <div class="input-group">
-                <label for="userId">아이디</label>
-                <input type="text" id="userId" name="userId" placeholder="아이디 입력">
-            </div>
+        <div class="box-header">아이디 찾기</div>
+        <form name="idFindForm" method="post">
             <div class="input-group">
                 <label for="userName">이름</label>
                 <input type="text" id="userName" name="userName" placeholder="이름 입력">
@@ -95,20 +91,15 @@
                 <label for="userEmail">이메일</label>
                 <input type="email" id="userEmail" name="userEmail" placeholder="이메일 입력">
             </div>
-            <button type="button" class="submit-btn" onclick="sendOk();">확인</button>
+            <button type="button" class="submit-btn" onclick="findId();">확인</button>
         </form>
     </div>
 </main>
 
 <script>
-function sendOk() {
-    const f = document.pwdForm;
+function findId() {
+    const f = document.idFindForm;
 
-    if (!f.userId.value.trim()) {
-        alert('아이디를 입력하세요.');
-        f.userId.focus();
-        return;
-    }
     if (!f.userName.value.trim()) {
         alert('이름을 입력하세요.');
         f.userName.focus();
