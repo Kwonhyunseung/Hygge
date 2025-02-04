@@ -16,7 +16,7 @@ public class Lj_tempController {
 			
 		} catch (Exception e) {
 		}
-		return "lj_temp/event";
+		return "event/list";
 	}
 
 	@GetMapping("/vote/list")

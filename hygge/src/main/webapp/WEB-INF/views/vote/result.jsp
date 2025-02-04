@@ -16,6 +16,10 @@ body {
     background-color: #fff;
 }
 
+a {
+	text-decoration: none;
+}
+
 /* 제목 스타일 */
 .title {
     text-align: center;
@@ -32,7 +36,6 @@ body {
 
 /* 본문 컨테이너 */
 .body-container {
-	display: flex;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 50px;
     padding: 20px 20px 70px;
@@ -40,6 +43,12 @@ body {
     margin: auto;
     flex-direction: row;
     justify-content: center;
+}
+
+.body-main {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .img-container {
@@ -60,17 +69,26 @@ body {
 
 <main>
 
-<div class="title">투표발표</div>
 
 <div class="body-container">
-	<div>
+	<div class="title">투표발표</div>
+	<div class="body-main">
 		<div class="img-container">
 			<img src="${pageContext.request.contextPath}/dist/images/main/ad3.png">
 		</div>
 	</div>
+	<div>
+		<div>
+			다음글:
+			<a href="#">2025년 1월 투표 발표</a>
+		</div>
+		<div>
+			이전글:
+			<a href="#">2024년 11월 투표 발표</a>
+		</div>
+	</div>
 </div>
 
-<div style="text-align: center; border: 1px solid black;">페이징처리</div>
 </main>
 
 <footer>

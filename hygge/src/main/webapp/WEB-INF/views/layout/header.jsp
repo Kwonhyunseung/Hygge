@@ -2,8 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+<head>
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout/header.css" type="text/css"> --%>
-
+<title>hygge</title>
+<link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">
 <style>
 .navbar-expand-lg {
 	max-width: 1300px;
@@ -131,7 +133,7 @@
 	{
 }
 </style>
-
+</head>
 <header>
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
