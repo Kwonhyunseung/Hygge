@@ -7,178 +7,11 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/main.css"
+	type="text/css">
+
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.body-container {
-    max-width: 1200px; /* 중앙 정렬 및 여백 조절 */
-    margin: 0 auto; /* 좌우 여백 균등 */
-}
-
-h3 { margin-top: 30px; color: #333; }
-h5 { color: #555; }
-
-/* .row { display: flex; flex-wrap: wrap; margin-bottom: 20px; } */
-.row { display: flex; flex-wrap: wrap; }
-.col { flex: 1; padding: 10px; }
-.col-3 { flex: 0 0 calc(25% - 20px); margin: 0 10px; box-sizing: border-box; }
-.col-4 { flex: 0 0 calc(33.33% - 20px); margin: 0 10px; box-sizing: border-box; }
-.col-8 { flex: 0 0 calc(66.66% - 20px); margin: 0 10px; box-sizing: border-box; }
-
-.search-bar {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
-
-.search-bar input {
-    width: 50%;
-    padding: 10px;
-    border: 5px solid #82B10C;
-    border-radius: 25px;
-}
-
-.categories {
-    display: flex;
-    justify-content: center;
-   gap: 15px;
-    margin: 20px 0;
-}
-
-.categories div {
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 50px;
-    transition: background-color 0.4s;
-}
-
-.categories div > img {
-   width: 80px;
-}
-
-.categories div > p {
-    display: flex;
-   justify-content: center;
-}
-
-.categories div:hover {
-    background-color: #ddd;
-}
-
-.lanking-bar {
-    background-color: #fafafa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.lanking-bar p {
-    margin: 10px 0;
-    font-size: 14px;
-}
-
-.new-project .row {
-    justify-content: space-around;
-}
-
-.new-project .col {
-    background-color: #f9f9f9;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.new-project .col:hover {
-    transform: translateY(-5px);
-}
-
-.popular-project img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.localstorage-project .col {
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.deadline-project {
-    background-color: #fff3cd;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.deadline-project img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.release-project img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-
-/* 하위 카테고리 스타일 */
-.hr {
-    margin: 0; /* <hr> 위아래 공백 제거 */
-    padding: 0;
-}
-
-.sub-categories {
-    display: none; /* 초기 숨김 */
-    background-color: #f8f9fa; /* 배경색 (원하는 색상으로 변경 가능) */
-    padding: 10px 15px;
-    border-top: 1px solid #ddd; /* 구분선 */
-}
-
-.sub-categories h4 {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.sub-categories ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; /* 가로 정렬 */
-    flex-wrap: wrap; /* 너무 길면 자동 줄바꿈 */
-}
-
-.sub-categories li {
-    margin-right: 15px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.sub-categories li:hover {
-    text-decoration: underline;
-}
-
-</style>
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function () {
@@ -227,217 +60,397 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </head>
 <body>
-   <header>
-      <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-   </header>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
+	</header>
 
-   <main>
-      <div class="search-bar">
-         <input type="text" placeholder=" 검색어를 입력해주세요!">
-      </div>
+	<main>
+		<div class="search-bar">
+			<input type="text" placeholder=" 검색어를 입력해주세요!">
+		</div>
 
-      <div class="categories">
-         <div>
-            <img src="/dist/images/main/category/a.png">
-            <p>가전</p>
-         </div>
-         <div>패션</div>
-         <div>뷰티</div>
-         <div>홈▪리빙</div>
-         <div>푸드</div>
-         <div>도서</div>
-         <div>캐릭터▪굿즈</div>
-         <div>문화</div>
-         <div>반려동물</div>
-      </div>
+		<div class="categories">
+			<div>
+				<img src="/dist/images/main/category/a.png">
+				<p>가전</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/b.png">
+				<p>패션</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/c.png">
+				<p>뷰티</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/d.png">
+				<p>홈▪리빙</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/e.png">
+				<p>푸드</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/f.png">
+				<p>도서</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/g.png">
+				<p>캐릭터▪굿즈</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/h.png">
+				<p>문화</p>
+			</div>
+			<div>
+				<img src="/dist/images/main/category/i.png">
+				<p>반려동물</p>
+			</div>
+		</div>
 
-      <hr class="hr">
+		<hr class="hr">
 
-      <div class="body-container">
-         <div class="row">
-            <div class="col-8">
-               <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                     <div class="carousel-item active">
-                        <img src="/dist/images/main/ad1.jpg" class="d-block w-100" style="width: 80%; height: 400px;" alt="AD">
-                     </div>
-                     <div class="carousel-item">
-                        <img src="/dist/images/main/ad2.jpg" class="d-block w-100" style="width: 80%; height: 400px;" alt="AD">
-                     </div>
-                     <div class="carousel-item">
-                        <img src="/dist/images/main/ad3.png" class="d-block w-100" style="width: 80%; height: 400px;" alt="AD">
-                     </div>
-                  </div>
-                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                     <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                     <span class="visually-hidden">Next</span>
-                  </button>
-               </div>
-               <br><br><br>
-               <div class="new-project">
-                  <h3>신규 프로젝트</h3>
-                  <div class="row">
-                     <div class="col">
-                        <!-- <img src="/dist/images/"> -->
-                        프로젝트 1
-                     </div>
-                     <div class="col">
-                        프로젝트 2
-                     </div>
-                     <div class="col">
-                        프로젝트 3
-                     </div>
-                     <div class="col">
-                        프로젝트 4
-                     </div>
-                  </div>
-               </div>
-            </div>
-            
-            <div class="col-4">
-               <div class="lanking-bar">
-                  <h3>실시간 랭킹</h3>
-                  <div class="col">
-                     <div class="">
-                        <p>1. 매일 한 잔으로 어깨 깡패되는<br>새해 필수템</p>
-                        <!-- <img src="/dist/images/"> -->
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="">
-                        <p>2. 실시간 프로젝트</p>
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="">
-                        <p>3. 실시간 프로젝트</p>
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="">
-                        <p>4. 실시간 프로젝트</p>
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="">
-                        <p>5. 실시간 프로젝트</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         
-         <div class="popular-project">
-            <h3>인기 프로젝트</h3>
-            <div class="row">
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-            </div>
-         </div>
-         
-         <div class="localstorage-project">
-            <h3>최근 본 프로젝트</h3>
-            <div class="row">
-               <div class="col">
-                  <div class="">
-                     <!-- <img src="/dist/images/"> -->
-                     최근 본 1
-                  </div>
-               </div>
-               <div class="col">
-                  <div class="">
-                     최근 본 2
-                  </div>
-               </div>
-               <div class="col">
-                  <div class="">
-                     최근 본 3
-                  </div>
-               </div>
-            </div>
-         </div>
-                  
-         <div class="deadline-project">
-            <h3>마감임박! 마지막 기회</h3>
-            <h5>06:15:16 남았어요</h5>
-            <div class="row">
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-            </div>
-         </div>
-         
-         <div class="release-project">
-            <h3>공개예정 프로젝트</h3>
-            <div class="row">
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-               <div class="col-3">
-                  <div class="">
-                     <img src="/dist/images/main/p.jpg">
-                  </div>
-               </div>
-            </div>
-         </div>
-         
-      </div>
-   </main>
+		<div class="body-container">
+			<!-- 광고이미지, 신규프젝, 실시간랭킹 -->
+			<div class="row">
+				<div class="col-8">
+					<div id="carouselExampleFade" class="carousel slide carousel-fade"
+						data-bs-ride="carousel">
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<img src="/dist/images/main/ad1.jpg" class="d-block w-100"
+									style="width: 80%; height: 400px; margin-top: 30px;" alt="AD">
+							</div>
+							<div class="carousel-item">
+								<img src="/dist/images/main/ad2.jpg" class="d-block w-100"
+									style="width: 80%; height: 400px; margin-top: 30px;" alt="AD">
+							</div>
+							<div class="carousel-item">
+								<img src="/dist/images/main/ad3.png" class="d-block w-100"
+									style="width: 80%; height: 400px; margin-top: 30px;" alt="AD">
+							</div>
+						</div>
+						<button class="carousel-control-prev" type="button"
+							data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button"
+							data-bs-target="#carouselExampleFade" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+					<br> <br> <br>
+					<div class="new-project">
+						<h3>신규 프로젝트</h3>
+						<div class="row">
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p class="reserve">예약구매</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p>펀딩</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p>펀딩</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p>펀딩</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p>펀딩</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+							<div class="col-4 newP">
+								<img src="/dist/images/main/p.jpg">
+								<div class="pundingBtn">
+									<p>펀딩</p>
+								</div>
+								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							</div>
+						</div>
+					</div>
+				</div>
 
-   <footer>
-      <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-   </footer>
+				<div class="col-4">
+					<div class="lanking-bar">
+						<h3>실시간 랭킹</h3>
+						<div class="col">
+							<div class="row">
+								<div class="col-7">
+									<strong>1</strong> &nbsp;&nbsp;&nbsp;[발렌타인 전 도착!] 용량 두 배!, 더
+									뚱뚱해진 '오예스 보조배터리'
+								</div>
+								<div class="col lankImg">
+									<img src="/dist/images/main/p.jpg">
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-7">
+									<strong>2</strong> &nbsp;&nbsp;&nbsp;매일 한 잔으로 어깨 깡패되는 새해 필수템
+								</div>
+								<div class="col lankImg">
+									<img src="/dist/images/main/p.jpg">
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-7">
+									<strong>3</strong> &nbsp;&nbsp;&nbsp;매일 한 잔으로 어깨 깡패되는 새해 필수템
+								</div>
+								<div class="col lankImg">
+									<img src="/dist/images/main/p.jpg">
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-7">
+									<strong>4</strong> &nbsp;&nbsp;&nbsp;매일 한 잔으로 어깨 깡패되는 새해 필수템
+								</div>
+								<div class="col lankImg">
+									<img src="/dist/images/main/p.jpg">
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-7">
+									<strong>5</strong> &nbsp;&nbsp;&nbsp;매일 한 잔으로 어깨 깡패되는 새해 필수템
+								</div>
+								<div class="col lankImg">
+									<img src="/dist/images/main/p.jpg">
+								</div>
+							</div>
+						</div>
 
+					</div>
+					<div class="special">
+						<img src="/dist/images/main/special.png">
+						<img src="/dist/images/main/special.png">
+					</div>
+				</div>
+			</div>
+
+			<div class="localstorage-project">
+				<h3>최근 본 프로젝트</h3>
+				<div class="row">
+					<div class="row">
+						<div class="col-3 popularP">
+							<img src="/dist/images/main/p.jpg">
+							<div class="pundingBtn">
+								<p>펀딩</p>
+								<div class="goal">
+									<p>30,012% 달성
+								</div>
+							</div>
+							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+						</div>
+						<div class="col-3 popularP">
+							<img src="/dist/images/main/p.jpg">
+							<div class="pundingBtn">
+								<p>펀딩</p>
+								<div class="goal">
+									<p>30,012% 달성
+								</div>
+							</div>
+							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+						</div>
+						<div class="col-3 popularP">
+							<img src="/dist/images/main/p.jpg">
+							<div class="pundingBtn">
+								<p>펀딩</p>
+								<div class="goal">
+									<p>30,012% 달성
+								</div>
+							</div>
+							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+						</div>
+						<div class="col-3 popularP">
+							<img src="/dist/images/main/p.jpg">
+							<div class="pundingBtn">
+								<p>펀딩</p>
+								<div class="goal">
+									<p>30,012% 달성
+								</div>
+							</div>
+							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="popular-project">
+				<h3>인기 프로젝트</h3>
+				<div class="row">
+					<div class="col-3 popularP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 popularP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 popularP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 popularP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="deadline-project">
+				<h3>마감임박! 마지막 기회</h3>
+				<h5 style="font-size: 22px;">
+					<strong style="color: #ED2323;">06:15:16 </strong>남았어요
+				</h5>
+				<div class="row">
+					<div class="col-3 deadlineP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 deadlineP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 deadlineP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 deadlineP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="release-project">
+				<h3>공개예정 프로젝트</h3>
+				<div class="row">
+					<div class="col-3 releaseP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 releaseP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 releaseP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+					<div class="col-3 releaseP">
+						<img src="/dist/images/main/p.jpg">
+						<div class="pundingBtn">
+							<p>펀딩</p>
+							<div class="goal">
+								<p>30,012% 달성
+							</div>
+						</div>
+						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="pundingImg">
+				<img src="/dist/images/main/punding.png">
+			</div>
+
+		</div>
+	</main>
+
+	<footer>
+		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	</footer>
+
+	<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
 </html>

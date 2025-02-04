@@ -1,0 +1,203 @@
+@charset "UTF-8";
+
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.body-container {
+	max-width: 1200px; /* 중앙 정렬 및 여백 조절 */
+	margin: 0 auto; /* 좌우 여백 균등 */
+}
+
+/* 검색바 */
+.search-bar {
+	display: flex;
+	justify-content: center;
+	padding: 10px 0;
+}
+
+.search-bar input {
+	width: 50%;
+	padding: 10px;
+	border: 6px solid #82B10C;
+	border-radius: 25px;
+}
+
+/* 헤더 및 카테고리 */
+.categories {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin: 20px 0;
+}
+
+.categories div {
+	cursor: pointer;
+	padding: 10px 20px;
+	border-radius: 50px;
+	transition: background-color 0.4s;
+}
+
+.categories div>img {
+	width: 90px;
+}
+
+.categories div>p {
+	display: flex;
+	justify-content: center;
+}
+
+/* 프로젝트별 펀딩 및 달성률 */
+.pundingBtn {
+	box-sizing: border-box;
+}
+
+.pundingBtn>p {
+	margin-top: 15px;
+	width: 43px;
+	padding-left: 3px;
+	border-radius: 3px;
+	background-color: #F2F4E3;
+}
+
+.pundingBtn>.reserve {
+	margin-top: 15px;
+	width: 80px;
+	padding-left: 3px;
+	border-radius: 3px;
+	background-color: #F2F4E3;
+}
+
+.goal>p {
+	width: 180px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #ED2323;
+	line-height: 50%; /* 행 간격 */
+}
+
+/* 신규 프로젝트 */
+.new-project>h3 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.newP {
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 18px; /* 펀딩 & 제목 글씨 크기 */
+}
+
+.newP>img {
+	width: 250px;
+	height: 180px;
+	border-radius: 5px;
+}
+
+/* 실시간 랭킹 */
+.lanking-bar {
+	height: 700px;
+	margin-left: 30px;
+}
+
+.lanking-bar>h3 {
+	margin-top: 30px;
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.lankImg>img {
+	width: 120px;
+	height: 80px;
+	border-radius: 5px;
+}
+
+/* 이벤트 이미지 */
+.special {
+	margin-top: 200px;	
+}
+.special>img {
+	width: 343px;
+	margin-top: 25px;
+	margin-bottom: 30px;
+	margin-left: 30px;
+	border-radius: 5px;
+}
+
+/* 인기 프로젝트 */
+/* 마감임박 프로젝트 */
+.popular-project, .deadline-project, .release-project,
+	.localstorage-project {
+	margin-top: 80px;
+}
+
+.popular-project>h3, .deadline-project>h3, .release-project>h3,
+	.localstorage-project>h3 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.popularP, .deadlineP, .releaseP, .localP {
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 18px; /* 펀딩 & 제목 글씨 크기 */
+}
+
+.popularP>img, .deadlineP>img, .releaseP>img, .localP>img {
+	width: 275px;
+	height: 190px;
+	border-radius: 5px;
+}
+
+.release-project {
+	margin-bottom: 80px;
+}
+
+.pundingImg>img {
+	width: 1200px;
+	margin-bottom: 100px;
+}
+
+/* !!!!수정 필요!!!! */
+/* 하위 카테고리 스타일 */
+.hr {
+	margin: 0;
+	padding: 0;
+}
+
+.sub-categories {
+	display: none;
+	background-color: #f8f9fa;
+	padding: 10px 15px;
+	border-top: 1px solid #ddd;
+}
+
+.sub-categories h4 {
+	margin: 0 0 8px 0;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.sub-categories ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.sub-categories li {
+	margin-right: 15px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.sub-categories li:hover {
+	text-decoration: underline;
+}
