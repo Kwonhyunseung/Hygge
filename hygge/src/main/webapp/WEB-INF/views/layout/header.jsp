@@ -8,23 +8,136 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
 <script src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/dist/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
-<!-- 더보기 메뉴 CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/layout/moreMenu.css" type="text/css">
+
+
 
 <title>hygge</title>
 <link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">
 
 <style>
+.more-menu-container {
+    display: flex;
+    align-items: center;
+    height: 100%;  /* 이 줄 추가 */
+}
+.hygge-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+}
+
+.hygge-more-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1400px;
+    background: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* z-index 증가 */
+}
+
+.hygge-menu-items {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    justify-items: center;
+}
+
+.hygge-menu-item {
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.hygge-menu-item:hover {
+    transform: translateY(-5px);
+}
+
+.hygge-circle-menu {
+    width: 120px;
+    height: 120px;
+    background-color: #B7D12A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.hygge-circle-menu:hover {
+    background-color: #82B10C;
+    box-shadow: 0 4px 12px rgba(131, 177, 12, 0.3);
+}
+
+.hygge-circle-menu span {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .hygge-more-menu {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .hygge-menu-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .hygge-circle-menu {
+        width: 100px;
+        height: 100px;
+    }
+
+    .hygge-circle-menu span {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hygge-menu-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hygge-circle-menu {
+        width: 90px;
+        height: 90px;
+    }
+}
 .navbar-expand-lg {
 	max-width: 1300px;
 	margin: 0 auto;
 }
 
+.nav-item {
+    height: 100%;  /* 이 줄 추가 */
+    display: flex;
+    align-items: center;
+}
+
 .nav-item a {
-	color: #000;
-	font-weight: 600;
-	font-size: 20px;
-	margin: 0 10px;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    color: #000;
+    font-weight: 600;
+    font-size: 20px;
 }
 
 .nav-item a:hover {
@@ -140,121 +253,172 @@
 	btn-primary
 	{
 }
+
+.navbar-collapse {
+    display: flex !important;
+}
+
+.nav-underline {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item.position-relative {
+    display: inline-block; /* 이 줄 추가 */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+
 </style>
 </head>
 <header>
-	<nav class="navbar navbar-expand-lg">
-		<div class="container">
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
-				src="${pageContext.request.contextPath}/dist/images/main/main_logo.png"
-				style="width: 100px;">
-			</a>
+  <nav class="navbar navbar-expand-lg">
+  
+    <div class="container">
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+        <img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" style="width: 100px;">
+      </a>
 
-			<div class="collapse navbar-collapse">
-				<ul class="nav nav-underline">
-					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="#">인기</a></li>
-					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="#">신규</a></li>
-					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="#">공개예정</a></li>
-					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="#">마감임박</a></li>
-					<li class="nav-item position-relative">
-	                    <a class="nav-link" aria-current="page" id="moreMenuBtn">더보기</a>
-	                    <jsp:include page="/WEB-INF/views/layout/moreMenu.jsp"/>
-               		</li>
-					
-					<%--
-					<li class="nav-item dropdown">
-						<a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						더보기 <i class="bi bi-chevron-down" style="font-size: 1.2rem"></i>
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">공지사항</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">이벤트</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">투표</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">체험단</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">중고장터</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/">QnA</a></li>
-						</ul>
-					</li>
-					--%>
-				</ul>
-			</div>
+      <div class="navbar-collapse d-flex" id="navbarNav">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">인기</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">신규</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">공개예정</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">마감임박</a>
+          </li>
+          <li class="nav-item">
+    		<a class="nav-link" id="moreMenuBtn" href="#">더보기</a>
+    		<div class="hygge-overlay"></div> 
+		    <div class="hygge-more-menu">
+		      	<div class="hygge-menu-items">
+		                <a href="${pageContext.request.contextPath}/today" class="hygge-menu-item">
+                  <div class="hygge-circle-menu">
+                    <span>이달의 투표</span>
+                  </div>
+                </a>
+                <a href="${pageContext.request.contextPath}/event" class="hygge-menu-item">
+                  <div class="hygge-circle-menu">
+                    <span>이벤트</span>
+                  </div>
+                </a>
+                <a href="${pageContext.request.contextPath}/notice" class="hygge-menu-item">
+                  <div class="hygge-circle-menu">
+                    <span>공지사항</span>
+                  </div>
+                </a>
+                <a href="${pageContext.request.contextPath}/experience" class="hygge-menu-item">
+                  <div class="hygge-circle-menu">
+                    <span>체험단</span>
+                  </div>
+                </a>
+                <a href="${pageContext.request.contextPath}/market" class="hygge-menu-item">
+                  <div class="hygge-circle-menu">
+                    <span>중고게시판</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
 
-			<div class="header-right d-flex align-items-center">
-
-				<div class="nav-item">
-					<a class="nav-link"
-						href="${pageContext.request.contextPath}/following">팔로잉</a>
-				</div>
-				<div class="nav-item">
-					<a class="nav-link" href="${pageContext.request.contextPath}/alarm">알림</a>
-				</div>
-				<div class="nav-item">
-					<a class="nav-link"
-						href="${pageContext.request.contextPath}/wishlist">위시리스트</a>
-				</div>
-				
-				<c:choose>
-			        <c:when test="${not empty member}">
-			            <span class="nav-link me-2">${member.name}님</span>
-			            <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-			        </c:when>
-			        <c:otherwise>
-			            <a href="javascript:dialogLogin();">로그인</a>
-			            <a href="${pageContext.request.contextPath}/member/account">회원가입</a>
-			        </c:otherwise>
-    			</c:choose>
-				
-				<button class="btn btn-upload">프로젝트 올리기</button>
-			</div>
-		</div>
-	</nav>
-	
+      <div class="header-right d-flex align-items-center">
+        <div class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/following">팔로잉</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/alarm">알림</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/wishlist">위시리스트</a>
+        </div>
+        
+        <c:choose>
+          <c:when test="${not empty member}">
+            <span class="nav-link me-2">${member.name}님</span>
+            <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+          </c:when>
+          <c:otherwise>
+            <a href="javascript:dialogLogin();">로그인</a>
+            <a href="${pageContext.request.contextPath}/member/account">회원가입</a>
+          </c:otherwise>
+        </c:choose>
+        
+        <button class="btn btn-upload">프로젝트 올리기</button>
+      </div>
+    </div>
+  </nav>
 </header>
 
-<script>
-const menuItems = document.querySelectorAll('.nav-link');
 
-menuItems.forEach(item => {
-    item.addEventListener('click', () => {
-        menuItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+
+<!-- 네비게이션 및 더보기 메뉴 관련 스크립트 -->
+<script>
+$(document).ready(function() {
+    // jQuery가 로드되었는지 확인용 로그
+    console.log('jQuery loaded:', typeof jQuery !== 'undefined');
+    
+    const $moreMenuBtn = $('#moreMenuBtn');
+    const $moreMenu = $('.hygge-more-menu');
+    const $overlay = $('.hygge-overlay');
+    
+    function toggleMenu(show) {
+        if(show) {
+            $moreMenu.show();
+            $overlay.show();
+            // 버튼 활성화 상태 표시
+            $moreMenuBtn.addClass('active');
+        } else {
+            $moreMenu.hide();
+            $overlay.hide();
+            // 버튼 비활성화 상태로 변경
+            $moreMenuBtn.removeClass('active');
+        }
+    }
+
+    // 클릭 이벤트를 직접 바인딩
+    $moreMenuBtn[0].addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('More menu clicked'); // 디버깅용 로그
+        
+        const isShown = $moreMenu.is(':visible');
+        toggleMenu(!isShown);
+    });
+
+    // 오버레이 클릭시 메뉴 닫기
+    $overlay.on('click', function() {
+        toggleMenu(false);
+    });
+    
+    // ESC 키 누를때 메뉴 닫기
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape') {
+            toggleMenu(false);
+        }
+    });
+
+    // 메뉴 외부 클릭시 닫기
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.more-menu-container').length) {
+            toggleMenu(false);
+        }
     });
 });
 </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const moreMenuBtn = document.getElementById('moreMenuBtn');
-    const moreMenuContainer = document.querySelector('.more-menu-container');
 
-    if (moreMenuBtn && moreMenuContainer) {  // 요소가 존재하는지 확인
-        // 더보기 버튼 클릭 이벤트
-        moreMenuBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
 
-            const isDisplayed = moreMenuContainer.style.display === 'block';
-            moreMenuContainer.style.display = isDisplayed ? 'none' : 'block';
-            
-            // active 클래스 토글 (blur 효과를 위해)
-            moreMenuContainer.classList.toggle('active');
-        });
-
-        // 외부 클릭시 메뉴 닫기
-        document.addEventListener('click', function(e) {
-            if (!moreMenuBtn.contains(e.target) && !moreMenuContainer.contains(e.target)) {
-                moreMenuContainer.style.display = 'none';
-                moreMenuContainer.classList.remove('active');
-            }
-        });
-    }
-});
-</script>
 
 <!-- Login Modal -->
 <script type="text/javascript">
@@ -295,6 +459,8 @@ $(function(){
 	});
 });
 </script>
+
+
 
 <div class="modal fade" id="loginModal" tabindex="-1"
 	data-bs-backdrop="static" data-bs-keyboard="false"
