@@ -154,9 +154,12 @@ footer {
                     </button>
 
                     <div class="spacer"></div>
-
+					
+					
+					
                     <p class="form-control-plaintext text-center">
-                        <a href="#" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
+                        <a href="${pageContext.request.contextPath}/member/idFind" class="text-decoration-none me-2">아이디찾기 </a>
+                        <a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none me-2">비밀번호찾기 </a>
                     </p>
 
                     <hr class="mt-3">
