@@ -41,7 +41,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px;
     background: white;
     padding: 50px;
     border-radius: 10px;
@@ -130,6 +130,8 @@
     height: 100%;  /* 이 줄 추가 */
     display: flex;
     align-items: center;
+    margin: 0px;
+    padding: 0px;
 }
 
 .nav-item a {
@@ -269,8 +271,10 @@
 
 .nav-item {
     display: flex;
-    align-items: center;
+    padding: 0px;
 }
+
+
 
 </style>
 </head>
@@ -334,13 +338,13 @@
 
       <div class="header-right d-flex align-items-center">
         <div class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/following">팔로잉</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/following"><i class="bi bi-stars"></i></a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/alarm">알림</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/alarm"><i class="bi bi-bell-fill"></i></a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/wishlist">위시리스트</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/wishlist"><i class="bi bi-suit-heart-fill"></i></a>
         </div>
         
         <c:choose>
