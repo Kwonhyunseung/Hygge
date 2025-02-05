@@ -45,4 +45,13 @@ public class Lj_tempController {
 		}
 		return "vote/result";
 	}
+
+	@GetMapping("/used/list")
+	public String usedBoard(Model model) {
+		try {
+			
+		} catch (Exception e) {
+		}
+		return "usedBoard/list";
+	}
 }
