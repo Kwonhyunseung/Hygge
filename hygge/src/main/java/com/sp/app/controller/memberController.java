@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/member/*")
-public class MemberController {
+public class memberController {
 	private final MemberService memberService;
 	
 	@RequestMapping(value = "login", method = {RequestMethod.GET, RequestMethod.POST})
