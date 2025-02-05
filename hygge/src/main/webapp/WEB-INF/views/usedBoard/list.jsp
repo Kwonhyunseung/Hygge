@@ -54,6 +54,10 @@
 	background-color: #CCE58C;
 }
 
+.write-btn {
+	display: flex;
+	justify-content: right;
+}
 </style>
 
 </head>
@@ -152,6 +156,9 @@
 
 			</tbody>
 		</table>
+		<div class="write-btn">
+			<button type="button" class="btn">글 등록하기</button>
+		</div>
 		<div style="text-align: center; border: 1px solid black;">페이징처리</div>
 	</div>
 </div>
