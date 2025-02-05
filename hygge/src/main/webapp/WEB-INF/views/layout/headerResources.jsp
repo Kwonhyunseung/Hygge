@@ -5,11 +5,14 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/css/bootstrap.min.css" type="text/css">
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/notice/list.css" type="text/css">
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/core.css" type="text/css"> --%>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/dist/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/util-jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/menu.js"></script>
