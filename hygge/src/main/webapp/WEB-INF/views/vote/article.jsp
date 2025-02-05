@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/vote/list.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/vote/article.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 </head>
@@ -20,76 +20,74 @@
 
 <div class="body-container">
 	<div class="notice">12월 슬픔의 프로젝트에 투표해주세요!(중복 투표 불가)</div>
-	
-	<div class="candidate-list">
-	    <label for='r1'>
-		    <div class="candidate">
-		    	<div class="left">
-			        <div class="candidate-img-container">
-			            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+	<form action="" name="voteForm">
+		<div class="candidate-list">
+		    <label for='r1'>
+			    <div class="candidate">
+			    	<div class="left">
+				        <div class="candidate-img-container">
+				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+				        </div>
+				        <div class="textArea">
+				        	<p>[재주는 AI가 넘고 돈은 내가 버는 전자책 수익화 시스템 비결]</p>
+				        </div>
+			    	</div>
+			        <div class="right">
+				        <input type="radio" name="candidate" id="r1">
 			        </div>
-			        <div class="textArea">
-			        	<p>[재주는 AI가 넘고 돈은 내가 버는 전자책 수익화 시스템 비결]</p>
+			    </div>
+		    </label>
+		    <label for='r2'>
+			    <div class="candidate">
+			    	<div class="left">
+				        <div class="candidate-img-container">
+				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+				        </div>
+				        <div class="textArea">
+				        	<p>어쩌구저쩌구</p>
+				        </div>
+			    	</div>
+			        <div class="right">
+				        <input type="radio" name="candidate" id="r2">
 			        </div>
-		    	</div>
-		        <div class="right">
-			        <input type="radio" name="candidate" id="r1">
-		        </div>
-		    </div>
-	    </label>
-	    <label for='r2'>
-		    <div class="candidate">
-		    	<div class="left">
-			        <div class="candidate-img-container">
-			            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+			    </div>
+		    </label>
+		    <label for='r3'>
+			    <div class="candidate">
+			    	<div class="left">
+				        <div class="candidate-img-container">
+				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+				        </div>
+				        <div class="textArea">
+				        	<p>어쩌구저쩌구</p>
+				        </div>
+			    	</div>
+			        <div class="right">
+				        <input type="radio" name="candidate" id="r3">
 			        </div>
-			        <div class="textArea">
-			        	<p>어쩌구저쩌구</p>
+			    </div>
+		    </label>
+		    <label for='r4'>
+			    <div class="candidate">
+			    	<div class="left">
+				        <div class="candidate-img-container">
+				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
+				        </div>
+				        <div class="textArea">
+				        	<p>어쩌구저쩌구</p>
+				        </div>
+			    	</div>
+			        <div class="right">
+				        <input type="radio" name="candidate" id="r4">
 			        </div>
-		    	</div>
-		        <div class="right">
-			        <input type="radio" name="candidate" id="r2">
-		        </div>
-		    </div>
-	    </label>
-	    <label for='r3'>
-		    <div class="candidate">
-		    	<div class="left">
-			        <div class="candidate-img-container">
-			            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-			        </div>
-			        <div class="textArea">
-			        	<p>어쩌구저쩌구</p>
-			        </div>
-		    	</div>
-		        <div class="right">
-			        <input type="radio" name="candidate" id="r3">
-		        </div>
-		    </div>
-	    </label>
-	    <label for='r4'>
-		    <div class="candidate">
-		    	<div class="left">
-			        <div class="candidate-img-container">
-			            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-			        </div>
-			        <div class="textArea">
-			        	<p>어쩌구저쩌구</p>
-			        </div>
-		    	</div>
-		        <div class="right">
-			        <input type="radio" name="candidate" id="r4">
-		        </div>
-		    </div>
-	    </label>
+			    </div>
+		    </label>
+		</div>
+	</form>
+	<div class="vote-btn">
+	    <button type="button" class="btn-submit">투표</button>
 	</div>
 </div>
-
-<div>
-    <button>투표</button>
-</div>
-
-
 
 </main>
 
