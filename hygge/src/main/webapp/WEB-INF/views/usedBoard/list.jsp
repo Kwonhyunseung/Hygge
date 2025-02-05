@@ -10,56 +10,6 @@
 <script src="${pageContext.request.contextPath}/dist/js/event-list-css/btn-borderstyle-none.js"></script>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
-<style type="text/css">
-.table {
-	text-align: center;
-	width: 1000px !important;
-	border-style: none !important;
-	font-size: 14px;
-}
-
-.search-container {
-	width: 800px;
-	border: 1px solid #EAEAEA;
-	padding: 10px;
-}
-
-.schType-container {
-	margin: 0px 10px;
-}
-
-.schType-select {
-	height: 30px;
-	padding: 3px;
-	border: 1px solid #EAEAEA;
-	border-radius: 3px;
-}
-
-.kwd-text {
-	padding: 3px;
-	border: 1px solid #EAEAEA;
-	border-radius: 3px;
-}
-
-.refresh-btn {
-	display: flex;
-	justify-content: center;
-    align-items: center;
-	width: 30px;
-	height: 30px;
-	border-radius: 15px;
-	background-color: #DCEFAD;
-}
-.refresh-btn:hover {
-	background-color: #CCE58C;
-}
-
-.write-btn {
-	display: flex;
-	justify-content: right;
-}
-</style>
-
 </head>
 <body>
 <header>
@@ -92,6 +42,18 @@
 		</div>
 	</div>
 	<div class="body-container">
+		<div class="filter-container all-products">
+			<button type="button" class="btn">거래가능한 제품만</button>
+			<!-- 중고거래게시판 테이블에 deal 이라는 거래여부 컬럼이 있습니다.
+			미거래(0, default), 거래중(1, 거래신청 완료 관리자 승인 대기 중), 거래완료(-1) 각각 괄호 안의 값을 가지도록 참고해주세요
+			거래가능한 제품은 미거래, 거래중 상품 필터링으로 하면 좋을것 같습니다.
+
+			전체 제품 서칭할 때엔 'filter-container' 클래스를 갖는 버튼의 상위 div에 'all-products' 클래스가 있도록,
+			필터링을 걸면 'filter-products' 클래스가 들어가도록 해주세요 css 반영을 해당 클래스명들에 대해 반영해놓았습니다.
+			>> 기본상태 all-products, 버튼 클릭으로 거래가능 제품만 볼 때엔 all-products 클래스가 빠지면서 filter-products 클래스 추가.
+			거래가능 제품만 보는 상태를 해제하고 모든 제품을 볼때는 filter-products 클래스가 빠지고 all-products 클래스 추가.
+			-->
+		</div>
 		<table class="table">
 			<thead>
 				<tr>
@@ -157,9 +119,11 @@
 			</tbody>
 		</table>
 		<div class="write-btn">
-			<button type="button" class="btn">글 등록하기</button>
+			<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/usedBoard/write'">글 등록하기</button>
 		</div>
-		<div style="text-align: center; border: 1px solid black;">페이징처리</div>
+		<div class="page-navigation">
+			페이징처리는 선생님꺼 쓰시면 되시겠습니다. 나중에 통째로 처리하자
+		</div>
 	</div>
 </div>
 

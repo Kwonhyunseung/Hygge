@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/list.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/write.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 </head>
@@ -19,46 +19,36 @@
 
 <div class="body-main">
 	<div class="body-title">
-		<div class="title">중고게시판</div>
-	</div>
-	<div class="search-container">
-		<select>
-			<option value="all">제목+내용</option>
-			<option></option>
-			<option></option>
-			<option></option>
-			<option></option>
-		</select>
-		<input type="text">
-		<button type="button">검색</button>
+		<div class="title">중고게시판 글 등록</div>
 	</div>
 	<div class="body-container">
 		<table class="table">
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
 			<tbody>
-
 				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
+					<td>제목</td>
+					<td><input type="text" name="title"></td>
 				</tr>
-
+				<tr>
+					<td>제품명</td>
+					<td><input type="text" name="product"></td>
+				</tr>
+				<tr>
+					<td>가격</td>
+					<td><input type="text" name="price"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><input type="text" name="title"></td>
+				</tr>
+				<tr>
+					<td>파일첨부</td>
+					<td><input type="text" name="title"></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
 
-<div style="text-align: center; border: 1px solid black;">페이징처리</div>
 </main>
 
 <footer>
