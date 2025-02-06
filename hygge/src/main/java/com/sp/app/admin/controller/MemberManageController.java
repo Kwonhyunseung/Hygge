@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/admin/memberManagement/*")
-public class MemberController {
+public class MemberManageController {
 	
 	@GetMapping("/normal/")
 	public String handleHome(Model model) {
