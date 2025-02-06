@@ -1,4 +1,4 @@
-package com.sp.app.controller;
+package com.sp.app.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,25 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/tester/*")
-public class testerController {
-
-	@GetMapping("list")
+@RequestMapping("/admin/memberManagement/*")
+public class MemberController {
+	
+	@GetMapping("/normal/")
 	public String handleHome(Model model) {
 		try {
 			
 		} catch (Exception e) {
 		}
-		return "tester/list";
-	}
-	
-	@GetMapping("testForm")
-	public String handleHome1(Model model) {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "tester/testForm";
+		return "admin/member/normal";
 	}
 }
-

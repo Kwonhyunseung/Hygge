@@ -43,8 +43,8 @@ $(function(){
         <li class="menu-item">
             <span class="menu-title">회원 관리</span>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/member/list">일반유저 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/member/makerList">메이커 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/member/normalManagement">일반유저 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/member/makerManagement">메이커 관리</a></li>
             </ul>
         </li>
         
