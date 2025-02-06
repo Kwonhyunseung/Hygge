@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class testerController {
 
-	@GetMapping("test")
+	@GetMapping("tester")
 	public String handleHome(Model model) {
 		try {
 			
