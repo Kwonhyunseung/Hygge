@@ -1,7 +1,7 @@
 ﻿@charset "UTF-8";
 
 /* 전체 레이아웃 컨테이너 */
-.container {
+.admin-container {
     display: flex;
     min-height: 100vh;
     width: 100%;
@@ -16,10 +16,10 @@
     background: #34495e;
     color: #fff;
     padding: 20px 0;
-    height: 100vh;
+    height: calc(100vh - 60px); /* 헤더 높이 제외 */
     position: fixed;
     left: 0;
-    top: 0;
+    top: 60px; /* 헤더 높이만큼 아래로 */
     overflow-y: auto;
 }
 
@@ -31,4 +31,5 @@
     margin-left: 250px;
     min-height: calc(100vh - 60px); /* 헤더 높이 제외 */
     width: calc(100% - 250px);
+    box-sizing: border-box;
 }
