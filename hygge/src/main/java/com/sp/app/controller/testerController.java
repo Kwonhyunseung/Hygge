@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class testController {
+public class testerController {
 
 	@GetMapping("test")
 	public String handleHome(Model model) {
@@ -18,7 +18,7 @@ public class testController {
 			
 		} catch (Exception e) {
 		}
-		return "test/list";
+		return "tester/list";
 	}
 	
 	@GetMapping("testForm")
@@ -27,7 +27,7 @@ public class testController {
 			
 		} catch (Exception e) {
 		}
-		return "test/testForm";
+		return "tester/testForm";
 	}
 }
 
