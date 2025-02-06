@@ -1,0 +1,55 @@
+﻿@charset "UTF-8";
+
+
+/* base.css에서 상속받은 스타일 외에 추가되는 스타일 */
+.view-button {
+    background: #3498db;
+    color: white;
+}
+
+.status-pending {
+    background: #f39c12;
+    color: white;
+}
+
+.status-approved {
+    background: #2ecc71;
+    color: white;
+}
+
+.status-rejected {
+    background: #e74c3c;
+    color: white;
+}
+
+.portfolio-content {
+    padding: 20px;
+}
+
+.portfolio-files {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.file-item {
+    margin: 10px 0;
+}
+
+.file-item a {
+    color: #34495e;
+    text-decoration: none;
+}
+
+.file-item a:hover {
+    text-decoration: underline;
+}
+
+.portfolio-description {
+    margin-top: 20px;
+}
+
+.portfolio-description h5 {
+    margin-bottom: 10px;
+}
