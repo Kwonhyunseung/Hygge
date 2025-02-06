@@ -14,11 +14,20 @@ import lombok.extern.slf4j.Slf4j;
 public class noticeController {
 
 	@GetMapping("list")
-	public String handleHome(Model model) {
+	public String noticeList(Model model) {
 		try {
 			
 		} catch (Exception e) {
 		}
 		return "notice/list";
+	}
+	
+	@GetMapping("article")
+	public String noticeArticle(Model model) {
+		try {
+			
+		} catch (Exception e) {
+		}
+		return "notice/article";
 	}
 }
