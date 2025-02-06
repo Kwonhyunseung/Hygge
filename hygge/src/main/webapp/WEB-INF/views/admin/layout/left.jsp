@@ -33,11 +33,8 @@
         </li>
         
         <li class="menu-item">
-            <span class="menu-title">프로젝트 관리</span>
+            <a href="${pageContext.request.contextPath}/admin/projectManagement/list" class="menu-title">프로젝트 관리</a>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/projectManagement/list">승인 대기</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/project/ongoing">진행중</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/project/complete">완료</a></li>
             </ul>
         </li>
         

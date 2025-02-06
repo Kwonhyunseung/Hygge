@@ -34,10 +34,10 @@
             <div class="search-container">
                 <form class="search-form">
                     <select class="search-input">
-                        <option>전체 카테고리</option>
-                        <option>의류</option>
-                        <option>전자기기</option>
-                        <option>식품</option>
+                        <option>프로젝트 현황</option>
+                        <option>승인 대기</option>
+                        <option>진행중</option>
+                        <option>종료</option>
                     </select>
                     <input type="text" class="search-input" placeholder="프로젝트 검색...">
                     <button type="submit" class="search-button">검색</button>
