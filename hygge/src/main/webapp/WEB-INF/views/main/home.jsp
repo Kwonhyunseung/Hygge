@@ -7,9 +7,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css" type="text/css">
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
@@ -23,11 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
     subCategoryContainer.style.display = "none";
     subCategoryContainer.style.position = "absolute"; // 기존 내용 위에 덮기
     subCategoryContainer.style.width = "100%"; // 가로 전체 차지
-    subCategoryContainer.style.maxWidth = "1400px"; // 가로 최대 1400px
-    subCategoryContainer.style.backgroundColor = "#f8f9fa"; // 배경색 변경 (연한 회색)
+    subCategoryContainer.style.maxWidth = "1300px"; // 가로 최대 1200px
+    subCategoryContainer.style.backgroundColor = "#ffff"; // 배경색 변경
     subCategoryContainer.style.padding = "20px"; // 내부 패딩 증가
-    subCategoryContainer.style.boxShadow = "0px 6px 10px rgba(0, 0, 0, 0.15)";
-    subCategoryContainer.style.borderRadius = "10px";
     subCategoryContainer.style.zIndex = "10"; // 제일 위로 배치
     subCategoryContainer.style.minHeight = "150px"; // 세로 길이 증가
     subCategoryContainer.style.left = "50%"; // 가운데 배치
@@ -41,13 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const subCategories = {
         "가전": ["TV", "냉장고", "세탁기", "에어컨", "청소기/건조기", "공기청정기", "전자레인지", "안마물품", "가습기"],
-        "패션": ["남성 의류", "여성 의류", "신발", "가방"],
-        "뷰티": ["스킨케어", "메이크업", "향수", "헤어"],
-        "홈▪리빙": ["가구", "침구", "주방용품", "데코"],
-        "푸드": ["과자", "음료", "냉동식품", "건강식품"],
-        "도서": ["소설", "에세이", "자기계발", "만화"],
-        "캐릭터▪굿즈": ["피규어", "문구", "의류", "악세서리"],
-        "문화": ["공연 티켓", "전시", "음악", "영화"],
+        "패션": ["의류", "신발", "가방", "언더웨어", "잡화"],
+        "뷰티": ["스킨케어", "바디케어", "헤어케어"],
+        "홈▪리빙": ["침실", "인테리어", "주방", "욕실"],
+        "푸드": ["음료", "과자", "간편식", "밀키트", "비건", "건강식품"],
+        "도서": ["소설", "에세이", "자기계발", "만화", "인문"],
+        "캐릭터▪굿즈": ["피규어", "포스터", "연예인", "애니메이션"],
+        "문화": ["공연 티켓", "전시", "콘서트", "음악", "영화"],
         "반려동물": ["사료", "용품", "장난감", "건강 관리"]
     };
 
@@ -57,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
             
             const heading = document.createElement("h4");
             heading.textContent = `${categoryName} 상세 카테고리`;
-            heading.style.marginBottom = "10px"; // 제목 아래 여백 추가
+            heading.style.marginBottom = "30px"; // 제목 아래 여백 추가
+            heading.style.fontSize = "20px"; // 제목 글씨 크기 설정
             subCategoryContainer.appendChild(heading);
 
             const list = document.createElement("ul");
@@ -68,11 +65,22 @@ document.addEventListener("DOMContentLoaded", function () {
             subCategories[categoryName].forEach(sub => {
                 const li = document.createElement("li");
                 li.textContent = sub;
-                li.style.padding = "5px 10px";
-                li.style.background = "#ffffff";
                 li.style.borderRadius = "5px";
-                li.style.boxShadow = "0px 2px 4px rgba(0, 0, 0, 0.1)";
+                li.style.fontSize = "20px"; // 항목 글씨 크기 (기존보다 크게)
+                li.style.textAlign = "center"; // 글씨 가운데 정렬
+                li.style.padding = "20px";
+                li.style.marginBottom = "10px"; // 항목 간 간격 추가
+                li.style.textDecoration = "none"; // 밑줄 제거
                 list.appendChild(li);
+                
+             	// 호버시 색상 변경
+                li.addEventListener("mouseenter", function () {
+                    li.style.color = "green"; // 글씨 색상 변경
+                });
+
+                li.addEventListener("mouseleave", function () {
+                    li.style.color = "#000"; // 기본 글씨 색상으로 복원
+                });
             });
             subCategoryContainer.appendChild(list);
 
@@ -296,8 +304,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 					</div>
 					<div class="special">
-						<img src="/dist/images/main/special.png">
-						<img src="/dist/images/main/special.png">
+						<img src="/dist/images/main/special.png"> <img
+							src="/dist/images/main/special.png">
 					</div>
 				</div>
 			</div>

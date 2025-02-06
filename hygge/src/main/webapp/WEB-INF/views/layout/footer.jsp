@@ -24,8 +24,8 @@
 					<h4>HYGGE</h4>
 					<a href="#">공지사항</a> <br>
 					<a href="#">서비스 소개</a> <br>
-					<a href="#">채용</a> <br>
-					<a href="#">HYGGE 광고센터</a>
+					<a href="#">HYGGE 광고센터</a><br>
+					<a href="https://icons8.com/">Icons by Icon8</a>
 				</div>
 				<div class="col section">
 					<h4>이용안내</h4>

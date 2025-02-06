@@ -10,15 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class alarmController {
+public class WishListController {
 
-	@GetMapping("alarm")
+	@GetMapping("wishlist")
 	public String handleHome(Model model) {
 		try {
 			
 		} catch (Exception e) {
 		}
-		return "alarm/list";
+		return "wish/list";
 	}
 }
 

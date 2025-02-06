@@ -3,31 +3,31 @@ package com.sp.app.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequiredArgsConstructor
 @Slf4j
-public class testController {
+@RequestMapping(value = "/notice/*")
+public class NoticeController {
 
-	@GetMapping("test")
-	public String handleHome(Model model) {
+	@GetMapping("list")
+	public String noticeList(Model model) {
 		try {
 			
 		} catch (Exception e) {
 		}
-		return "test/list";
+		return "notice/list";
 	}
 	
-	@GetMapping("testForm")
-	public String handleHome1(Model model) {
+	@GetMapping("article")
+	public String noticeArticle(Model model) {
 		try {
 			
 		} catch (Exception e) {
 		}
-		return "test/testForm";
+		return "notice/article";
 	}
 }
-

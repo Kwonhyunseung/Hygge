@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class followingController {
+public class FollowingController {
 
 	@GetMapping("following")
 	public String handleHome(Model model) {

@@ -1,0 +1,21 @@
+﻿@charset "UTF-8";
+
+.notice-item:hover {
+    background-color: #f8f9fa;
+}
+.important-notice {
+    color: #dc3545;
+    font-weight: 600;
+}
+.status-badge {
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+.search-input {
+    border-left: none;
+}
+.search-select {
+    border-right: none;
+}

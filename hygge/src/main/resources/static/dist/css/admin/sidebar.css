@@ -23,12 +23,15 @@
     padding: 10px 20px;
 }
 
-.menu-title {
+.menu-title, .menu-title a {
     cursor: pointer;
     display: block;
     padding: 10px 0;
     font-weight: bold;
+    color: #fff;  /* a 태그의 기본 색상을 흰색으로 지정 */
+    text-decoration: none;  /* a 태그의 밑줄 제거 */
 }
+
 
 .sub-menu {
     list-style: none;
