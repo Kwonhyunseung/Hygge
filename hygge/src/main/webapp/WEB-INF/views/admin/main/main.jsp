@@ -21,10 +21,10 @@
 <div class="container">
 	<jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
-	<div class="main-content">
-	        <!-- 메인 컨텐츠가 들어갈 자리 -->
-	        <%-- <jsp:include page="/WEB-INF/views/admin/${page}.jsp"/> --%> 
-	</div>
+		<div class="main-content">
+		        <!-- 메인 컨텐츠가 들어갈 자리 -->
+		        <%-- <jsp:include page="/WEB-INF/views/admin/${page}.jsp"/> --%> 
+		</div>
 </div>
 
 <footer>

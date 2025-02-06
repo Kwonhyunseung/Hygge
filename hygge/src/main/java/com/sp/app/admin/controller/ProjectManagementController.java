@@ -11,24 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/admin/memberManagement/*")
-public class MemberManageController {
-	
-	@GetMapping("normal")
-	public String normalMember(Model model) {
-		try {
+@RequestMapping("/admin/projectManagement/*")
+
+	public class ProjectManagementController {
+		@GetMapping("list")
+		public String normalMember(Model model) {
+			try {
 			
-		} catch (Exception e) {
+			} catch (Exception e) {
 		}
-		return "admin/member/normal";
-	}
-	
-	@GetMapping("maker")
-	public String makerMember(Model model) {
-		try {
 			
-		} catch (Exception e) {
-		}
-		return "admin/member/maker";
+		return "admin/project/list";
 	}
 }

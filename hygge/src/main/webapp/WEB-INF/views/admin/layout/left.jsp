@@ -9,32 +9,8 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/admin/left.js"></script>
 
-
-<script type="text/javascript">
-$(function(){
-    // 메뉴 클릭시 서브메뉴 토글
-    $(".menu-title").click(function(){
-        const $menu = $(this).closest(".menu-item");
-        const $subMenu = $(this).next(".sub-menu");
-        
-        // 다른 열린 메뉴 닫기
-        $(".sub-menu").not($subMenu).slideUp(300);
-        
-        // 클릭된 메뉴 토글
-        $subMenu.slideToggle(300);
-    });
-
-    // 현재 페이지 메뉴 활성화
-    var url = window.location.pathname;
-    $('.sub-menu a').each(function() {
-        if (url.endsWith($(this).attr('href'))) {
-            $(this).addClass('active');
-            $(this).closest('.sub-menu').show();
-        }
-    });
-});
-</script>
 </head>
 <body>
 
@@ -43,8 +19,8 @@ $(function(){
         <li class="menu-item">
             <span class="menu-title">회원 관리</span>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/member/normalManagement">일반유저 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/member/makerManagement">메이커 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/memberManagement/normal">일반유저 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/memberManagement/maker">메이커 관리</a></li>
             </ul>
         </li>
         
@@ -57,11 +33,8 @@ $(function(){
         </li>
         
         <li class="menu-item">
-            <span class="menu-title">프로젝트 관리</span>
+            <a href="${pageContext.request.contextPath}/admin/projectManagement/list" class="menu-title">프로젝트 관리</a>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/project/list">승인 대기</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/project/ongoing">진행중</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/project/complete">완료</a></li>
             </ul>
         </li>
         

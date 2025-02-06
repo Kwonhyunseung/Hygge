@@ -7,9 +7,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/main.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css" type="text/css">
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
