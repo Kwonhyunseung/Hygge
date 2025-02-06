@@ -13,15 +13,6 @@
 <title>마이페이지</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
-footer {
-    width: 100%;
-    background-color: #f8f9fa;
-    padding: 20px 0;
-    text-align: center;
-    position: relative; 
-    bottom: 0;
-    left: 0;
-}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -51,6 +42,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     gap: 60px; 
+     margin: 15px;
 }
 .sidebar .top-section {
     display: flex;
@@ -114,6 +106,8 @@ body {
     padding: 30px;
     border-radius: 8px;
     margin-left: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     border: 1px solid black;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -156,10 +150,77 @@ body {
     display: flex;
     justify-content: space-between;
 }
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #82B10C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid black;
+}
+.chat-box {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+.message {
+    margin-bottom: 10px;
+}
+.user {
+    text-align: right;
+    color: blue;
+}
+.other {
+    text-align: left;
+    color: green;
+}
+.input-group {
+    margin-top: 10px;
+}
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+.quick-replies button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.quick-replies button:hover {
+    background: #82B10C;
+    color: white;
+}
 </style>
 
+</head>
+<header>
+<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+</header>
 <body>
-    <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+    
     <div class="container">
         <div class="sidebar">
             <div class="top-section">
@@ -172,12 +233,12 @@ body {
             </div>
             <div class="bottom-section">
                 <ul>
-                    <li><a href="#">프로필 수정</a></li>
-                    <li><a href="#">구매내역</a></li>
-                    <li><a href="#">보유 쿠폰</a></li>
-                    <li><a href="#">후기</a></li>
-                    <li><a href="#">채팅</a></li>
-                    <li><a href="#">1:1 문의</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/profileEdit">프로필 수정</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/buyHistory">구매내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/couponList">보유 쿠폰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/review">후기</a></li>
+                    <li><a href="${pageContext.request.contextPath}/member/chat">채팅</a></li>
+                    <li><a href="${pageContext.request.contextPath}/inquiry/list">1:1 문의</a></li>
                 </ul>
                 <button type="button">로그아웃</button>
             </div>
@@ -204,5 +265,6 @@ body {
     <footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     </footer>
+    	<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
 </html>
