@@ -127,64 +127,47 @@ body {
 
 .table {
 	text-align: center;
-	width: 800px !important;
-	border-style: none !important;
+	width: 700px !important;
 	font-size: 14px;
 }
 
-.table a {
-	font-size: 15px;
+.table td {
+	border-style: none !important;
 }
 
-.search-container {
-	width: 800px;
-	border: 1px solid #EAEAEA;
-	padding: 10px;
+.table td:first-child {
+	border-style: none !important;
+	vertical-align: middle;
 }
 
-.schType-container {
-	margin: 0px 10px;
-}
-
-.schType-select {
-	height: 30px;
-	padding: 3px;
-	border: 1px solid #EAEAEA;
+.table td:nth-child(2) input,
+.table td:nth-child(2) textarea {
+	width: 100%;
+	border: 1px solid #DEE2E6 !important;
 	border-radius: 3px;
 }
 
-.kwd-text {
-	padding: 3px;
-	border: 1px solid #EAEAEA;
-	border-radius: 3px;
-}
-
-.refresh-btn {
+.price-container {
 	display: flex;
-	justify-content: center;
-    align-items: center;
-	width: 30px;
-	height: 30px;
-	border-radius: 15px;
-	background-color: #DCEFAD;
-}
-.refresh-btn:hover {
-	background-color: #CCE58C;
+	align-items: center;
 }
 
-.write-btn {
-	display: flex;
-	justify-content: right;
+.table input.input-price {
+	width: 30% !important;
+	display: inline !important;
 }
 
-.write-btn .btn {
-	background-color: #CCE58C;
+.btnSend {
+	background-color: #CCE58C !important;
 }
 
-.write-btn .btn:hover {
-	background-color: #B7DA5E;
+.btnSend:hover {
+	background-color: #82B10C !important;
 }
 
+.btn:not(.btnSend) {
+	border: 1px solid #CCE58C;
+}
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .body-container {

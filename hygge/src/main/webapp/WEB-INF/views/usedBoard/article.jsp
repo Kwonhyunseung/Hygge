@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/list.css" type="text/css">
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
 
 </head>
 <body>
@@ -16,49 +15,60 @@
 </header>
 
 <main>
-
-<div class="body-main">
+<div class="body-container">
 	<div class="body-title">
 		<div class="title">중고게시판</div>
 	</div>
-	<div class="search-container">
-		<select>
-			<option value="all">제목+내용</option>
-			<option></option>
-			<option></option>
-			<option></option>
-			<option></option>
-		</select>
-		<input type="text">
-		<button type="button">검색</button>
-	</div>
-	<div class="body-container">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
-			<tbody>
-
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-
-			</tbody>
+	<div class="body-main">
+		<div class="body-content">
+			<div class="img-container">
+				<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
+			</div>
+			<div class="content-container">
+				<div class="article-title">
+					두 번 쓴 물티슈
+					<i class="bi bi-three-dots-vertical" title="메뉴"></i>
+				</div>
+				<div class="product">제품명&nbsp; lg 생활건강 물티슈</div>
+				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">1,000,000,000</span> 원</div>
+				<div class="article-content">급전이 필요해서 싸게 팝니다</div>
+			</div>
+		</div>
+		<table class="body-footer">
+			<tr style="width: 100%; border-bottom: 1px solid #E1E1E1;">
+				<td style="width: 20%">다음 글 </td>
+				<td><a href="#">한 번 쓴 물티슈 팔아요</a></td>
+			</tr>
+			<tr>
+				<td>이전 글 </td>
+				<td><a href="#">세 번보다 적게 쓴 물티슈 팔아요</a></td>
+			</tr>
 		</table>
+		<div class="reply">
+			<form name="replyForm" method="post">
+				<div class="form-header">
+					<span class="bold">댓글</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
+				</div>
+				
+				<table class="table table-borderless reply-form">
+					<tr>
+						<td>
+							<textarea class="form-control" name="content"></textarea>
+						</td>
+					</tr>
+					<tr>
+					   <td align="right">
+							<button type="button" class="btn btn-light btnSendReply">댓글 등록</button>
+						</td>
+					 </tr>
+				</table>
+			</form>
+			
+			<div id="listReply"></div>
+		</div>
 	</div>
 </div>
 
-<div style="text-align: center; border: 1px solid black;">페이징처리</div>
 </main>
 
 <footer>
