@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css" type="text/css">
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/core.css" type="text/css"> --%>
 

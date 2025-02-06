@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/write.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/forms.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/board.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/paginate.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 </head>
@@ -22,30 +26,32 @@
 		<div class="title">중고게시판 글 등록</div>
 	</div>
 	<div class="body-container">
-		<table class="table">
-			<tbody>
-				<tr>
-					<td>제목</td>
-					<td><input type="text" name="title"></td>
-				</tr>
-				<tr>
-					<td>제품명</td>
-					<td><input type="text" name="product"></td>
-				</tr>
-				<tr>
-					<td>가격</td>
-					<td><input type="text" name="price"></td>
-				</tr>
-				<tr>
-					<td>내용</td>
-					<td><input type="text" name="title"></td>
-				</tr>
-				<tr>
-					<td>파일첨부</td>
-					<td><input type="text" name="title"></td>
-				</tr>
-			</tbody>
-		</table>
+		<form action="" name="usedBoardForm" method="post">
+			<table class="table table-form">
+				<tbody>
+					<tr>
+						<td width="200">제목</td>
+						<td><input type="text" name="title" class="form-control"></td>
+					</tr>
+					<tr>
+						<td>제품명</td>
+						<td><input type="text" name="product" class="form-control"></td>
+					</tr>
+					<tr>
+						<td>가격</td>
+						<td><input type="text" name="price" class="form-control"></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td><textarea class="form-control"></textarea></td>
+					</tr>
+					<tr>
+						<td>파일첨부</td>
+						<td><input type="file" name="title" class="form-control"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>
 </div>
 
