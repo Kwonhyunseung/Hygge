@@ -113,7 +113,7 @@ label {
 
 				<div class="text-center mt-4">
 					<button type="submit" class="btn btn-primary btn-custom"
-						style="height: 40px;">등록</button>
+						style="height: 40px; border-radius: 7px;">등록</button>
 					<a href="${pageContext.request.contextPath}/inquiry/list"
 						class="btn btn-secondary btn-custom">취소</a>
 				</div>
