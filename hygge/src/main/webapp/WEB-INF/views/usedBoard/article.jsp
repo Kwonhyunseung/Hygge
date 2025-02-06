@@ -7,7 +7,32 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<script type="text/javascript">
+$(function() {
+	$('.reply-menu').hide();
+	$('.reply-dropdown').click(function() {
+		const $menu = $(this).next('.reply-menu');
+		if ($menu.is(':visible')) {
+			$menu.fadeOut(100);
+		} else {
+			$('.reply-menu').hide();
+			$menu.fadeIn(100);
 
+			let pos = $(this).offset();
+			$menu.offset({left: pos.left-70, top: pos.top+20});
+		}
+	});
+
+	// 삭제, 신고 메뉴 창 닫기
+	$('.reply-dropdown').click(function(evt) {
+		if ($(evt.target.parentNode).hasClass('reply-dropdown')) {
+			return false;
+		}
+		$('.reply-menu').hide();
+	});
+});
+</script>
 </head>
 <body>
 <header>
@@ -27,7 +52,11 @@
 			<div class="content-container">
 				<div class="article-title">
 					두 번 쓴 물티슈
-					<i class="bi bi-three-dots-vertical" title="메뉴"></i>
+					<span class="reply-dropdown"><i class="bi bi-three-dots-vertical" title="메뉴"></i></span>
+					<div class="reply-menu" style="font-weight: 500;">
+						<div class="deleteReply reply-menu-item" data-replyNum="${dto.replyNum}" data-pageNo="${pageNo}">삭제</div>
+						<div class="hideReply reply-menu-item" data-replyNum="${dto.replyNum}" data-showReply="${dto.showReply}">${dto.showReply == 1 ? '숨김' : '표시'}</div>
+					</div>
 				</div>
 				<div class="product">제품명&nbsp; lg 생활건강 물티슈</div>
 				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">1,000,000,000</span> 원</div>
