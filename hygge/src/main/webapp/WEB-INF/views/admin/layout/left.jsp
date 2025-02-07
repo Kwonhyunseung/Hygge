@@ -25,10 +25,8 @@
         </li>
         
         <li class="menu-item">
-            <span class="menu-title">체험단</span>
+       	    <a href="${pageContext.request.contextPath}/admin/tester/list" class="menu-title">체험단 관리</a>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/experience/list">가입 승인</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/experience/reject">거절</a></li>
             </ul>
         </li>
         
@@ -49,12 +47,12 @@
         <li class="menu-item">
             <span class="menu-title">공지사항</span>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/notice/event">이벤트</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/notice/vote">투표</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/notice/list">공지사항</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/notice/qna">1:1문의</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/notice/list">글 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/qna/list">1:1문의</a></li>
             </ul>
         </li>
+        
+        <a href="${pageContext.request.contextPath}/">메인</a>
     </ul>
 </div>
 
