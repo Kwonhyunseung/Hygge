@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원가입</title>
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -14,6 +15,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 body {
 	font-family: 'Arial', sans-serif;
@@ -297,28 +299,109 @@ label {
 				<div class="gender-divider"></div>
 			</div>
 
-			<div class="mb-3 terms">
-				<p>이용약관</p>
-				<div>
-					<input type="checkbox" required> <label style="font-size: 1.2rem; font-weight: bold; margin-bottom:1px;">전체 동의합니다.</label>
-				</div>
-				<div>
-					<input type="checkbox" required> <label>이용약관 동의
-						(필수)</label>
-				</div>
-				<div>
-					<input type="checkbox" required> <label>개인정보 수집 이용
-						동의 (필수)</label>
-				</div>
-				<div>
-					<input type="checkbox"> <label>무료배송, 할인쿠폰 등 혜택/정보
-						수신 동의 (선택)</label>
-				</div>
-				<div>
-					<input type="checkbox" required> <label>본인은 만 14세
-						이상입니다. (필수)</label>
-				</div>
-			</div>
+		<div class="mb-3 terms">
+    <p>이용약관</p>
+    <div>
+        <input type="checkbox" id="agreeAll" required>
+        <label for="agreeAll" style="font-size: 1.2rem; font-weight: bold; margin-bottom:1px;">전체 동의합니다.</label>
+    </div>
+    <div>
+        <input type="checkbox" id="terms" required>
+        <label for="terms">
+            이용약관 동의 (필수) 
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalTerms">보기</button>
+        </label>
+    </div>
+    <div>
+        <input type="checkbox" id="privacy" required>
+        <label for="privacy">
+            개인정보 수집 이용 동의 (필수)
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalPrivacy">보기</button>
+        </label>
+    </div>
+    <div>
+        <input type="checkbox" id="marketing">
+        <label for="marketing">
+            무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
+        </label>
+    </div>
+    <div>
+        <input type="checkbox" id="age" required>
+        <label for="age">
+            본인은 만 14세 이상입니다.(필수)
+            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalAge">보기</button>
+        </label>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTerms" tabindex="-1" aria-labelledby="modalTermsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTermsLabel">이용약관</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                이용약관 내용이 여기에 들어갑니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPrivacy" tabindex="-1" aria-labelledby="modalPrivacyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPrivacyLabel">개인정보 수집 이용 동의</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                개인정보 수집을 많이 합니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMarketing" tabindex="-1" aria-labelledby="modalMarketingLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMarketingLabel">혜택/정보 수신 동의</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                마케팅 문자를 하루에 30통씩 보냅니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAge" tabindex="-1" aria-labelledby="modalAgeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgeLabel">만 14세 이상 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                14세이상입니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 			<div class="mb-3">
 				<button type="submit" class="btn btn-primary">가입하기</button>
@@ -389,6 +472,25 @@ label {
 				event.preventDefault(); // 폼 제출 방지
 			}
 		}
+		
+	    document.getElementById("agreeAll").addEventListener("change", function () {
+	        let isChecked = this.checked;
+	        let checkboxes = document.querySelectorAll(".terms input[type='checkbox']");
+	        
+	        checkboxes.forEach((checkbox) => {
+	            checkbox.checked = isChecked;
+	        });
+	    });
+
+	    document.querySelectorAll(".terms input[type='checkbox']").forEach((checkbox) => {
+	        checkbox.addEventListener("change", function () {
+	            let allChecked = document.querySelectorAll(".terms input[type='checkbox']:not(#agreeAll)").length === 
+	                             document.querySelectorAll(".terms input[type='checkbox']:not(#agreeAll):checked").length;
+	            
+	            document.getElementById("agreeAll").checked = allChecked;
+	        });
+	    });
+		
 	</script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
