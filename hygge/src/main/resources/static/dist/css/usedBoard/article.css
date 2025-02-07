@@ -51,7 +51,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-    max-width: 800px;
+    max-width: 1000px;
     margin: auto;
 }
 
@@ -64,14 +64,23 @@ body {
 	font-weight: bold;
 }
 
+.content-container { width: 100%; }
+
 .content-container > * {
 	width: 300px;
 }
 
-.article-title {
+.article-title:not(.article-menu) {
 	display: flex;
 	justify-content: space-between;
+	font-size: 22px;
+	width: 100%;
 }
+
+.article-menu {
+	font-size: 16px;
+}
+
 .img-container {
 	max-height: 400px;
 	max-width: 500px;

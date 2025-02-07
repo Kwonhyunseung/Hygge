@@ -72,4 +72,5 @@ public class Lj_tempController {
 		}
 		return "usedBoard/write";
 	}
+
 }
