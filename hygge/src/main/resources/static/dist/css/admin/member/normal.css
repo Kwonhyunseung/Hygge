@@ -1,5 +1,14 @@
 ﻿@charset "UTF-8";
 
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+
 .table-container {
     width: 100%;
     overflow-x: auto;
@@ -114,4 +123,30 @@
 .pagination a.active {
     background: #34495e;
     color: white;
+}
+
+/* 버튼 스타일 */
+.tab-button.active {
+    background: #34495e;
+    color: white;
+    border-color: #34495e;
+}
+
+.tab-button.active:hover {
+    background: #2ecc71;
+    color: white;
+    border-color: #2ecc71;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
 }
