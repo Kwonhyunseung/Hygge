@@ -73,4 +73,13 @@ public class Lj_tempController {
 		return "usedBoard/write";
 	}
 
+	@GetMapping("/funding/hotContent")
+	public String hotContentList() {
+		try {
+			
+		} catch (Exception e) {
+			log.info("hotContentList : ", e);
+		}
+		return "funding/hotContent";
+	}
 }

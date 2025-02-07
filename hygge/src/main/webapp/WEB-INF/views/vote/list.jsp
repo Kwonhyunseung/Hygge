@@ -26,7 +26,7 @@
 		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<a href="${pageContext.request.contextPath}/vote/article" class="">이달의 투표(2025.01)</a>
@@ -35,7 +35,7 @@
 		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/result" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<a href="${pageContext.request.contextPath}/vote/result" class="">이달의 투표(2025.01)</a>
@@ -44,7 +44,7 @@
 		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
 			<div class="event-img-div">
 				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<a href="#" class="">이달의 투표(2025.01)</a>
@@ -53,7 +53,7 @@
 		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
 			<div class="event-img-div">
 				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<a href="#" class="">이달의 투표(2025.01)</a>
@@ -62,7 +62,7 @@
 		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
 			<div class="event-img-div">
 				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<a href="#" class="">이달의 투표(2025.01)</a>

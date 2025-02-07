@@ -289,7 +289,7 @@
       <div class="navbar-collapse d-flex" id="navbarNav">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">인기</a>
+            <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/funding/hotContent">인기</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#">신규</a>

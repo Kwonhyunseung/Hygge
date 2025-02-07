@@ -95,6 +95,9 @@ body {
     text-decoration: none;
 }
 
+.event-img {
+	transition: transform 0.2s ease-in-out;
+}
 .event-img:hover {
     transform: scale(1.1);
 }

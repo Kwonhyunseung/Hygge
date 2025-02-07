@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/punding/*")
-public class PundingController {
+@RequestMapping(value = "/funding/*")
+public class FundingController {
 	
 	@GetMapping("/product")
 	public String handleHome(Model model) {
@@ -20,6 +20,6 @@ public class PundingController {
 			
 		} catch (Exception e) {
 		}
-		return "punding/product";
+		return "funding/product";
 	}
 }
