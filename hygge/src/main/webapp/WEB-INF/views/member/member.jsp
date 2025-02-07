@@ -537,6 +537,15 @@ label {
 				}
 			}).open();
 		}
+		document.getElementById("signupForm").onsubmit = function(event) {
+		    var password = document.getElementById("password").value;
+		    var passwordConfirm = document.getElementById("passwordConfirm").value;
+
+		    if (password !== passwordConfirm) {
+		        alert("비밀번호가 일치하지 않습니다.");
+		        event.preventDefault(); // 폼 제출 방지
+		    }
+		};
 	</script>
 </body>
 </html>
