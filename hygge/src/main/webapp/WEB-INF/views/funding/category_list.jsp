@@ -112,33 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
         subCategoryContainer.style.display = "none";
     });
 });
-
-// 좋아요버튼 hover 반응
-window.addEventListener('load', function() {
-	const likeicons = document.querySelectorAll('.like-btn i');
-	for(let icon of likeicons) {
-		if (icon.classList.contains('bi-heart')) {
-			icon.addEventListener('mouseover', function() {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			});
-			icon.addEventListener('mouseout', function() {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			});
-		}
-		if (icon.classList.contains('bi-heart-fill')) {
-			icon.addEventListener('mouseover', function() {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			});
-			icon.addEventListener('mouseout', function() {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			});
-		}
-	}
-});
 </script>
 
 </head>
@@ -195,6 +168,18 @@ window.addEventListener('load', function() {
 
 	<div class="body-container">
 		<div class="body-main">
+			<div class="body-header">
+				<div class="body-header-dataCount">
+					<span class="dataCount-span">5</span>개의 프로젝트가 있습니다.
+				</div>
+				<div class="order-select-container">
+					<select class="order-select">
+						<option value="latest">최신순</option>
+						<option value="popular">인기순</option>
+						<option value="deadline">마감임박순</option>
+					</select>
+				</div>
+			</div>
 			<div class="funding-list-container">
 				<div class="funding">
 					<div class="funding-thumbnail">

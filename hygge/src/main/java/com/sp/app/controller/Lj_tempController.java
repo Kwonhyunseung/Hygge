@@ -82,4 +82,14 @@ public class Lj_tempController {
 		}
 		return "funding/hotContent";
 	}
+
+	@GetMapping("/funding/category01")
+	public String categoryList() {
+		try {
+			
+		} catch (Exception e) {
+		}
+
+		return "funding/category_list";
+	}
 }
