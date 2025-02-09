@@ -57,3 +57,115 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+.body-main {
+	border-bottom: 60px;
+}
+
+.body-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	margin: 20px 10px;
+}
+
+.dataCount-span {
+	color: tomato;
+}
+
+.funding-list-container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.funding {
+	width: 280px;
+	height: 500px;
+	display: flex;
+	flex-direction: column;
+	margin: 10px;
+}
+
+.funding-thumbnail {
+	width: 280px;
+	height: 280px;
+	overflow: hidden;
+	border-radius: 20px;
+	position: relative; /* 부모 요소를 relative로 설정 */
+    display: inline-block; /* 이미지 크기에 맞게 조정 */
+}
+
+.funding-thumbnail img:hover {
+	transform: scale(1.1);
+}
+
+.funding-thumbnail img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.2s ease-in-out;
+}
+
+.like-btn {
+    position: absolute; /* 절대 위치 지정 */
+    bottom: 10px;
+    right: 10px; /* 오른쪽에서 10px 떨어짐 (조정 가능) */
+    padding: 5px; /* 아이콘 크기 조정 */
+    border-radius: 50%; /* 동그랗게 만들기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+.like-btn i:hover {
+	cursor: pointer;
+}
+
+.funding-title-div {
+	margin-top: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	width: 280px;            /* 원하는 크기 설정 */
+    display: -webkit-box;    /* 플렉서블한 박스 설정 */
+    -webkit-box-orient: vertical; /* 세로 방향 설정 */
+    -webkit-line-clamp: 2;   /* 최대 2줄까지만 표시하고 넘치면 ... */
+    overflow: hidden; 
+}
+
+.funding-title-div a {
+	text-decoration: none;
+	color: black;
+}
+
+.funding-title-div a:hover {
+	color: #82B10C;
+}
+
+.funding-detail-div {
+	margin-top: 5px;
+	font-size: 12px;
+	overflow: hidden;    /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis;
+    width: 280px;            /* 원하는 크기 설정 */
+    display: -webkit-box;    /* 플렉서블한 박스 설정 */
+    -webkit-box-orient: vertical; /* 세로 방향 설정 */
+    -webkit-line-clamp: 4;   /* 최대 2줄까지만 표시하고 넘치면 ... */
+    background-color: #fff;
+    color: gray;
+}
+
+.funding-progress-div {
+	margin-top: auto;
+}
+
+.funding-progress-div .progress-percentage {
+	color: #2F9D27;
+	font-weight: bold;
+}
+
+.funding-progress-div .progress-amount {
+	font-size: 15px;
+}
