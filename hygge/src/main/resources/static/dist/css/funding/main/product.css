@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+.main-container{
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+/* 펀딩 메인 정보 */
+.title {
+	display: flex;
+    flex-direction: column; /* 아이콘과 텍스트를 세로로 배치 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center;     /* 수직 중앙 정렬 */
+    margin-top: 130px;
+}
+.title p {
+	font-size: 20px;
+	border: 1px solid #757575;
+	border-radius: 1px;
+	background: #F5F5F5;
+	padding: 3px 9px;
+	display: inline-block; /* 내용에 맞게 가로 너비 자동 조정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+.title h3{
+	font-size: 40px;
+	font-weight: bold;
+	margin-bottom: 65px;
+}
+
+.product-img {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.product-img > img{
+	width: 650px;
+	height: 650px;
+}
+
+.first-info {
+	margin-top: 30px;
+}
+.a, .b, .c { line-height: 60%; }
+
+#price, #period, #sponsor {
+	font-size: 30px;
+	margin-bottom: 40px; 
+}
+.punding-goal {
+	color: #ED2323;
+	display: inline-block; /* 내용에 맞게 가로 너비 자동 조정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    padding: 9px 6px; 
+    background-color: #FFEEEE;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.d {
+	font-size: 18px;
+	line-height: 180%;
+}
+.like i {
+    font-size: 1.8rem;
+    margin-left: 1px;
+}
+.like p {
+    font-size: 1.2rem;
+}
+#buyBtn {
+	background: #678D06;
+	color: #fff;
+	border-radius: 5px;
+	border: 1px solid #fff;
+	width: 220px;
+	height: 43px;
+	font-size: 18px;
+	margin-top: 14px;
+}
+
+/* 프로젝트계획|후기 선택 */
+.f-select p {
+	margin-top: 20px;
+	font-size: 20px;
+	font-weight: 500px;
+	text-decoration: none;
+}
+.f-select:hover p {
+	font-weight: bold;
+	text-decoration-thickness: 6px;
+	text-underline-offset : 20px;
+	text-decoration-color: #82B10C;
+	cursor: pointer;
+}
+.f-select.active p {
+	font-weight: bold;
+	text-decoration: underline;
+	text-decoration-thickness: 6px;
+	text-underline-offset : 20px;
+	text-decoration-color: #82B10C;
+	cursor: pointer;
+}

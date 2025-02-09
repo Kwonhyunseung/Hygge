@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+/* 메이커 소개 */
+.maker-info {
+	border: 1px solid #ACACAC;
+	border-radius: 7px;
+	padding: 28px;
+	margin-top: 80px;
+}
+.maker-profile>img {
+	border: 1px solid black;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+}
+h5{ margin-bottom: 25px; }
+.maker-name>p {
+	line-height: 80%; /* 행간격 */
+	margin-left: 10px;
+}
+.maker-btn {
+	display: flex;
+  	justify-content: center;
+  	margin-top: 25px;
+}
+.maker-btn>button {
+	background: #fff;
+	border-radius: 5px;
+	width: 195px;
+	margin: 0 auto;
+	padding: 4px 0;
+	font-size: 19px;
+}
+.maker-btn button:hover {
+	background: #F8652A;
+	color: #fff;
+	border: 1px solid #fff;
+}
+
+.maker-complaint {
+	border: 1px solid #fff;
+	border-radius: 7px;
+	background: #EEE;
+	margin: 25px 0;
+	padding: 20px;
+	height: 65px;
+	font-size: 19px;
+}
+.complaint-text {
+    margin-left: 90px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.complaint-text:hover {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color : red;
+    font-weight: bold;
+}
+
+/* 리워드 선택 */
+h4 {
+	margin-top: 80px;
+}
+.product-select {
+    border: 1px solid #ACACAC;
+    border-radius: 7px;
+    padding: 26px 30px;
+    margin-top: 15px;
+    box-shadow: 2px 2px 2px 2px gray;
+    cursor: pointer;
+}
+
+
+.buyBtn > p {
+    font-size: 22px;
+    line-height: 1.4;
+}
+.composition {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 30px;
+
+}
+.buyBtn .option > p {
+	font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.product-select:hover,
+.buyBtn,
+.product-select .buyBtn:hover {
+    background: #F0F6E2;
+}
+
+/* 버튼이 product-select 안에 있을 때 동일한 스타일 적용 */
+.product-select .buyBtn {
+    all: unset; /* 기본 버튼 스타일 제거 */
+    display: block;
+    width: 100%;
+    height: 100%;
+}

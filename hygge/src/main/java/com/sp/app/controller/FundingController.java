@@ -20,6 +20,17 @@ public class FundingController {
 			
 		} catch (Exception e) {
 		}
-		return "funding/product";
+		return "funding/main/product";
 	}
+	
+    @GetMapping("/plan")
+    public String plan(Model model) {
+        return "funding/main/contentPlan";
+    }
+
+    @GetMapping("/review")
+    public String review(Model model) {
+        return "funding/main/contentReview";
+    }
+    
 }
