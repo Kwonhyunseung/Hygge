@@ -206,42 +206,60 @@ document.addEventListener("DOMContentLoaded", function () {
 						<h3>신규 프로젝트</h3>
 						<div class="row">
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p class="reserve">예약구매</p>
 								</div>
 								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 							</div>
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg" alt="이미지">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p>펀딩</p>
 								</div>
 								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 							</div>
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg" alt="이미지">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p>펀딩</p>
 								</div>
 								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 							</div>
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg" alt="이미지">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p>펀딩</p>
 								</div>
 								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 							</div>
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg" alt="이미지">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p>펀딩</p>
 								</div>
 								<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 							</div>
 							<div class="col-4 newP">
-								<img src="/dist/images/main/p.jpg">
+								<div class="image-newP">
+								    <img src="/dist/images/main/p.jpg" alt="이미지">
+								    <i class="bi bi-suit-heart"></i>
+								</div>
 								<div class="pundingBtn">
 									<p>펀딩</p>
 								</div>
@@ -315,7 +333,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				<div class="row">
 					<div class="row">
 						<div class="col-3 popularP">
-							<img src="/dist/images/main/p.jpg">
+							<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 							<div class="pundingBtn">
 								<p>펀딩</p>
 								<div class="goal">
@@ -325,7 +346,10 @@ document.addEventListener("DOMContentLoaded", function () {
 							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 						</div>
 						<div class="col-3 popularP">
-							<img src="/dist/images/main/p.jpg">
+							<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 							<div class="pundingBtn">
 								<p>펀딩</p>
 								<div class="goal">
@@ -335,7 +359,10 @@ document.addEventListener("DOMContentLoaded", function () {
 							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 						</div>
 						<div class="col-3 popularP">
-							<img src="/dist/images/main/p.jpg">
+							<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 							<div class="pundingBtn">
 								<p>펀딩</p>
 								<div class="goal">
@@ -345,7 +372,10 @@ document.addEventListener("DOMContentLoaded", function () {
 							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 						</div>
 						<div class="col-3 popularP">
-							<img src="/dist/images/main/p.jpg">
+							<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 							<div class="pundingBtn">
 								<p>펀딩</p>
 								<div class="goal">
@@ -362,7 +392,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				<h3>인기 프로젝트</h3>
 				<div class="row">
 					<div class="col-3 popularP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -372,7 +405,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 popularP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -382,7 +418,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 popularP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -392,7 +431,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 popularP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -412,7 +454,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				</h5>
 				<div class="row">
 					<div class="col-3 deadlineP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -422,7 +467,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 deadlineP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -432,7 +480,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 deadlineP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -442,7 +493,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 deadlineP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -458,7 +512,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				<h3>공개예정 프로젝트</h3>
 				<div class="row">
 					<div class="col-3 releaseP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -468,7 +525,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 releaseP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -478,7 +538,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 releaseP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
@@ -488,7 +551,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
 					</div>
 					<div class="col-3 releaseP">
-						<img src="/dist/images/main/p.jpg">
+						<div class="image-container">
+						    <img src="/dist/images/main/p.jpg" alt="이미지">
+						    <i class="bi bi-suit-heart"></i>
+						</div>
 						<div class="pundingBtn">
 							<p>펀딩</p>
 							<div class="goal">
