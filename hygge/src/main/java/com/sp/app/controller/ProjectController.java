@@ -31,4 +31,16 @@ public class ProjectController {
 		
 		return "project/submit3";
 	}
+	
+	@GetMapping("submit4")
+	public String projectSubmit4 () {
+		
+		return "project/submit4";
+	}
+	
+	@GetMapping("submit5")
+	public String projectSubmit5 () {
+		
+		return "project/submit5";
+	}
 }

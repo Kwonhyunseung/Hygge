@@ -86,6 +86,90 @@
             font-size: 14px;
             color: #666;
         }
+        
+                .policy-container {
+            width: 1000px;
+            margin: 0 auto;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::after {
+            content: "*";
+            color: #FF5733;
+            margin-left: 2px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 120px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        /* 새로운 스타일 추가 */
+        .as-section {
+            margin-bottom: 40px;
+        }
+
+        .as-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .as-title::after {
+            content: "(선택)";
+            color: #999;
+            font-size: 14px;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+
+        .as-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .save-button {
+            width: 100px;
+            padding: 12px 20px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+        }
+
+        .save-button:hover {
+            background-color: #ff4518;
+        }
+
+        .button-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
 </style>
 </head>
 <body>
@@ -147,6 +231,22 @@
                     <label for="policy-check">□ 메이커님의 리워드가 '리워드 특성상 환불이 불가한 경우'에 해당한다면 체크해 주세요.</label>
                 </div>
             </div>
+        </div>
+        
+        <div class="as-section">
+            <div class="as-title">기타 환불 불가 규정</div>
+            <div class="as-description">위 환불 불가 유형 외 리워드 특성 상 환불이 불가한 사유를 적어주세요.</div>
+            <textarea class="input-box" placeholder="예시) 공연 및 배송 중 분실된 메세요 스크패치 및 매점을 완화일 이력문니다."></textarea>
+        </div>
+
+        <div class="as-section">
+            <div class="as-title">A/S 정책</div>
+            <div class="as-description">리워드 사용 중 문제가 발생할 수 있어요.<br>해결 방법을 미리 알려 주시면 서포터님들의 신뢰를 얻을 수 있어요.</div>
+            <textarea class="input-box" placeholder="내용을 입력해주세요."></textarea>
+        </div>
+
+        <div class="button-container">
+            <button class="save-button">저장</button>
         </div>
     </div>
 </body>

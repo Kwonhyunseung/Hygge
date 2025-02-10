@@ -201,21 +201,28 @@
 		}
 		
 		.save-button {
-		    width: 100%;
-		    padding: 15px;
-		    background-color: #FF5733;
-		    color: white;
-		    border: none;
-		    border-radius: 4px;
-		    font-size: 16px;
-		    font-weight: bold;
-		    cursor: pointer;
-		    margin-top: 20px;
-		}
+            width: 100px;
+            padding: 12px 20px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+        }
+        
+        .save-button:hover {
+            background-color: #ff4518;
+        }
+
+        .button-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
 		
-		.save-button:hover {
-		    background-color: #ff4518;
-		}
 </style>
 </head>
 <body>
@@ -293,7 +300,9 @@
 			    </div>
 			</div>
 			   <p> 스마트 에디터 사용</p>
-			<button type="button" class="save-button">저장</button>
+			   <div class="button-container">
+		            <button class="save-button">저장</button>
+		        </div>
   	     </div>
 
 </body>
