@@ -10,7 +10,15 @@
 <script src="${pageContext.request.contextPath}/dist/js/event-list-css/btn-borderstyle-none.js"></script>
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
-
+<script type="text/javascript">
+function writeForm() {
+	let member = '${sessionScope.member}';
+	if (!member || member.trim === '') {
+		location.href = '${pageContext.request.contextPath}/member/login';
+	}
+	location.href = '${pageContext.request.contextPath}/usedBoard/write';
+}
+</script>
 </head>
 <body>
 <header>
@@ -27,7 +35,9 @@
 		<div class="schType-container">
 			<select name="schType" class="schType-select">
 				<option value="all">제목+내용</option>
-				<option value="userName">작성자</option>
+				<option value="userName">제품명</option>
+				<option value="sell">판매글</option>
+				<option value="buy">구매글</option>
 				<option value="title">제목</option>
 				<option value="content">내용</option>
 			</select>
@@ -59,6 +69,7 @@
 			<thead>
 				<tr>
 					<th width="60">번호</th>
+					<th width="60">분류</th>
 					<th>제목</th>
 					<th width="100">작성자</th>
 					<th width="100">작성일</th>
@@ -66,64 +77,26 @@
 				</tr>
 			</thead>
 			<tbody>
-
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><a href="#">최신 갤럭시 S4 판매합니다.</a></td>
-					<td>멋쟁이선웅</td>
-					<td>2025-01-24</td>
-					<td>11</td>
-				</tr>
-
+				<c:forEach var="dto" items="${list}" varStatus="status">
+					<tr>
+						<td>${dataCount - (page - 1) * size - status.index}</td>
+						<td>
+							<c:if test="${dto.category == 0}">판매</c:if>
+							<c:if test="${dto.category == 1}">구매</c:if>
+						</td>
+						<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a></td>
+						<td>${dto.nickName}</td>
+						<td>${dto.reg_date}</td>
+						<td>${dto.hitCount}</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		<div class="write-btn">
-			<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/usedBoard/write'">글 등록하기</button>
+			<button type="button" class="btn" onclick="writeForm();">글 등록하기</button>
 		</div>
 		<div class="page-navigation">
-			페이징처리는 선생님꺼 쓰시면 되시겠습니다. 나중에 통째로 처리하자
+			${dataCount == 0 ? '등록된 게시글이 없습니다' : paging}
 		</div>
 	</div>
 </div>

@@ -26,7 +26,7 @@
 		<div class="event">
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<div class="event-content-div">
@@ -37,7 +37,7 @@
 		<div class="event">
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<div class="event-content-div">
@@ -48,7 +48,7 @@
 		<div class="event">
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<div class="event-content-div">
@@ -59,7 +59,7 @@
 		<div class="event">
 			<div class="event-img-div">
 				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/eventsamplelj.jpg">
+					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
 				</a>
 			</div>
 			<div class="event-content-div">

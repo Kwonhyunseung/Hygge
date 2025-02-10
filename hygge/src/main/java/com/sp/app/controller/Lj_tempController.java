@@ -46,33 +46,6 @@ public class Lj_tempController {
 		return "vote/result";
 	}
 
-	@GetMapping("/usedBoard/list")
-	public String usedBoard(Model model) {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "usedBoard/list";
-	}
-
-	@GetMapping("/usedBoard/article")
-	public String usedBoardArticle() {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "usedBoard/article";
-	}
-
-	@GetMapping("/usedBoard/write")
-	public String usedBoardwriteForm() {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "usedBoard/write";
-	}
-
 	@GetMapping("/funding/hotContent")
 	public String hotContentList() {
 		try {

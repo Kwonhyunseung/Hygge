@@ -135,6 +135,17 @@ body {
 	border-style: none !important;
 }
 
+.info {
+	color: red;
+}
+
+label {
+	display: inline-flex !important;
+	align-items: center;
+	white-space: nowrap;
+	gap: 5px;
+}
+
 .table td:first-child {
 	border-style: none !important;
 	vertical-align: middle;

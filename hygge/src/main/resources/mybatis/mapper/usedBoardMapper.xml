@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.UsedBoardMapper">
+	<insert id="insertBoard" parameterType="com.sp.app.model.UsedBoard">
+	    INSERT INTO usedBoard(board_num, memberIdx, title, content, reg_date, block, hitCount, category, deal, price, product)
+	    	VALUES (#{num}, #{memberIdx}, #{title}, #{content}, SYSDATE, 0, 0, #{category}, 0, #{price}, #{product})
+	</insert>
+	<insert id="insertBoardFile" parameterType="map">
+		INSERT INTO usedBoardFile(num, board_num, s_FileName) VALUES (used_board_file_seq.NEXTVAL, #{board_num}, #{s_FileName})
+	</insert>
+
+	<sql id="where-list">
+		<choose>
+			<when test="schType == 'all'">
+				(INSTR(title, #{kwd}) &gt; 0 OR INSTR(content, #{kwd}) &gt; 0)
+			</when>
+			<when test="schType == 'userName'">
+				(INSTR(nickName, #{kwd}) &gt; 0)
+			</when>
+			<when test="schType == 'sell'">
+				(category = 0)
+			</when>
+			<when test="schType == 'buy'">
+				(category = 1)
+			</when>
+			<otherwise>
+				INSTR(${schType}, #{kwd}) &gt; 0
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="seqValue" resultType="Long">
+		SELECT used_board_seq.NEXTVAL from dual
+	</select>
+
+	<select id="listBoard" parameterType="map" resultType="com.sp.app.model.UsedBoard">
+		SELECT board_num, m.memberIdx memberIdx, m.nickName nickName, title, content, TO_CHAR(u.reg_date, 'YYYY-MM-DD') reg_date, hitCount, category, deal, price, product
+		FROM usedBoard u
+		JOIN member1 m ON u.memberIdx = m.memberIdx
+		<where>
+			<if test="kwd != null and kwd != ''">
+				<include refid="where-list"/>
+			</if>
+			AND m.block = 0 AND u.block = 0
+		</where>
+		ORDER BY board_num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM usedBoard u
+		JOIN member1 m ON m.memberIdx = u.memberIdx 
+		<where>
+			<if test="kwd != null and kwd != ''">
+				<include refid="where-list"/>
+			</if>
+			AND m.block = 0 AND u.block = 0
+		</where>
+	</select>
+</mapper>

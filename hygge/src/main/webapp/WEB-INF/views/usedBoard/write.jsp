@@ -9,6 +9,50 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/write.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/forms.css" type="text/css">
 
+<script type="text/javascript">
+function sendOk() {
+	const f = document.usedBoardForm;
+	let val;
+
+	val = f.title.value.trim();
+	if (!val) {
+		f.title.focus();
+		return false;
+	}
+
+	val = f.category.value;
+	if (!val) {
+		f.category.focus();
+		return false;
+	}
+
+	val = f.product.value.trim();
+	if (!val) {
+		f.product.focus();
+		return false;
+	}
+
+	val = f.price.value.trim();
+	if (!val) {
+		f.price.focus();
+		return false;
+	}
+
+	val = f.content.value.trim();
+	if (!val) {
+		f.content.focus();
+		return false;
+	}
+
+	val = document.getElementById("fileInput").files.length;
+	if (val == 0) {
+		alert('제품을 확인할 수 있는 사진 파일을 반드시 첨부해주세요.');
+		return false;
+	}
+
+	f.submit();
+}
+</script>
 </head>
 <body>
 <header>
@@ -22,19 +66,30 @@
 		<div class="title">중고게시판 글 등록</div>
 	</div>
 	<div class="body-container">
-		<form action="" name="usedBoardForm" method="post">
+		<form action="${pageContext.request.contextPath}/usedBoard/write" name="usedBoardForm" method="post" enctype="multipart/form-data">
 			<table class="table">
 				<tbody>
 					<tr>
-						<td width="100">제목</td>
+						<td width="100">제목<span class="info">*</span></td>
 						<td><input type="text" name="title"></td>
 					</tr>
 					<tr>
-						<td>제품명</td>
+						<td>분류<span class="info">*</span></td>
+						<td style="text-align: left; display: flex; gap: 10px;">
+							<label>
+								<input type="radio" name="category" value="0" required>판매
+							</label>
+							<label>
+								<input type="radio" name="category" value="1">구매
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<td>제품명<span class="info">*</span></td>
 						<td><input type="text" name="product"></td>
 					</tr>
 					<tr>
-						<td>가격</td>
+						<td>가격<span class="info">*</span></td>
 						<td style="text-align: left;">
 							<div class="price-container">
 								<input type="text" name="price" class="input-price">&nbsp;원
@@ -42,12 +97,15 @@
 						</td>
 					</tr>
 					<tr>
-						<td>내용</td>
-						<td><textarea class="form-control"></textarea></td>
+						<td>내용<span class="info">*</span></td>
+						<td><textarea class="form-control" name="content" style="font-size: 14px;"></textarea></td>
 					</tr>
 					<tr>
-						<td>파일첨부</td>
-						<td><input type="file" name="selectFile"></td>
+						<td>파일첨부<span class="info">*</span></td>
+						<td><input type="file" name="selectFile" id="fileInput" multiple></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right; font-size: 12px;"><span class="info">*</span> 표시된 내용은 필수입니다.</td>
 					</tr>
 				</tbody>
 			</table>
