@@ -54,12 +54,14 @@ h2 {
 }
 </style>
 </head>
-    <header>
-        <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-    </header>
 
 <body>
 
+<header>
+    <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+</header>
+
+<main>
     <div class="content-wrapper">
         <div class="container">
             <h2 style="margin-bottom: 1rem;">구매 내역</h2>
@@ -95,10 +97,13 @@ h2 {
             </div>
         </div>
     </div>
-</body>
-    <footer>
-        <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    </footer>
+</main>
 
-    <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+<footer>
+    <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+</footer>
+
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+
+</body>
 </html>

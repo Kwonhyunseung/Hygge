@@ -10,7 +10,6 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-<title>판매자 1:1 채팅</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
 body {
@@ -144,7 +143,6 @@ body {
 .content-wrapper {
     padding: 20px;
 }
-
 </style>
 </head>
 <header>
@@ -160,7 +158,7 @@ body {
                 <li onclick="openChat('판매자3')">판매자3</li>
                 <li onclick="openChat('판매자4')">판매자4</li>
                 <li onclick="openChat('판매자5')">판매자5</li>
-                <li onclick="openChat('판매자5')">판매자6</li>
+                <li onclick="openChat('판매자6')">판매자6</li>
             </ul>
         </div>
         <div class="chat-window">
@@ -196,7 +194,7 @@ body {
     </script>
 </body>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
-    <footer>
-        <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    </footer>
+<footer>
+    <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+</footer>
 </html>

@@ -10,8 +10,9 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-<title>마이페이지</title>
+
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -220,7 +221,6 @@ body {
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
 <body>
-    
     <div class="container">
         <div class="sidebar">
             <div class="top-section">
@@ -262,9 +262,10 @@ body {
             </div>
         </div>
     </div>
+  
     <footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     </footer>
-    	<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
 </html>
