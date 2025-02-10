@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="/dist/css/project/latyout/header.css">
+<link rel="stylesheet" href="/dist/css/project/layout/header.css">
     <meta charset="UTF-8">
     <style>
         * {
@@ -27,25 +27,7 @@
             height: 24px;
         }
 
-        .nav {
-            display: flex;
-            border-bottom: 1px solid #FF5733;
-            max-width: 800px;
-            margin: 0 auto;
-        }
 
-        .nav-item {
-            padding: 15px 25px;
-            cursor: pointer;
-            color: #666;
-            font-size: 14px;
-            position: relative;
-        }
-
-        .nav-item.active {
-            color: #FF5733;
-            border-bottom: 2px solid #FF5733;
-        }
 
         .main-content {
             max-width: 1000px;
@@ -264,24 +246,11 @@
 </head>
 <body>
     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/header.jsp"/>
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/nav-item.jsp"/>
 
-    <nav class="nav">
-        <div class="nav-item">요금제 선택</div>
-        <div class="nav-item active">판매 계획</div>
-        <div class="nav-item">상품 구성</div>
-        <div class="nav-item">프로젝트 정보</div>
-        <div class="nav-item">결제</div>
-        <div class="nav-item">메이커 정보</div>
-    </nav>
+
 
     <main class="main-content">
-        <div class="project-header">
-            <img src="/dist/images/logo.jpg" alt="프로젝트 사진" class="project-image">
-            <div class="project-title-container">
-                <div class="badge">도서</div>
-                <h1 class="project-title">협업심의 프로젝트</h1>
-            </div>
-        </div>
 
         <form action="/project/save" method="POST" enctype="multipart/form-data">
             <div class="goal-amount-section">

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/admin/usedBoard/*")
-public class UsedBoardController {
+public class UsedBoardManagementController {
 	
 	@GetMapping("list")
 	public String usedBoardList() {

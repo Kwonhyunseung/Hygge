@@ -19,4 +19,16 @@ public class ProjectController {
 		
 		return "project/submit1";
 	}
+	
+	@GetMapping("submit2")
+	public String projectSubmit2 () {
+		
+		return "project/submit2";
+	}
+	
+	@GetMapping("submit3")
+	public String projectSubmit3 () {
+		
+		return "project/submit3";
+	}
 }
