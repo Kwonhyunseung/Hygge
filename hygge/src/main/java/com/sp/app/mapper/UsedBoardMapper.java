@@ -20,6 +20,7 @@ public interface UsedBoardMapper {
 	public List<UsedBoard> listBoard(Map<String, Object> map);
 
 	public UsedBoard findById(long num);
+	public List<String> findFileById(long num);
 	public void updateHitCount(long num) throws SQLException;
 	public UsedBoard findByPrev(Map<String, Object> map);
 	public UsedBoard findByNext(Map<String, Object> map);

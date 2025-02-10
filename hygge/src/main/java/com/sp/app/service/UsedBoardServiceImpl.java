@@ -69,8 +69,15 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public UsedBoard findById(long num) {
-		// TODO Auto-generated method stub
-		return null;
+		UsedBoard dto = null;
+		try {
+			dto = mapper.findById(num);
+			dto.setS_Filename(mapper.findFileById(num));
+			dto.setPriceFormat(String.format("%,d", dto.getPrice()));
+		} catch (Exception e) {
+			log.info("findById : ", e);
+		}
+		return dto;
 	}
 
 	@Override

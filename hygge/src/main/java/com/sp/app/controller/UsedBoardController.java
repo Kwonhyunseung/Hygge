@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,10 +75,10 @@ public class UsedBoardController {
 			String articleUrl = cp + "/usedBoard/article";
 			if (!keyword.isBlank()) {
 				String qs = "schType=" + searchType + "&kwd=" + URLDecoder.decode(keyword, "utf-8");
-				listUrl += "?" + qs;
 				query += "&" + qs;
-				articleUrl += "?" + query;
 			}
+			listUrl += "?" + query;
+			articleUrl += "?" + query;
 			String paging = paginateUtil.paging(current_page, total_page, listUrl);
 
 			model.addAttribute("list", list);
@@ -125,7 +126,17 @@ public class UsedBoardController {
 	}
 
 	@GetMapping("article")
-	public String article() {
+	public String article(@RequestParam(name = "num") long number,
+			@RequestParam(name = "page") String pageNo,
+			@RequestParam(name = "schType", defaultValue = "all") String searchType,
+			@RequestParam(name = "kwd", defaultValue="") String keyword, Model model) {
+		try {
+			UsedBoard dto = Objects.requireNonNull(service.findById(number));
+
+			model.addAttribute("dto", dto);
+		} catch (Exception e) {
+			log.info("article : ", e);
+		}
 		return "usedBoard/article";
 	}
 }

@@ -35,7 +35,7 @@
 	</select>
 
 	<select id="listBoard" parameterType="map" resultType="com.sp.app.model.UsedBoard">
-		SELECT board_num, m.memberIdx memberIdx, m.nickName nickName, title, content, TO_CHAR(u.reg_date, 'YYYY-MM-DD') reg_date, hitCount, category, deal, price, product
+		SELECT board_num num, m.memberIdx memberIdx, m.nickName nickName, title, content, TO_CHAR(u.reg_date, 'YYYY-MM-DD') reg_date, hitCount, category, deal, price, product
 		FROM usedBoard u
 		JOIN member1 m ON u.memberIdx = m.memberIdx
 		<where>
@@ -58,5 +58,18 @@
 			</if>
 			AND m.block = 0 AND u.block = 0
 		</where>
+	</select>
+
+	<select id="findById" parameterType="Long" resultType="com.sp.app.model.UsedBoard">
+		SELECT board_num, m.memberIdx memberIdx, m.nickName nickName, title, content, u.reg_date reg_date, hitCount, category, deal, price, product
+		FROM usedBoard u
+		JOIN member1 m ON m.memberIdx = u.memberIdx
+		WHERE board_num = #{num}
+	</select>
+
+	<select id="findFileById" parameterType="Long" resultType="String">
+		SELECT s_FileName
+		FROM usedBoardFile
+		WHERE board_num = #{num}
 	</select>
 </mapper>

@@ -23,7 +23,10 @@ public class UsedBoard {
 	private int category; // 구매 / 판매여부
 	private int deal; // 미거래(0), 거래중(승인 대기 중, 1), 거래완료(-1)
 	private int price;
+	private String priceFormat;
 	private String product; // 제품명
+
+	private List<String> s_Filename;
 
 	private List<MultipartFile> selectFile;
 }

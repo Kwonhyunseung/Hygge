@@ -8,68 +8,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
-<style type="text/css">
-.article-dropdown { cursor: pointer; }
-.article-dropdown:hover { color: #45A049; }
-.article-menu { display: none; position: absolute; width: 60px; background:#fff; border: 1px solid #d5d5d5; z-index: 9999; }
-.article-menu-item { text-align: center; cursor: pointer; padding: 2px; }
-.article-menu-item:hover { color: #45A049; font-weight: 500; }
 
-.reply { clear: both; padding: 20px 0 10px; }
-
-.reply .form-header { padding-bottom: 7px; }
-.reply-form { border: 1px solid #DDECB8 !important; }
-.reply-form tr > td { padding: 2px 0 2px; }
-.reply-form textarea { width: 100%; height: 75px; resize: none; border-style: none; border-radius: 0px; }
-.reply-form textarea:focus { box-shadow: none; border-color: none; }
-.reply-form button { padding: 5px 15px; margin: 5px; background-color: #ebf1db; border-style: none; }
-.reply-form button:hover { background-color: #DDECB8; border-style: none; }
-
-.reply .reply-info { padding-top: 25px; padding-bottom: 7px; }
-.reply-info .reply-count { color: #3ea9cd; font-weight: 700; }
-
-.profile-container { display: flex; flex-direction: row; align-items: center; }
-.profile-img-container { width: 30px !important; height: 30px; margin: 0px 5px; overflow: hidden; border-radius: 15px; border: 1px solid #DDECB8; }
-
-.reply-list tr > td { padding: 5px 10px 5px; }
-.reply-list .list-header { box-shadow: 0 0 0 1px #d5d5d5; background:  #ebf1db; border-radius: 3px; border-style: hidden; }
-.reply-list .list-header > td:first-child { border-radius: 3px 0 0 3px; }
-.reply-list .list-header > td:last-child { border-radius: 0 3px 3px 0; }
-.reply-list .list-header > td { padding-top: 7px; padding-bottom: 7px; }
-
-.reply .reply-writer { display: flex; }
-.reply .reply-writer-left { font-size: 15px; padding: 3px 3px 5px 7px;  border-radius: 30px; width: 30px; height: 30px; }
-.reply .reply-writer-right { margin-left: 7px; }
-.reply-writer .icon { color: #999; }
-.reply-writer .name { font-weight: 600; font-size: 14px; }
-.date { font-size: 12px; display: inline; }
-
-.reply .deleteReply, .reply .deleteReplyAnswer { cursor: pointer; }
-.reply .notifyReply, .reply .notifyReplyAnswer { cursor: pointer; }
-.reply .hideReply, .reply .hideReplyAnswer { cursor: pointer; }
-.reply .blockReply, .reply .blockReplyAnswer { cursor: pointer; }
-
-.reply .reply-dropdown { cursor: pointer; }
-.reply .reply-dropdown:hover { color: #45A049; }
-.reply .reply-menu { display: none; position: absolute; width: 60px; background:#fff; border: 1px solid #d5d5d5; z-index: 9999; }
-.reply .reply-menu-item { text-align: center; cursor: pointer; padding: 2px; }
-.reply .reply-menu-item:hover { color: #0d6efd; font-weight: 500; }
-
-.reply-answer { display: none; }
-.reply-answer .answer-body { border: 1px solid #d5d5d5; padding-left: 7px; padding-right: 7px; }
-.answer-body .answer-list { padding: 0 10px 7px; }
-.answer-body .answer-form { padding: 3px 10px 5px; }
-.reply-answer textarea { height: 75px; border-style: none; border-radius: 0px; }
-.reply-answer textarea:focus { box-shadow: none; border-radius: 0px; }
-.reply-answer button { padding: 5px 15px; margin: 5px; background-color: #ebf1db; border-style: none; }
-.reply-answer button:hover { background-color: #DDECB8; border-style: none; }
-.answer-body .answer-footer { padding: 0 13px 10px 10px; text-align: right; }
-
-.answer-article .article-header { display: flex; padding-top: 10px; }
-.answer-article .article-header-left { text-align: left; }
-.answer-article .article-header-right { margin-left: auto; text-align: right; }
-.answer-article .article-body { padding: 5px 5px; border-bottom: 1px solid #d5d5d5; }
-</style>
 <script type="text/javascript">
 $(function() {
 	// 본문 삭제/신고 메뉴
@@ -144,19 +83,45 @@ window.addEventListener('click', function(evt) {
 	<div class="body-main">
 		<div class="body-content">
 			<div class="img-container">
-				<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
+				<div id="carouselExampleIndicators" class="carousel slide">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					</div>
+					<div class="carousel-inner">
+						<c:forEach var="dto" items="${dto.s_Filename}">
+							<div class="carousel-item active">
+								<img src="${pageContext.request.contextPath}/uploads/usedBoard/${dto}" class="d-block w-100">
+							</div>
+						</c:forEach>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
 			</div>
 			<div class="content-container">
 				<div class="article-title">
-					<span>두 번 쓴 물티슈</span>
+					<span>${dto.title}</span>
 					<span class="article-dropdown"><i class="bi bi-three-dots-vertical" title="메뉴"></i></span>
 					<div class="article-menu" style="font-weight: 500;">
-						<div class="deleteArticle article-menu-item" data-articleNum="${dto.replyNum}">삭제</div>
+						<c:if test="${sessionScope.member.memberIdx == dto.memberIdx}">
+						<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
+						</c:if>
+						<c:if test="${sessionScope.member.memberIdx != dto.memberIdx}">
+						<div class="reportArticle article-menu-item" data-articleNum="${dto.num}">신고</div>
+						</c:if>
 					</div>
 				</div>
-				<div class="product">제품명&nbsp; lg 생활건강 물티슈</div>
-				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">1,000,000,000</span> 원</div>
-				<div class="article-content">급전이 필요해서 싸게 팝니다</div>
+				<div class="product">제품명&nbsp; ${dto.product}</div>
+				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">${dto.priceFormat}</span> 원</div>
+				<div class="article-content">${dto.content}</div>
 			</div>
 		</div>
 		<table class="body-footer">
@@ -219,7 +184,7 @@ window.addEventListener('click', function(evt) {
 				<div class="date">2025-02-07 13:43:27</div>
 				<span class="reply-dropdown"><i class="bi bi-three-dots-vertical"></i></span>
 				<div class="reply-menu">
-					<div class="deleteReply reply-menu-item" data-replyNum="${dto.replyNum}" data-pageNo="">삭제</div>
+					<div class="deleteReply reply-menu-item" data-replyNum="" data-pageNo="">삭제</div>
 				</div>
 			</div>
 		</td>
