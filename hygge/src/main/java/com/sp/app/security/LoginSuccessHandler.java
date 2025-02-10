@@ -52,11 +52,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	        // 로그인 정보 세션에 저장
 	        SessionInfo info = SessionInfo.builder()
 	                .memberidx(member.getMemberIdx())
+	                .id(member.getId())
 	                .name(member.getName())
 	                .build();
 	        
 	        HttpSession session = request.getSession();
 	        session.setAttribute("member", info);
+	        
+	        System.out.println(info.getMemberidx());
+	        System.out.println(info.getId());
+	        System.out.println(info.getName());
 	        
 	        // redirect 설정
 	        resultRedirectStrategy(request, response, authentication);

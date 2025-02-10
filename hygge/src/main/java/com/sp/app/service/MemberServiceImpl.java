@@ -131,6 +131,8 @@ public class MemberServiceImpl implements MemberService {
 		return list;
 	}
 	
+	// 일반유저 리스트 찾아오기
+	
 	@Override
 	public void insertRefreshToken(Member dto) throws Exception {
 		try {

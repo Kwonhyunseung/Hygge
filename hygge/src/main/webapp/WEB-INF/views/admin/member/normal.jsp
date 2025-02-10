@@ -56,7 +56,7 @@
                 <tbody>
                 <%--이 부분을 forEach로 돌리기 --%>
                     <tr>
-                        <td>1001</td>
+                        <td>${sessionScope.member.memberidx}</td>
                         <td>홍길동</td>
                         <td>hong@example.com</td>
                         <td>2024-02-01</td>
