@@ -54,6 +54,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                <%--이 부분을 forEach로 돌리기 --%>
                     <tr>
                         <td>1001</td>
                         <td>홍길동</td>
@@ -76,7 +77,6 @@
                             <button class="action-button approve-button">차단해제</button>
                         </td>
                     </tr>
-                    <!-- 더미 데이터 추가 -->
                 </tbody>
             </table>
 

@@ -18,6 +18,8 @@ public class MemberManageController {
 	public String normalMember(Model model) {
 		try {
 			
+			
+			
 		} catch (Exception e) {
 		}
 		return "admin/member/normal";

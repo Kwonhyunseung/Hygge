@@ -51,7 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	        
 	        // 로그인 정보 세션에 저장
 	        SessionInfo info = SessionInfo.builder()
-	                .memberid(member.getMemberIdx())
+	                .memberidx(member.getMemberIdx())
 	                .name(member.getName())
 	                .build();
 	        

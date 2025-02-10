@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class SessionInfo {
-	private long memberid;
+	private long memberidx;
 	private String id;
 	private String name;
 }
