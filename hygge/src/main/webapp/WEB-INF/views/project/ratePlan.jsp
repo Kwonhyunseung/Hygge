@@ -152,9 +152,7 @@ nav-item.active {
     </style>
 </head>
 <body>
-    <header class="header">
-        <img src="/dist/images/main/main_logo.png" alt="Logo" class="logo">
-    </header>
+     <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/header.jsp"/>
 
     <nav class="nav">
         <div class="nav-item active">요금제 선택</div>

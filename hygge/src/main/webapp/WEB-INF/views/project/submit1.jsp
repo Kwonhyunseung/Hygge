@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="/dist/css/project/latyout/header.css">
     <meta charset="UTF-8">
-    <title>협업심의 프로젝트</title>
     <style>
         * {
             margin: 0;
@@ -263,9 +263,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <img src="logo.png" alt="Logo" class="logo">
-    </header>
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/header.jsp"/>
 
     <nav class="nav">
         <div class="nav-item">요금제 선택</div>
