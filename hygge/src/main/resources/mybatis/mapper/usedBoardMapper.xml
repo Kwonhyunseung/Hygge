@@ -80,4 +80,9 @@
 	<delete id="deleteBoardFile" parameterType="Long">
 		DELETE FROM usedBoardFile WHERE board_num = #{num}
 	</delete>
+
+	<insert id="insertReply" parameterType="com.sp.app.model.Reply">
+		INSERT INTO usedBoardReply (num, memberIdx, board_num, content, reg_date, block, parent_num)
+			VALUES (used_board_reply_seq.NEXTVAL, #{memberIdx}, #{board_num}, #{content}, SYSDATE, 0, #{parent_num})
+	</insert>
 </mapper>

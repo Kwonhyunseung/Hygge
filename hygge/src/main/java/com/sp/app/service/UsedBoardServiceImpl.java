@@ -42,6 +42,7 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 			}
 		} catch (Exception e) {
 			log.info("insertBoard : ", e);
+			throw e;
 		}
 	}
 
@@ -115,6 +116,7 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 			}
 		} catch (Exception e) {
 			log.info("deleteBoard : ", e);
+			throw e;
 		}
 	}
 	
@@ -131,8 +133,12 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public void insertReply(Reply dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.insertReply(dto);
+		} catch (Exception e) {
+			log.info("insertReply : ", e);
+			throw e;
+		}
 	}
 
 	@Override
