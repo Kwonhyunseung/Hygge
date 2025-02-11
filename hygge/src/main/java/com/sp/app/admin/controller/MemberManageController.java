@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/admin/memberManagement/*")
 public class MemberManageController {
-	private final MemberManageService service;
+	// private final MemberManageService service;
 	
 	@GetMapping("normal")
 	public String normalMember(Model model) {
@@ -23,7 +23,7 @@ public class MemberManageController {
 		try {
 			String authority = "USER";
 			
-			service.normalMember(authority);
+			// service.normalMember(authority);
 			
 			
 		} catch (Exception e) {

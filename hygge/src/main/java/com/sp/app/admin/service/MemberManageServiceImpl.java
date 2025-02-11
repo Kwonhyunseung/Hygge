@@ -10,12 +10,13 @@ import com.sp.app.model.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
+/*
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MemberManageServiceImpl implements MemberManageService {
 	private final MemberManageMapper mapper;
+	
 	
 	@Override
 	public List<Member> normalMember(String authority) throws Exception {
@@ -24,4 +25,6 @@ public class MemberManageServiceImpl implements MemberManageService {
 		return null;
 	}
 
+
 }
+*/
