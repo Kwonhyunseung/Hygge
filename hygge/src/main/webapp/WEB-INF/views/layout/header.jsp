@@ -329,13 +329,13 @@
                   <div class="hygge-circle-menu">
                     <span>중고게시판</span>
                   </div>
+                 
                 </a>
               </div>
             </div>
           </li>
         </ul>
       </div>
-
       <div class="header-right d-flex align-items-center">
         <div class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/following"><i class="bi bi-stars"></i></a>
@@ -349,7 +349,7 @@
         
         <c:choose>
           <c:when test="${not empty member}">
-            <span class="nav-link me-2">${member.name}님</span>
+           <a href="${pageContext.request.contextPath}/member/myPage"> <span class="nav-link me-2">${member.name}님</span></a>
             <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
           </c:when>
           <c:otherwise>

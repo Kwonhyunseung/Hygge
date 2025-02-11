@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <title>문의 상세보기</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
@@ -95,7 +94,7 @@ h2 {
 
         <!-- 카테고리 정보 -->
         <div class="text-center">
-            <span class="category-label">배송</span>
+            <span class="category-label">${inquiry.category}</span>
         </div>
 
         <!-- 문의 정보 -->
@@ -103,32 +102,35 @@ h2 {
             <tbody>
                 <tr>
                     <th>제목</th>
-                    <td>배송 일정 문의</td>
+                    <td>${inquiry.title}</td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>홍길동</td>
+                    <td>${inquiry.writer}</td>
                 </tr>
                 <tr>
                     <th>작성일</th>
-                    <td>2025-02-06 14:23</td>
+                    <td><fmt:formatDate value="${inquiry.qDate}" pattern="yyyy-MM-dd HH:mm" /></td>
                 </tr>
                 <tr>
                     <th>상태</th>
-                    <td><span class="badge bg-warning">대기</span></td>
+                    <td><span class="badge bg-warning">${inquiry.status}</span></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="inquiry-content">
-        	 <strong>질문</strong>
-            <p style="margin-top:7px;">돈내놔</p>
+            <strong>질문</strong>
+            <p>${inquiry.content}</p>
         </div>
 
-        <div class="answer-box">
-            <strong>관리자 답변</strong>
-            <p style="margin-top:7px;">싫어잉</p>
-        </div>
+        <!-- 관리자 답변 -->
+        <c:if test="${not empty answer}">
+            <div class="answer-box">
+                <strong>관리자 답변</strong>
+                <p>${answer.content}</p>
+            </div>
+        </c:if>
 
         <!-- 버튼 영역 -->
         <div class="text-center mt-4">

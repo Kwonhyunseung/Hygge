@@ -102,7 +102,7 @@ h2 {
             </div>
             <div class="btn-group">
                 <button type="submit" class="btn btn-success" style="background-color: #82B10C;  border: none;">저장</button>
-                <a href="mypage.jsp" class="btn btn-secondary">취소</a>
+                <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-secondary">취소</a>
             </div>
         </form>
     </div>
