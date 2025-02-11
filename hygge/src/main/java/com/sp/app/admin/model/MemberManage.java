@@ -1,4 +1,4 @@
-package com.sp.app.model;
+package com.sp.app.admin.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Member {
+public class MemberManage {
 	private Long memberIdx; // 멤버 번호
 	private String id;
 	private String pwd;
