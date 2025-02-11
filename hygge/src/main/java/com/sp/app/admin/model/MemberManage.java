@@ -23,6 +23,11 @@ public class MemberManage {
 	private Integer category2;
 	private Integer category3;
 	
+	private String email1;
+	private String email2;
+	
+	
+	
 	// 신고 횟수
 	
 	/*
