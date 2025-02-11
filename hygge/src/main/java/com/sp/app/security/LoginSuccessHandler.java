@@ -54,6 +54,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	                .memberidx(member.getMemberIdx())
 	                .id(member.getId())
 	                .name(member.getName())
+	                .authority(member.getAuthority())
 	                .build();
 	        
 	        HttpSession session = request.getSession();

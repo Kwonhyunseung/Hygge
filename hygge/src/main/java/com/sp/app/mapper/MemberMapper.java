@@ -2,6 +2,7 @@ package com.sp.app.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,6 +18,7 @@ public interface MemberMapper {
 	public void updateLastLogin(String email) throws SQLException;
 	
 	public Member findById(String id);
+	public String findAuthority(Map<String, Object> map);
 	
 	public void insertAuthority(Member dto) throws SQLException;
 	public void updateAuthority(Member dto) throws SQLException;

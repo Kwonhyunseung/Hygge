@@ -15,7 +15,7 @@ public interface UsedBoardService {
 	public void updateHitCount(long num) throws Exception;
 	public UsedBoard findByPrev(Map<String, Object> map);
 	public UsedBoard findByNext(Map<String, Object> map);
-	public void deleteBoard(long num, String uploadPath, String userId, int userLevel) throws Exception;
+	public void deleteBoard(long num, String uploadPath, long userId, String authority) throws Exception;
 	public void updateBoard(UsedBoard dto) throws Exception;
 
 	public boolean deleteUploadFile(String uploadPath, String filename);

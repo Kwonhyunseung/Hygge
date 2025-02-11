@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.MemberManageMapper">
+
+<select id="normalMember" parameterType="String">
+	SELECT m1.memberIdx, m1.name, m2.email1, m2.email2, m1.reg_date, m1.block
+	FROM member1 m1
+	JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+	LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+	WHERE ma.Authority = #{authority}
+</select>
+
+</mapper>

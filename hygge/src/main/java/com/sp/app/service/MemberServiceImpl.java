@@ -1,6 +1,8 @@
 package com.sp.app.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -120,15 +122,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<String> listAuthority(String id) {
-		List<String> list = null;
+		List<String> authority = null;
 		
 		try {
-			list = mapper.listAuthority(id);
+			authority = mapper.listAuthority(id);
 		} catch (Exception e) {
 			log.info("listAuthority", e);
 		}
 		
-		return list;
+		return authority;
 	}
 	
 	// 일반유저 리스트 찾아오기
@@ -181,6 +183,19 @@ public class MemberServiceImpl implements MemberService {
 	public Member findByEmail(String email) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String findAuthority(long id) {
+		String authority = null;
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", id);
+			authority = mapper.findAuthority(map);
+		} catch (Exception e) {
+			log.info("findAuthority : ", e);
+		}
+		return authority;
 	}
 	
 }

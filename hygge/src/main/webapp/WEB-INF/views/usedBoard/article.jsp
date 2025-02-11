@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -68,6 +68,16 @@ window.addEventListener('click', function(evt) {
 	$('.reply-menu').hide();
 });
 
+$(function() {
+	// 본문 삭제
+	$('.deleteArticle').click(function() {
+		let url = '${pageContext.request.contextPath}/usedBoard/delete?num=${dto.num}';
+		if (confirm('게시글을 삭제하시겠습니까?')) {
+			location.href = url;
+		}
+	});
+});
+
 </script>
 </head>
 <body>
@@ -111,10 +121,10 @@ window.addEventListener('click', function(evt) {
 					<span>${dto.title}</span>
 					<span class="article-dropdown"><i class="bi bi-three-dots-vertical" title="메뉴"></i></span>
 					<div class="article-menu" style="font-weight: 500;">
-						<c:if test="${sessionScope.member.memberIdx == dto.memberIdx}">
+						<c:if test="${sessionScope.member.memberidx == dto.memberIdx}">
 						<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
 						</c:if>
-						<c:if test="${sessionScope.member.memberIdx != dto.memberIdx}">
+						<c:if test="${sessionScope.member.memberidx != dto.memberIdx}">
 						<div class="reportArticle article-menu-item" data-articleNum="${dto.num}">신고</div>
 						</c:if>
 					</div>

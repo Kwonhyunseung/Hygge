@@ -99,21 +99,34 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 	}
 
 	@Override
-	public void deleteBoard(long num, String uploadPath, String userId, int userLevel) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void deleteBoard(long num, String uploadPath, long userId, String authority) throws Exception {
+		try {
+			List<String> files = mapper.findFileById(num);
+			if (files.size() > 0) { // 서버에서 첨부파일 삭제
+				for (String filename : files) {
+					deleteUploadFile(uploadPath, filename);
+				}
+				mapper.deleteBoardFile(num); // DB 에서 첨부파일 삭제
+			}
+
+			UsedBoard dto = findById(num);
+			if (dto.getMemberIdx() == userId || authority.equalsIgnoreCase("ADMIN")) { // 작성자인지 혹은 관리자인지 확인
+				mapper.deleteBoard(num);
+			}
+		} catch (Exception e) {
+			log.info("deleteBoard : ", e);
+		}
+	}
+	
+	@Override
+	public boolean deleteUploadFile(String uploadPath, String filename) {
+		return storageService.deleteFile(uploadPath, filename);
 	}
 
 	@Override
 	public void updateBoard(UsedBoard dto) throws Exception {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public boolean deleteUploadFile(String uploadPath, String filename) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

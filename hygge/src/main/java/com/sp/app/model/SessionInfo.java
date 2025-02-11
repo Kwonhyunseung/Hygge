@@ -16,4 +16,5 @@ public class SessionInfo {
 	private long memberidx;
 	private String id;
 	private String name;
+	private String authority;
 }

@@ -12,6 +12,7 @@ public interface MemberService {
 	
 	public Member findById(String id);
 	public Member findByEmail(String email);
+	public String findAuthority(long id);
 
 	public void deleteMember(String email) throws Exception;
 	

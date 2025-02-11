@@ -55,28 +55,36 @@
                 </thead>
                 <tbody>
                 <%--이 부분을 forEach로 돌리기 --%>
-                    <tr>
-                        <td>${sessionScope.member.memberidx}</td>
-                        <td>홍길동</td>
-                        <td>hong@example.com</td>
-                        <td>2024-02-01</td>
-                        <td>0</td>
-                        <td><span class="status-badge status-active">정상</span></td>
-                        <td>
-                            <button class="action-button block-button">차단</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1002</td>
-                        <td>김철수</td>
-                        <td>kim@example.com</td>
-                        <td>2024-02-03</td>
-                        <td>3</td>
-                        <td><span class="status-badge status-blocked">차단</span></td>
-                        <td>
-                            <button class="action-button approve-button">차단해제</button>
-                        </td>
-                    </tr>
+                <c:forEach var="item" items="${member}">
+                	<tr>
+	                    <td>${item.memberIdx}</td>
+	                    <td>${item.name}</td>
+	                    <td>${item.email1}@${item.email2}</td>
+	                    <td>>${item.reg_date}</td>
+	                    <td>신고횟수</td>
+	                    <td>
+	                    	<c:choose>
+	                    		<c:when test="${item.block == 0}">
+	                    			<span class="status-badge status-active">정상</span>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<span class="status-badge status-active">차단</span>
+	                    		</c:otherwise>
+	                    	</c:choose>
+	                    </td>
+	                    <td>
+	                    	<c:choose>
+	                    		<c:when test="${item.block == 0}">
+	                    			<button class="action-button block-button">차단</button>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<button class="action-button approve-button">차단해제</button>
+	                    		</c:otherwise>
+	                    	</c:choose>
+	                    </td>
+	                </tr>
+	            </c:forEach>
+                    
                 </tbody>
             </table>
 
