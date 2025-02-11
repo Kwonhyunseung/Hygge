@@ -85,4 +85,19 @@
 		INSERT INTO usedBoardReply (num, memberIdx, board_num, content, reg_date, block, parent_num)
 			VALUES (used_board_reply_seq.NEXTVAL, #{memberIdx}, #{board_num}, #{content}, SYSDATE, 0, #{parent_num})
 	</insert>
+
+	<select id="listReply" parameterType="map" resultType="com.sp.app.model.Reply">
+		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name
+		FROM usedBoardReply ubr
+		JOIN member1 m ON ubr.memberIdx = m.memberIdx
+		WHERE block = 0 AND parent_Num = 0 AND board_num = #{num}
+		ORDER BY ubr.num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+
+	<select id="replyCount" parameterType="Long" resultType="Integer">
+		SELECT COUNT(*)
+		FROM usedBoardReply
+		WHERE block = 0 AND parent_Num = 0 AND board_num = #{num}
+	</select>
 </mapper>

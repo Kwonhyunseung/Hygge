@@ -142,15 +142,25 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 	}
 
 	@Override
-	public int replyCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int replyCount(long num) {
+		int result = 0;
+		try {
+			result = mapper.replyCount(num);
+		} catch (Exception e) {
+			log.info("replyCount : ", e);
+		}
+		return result;
 	}
 
 	@Override
 	public List<Reply> listReply(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reply> list = null;
+		try {
+			list = mapper.listReply(map);
+		} catch (Exception e) {
+			log.info("listReply : ", e);
+		}
+		return list;
 	}
 
 	@Override

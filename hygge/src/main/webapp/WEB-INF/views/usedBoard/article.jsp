@@ -50,11 +50,17 @@
 					<span>${dto.title}</span>
 					<span class="article-dropdown"><i class="bi bi-three-dots-vertical" title="메뉴"></i></span>
 					<div class="article-menu" style="font-weight: 500;">
+						<c:choose>
+							<c:when test="${dto.memberIdx == sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
+								<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
+							</c:when>
+							<c:otherwise>
+								<div class="reportArticle article-menu-item" data-articleNum="${dto.num}">신고</div>
+							</c:otherwise>
+						</c:choose>
 						<c:if test="${sessionScope.member.memberidx == dto.memberIdx}">
-						<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
 						</c:if>
 						<c:if test="${sessionScope.member.memberidx != dto.memberIdx}">
-						<div class="reportArticle article-menu-item" data-articleNum="${dto.num}">신고</div>
 						</c:if>
 					</div>
 				</div>
@@ -102,97 +108,7 @@
 				</table>
 			</form>
 			
-			<div id="listReply">
-			<div class="reply-info">
-	<span class="reply-count">댓글 1개</span>
-	<span>[목록, 1/1 페이지]</span>
-</div>
-
-<table class="table table-borderless">
-	<tr class="table-light">
-		<td width="50%" style="background-color: #ebf1db;">
-			<div class="row reply-writer">
-				<div class="col-1"><i class="bi bi-person-circle text-muted icon"></i></div>
-				<div class="col-auto align-self-center">
-					<div class="name">홍길동</div>
-				</div>
-			</div>				
-		</td>
-		<td width="50%" align="right" class="align-middle" style="background-color: #ebf1db;">
-			<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 35%;">
-				<div class="date">2025-02-07 13:43:27</div>
-				<span class="reply-dropdown"><i class="bi bi-three-dots-vertical"></i></span>
-				<div class="reply-menu">
-					<div class="deleteReply reply-menu-item" data-replyNum="" data-pageNo="">삭제</div>
-				</div>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top">테스트</td>
-	</tr>
-
-	<tr>
-		<td colspan="2">
-			<button type="button" class="btn btnReplyAnswerLayout" data-replyNum="" style="background-color: #ebf1db;">답글 <span id="answerCount ">2</span></button>
-		</td>
-	</tr>
-
-	<tr class="reply-answer">
-		<td colspan="2">
-			<div style="border: 1px solid #DDECB8;">
-				<div id="listReplyAnswer" class="answer-list">
-				
-				
-				
-				
-					<div class="border-bottom m-1">
-		<div class="row p-1">
-			<div class="col-auto">
-				<div class="row reply-writer">
-					<div class="col-1"><i class="bi bi-person-circle text-muted icon"></i></div>
-					<div class="col ms-2 align-self-center">
-						<div class="name">홍길동</div>
-					</div>
-				</div>
-			</div>
-			<div class="col align-self-center text-end" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 35%;">
-				<div class="date">2025-02-07-17:36:37</div>
-				<span class="reply-dropdown"><i class="bi bi-three-dots-vertical"></i></span>
-				<div class="reply-menu">
-					<div class="notifyReplyAnswer reply-menu-item">삭제</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="p-2">
-			테스트
-		</div>
-	</div>
-	
-	
-	
-	
-	
-	
-				</div>
-				<div style="border-bottom: 1px solid #DDECB8; display: flex; flex-direction: row;">
-					<span style="margin: 6px;"><i class="bi bi-arrow-return-right"></i></span>
-					<textarea class="form-control" style="resize: none; margin: 0px;"></textarea>
-				</div>
-				<div class="text-end">
-					<button type="button" class="btn btnSendReplyAnswer" data-replyNum="">답글 등록</button>
-				</div>
-			</div>
-		</td>
-	</tr>
-</table>
-
-<div class="page-navigation">
-	페이징처리
-</div>			
-			
-			</div>
+			<div id="listReply"></div>
 		</div>
 	</div>
 </div>
@@ -206,6 +122,8 @@
 </body>
 <script type="text/javascript">
 $(function() {
+	listPage(1);
+
 	// 본문 삭제/신고 메뉴
 	$('.article-menu').hide();
 	$('.article-dropdown').click(function() {
@@ -297,7 +215,7 @@ $(function() {
 			return false;
 		}
 		let url = '${pageContext.request.contextPath}/usedBoard/insertReply';
-		let params = {board_num: num, content: content};
+		let params = {board_num: num, content: content, parentNum: 0};
 
 		const fn = function(data) {
 			console.log(data);
@@ -308,5 +226,16 @@ $(function() {
 	});
 });
 
+function listPage(page) {
+	let url = '${pageContext.request.contextPath}/usedBoard/listReply';
+	let num = '${dto.num}';
+	let params = {num: num, pageNo: page};
+
+	const fn = function(data) {
+		$('#listReply').html(data);
+	};
+
+	ajaxRequest(url, 'get', params, 'text', fn);
+}
 </script>
 </html>

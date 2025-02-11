@@ -21,7 +21,7 @@ public interface UsedBoardService {
 	public boolean deleteUploadFile(String uploadPath, String filename);
 
 	public void insertReply(Reply dto) throws Exception;
-	public int replyCount(Map<String, Object> map);
+	public int replyCount(long num);
 	public List<Reply> listReply(Map<String, Object> map);
 	public void deleteReply(Map<String, Object> map) throws Exception;
 

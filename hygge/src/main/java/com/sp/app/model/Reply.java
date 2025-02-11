@@ -15,4 +15,5 @@ public class Reply {
 	private String reg_date;
 	private int block;
 	private long parent_num;
+	private String name;
 }

@@ -25,6 +25,7 @@ import com.sp.app.service.UsedBoardService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -176,5 +177,41 @@ public class UsedBoardController {
 			map.put("state", "false");
 		}
 		return map;
+	}
+
+	@GetMapping("listReply")
+	public String listReply(@RequestParam(name = "num") long number,
+			@RequestParam(name="pageNo", defaultValue="1") int current_page,
+			Model model, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+		try {
+			int size = 10;
+			int total_page = 0;
+			int dataCount = 0;
+
+			dataCount = service.replyCount(number);
+			total_page = paginateUtil.pageCount(dataCount, size);
+			current_page = Math.min(total_page, current_page);
+
+			int offset = (current_page - 1) * size;
+			if (offset < 0) offset = 0;
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("num", number);
+			map.put("offset", offset);
+			map.put("size", size);
+
+			List<Reply> listReply = service.listReply(map);
+
+			String paging = paginateUtil.pagingMethod(current_page, total_page, "listPage");
+
+			model.addAttribute("listReply", listReply);
+			model.addAttribute("paging", paging);
+			model.addAttribute("replyCount", dataCount);
+			model.addAttribute("pageNo", current_page);
+			model.addAttribute("total_page", total_page);
+		} catch (Exception e) {
+			log.info("listReply : ", e);
+		}
+		return "usedBoard/listReply";
 	}
 }

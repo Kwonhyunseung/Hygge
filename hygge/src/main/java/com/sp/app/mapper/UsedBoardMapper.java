@@ -30,4 +30,6 @@ public interface UsedBoardMapper {
 
 	// 댓글
 	public void insertReply(Reply dto) throws SQLException;
+	public List<Reply> listReply(Map<String, Object> map);
+	public int replyCount(long num);
 }
