@@ -1,84 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
-<script type="text/javascript">
-$(function() {
-	// 본문 삭제/신고 메뉴
-	$('.article-menu').hide();
-	$('.article-dropdown').click(function() {
-		const $menu = $(this).next('.article-menu');
-		if ($menu.is(':visible')) {
-			$menu.fadeOut(100);
-		} else {
-			$('article-menu').hide();
-			$menu.fadeIn(100);
-
-			let pos = $(this).offset();
-			$menu.offset({left: pos.left, top: pos.top+25});
-		}
-	});
-
-	// 댓글 삭제/신고 메뉴
-	$('.reply').on('click', '.reply-dropdown', function() {
-		const $menu = $(this).next('.reply-menu');
-		if ($menu.is(':visible')) {
-			$menu.fadeOut(100);
-		} else {
-			$('.reply-menu').hide();
-			$menu.fadeIn(100);
-
-			let pos = $(this).offset();
-			$menu.offset({left: pos.left, top: pos.top+25});
-		}
-	});
-
-	$('.reply').on('click', '.btnReplyAnswerLayout', function() {
-		const $trAnswer = $(this).closest('tr').next();
-		let isVisible = $trAnswer.is(':visible');
-		let replyNum = $(this).attr('data-replyNum');
-
-		if (isVisible) {
-			$trAnswer.hide();
-		} else {
-			$trAnswer.show();
-			// listReplyAnswer(replyNum); // 답글 리스트
-			// countReplyAnswer(replyNum); // 답글 개수
-		}
-	});
-});
-
-// 본문 삭제/신고 메뉴 창 닫기
-window.addEventListener('click', function(evt) {
-	if ($(evt.target.parentNode).hasClass('article-dropdown')) {
-		return false;
-	}
-	$('.article-menu').hide();
-
-	if ($(evt.target.parentNode).hasClass('reply-dropdown')) {
-		return false;
-	}
-	$('.reply-menu').hide();
-});
-
-$(function() {
-	// 본문 삭제
-	$('.deleteArticle').click(function() {
-		let url = '${pageContext.request.contextPath}/usedBoard/delete?num=${dto.num}';
-		if (confirm('게시글을 삭제하시겠습니까?')) {
-			location.href = url;
-		}
-	});
-});
-
-</script>
 </head>
 <body>
 <header>
@@ -156,7 +85,7 @@ $(function() {
 								<div class="profile-img-container">
 									<img src="${pageContext.request.contextPath}/dist/images/person.png" style="height: 100%">
 								</div>
-								<span style="margin-left: 5px;">홍길동</span>
+								<span style="margin-left: 5px;">${sessionScope.member.name}</span>
 							</div>
 						</td>
 					</tr>
@@ -275,4 +204,109 @@ $(function() {
 </footer>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
+<script type="text/javascript">
+$(function() {
+	// 본문 삭제/신고 메뉴
+	$('.article-menu').hide();
+	$('.article-dropdown').click(function() {
+		const $menu = $(this).next('.article-menu');
+		if ($menu.is(':visible')) {
+			$menu.fadeOut(100);
+		} else {
+			$('article-menu').hide();
+			$menu.fadeIn(100);
+
+			let pos = $(this).offset();
+			$menu.offset({left: pos.left, top: pos.top+25});
+		}
+	});
+
+	// 댓글 삭제/신고 메뉴
+	$('.reply').on('click', '.reply-dropdown', function() {
+		const $menu = $(this).next('.reply-menu');
+		if ($menu.is(':visible')) {
+			$menu.fadeOut(100);
+		} else {
+			$('.reply-menu').hide();
+			$menu.fadeIn(100);
+
+			let pos = $(this).offset();
+			$menu.offset({left: pos.left, top: pos.top+25});
+		}
+	});
+
+	$('.reply').on('click', '.btnReplyAnswerLayout', function() {
+		const $trAnswer = $(this).closest('tr').next();
+		let isVisible = $trAnswer.is(':visible');
+		let replyNum = $(this).attr('data-replyNum');
+
+		if (isVisible) {
+			$trAnswer.hide();
+		} else {
+			$trAnswer.show();
+			// listReplyAnswer(replyNum); // 답글 리스트
+			// countReplyAnswer(replyNum); // 답글 개수
+		}
+	});
+});
+
+// 본문 삭제/신고 메뉴 창 닫기
+window.addEventListener('click', function(evt) {
+	if ($(evt.target.parentNode).hasClass('article-dropdown')) {
+		return false;
+	}
+	$('.article-menu').hide();
+
+	if ($(evt.target.parentNode).hasClass('reply-dropdown')) {
+		return false;
+	}
+	$('.reply-menu').hide();
+});
+
+// 본문
+$(function() {
+	// 본문 삭제
+	$('.deleteArticle').click(function() {
+		let url = '${pageContext.request.contextPath}/usedBoard/delete?num=${dto.num}';
+		if (confirm('게시글을 삭제하시겠습니까?')) {
+			location.href = url;
+		}
+	});
+
+	// 본문 신고
+	$('.reportArticle').click(function() {
+		let url = '${pageContext.request.contextPath}/usedBoard/report?num=${dto.num}';
+		
+	});
+});
+
+// 댓글
+$(function() {
+	// 댓글 등록
+	$('.btnSendReply').click(function() {
+		let num = '${dto.num}'; // 게시글 번호
+		let memberIdx = '${sessionScope.member.memberidx}';
+		if (!memberIdx || !memberIdx.trim()) {
+			// 로그인이 되어있지 않은 경우
+			return false;
+		}
+		let f = document.replyForm;
+		let content = f.content.value.trim();
+		if (!content) {
+			f.content.focus();
+			return false;
+		}
+		let url = '${pageContext.request.contextPath}/usedBoard/insertReply';
+		let params = {board_num: num, content: content};
+
+		const fn = function(data) {
+			console.log(data);
+			f.content.value = '';
+		}
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+});
+
+</script>
 </html>

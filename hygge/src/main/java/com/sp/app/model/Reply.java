@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Reply {
-	private long replyNum;
 	private long num;
+	private long board_num;
 	private long memberIdx;
 	private String content;
 	private String reg_date;

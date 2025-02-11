@@ -4,12 +4,7 @@
 
 <head>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
-<script src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/dist/vendor/bootstrap5/js/bootstrap.bundle.min.js"></script>
-
-
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
 <title>hygge</title>
 <link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.common.StorageService;
+import com.sp.app.model.Reply;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.model.UsedBoard;
 import com.sp.app.service.MemberService;
@@ -153,5 +155,26 @@ public class UsedBoardController {
 			log.info("delete : ", e);
 		}
 		return "redirect:/usedBoard/list";
+	}
+
+
+
+
+	// 댓글 처리
+	@ResponseBody
+	@PostMapping("insertReply")
+	public Map<String, Object> insertReply(Reply dto, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setMemberIdx(info.getMemberidx());
+			service.insertReply(dto);
+
+			map.put("state", "true");
+		} catch (Exception e) {
+			log.info("insertReply : ", e);
+			map.put("state", "false");
+		}
+		return map;
 	}
 }

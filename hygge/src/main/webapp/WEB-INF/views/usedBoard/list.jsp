@@ -9,16 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/list.css" type="text/css">
 <script src="${pageContext.request.contextPath}/dist/js/event-list-css/btn-borderstyle-none.js"></script>
 
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
-<script type="text/javascript">
-function writeForm() {
-	let member = '${sessionScope.member}';
-	if (!member || member.trim === '') {
-		location.href = '${pageContext.request.contextPath}/member/login';
-	}
-	location.href = '${pageContext.request.contextPath}/usedBoard/write';
-}
-</script>
 </head>
 <body>
 <header>
@@ -108,4 +98,14 @@ function writeForm() {
 </footer>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
+
+<script type="text/javascript">
+function writeForm() {
+	let member = '${sessionScope.member}';
+	if (!member || member.trim === '') {
+		location.href = '${pageContext.request.contextPath}/member/login';
+	}
+	location.href = '${pageContext.request.contextPath}/usedBoard/write';
+}
+</script>
 </html>

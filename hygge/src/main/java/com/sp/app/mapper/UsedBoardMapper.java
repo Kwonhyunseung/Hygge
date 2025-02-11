@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sp.app.model.Reply;
 import com.sp.app.model.UsedBoard;
 
 @Mapper
@@ -25,4 +26,8 @@ public interface UsedBoardMapper {
 	public void updateHitCount(long num) throws SQLException;
 	public UsedBoard findByPrev(Map<String, Object> map);
 	public UsedBoard findByNext(Map<String, Object> map);
+
+
+	// 댓글
+	public void insertReply(Reply dto) throws SQLException;
 }
