@@ -7,7 +7,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Inquiry {
+public class Qna {
     private int num; // NUM
     private int memberIdx; // MEMBERIDX
     private String qTitle; // Q_TITLE

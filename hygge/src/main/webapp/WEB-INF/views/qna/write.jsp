@@ -69,7 +69,7 @@
     <div class="content-wrapper">
         <div class="container">
             <h2>문의 작성</h2>
-            <form action="${pageContext.request.contextPath}/inquiry/write" method="post">
+            <form action="${pageContext.request.contextPath}/qna/write" method="post">
                 <!-- 유저 정보 표시 (작성자명 자동 입력) -->
                 <c:if test="${not empty user}">
                     <input type="hidden" name="memberIdx" value="${user.idx}" />
@@ -107,7 +107,7 @@
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary btn-custom" style="height: 40px; border-radius: 7px;">등록</button>
-                    <a href="${pageContext.request.contextPath}/inquiry/list" class="btn btn-secondary btn-custom">취소</a>
+                    <a href="${pageContext.request.contextPath}/qna/list" class="btn btn-secondary btn-custom">취소</a>
                 </div>
             </form>
         </div>

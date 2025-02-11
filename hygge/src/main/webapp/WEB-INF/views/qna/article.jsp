@@ -57,7 +57,7 @@ h2 {
 }
 
 /* 문의 내용 스타일 */
-.inquiry-content {
+.qna-content {
     padding: 20px;
     background-color: #f5f5f5;
     border-radius: 5px;
@@ -94,7 +94,7 @@ h2 {
 
         <!-- 카테고리 정보 -->
         <div class="text-center">
-            <span class="category-label">${inquiry.category}</span>
+            <span class="category-label">${qna.category}</span>
         </div>
 
         <!-- 문의 정보 -->
@@ -102,26 +102,26 @@ h2 {
             <tbody>
                 <tr>
                     <th>제목</th>
-                    <td>${inquiry.title}</td>
+                    <td>${qna.title}</td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${inquiry.writer}</td>
+                    <td>${qna.writer}</td>
                 </tr>
                 <tr>
                     <th>작성일</th>
-                    <td><fmt:formatDate value="${inquiry.qDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+                    <td><fmt:formatDate value="${qna.qDate}" pattern="yyyy-MM-dd HH:mm" /></td>
                 </tr>
                 <tr>
                     <th>상태</th>
-                    <td><span class="badge bg-warning">${inquiry.status}</span></td>
+                    <td><span class="badge bg-warning">${qna.status}</span></td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="inquiry-content">
+        <div class="qna-content">
             <strong>질문</strong>
-            <p>${inquiry.content}</p>
+            <p>${qna.content}</p>
         </div>
 
         <!-- 관리자 답변 -->
@@ -134,7 +134,7 @@ h2 {
 
         <!-- 버튼 영역 -->
         <div class="text-center mt-4">
-            <a href="${pageContext.request.contextPath}/inquiry/list" class="btn btn-secondary btn-custom">목록으로</a>
+            <a href="${pageContext.request.contextPath}/qna/list" class="btn btn-secondary btn-custom">목록으로</a>
             <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-primary btn-custom" style="height: 38px; background-color:#82B10C; border-radius: 7px;">마이페이지</a>
         </div>
     </div>

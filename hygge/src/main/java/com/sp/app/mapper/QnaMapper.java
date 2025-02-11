@@ -1,6 +1,6 @@
 package com.sp.app.mapper;
 
-import com.sp.app.model.Inquiry;
+import com.sp.app.model.Qna;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -8,28 +8,28 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface InquiryMapper {
+public interface QnaMapper {
 
     // 문의 글 삽입
-    void insertInquiry(Inquiry inquiry);
+    void insertQna(Qna Qna);
 
     // 문의 글 목록 조회
-    List<Inquiry> listInquiry(Map<String, Object> params);
+    List<Qna> listQna(Map<String, Object> params);
 
     // 특정 문의 글 조회
-    Inquiry selectInquiry(long num);
+    Qna selectQna(long num);
 
     // 이전 문의 글 조회
-    Inquiry selectPrevInquiry(Map<String, Object> params);
+    Qna selectPrevQna(Map<String, Object> params);
 
     // 다음 문의 글 조회
-    Inquiry selectNextInquiry(Map<String, Object> params);
+    Qna selectNextQna(Map<String, Object> params);
 
     // 문의 글 수정
-    void updateInquiry(Inquiry inquiry);
+    void updateQna(Qna Qna);
 
     // 문의 글 삭제
-    void deleteInquiry(long num);
+    void deleteQna(long num);
 
 	int dataCount(Map<String, Object> map);
 }
