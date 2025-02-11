@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.QnaMapper">
 
     <!-- 문의 글 삽입 -->
     <insert id="insertQna" parameterType="com.sp.app.model.Qna">
-        INSERT INTO QnA(num, member_idx, title, content, reg_date, hit_count)
-        VALUES (#{num}, #{memberIdx}, #{title}, #{content}, SYSDATE, 0)
+        INSERT INTO qna (num, memberidx, q_title, q_content, block, q_date, category)
+        VALUES (#{num}, #{memberidx}, #{qTitle}, #{qContent}, #{block}, SYSDATE, #{category})
     </insert>
 
     <!-- 문의 글 목록 조회 -->
     <select id="listQna" parameterType="map" resultType="com.sp.app.model.Qna">
-        SELECT num, member_idx, title, content, reg_date, hit_count
-        FROM QnA
+        SELECT num, memberidx, q_title, q_content, block, q_date, category
+        FROM qna
         <where>
             <if test="keyword != null and keyword != ''">
-                AND (title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%'))
+                AND (q_title LIKE CONCAT('%', #{keyword}, '%') OR q_content LIKE CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
     </select>
 
     <!-- 특정 문의 글 조회 -->
     <select id="selectQna" parameterType="long" resultType="com.sp.app.model.Qna">
-        SELECT num, member_idx, title, content, reg_date, hit_count
-        FROM QnA
+        SELECT num, memberidx, q_title, q_content, a_title, a_content, block, q_date, a_date, category, adminidx
+        FROM qna
         WHERE num = #{num}
     </select>
 
     <!-- 이전 문의 글 조회 -->
     <select id="selectPrevQna" parameterType="map" resultType="com.sp.app.model.Qna">
-        SELECT num, member_idx, title, content, reg_date, hit_count
-        FROM QnA
+        SELECT num, memberidx, q_title, q_content, block, q_date, category
+        FROM qna
         WHERE num &lt; #{num}
         ORDER BY num DESC
         LIMIT 1
@@ -38,8 +37,8 @@
 
     <!-- 다음 문의 글 조회 -->
     <select id="selectNextQna" parameterType="map" resultType="com.sp.app.model.Qna">
-        SELECT num, member_idx, title, content, reg_date, hit_count
-        FROM QnA
+        SELECT num, memberidx, q_title, q_content, block, q_date, category
+        FROM qna
         WHERE num &gt; #{num}
         ORDER BY num ASC
         LIMIT 1
@@ -47,14 +46,14 @@
 
     <!-- 문의 글 수정 -->
     <update id="updateQna" parameterType="com.sp.app.model.Qna">
-        UPDATE QnA
-        SET title = #{title}, content = #{content}, reg_date = SYSDATE
+        UPDATE qna
+        SET q_title = #{qTitle}, q_content = #{qContent}, block = #{block}, category = #{category}
         WHERE num = #{num}
     </update>
 
     <!-- 문의 글 삭제 -->
     <delete id="deleteQna" parameterType="long">
-        DELETE FROM QnA WHERE num = #{num}
+        DELETE FROM qna WHERE num = #{num}
     </delete>
 
 </mapper>

@@ -238,7 +238,7 @@ body {
                     <li><a href="${pageContext.request.contextPath}/member/couponList">보유 쿠폰</a></li>
                     <li><a href="${pageContext.request.contextPath}/member/review">후기</a></li>
                     <li><a href="${pageContext.request.contextPath}/member/chat">채팅</a></li>
-                    <li><a href="${pageContext.request.contextPath}/inquiry/list">1:1 문의</a></li>
+                    <li><a href="${pageContext.request.contextPath}/qna/list">1:1 문의</a></li>
                 </ul>
                 <button type="button">로그아웃</button>
             </div>

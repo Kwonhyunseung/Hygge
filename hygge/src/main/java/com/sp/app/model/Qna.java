@@ -10,7 +10,9 @@ import java.util.Date;
 public class Qna {
     private int num; // NUM
     private int memberIdx; // MEMBERIDX
-    private String qTitle; // Q_TITLE
+	private String userId;
+	private String userName;
+    private String qTitle; // 질문제목
     private String qContent; // Q_CONTENT
     private String aTitle; // A_TITLE
     private String aContent; // A_CONTENT
