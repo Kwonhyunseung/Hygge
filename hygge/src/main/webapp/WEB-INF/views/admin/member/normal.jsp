@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,13 +10,16 @@
 <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normal.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normalModal.css" type="text/css">
 </head>
 <body>
 
     <header>
         <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
     </header>
-
+<%-- 모달 --%>
+ <jsp:include page="/WEB-INF/views/admin/member/normalModal.jsp"/>
+ 
     <div class="admin-container">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 		
@@ -56,11 +60,20 @@
                 <tbody>
                 <%--이 부분을 forEach로 돌리기 --%>
                 <c:forEach var="item" items="${member}">
-                	<tr>
+                	<tr data-birth="${fn:substring(item.birth, 0, 10)}"  
+                		data-tel1="${item.tel1}" 
+                		data-tel2="${item.tel2}" 
+                		data-nickname="${item.nickName}"
+                		data-addr1="${item.addr1}" 
+                		data-addr2="${item.addr2}" 
+                		data-regdate="${fn:substring(item.reg_date, 0, 10)}"
+                		data-mod_date="${fn:substring(item.mod_date, 0, 10)}"
+                		data-last_login="${fn:substring(item.last_login, 0 ,10)}">
+                		
 	                    <td>${item.memberIdx}</td>
 	                    <td>${item.name}</td>
 	                    <td>${item.email1}@${item.email2}</td>
-	                    <td>>${item.reg_date}</td>
+	                    <td>${fn:substring(item.reg_date, 0, 10)}</td>
 	                    <td>신고횟수</td>
 	                    <td>
 	                    	<c:choose>
@@ -68,7 +81,7 @@
 	                    			<span class="status-badge status-active">정상</span>
 	                    		</c:when>
 	                    		<c:otherwise>
-	                    			<span class="status-badge status-active">차단</span>
+	                    			<span class="status-badge status-blocked">차단</span>
 	                    		</c:otherwise>
 	                    	</c:choose>
 	                    </td>
@@ -132,14 +145,77 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 // ajax로 가입 신청 목록 확인하는 버튼
 $(function() {
 	$('#accountWait').click(function(e){
-		 alert('가입 승인 대기 버튼');
+		 alert('유저관리');
 	});
 });
 
+// Ajax
 $(function() {
 	$('#reportMember').click(function(e){
-		 alert('신고 누적');
+		 alert('신고누적');
 	});
+});
+
+// 회원 정보 모달
+$(function(){
+	const $modal = $('#memberModal');
+	const $close = $('.close');
+	
+	$('.member-table tbody tr').click(function(e){
+		const memberIdx = $(this).find('td:eq(0)').text();
+		const name = $(this).find('td:eq(1)').text();
+		const email = $(this).find('td:eq(2)').text();
+		const regDate = $(this).find('td:eq(3)').text();
+		const reportCount = $(this).find('td:eq(4)').text();
+		const status = $(this).find('td:eq(5)').text();
+		
+		const birth = $(this).data('birth');
+		
+		const tel1 = $(this).data('tel1');
+		const tel2 = $(this).data('tel2');
+		const fullTel = tel1 + '-' + tel2;
+		
+		const nickName = $(this).data('nickname');
+		// const gender = $(this).data('gender');
+		
+		const addr1 = $(this).data('addr1');
+		const addr2 = $(this).data('addr2');
+		const lastLogin = $(this).data('last_login');
+		const modDate = $(this).data('mod_date');
+		
+		
+		
+		$('#modalMemberIdx').text(memberIdx);
+		$('#modalBirth').text(birth);
+		$('#modalName').text(name);
+		$('#modalEmail').text(email);
+		$('#modalRegDate').text(regDate);
+		$('#modalReportCount').text(reportCount);
+		$('#modalStatus').text(status);
+		
+		$('#modalNickName').text(nickName);
+		
+		$('#modalTel').text(fullTel);
+		$('#modalAddr').text(addr1);
+		
+		$('#modalLastLogin').text(lastLogin);
+		$('#modalModDate').text(modDate);
+		
+		
+		$modal.show();
+	});
+	
+	$close.click(function(){
+		$modal.hide();
+	});
+	
+	// 모달 외부 클릭
+	$(window).click(function(event) {
+		if($(event.target).is($modal)) {
+			$modal.hide();
+		}
+	});
+	
 });
 
 
@@ -160,9 +236,17 @@ document.querySelectorAll('.tab-button').forEach(button => {
     });
 });
 
-// 유저관리 ajax
+// 차단
+$(function(){
+    $('.block-button').click(function(){
+    	e.stopPropagation();
+        alert('차단하시겠습니까?');
+    });
 
-// 승인대기 ajax
+    $('.approve-button').click(function(){
+        alert('차단해제 하시겠습니까?');
+    });
+});
 
 </script>
 

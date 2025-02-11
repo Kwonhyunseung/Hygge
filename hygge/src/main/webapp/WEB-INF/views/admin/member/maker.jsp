@@ -50,9 +50,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>1001</td>
-                    <td>홍길동</td>
-                    <td>hong@example.com</td>
+                    <td>${member[0].memberIdx }</td>
+                    <td>${member[0].name }</td>
+                    <td>${member[0].email1}@${member[0].email2}</td>
                     <td>2024-02-06</td>
                     <td>
                         <button class="action-button view-button" onclick="viewPortfolio(1001)">보기</button>
@@ -61,19 +61,6 @@
                     <td>
                         <button class="action-button approve-button" onclick="approveMaker(1001)">승인</button>
                         <button class="action-button reject-button" onclick="rejectMaker(1001)">거절</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>김철수</td>
-                    <td>kim@example.com</td>
-                    <td>2024-02-05</td>
-                    <td>
-                        <button class="action-button view-button" onclick="viewPortfolio(1002)">보기</button>
-                    </td>
-                    <td><span class="status-badge status-approved">승인완료</span></td>
-                    <td>
-                        <button class="action-button detail-button" onclick="viewDetails(1002)">상세보기</button>
                     </td>
                 </tr>
             </tbody>

@@ -42,10 +42,20 @@ public class MemberManageController {
 	
 	@GetMapping("maker")
 	public String makerMember(Model model) {
+		List<MemberManage> member;
+		
 		try {
+			String authority = "MAKER";
+			
+			member = service.normalMember(authority);
+			
+			model.addAttribute("member", member);
 			
 		} catch (Exception e) {
+			log.info("normalMember : ", e);
 		}
+		
 		return "admin/member/maker";
+		
 	}
 }

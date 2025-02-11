@@ -3,7 +3,8 @@
 <mapper namespace="com.sp.app.admin.mapper.MemberManageMapper">
 
 <select id="normalMember" parameterType="String">
-	SELECT m1.memberIdx, m1.name, m2.email1, m2.email2, m1.reg_date, m1.block
+	SELECT m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block, m1.last_login, m1.mod_date,
+		m2.email1, m2.email2, m2.birth, m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age, m2.gender 
 	FROM member1 m1
 	JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
 	LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
