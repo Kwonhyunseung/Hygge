@@ -15,6 +15,7 @@ public interface UsedBoardMapper {
 	public void insertBoardFile(Map<String, Object> map) throws SQLException;
 	public void updateBoard(UsedBoard dto) throws SQLException;
 	public void deleteBoard(long num) throws SQLException;
+	public void deleteBoardFile(long num) throws SQLException;
 
 	public int dataCount(Map<String, Object> map);
 	public List<UsedBoard> listBoard(Map<String, Object> map);

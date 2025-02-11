@@ -61,7 +61,7 @@
 	</select>
 
 	<select id="findById" parameterType="Long" resultType="com.sp.app.model.UsedBoard">
-		SELECT board_num, m.memberIdx memberIdx, m.nickName nickName, title, content, u.reg_date reg_date, hitCount, category, deal, price, product
+		SELECT board_num num, m.memberIdx memberIdx, m.nickName nickName, title, content, u.reg_date reg_date, hitCount, category, deal, price, product
 		FROM usedBoard u
 		JOIN member1 m ON m.memberIdx = u.memberIdx
 		WHERE board_num = #{num}
@@ -72,4 +72,12 @@
 		FROM usedBoardFile
 		WHERE board_num = #{num}
 	</select>
+
+	<delete id="deleteBoard" parameterType="Long">
+		DELETE FROM usedBoard WHERE board_num = #{num}
+	</delete>
+
+	<delete id="deleteBoardFile" parameterType="Long">
+		DELETE FROM usedBoardFile WHERE board_num = #{num}
+	</delete>
 </mapper>

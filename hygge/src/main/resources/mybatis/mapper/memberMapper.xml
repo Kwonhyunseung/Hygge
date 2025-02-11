@@ -12,9 +12,10 @@
 <select id="findById" parameterType="String" resultType="com.sp.app.model.Member">
 	SELECT m1.memberIdx, m1.id, m1.pwd, m1.name,
 		m1.nickName, m1.reg_date, m1.mod_date, m1.last_login,
-		m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3
-		FROM member1 m1
-		LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+		m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, ma.authority authority
+	FROM member1 m1
+	LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+	LEFT OUTER JOIN memberauthority ma ON m1.memberIdx = ma.memberIdx
 	WHERE m1.id = #{id}
 </select>
 
@@ -36,5 +37,12 @@
 <delete id="deleteMember" parameterType="String">
     DELETE FROM member1 WHERE id = #{id}
 </delete>
+
+<select id="findAuthority" parameterType="map" resultType="String">
+    SELECT authority
+    FROM memberAuthority ma
+    JOIN member1 m ON ma.memberIdx = m.memberIdx
+    WHERE m.id = #{id}
+</select>
 
 </mapper>

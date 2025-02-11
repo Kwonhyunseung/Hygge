@@ -18,6 +18,7 @@ import com.sp.app.common.PaginateUtil;
 import com.sp.app.common.StorageService;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.model.UsedBoard;
+import com.sp.app.service.MemberService;
 import com.sp.app.service.UsedBoardService;
 
 import jakarta.annotation.PostConstruct;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UsedBoardController {
 	private final UsedBoardService service;
+	private final MemberService memberService;
 	private final StorageService storageService;
 	private final PaginateUtil paginateUtil;
 	private String uploadPath;
@@ -138,5 +140,18 @@ public class UsedBoardController {
 			log.info("article : ", e);
 		}
 		return "usedBoard/article";
+	}
+
+	@GetMapping("delete")
+	public String delete(@RequestParam(name = "num") long number, HttpSession session) {
+		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			long memberidx = info.getMemberidx();
+			String authority = info.getAuthority();
+			service.deleteBoard(number, uploadPath, memberidx, authority);
+		} catch (Exception e) {
+			log.info("delete : ", e);
+		}
+		return "redirect:/usedBoard/list";
 	}
 }
