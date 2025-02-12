@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sp.app.model.Reply;
+import com.sp.app.model.Report;
 import com.sp.app.model.UsedBoard;
 
 @Mapper
@@ -14,7 +15,7 @@ public interface UsedBoardMapper {
 	public long seqValue();
 	public void insertBoard(UsedBoard dto) throws SQLException;
 	public void insertBoardFile(Map<String, Object> map) throws SQLException;
-	public void updateBoard(UsedBoard dto) throws SQLException;
+	// public void updateBoard(UsedBoard dto) throws SQLException;
 	public void deleteBoard(long num) throws SQLException;
 	public void deleteBoardFile(long num) throws SQLException;
 
@@ -27,9 +28,15 @@ public interface UsedBoardMapper {
 	public UsedBoard findByPrev(Map<String, Object> map);
 	public UsedBoard findByNext(Map<String, Object> map);
 
+	public void reportUsedBoard(Report dto) throws SQLException;
 
 	// 댓글
 	public void insertReply(Reply dto) throws SQLException;
+	public void deleteReply(Map<String, Object> map) throws SQLException;
 	public List<Reply> listReply(Map<String, Object> map);
 	public int replyCount(long num);
+
+	// 답글
+	public List<Reply> listReplyAnswer(long num);
+	public int replyAnswerCount(long num);
 }

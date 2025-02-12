@@ -46,16 +46,6 @@ public class Lj_tempController {
 		return "vote/result";
 	}
 
-	@GetMapping("/funding/hotContent")
-	public String hotContentList() {
-		try {
-			
-		} catch (Exception e) {
-			log.info("hotContentList : ", e);
-		}
-		return "funding/hotContent";
-	}
-
 	@GetMapping("/funding/category01")
 	public String categoryList() {
 		try {

@@ -11,6 +11,7 @@ import com.sp.app.common.MyUtil;
 import com.sp.app.common.StorageService;
 import com.sp.app.mapper.UsedBoardMapper;
 import com.sp.app.model.Reply;
+import com.sp.app.model.Report;
 import com.sp.app.model.UsedBoard;
 import com.sp.app.model.UsedRequest;
 
@@ -83,8 +84,12 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public void updateHitCount(long num) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.updateHitCount(num);
+		} catch (Exception e) {
+			log.info("updateHitCount : ", e);
+			throw e;
+		}
 	}
 
 	@Override
@@ -165,8 +170,34 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public void deleteReply(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.deleteReply(map);
+		} catch (Exception e) {
+			log.info("deleteReply : ", e);
+			throw e;
+		}
+	}
+	
+	@Override
+	public List<Reply> listReplyAnswer(long num) {
+		List<Reply> list = null;
+		try {
+			list = mapper.listReplyAnswer(num);
+		} catch (Exception e) {
+			log.info("listReplyAnswer : ", e);
+		}
+		return list;
+	}
+	
+	@Override
+	public int replyAnswerCount(long num) {
+		int result = 0;
+		try {
+			result = mapper.replyAnswerCount(num);
+		} catch (Exception e) {
+			log.info("replyAnswerCount : ", e);
+		}
+		return result;
 	}
 
 	@Override
@@ -181,5 +212,14 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 		return null;
 	}
 
+	@Override
+	public void reportUsedBoard(Report dto) throws Exception {
+		try {
+			mapper.reportUsedBoard(dto);
+		} catch (Exception e) {
+			log.info("reportUsedBoard : ", e);
+			throw e;
+		}
+	}
 
 }

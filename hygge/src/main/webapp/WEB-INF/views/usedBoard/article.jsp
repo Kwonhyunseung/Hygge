@@ -55,7 +55,7 @@
 								<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
 							</c:when>
 							<c:otherwise>
-								<div class="reportArticle article-menu-item" data-articleNum="${dto.num}">신고</div>
+								<div class="reportArticle article-menu-item" data-articleNum="${dto.num}" data-writer="${dto.memberIdx}">신고</div>
 							</c:otherwise>
 						</c:choose>
 						<c:if test="${sessionScope.member.memberidx == dto.memberIdx}">
@@ -162,8 +162,8 @@ $(function() {
 			$trAnswer.hide();
 		} else {
 			$trAnswer.show();
-			// listReplyAnswer(replyNum); // 답글 리스트
-			// countReplyAnswer(replyNum); // 답글 개수
+			listReplyAnswer(replyNum); // 답글 리스트
+			countReplyAnswer(replyNum); // 답글 개수
 		}
 	});
 });
@@ -193,8 +193,12 @@ $(function() {
 
 	// 본문 신고
 	$('.reportArticle').click(function() {
-		let url = '${pageContext.request.contextPath}/usedBoard/report?num=${dto.num}';
-		
+		if (!confirm('게시글을 신고하시겠습니까?')) {
+			return false;
+		}
+		let reported = $(this).attr('data-writer');
+		let url = '${pageContext.request.contextPath}/usedBoard/report?num=${dto.num}&query=${query}&reported=' + reported;
+		location.href = url;
 	});
 });
 
@@ -205,7 +209,7 @@ $(function() {
 		let num = '${dto.num}'; // 게시글 번호
 		let memberIdx = '${sessionScope.member.memberidx}';
 		if (!memberIdx || !memberIdx.trim()) {
-			// 로그인이 되어있지 않은 경우
+			location.href = '${pageContext.request.contextPath}/member/login';
 			return false;
 		}
 		let f = document.replyForm;
@@ -215,12 +219,120 @@ $(function() {
 			return false;
 		}
 		let url = '${pageContext.request.contextPath}/usedBoard/insertReply';
-		let params = {board_num: num, content: content, parentNum: 0};
+		let params = {board_num: num, content: content, parent_num: 0};
 
 		const fn = function(data) {
-			console.log(data);
 			f.content.value = '';
+			if (data.state == 'true') {
+				listPage(1);
+			} else {
+				alert('댓글 등록에 실패했습니다. 다시 시도해주세요.');
+			}
 		}
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 댓글 삭제
+	$('.reply').on('click', '.deleteReply', function() {
+		if (!confirm('댓글을 삭제하시겠습니까?')) {
+			return false;
+		}
+		let replyNum = $(this).attr('data-replyNum');
+		let page = $(this).attr('data-pageNo');
+
+		let url = '${pageContext.request.contextPath}/usedBoard/deleteReply';
+		let params = {num: replyNum, mode: 'reply'};
+
+		const fn = function(data) {
+			listPage(page);
+		};
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 댓글 신고
+	$('.reply').on('click', '.reportReply', function() {
+		if (!confirm('댓글을 신고하시겠습니까?')) {
+			return false;
+		}
+		let page = $(this).attr('data-pageNo');
+		let num = $(this).attr('data-replyNum');
+		let reported = $(this).attr('data-writer');
+		let params = {tablename: 'usedBoardReply', reportedNumber: num, memberIdx2: reported};
+		let url = '${pageContext.request.contextPath}/usedBoard/reportReply';
+		const fn = function(data) {
+			console.log(data);
+			listPage(page);
+		};
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 답글 등록
+	$('.reply').on('click', '.btnSendReplyAnswer', function() {
+		let board_num = '${dto.num}'; // 글 번호
+		let num = $(this).attr('data-replyNum'); // 댓글 번호
+		let memberIdx = '${sessionScope.member.memberidx}';
+		if (!memberIdx || !memberIdx.trim()) {
+			location.href = '${pageContext.request.contextPath}/member/login';
+			return false;
+		}
+		let $content = $(this).closest('div').prev().find('textarea');
+		let content = $(this).closest('div').prev().find('textarea').val().trim();
+		if (!content) {
+			$(this).closest('div').prev().find('textarea').focus();
+			return false;
+		}
+
+		let url = '${pageContext.request.contextPath}/usedBoard/insertReply';
+		let params = {board_num: board_num, content: content, parent_num: num};
+
+		const fn = function(data) {
+			$content.val('');
+			let state = data.state;
+			if (state === 'true') {
+				listReplyAnswer(num);
+				countReplyAnswer(num);
+			}
+		};
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 답글 삭제
+	$('.reply').on('click', '.deleteReplyAnswer', function() {
+		if (!confirm('답글을 삭제하시겠습니까?')) {
+			return false;
+		}
+		let num = $(this).attr('data-replyNum');
+		let parent_Num = $(this).attr('data-parentNum');
+
+		let url = '${pageContext.request.contextPath}/usedBoard/deleteReply';
+		let params = {num: num, mode: 'answer'};
+
+		const fn = function(data) {
+			listReplyAnswer(parent_Num);
+			countReplyAnswer(parent_Num);
+		}
+
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 답글 신고
+	$('.reply').on('click', '.reportReplyAnswer', function() {
+		if (!confirm('답글을 신고하시겠습니까?')) {
+			return false;
+		}
+		let num = $(this).attr('data-replyNum');
+		let parentNum = $(this).attr('data-parentNum');
+		let reported = $(this).attr('data-writer');
+		let params = {tablename: 'usedBoardReply', reportedNumber: num, memberIdx2: reported};
+		let url = '${pageContext.request.contextPath}/usedBoard/reportReply';
+		const fn = function(data) {
+			listReplyAnswer(parentNum);
+			countReplyAnswer(parentNum);
+		};
 
 		ajaxRequest(url, 'post', params, 'json', fn);
 	});
@@ -236,6 +348,26 @@ function listPage(page) {
 	};
 
 	ajaxRequest(url, 'get', params, 'text', fn);
+}
+
+function listReplyAnswer(parentNum) {
+	let url = '${pageContext.request.contextPath}/usedBoard/listReplyAnswer';
+
+	const fn = function(data) {
+		$('#listReplyAnswer' + parentNum).html(data);
+	};
+
+	ajaxRequest(url, 'get', {num: parentNum}, 'text', fn);
+}
+
+function countReplyAnswer(parentNum) {
+	let url = '${pageContext.request.contextPath}/usedBoard/countReplyAnswer';
+
+	const fn = function(data) {
+		let count = data.count;
+		$('#answerCount' + parentNum).html(count);
+	};
+	ajaxRequest(url, 'post', {num: parentNum}, 'json', fn);
 }
 </script>
 </html>

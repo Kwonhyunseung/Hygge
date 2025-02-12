@@ -51,7 +51,7 @@
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*)
 		FROM usedBoard u
-		JOIN member1 m ON m.memberIdx = u.memberIdx 
+		JOIN member1 m ON m.memberIdx = u.memberIdx
 		<where>
 			<if test="kwd != null and kwd != ''">
 				<include refid="where-list"/>
@@ -63,7 +63,7 @@
 	<select id="findById" parameterType="Long" resultType="com.sp.app.model.UsedBoard">
 		SELECT board_num num, m.memberIdx memberIdx, m.nickName nickName, title, content, u.reg_date reg_date, hitCount, category, deal, price, product
 		FROM usedBoard u
-		JOIN member1 m ON m.memberIdx = u.memberIdx
+		JOIN member1 m ON m.memberIdx = u.memberIdx AND m.block = 0
 		WHERE board_num = #{num}
 	</select>
 
@@ -81,16 +81,32 @@
 		DELETE FROM usedBoardFile WHERE board_num = #{num}
 	</delete>
 
+	<update id="updateHitCount" parameterType="Long">
+		UPDATE usedBoard SET hitCount = hitCount + 1 WHERE board_num = #{num}
+	</update>
+
+	<insert id="reportUsedBoard" parameterType="com.sp.app.model.Report">
+		INSERT INTO report (num, tablename, reportedNumber, memberIdx, memberIdx2) VALUES (report_seq.NEXTVAL, #{tablename}, #{reportedNumber}, #{memberIdx}, #{memberIdx2})
+	</insert>
+
+
+
 	<insert id="insertReply" parameterType="com.sp.app.model.Reply">
 		INSERT INTO usedBoardReply (num, memberIdx, board_num, content, reg_date, block, parent_num)
 			VALUES (used_board_reply_seq.NEXTVAL, #{memberIdx}, #{board_num}, #{content}, SYSDATE, 0, #{parent_num})
 	</insert>
 
 	<select id="listReply" parameterType="map" resultType="com.sp.app.model.Reply">
-		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name
+		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name, NVL(replyCount, 0) replyCount
 		FROM usedBoardReply ubr
-		JOIN member1 m ON ubr.memberIdx = m.memberIdx
-		WHERE block = 0 AND parent_Num = 0 AND board_num = #{num}
+		JOIN member1 m ON ubr.memberIdx = m.memberIdx AND m.block = 0
+		LEFT OUTER JOIN (
+			SELECT parent_Num, COUNT(*) replyCount
+			FROM usedBoardReply
+			WHERE parent_Num != 0 AND block = 0
+			GROUP BY parent_Num
+		) a ON ubr.num = a.parent_Num
+		WHERE ubr.block = 0 AND ubr.parent_Num = 0 AND board_num = #{num}
 		ORDER BY ubr.num DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
@@ -99,5 +115,27 @@
 		SELECT COUNT(*)
 		FROM usedBoardReply
 		WHERE block = 0 AND parent_Num = 0 AND board_num = #{num}
+	</select>
+
+	<update id="deleteReply" parameterType="map">
+		DELETE FROM usedBoardReply
+		WHERE num = #{num}
+		<if test="mode == 'reply'">
+			OR parent_num = #{num}
+		</if>
+	</update>
+
+	<select id="listReplyAnswer" parameterType="Long" resultType="com.sp.app.model.Reply">
+		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name, ubr.parent_Num parent_Num
+		FROM usedBoardReply ubr
+		JOIN member1 m ON ubr.memberIdx = m.memberIdx AND m.block = 0
+		WHERE ubr.block = 0 AND parent_Num = #{num}
+		ORDER BY ubr.num ASC 
+	</select>
+
+	<select id="replyAnswerCount" parameterType="Long" resultType="Integer">
+		SELECT COUNT(*)
+		FROM usedBoardReply
+		WHERE block = 0 AND parent_Num = #{num}
 	</select>
 </mapper>

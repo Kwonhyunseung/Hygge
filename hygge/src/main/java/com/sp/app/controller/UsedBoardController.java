@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.common.StorageService;
 import com.sp.app.model.Reply;
+import com.sp.app.model.Report;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.model.UsedBoard;
-import com.sp.app.service.MemberService;
 import com.sp.app.service.UsedBoardService;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UsedBoardController {
 	private final UsedBoardService service;
-	private final MemberService memberService;
 	private final StorageService storageService;
 	private final PaginateUtil paginateUtil;
 	private String uploadPath;
@@ -135,10 +134,19 @@ public class UsedBoardController {
 			@RequestParam(name = "page") String pageNo,
 			@RequestParam(name = "schType", defaultValue = "all") String searchType,
 			@RequestParam(name = "kwd", defaultValue="") String keyword, Model model) {
+		String query = "page=" + pageNo;
 		try {
+			keyword = URLDecoder.decode(keyword, "utf-8");
+			if (!keyword.isBlank()) {
+				query += "&schType=" + searchType + "&kwd=" + URLEncoder.encode(keyword, "utf-8");
+			}
 			UsedBoard dto = Objects.requireNonNull(service.findById(number));
 
+			service.updateHitCount(number);
+
 			model.addAttribute("dto", dto);
+			model.addAttribute("query", query);
+			model.addAttribute("page", pageNo);
 		} catch (Exception e) {
 			log.info("article : ", e);
 		}
@@ -158,13 +166,31 @@ public class UsedBoardController {
 		return "redirect:/usedBoard/list";
 	}
 
+	@GetMapping("report")
+	public String reportArticle(@RequestParam(name = "query") String qs,
+			@RequestParam(name = "num") long number,
+			@RequestParam(name = "reported") long reportedmemberIdx, HttpSession session) {
+		try {
+			Report dto = new Report();
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setReportedNumber(number);
+			dto.setMemberIdx(info.getMemberidx());
+			dto.setMemberIdx2(reportedmemberIdx);
+			dto.setTablename("usedBoard");
+
+			service.reportUsedBoard(dto);
+		} catch (Exception e) {
+			log.info("reportArticle : ", e);
+		}
+		return "redirect:/usedBoard/list?" + qs; // qs 는 페이지 번호때문이라도 반드시 존재
+	}
 
 
 
 	// 댓글 처리
 	@ResponseBody
 	@PostMapping("insertReply")
-	public Map<String, Object> insertReply(Reply dto, HttpSession session) {
+	public Map<String, Object> insertReply(Reply dto, HttpServletResponse resp, HttpSession session) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
@@ -175,6 +201,7 @@ public class UsedBoardController {
 		} catch (Exception e) {
 			log.info("insertReply : ", e);
 			map.put("state", "false");
+			resp.sendError(406);
 		}
 		return map;
 	}
@@ -213,5 +240,67 @@ public class UsedBoardController {
 			log.info("listReply : ", e);
 		}
 		return "usedBoard/listReply";
+	}
+
+	@ResponseBody
+	@PostMapping("deleteReply")
+	public Map<String, Object> deleteReply(@RequestParam(name = "num") long number,
+			@RequestParam(name = "mode") String Mode, HttpServletResponse resp) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			map.put("num", number);
+			map.put("mode", Mode);
+
+			service.deleteReply(map);
+		} catch (Exception e) {
+			log.info("deleteReply : ", e);
+			resp.sendError(406);
+		}
+		return map;
+	}
+
+	@GetMapping("listReplyAnswer")
+	public String listReplyAnswer(@RequestParam(name = "num") long number,
+			Model model, HttpServletResponse resp) throws Exception {
+		try {
+			List<Reply> listAnswer = service.listReplyAnswer(number);
+			model.addAttribute("listAnswer", listAnswer);
+		} catch (Exception e) {
+			log.info("listReplyAnswer : ", e);
+			resp.sendError(406);
+			throw e;
+		}
+		return "usedBoard/listReplyAnswer";
+	}
+
+	@ResponseBody
+	@PostMapping("countReplyAnswer")
+	public Map<String, Object> countReplyAnswer(@RequestParam(name = "num") long number) throws Exception {
+		Map<String, Object> model = new HashMap<>();
+		int count = 0;
+		try {
+			count = service.replyAnswerCount(number);
+		} catch (Exception e) {
+			log.info("countReplyAnswer : ", e);
+		}
+		model.put("count", count);
+		return model;
+	}
+
+	@ResponseBody
+	@PostMapping("reportReply")
+	public Map<String, Object> reportReply(Report dto, HttpSession session) throws Exception {
+		Map<String, Object> model = new HashMap<>();
+		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setMemberIdx(info.getMemberidx());
+			dto.setTablename("usedBoardReply");
+			service.reportUsedBoard(dto);
+			model.put("state", "true");
+		} catch (Exception e) {
+			log.info("reportReply : ", e);
+			model.put("state", "false");
+		}
+		return model;
 	}
 }

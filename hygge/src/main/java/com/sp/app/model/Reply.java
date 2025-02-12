@@ -16,4 +16,6 @@ public class Reply {
 	private int block;
 	private long parent_num;
 	private String name;
+
+	private int replyCount;
 }

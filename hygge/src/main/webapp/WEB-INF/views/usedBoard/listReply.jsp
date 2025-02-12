@@ -24,11 +24,11 @@
 					<span class="reply-dropdown"><i class="bi bi-three-dots-vertical"></i></span>
 					<div class="reply-menu">
 						<c:choose>
-							<c:when test="${dto.memberIdx === sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
+							<c:when test="${dto.memberIdx == sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
 								<div class="deleteReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}">삭제</div>
 							</c:when>
 							<c:otherwise>
-								<div class="reportReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}">신고</div>
+								<div class="reportReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">신고</div>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -41,13 +41,13 @@
 	
 		<tr>
 			<td colspan="2">
-				<button type="button" class="btn btnReplyAnswerLayout" data-replyNum="${dto.num}" style="background-color: #ebf1db;">답글 <span id="answerCount${dto.num}">2</span></button>
+				<button type="button" class="btn btnReplyAnswerLayout" data-replyNum="${dto.num}" style="background-color: #ebf1db;">답글 <span id="answerCount${dto.num}">${dto.replyCount}</span></button>
 			</td>
 		</tr>
 		<tr class="reply-answer">
 			<td colspan="2">
 				<div style="border: 1px solid #DDECB8;">
-					<div id="listReplyAnswer" class="answer-list"></div>
+					<div id="listReplyAnswer${dto.num}" class="answer-list"></div>
 					<div style="border-bottom: 1px solid #DDECB8; display: flex; flex-direction: row;">
 						<span style="margin: 2px;"><i class="bi bi-arrow-return-right"></i></span>
 						<textarea class="form-control" style="resize: none; margin: 0px;"></textarea>

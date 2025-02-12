@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sp.app.model.Reply;
+import com.sp.app.model.Report;
 import com.sp.app.model.UsedBoard;
 import com.sp.app.model.UsedRequest;
 
@@ -20,10 +21,15 @@ public interface UsedBoardService {
 
 	public boolean deleteUploadFile(String uploadPath, String filename);
 
+	public void reportUsedBoard(Report dto) throws Exception;
+
 	public void insertReply(Reply dto) throws Exception;
 	public int replyCount(long num);
 	public List<Reply> listReply(Map<String, Object> map);
 	public void deleteReply(Map<String, Object> map) throws Exception;
+
+	public List<Reply> listReplyAnswer(long num);
+	public int replyAnswerCount(long num);
 
 	// 중고거래 신청
 	public void insertRequest(UsedRequest dto) throws Exception;

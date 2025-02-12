@@ -1,0 +1,28 @@
+package com.sp.app.model;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class Funding {
+	private long num;
+	private long memberIdx;
+	private String request_date;
+	private String accept_date;
+	private String title;
+	private int business; // 사업자 등록되어있는 경우 1, 아닌경우 0
+	private String content;
+	private int target;
+	private int term;
+	private String thumbnail;
+	private int category_num;
+
+	private String start_date;
+	private String end_date;
+	private int block;
+	private String delivery_info;
+	private String project_info;
+}
