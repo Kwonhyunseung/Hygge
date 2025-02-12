@@ -11,6 +11,37 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normal.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normalModal.css" type="text/css">
+<style type="text/css">
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.page-info {
+    text-align: center;
+    margin: 10px 0;
+    color: #666;
+}
+</style>
 </head>
 <body>
 
@@ -24,26 +55,32 @@
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 		
        <div class="main-content">
-            <div class="content-header">
-            <h2>일반회원 관리</h2>
-	            <div class="tab-buttons">
-	                <button class="tab-button active" id="accountWait">유저관리</button>
-	                <button class="tab-button" id="reportMember">신고누적</button>
-	        	</div>
-        	</div>
+			<div class="content-header">
+			    <h2>일반회원 관리</h2>
+			    <div class="tab-buttons">
+			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
+			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">
+			            유저관리
+			        </a>
+			        <a href="${pageContext.request.contextPath}/admin/memberManagement/reportOver" 
+			           class="tab-button ${not empty reportOnly ? 'active' : ''}" id="reportMember">
+			            신고누적
+			        </a>
+			    </div>
+			</div>
         	
-            <div class="search-container">
-                <form class="search-form">
-                    <select class="search-input">
-                        <option>전체</option>
-                        <option>정상회원</option>
-                        <option>차단회원</option>
-                        <option>승인대기</option>
-                    </select>
-                    <input type="text" class="search-input" placeholder="회원 검색...">
-                    <button type="submit" class="search-button">검색</button>
-                </form>
-            </div>
+			<div class="search-container">
+			    <form class="search-form" method="get" action="${pageContext.request.contextPath}/admin/memberManagement/normal">
+			        <select name="schType" class="search-input">
+			            <option value="all" ${schType=="all"?"selected":""}>전체</option>
+			            <option value="name" ${schType=="name"?"selected":""}>이름</option>
+			            <option value="email" ${schType=="email"?"selected":""}>이메일</option>
+			            <option value="reg_date" ${schType=="reg_date"?"selected":""}>가입일</option>
+			        </select>
+			        <input type="text" name="kwd" class="search-input" placeholder="회원 검색..." value="${kwd}">
+			        <button type="submit" class="search-button">검색</button>
+			    </form>
+			</div>
 
             <table class="member-table">
                 <thead>
@@ -74,7 +111,7 @@
 	                    <td>${item.name}</td>
 	                    <td>${item.email1}@${item.email2}</td>
 	                    <td>${fn:substring(item.reg_date, 0, 10)}</td>
-	                    <td>신고횟수</td>
+	                    <td>${item.report_count}</td>
 	                    <td>
 	                    	<c:choose>
 	                    		<c:when test="${item.block == 0}">
@@ -101,58 +138,27 @@
                 </tbody>
             </table>
 
-            <div class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">&raquo;</a>
-            </div>
-        </div>
+			<div class="pagination">
+			    ${paging}
+			</div>
+			
+
+
+<c:if test="${dataCount != 0}">
+    <div class="page-info">
+        ${dataCount}개(${page}/${total_page} 페이지)
     </div>
+</c:if>
 
 <script type="text/javascript">
-// ajaxFun
-function ajaxFun(url, method, formData, dataType, fn, file = false) {
-	const settings = {
-			type: method, 
-			data: formData,
-			dataType:dataType,
-			success:function(data) {
-				fn(data);
-			},
-			beforeSend: function(jqXHR) {
-			},
-			complete: function () {
-			},
-			error: function(jqXHR) {
-				console.log(jqXHR.responseText);
-			}
-	};
-	
-	if(file) {
-		settings.processData = false;  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
-		settings.contentType = false;  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
-	}
-	
-	$.ajax(url, settings);
-}
-
 // 회원 이름 클릭시 회원 정보가 모달창으로 띄우기
 
-// ajax로 가입 신청 목록 확인하는 버튼
-$(function() {
-	$('#accountWait').click(function(e){
-		 alert('유저관리');
-	});
-});
-
-// Ajax
+// 신고
 $(function() {
 	$('#reportMember').click(function(e){
-		 alert('신고누적');
+		$('.tab-button').removeClass('active');
+		$(this).addClass('active');
+		
 	});
 });
 
@@ -161,7 +167,13 @@ $(function(){
 	const $modal = $('#memberModal');
 	const $close = $('.close');
 	
+
 	$('.member-table tbody tr').click(function(e){
+		
+	    if($(e.target).hasClass('block-button') || $(e.target).hasClass('approve-button')) {
+	        return;
+	    }
+	    
 		const memberIdx = $(this).find('td:eq(0)').text();
 		const name = $(this).find('td:eq(1)').text();
 		const email = $(this).find('td:eq(2)').text();
@@ -222,31 +234,77 @@ $(function(){
 // 탭 전환
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
-        // 탭 버튼 활성화 상태 변경
+    	
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         
-        // 탭 컨텐츠 전환
         const tabId = button.dataset.tab + 'Projects';
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         
-        // 데이터 로드
         loadTabData(button.dataset.tab);
     });
 });
 
-// 차단
+//차단
 $(function(){
-    $('.block-button').click(function(){
-    	e.stopPropagation();
-        alert('차단하시겠습니까?');
-    });
-
-    $('.approve-button').click(function(){
-        alert('차단해제 하시겠습니까?');
+    $(document).on('click', '.block-button, .approve-button', function(e){
+        e.preventDefault(); 
+        e.stopPropagation();
+        
+        const $btn = $(this);
+        const $row = $btn.closest('tr');
+        const memberIdx = $row.find('td:first').text();
+        
+        // 차단 버튼인 경우
+        if($btn.hasClass('block-button')) {
+            let url = '${pageContext.request.contextPath}/admin/memberManagement/block'; 
+            let data = {memberIdx: memberIdx};
+            
+            if(confirm('차단하시겠습니까?')) {
+                ajaxRequest(url, 'post', data, 'json', function(data) {
+                    if(data.state === "success") {  
+                        $row.find('.status-badge')
+                            .removeClass('status-active')
+                            .addClass('status-blocked')
+                            .text('차단');
+                        
+                        $btn.removeClass('block-button')
+                            .addClass('approve-button')
+                            .text('차단해제');
+                    } else { 
+                        alert('처리 중 문제가 발생했습니다.');
+                    }
+                });
+            }
+        } 
+        // 차단해제 버튼인 경우
+        else if($btn.hasClass('approve-button')) {
+            let url = '${pageContext.request.contextPath}/admin/memberManagement/unblock'; 
+            let data = {memberIdx: memberIdx};
+            
+            if(confirm('차단을 해제하시겠습니까?')) {
+                ajaxRequest(url, 'post', data, 'json', function(data) {
+                    if(data.state === "success") {  
+                        $row.find('.status-badge')
+                            .removeClass('status-blocked')
+                            .addClass('status-active')
+                            .text('정상');
+                        
+                        $btn.removeClass('approve-button')
+                            .addClass('block-button')
+                            .text('차단');
+                    } else { 
+                        alert('처리 중 문제가 발생했습니다.');
+                    }
+                });
+            }
+        }
+        
+        return false;
     });
 });
+
 
 </script>
 

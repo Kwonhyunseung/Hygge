@@ -8,7 +8,6 @@
 <title>관리자 페이지</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/jquery/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dist/js/admin/left.js"></script>
 
 </head>

@@ -36,11 +36,9 @@ public class MemberManage {
 	private String addr1;
 	private String addr2;
 	
-	// private int reportCount;
+	private int report_count;
 	
 	
-	
-	// 신고 횟수
 	
 	/*
 	private String zip;

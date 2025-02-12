@@ -2,13 +2,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.admin.mapper.MemberManageMapper">
 
-<select id="normalMember" parameterType="String">
-	SELECT m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block, m1.last_login, m1.mod_date,
-		m2.email1, m2.email2, m2.birth, m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age, m2.gender 
-	FROM member1 m1
-	JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
-	LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
-	WHERE ma.Authority = #{authority}
+<select id="normalMember" parameterType="map" resultType="com.sp.app.admin.model.MemberManage">
+    SELECT * FROM (
+        SELECT ROWNUM rnum, tb.* FROM (
+            SELECT m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block,
+                   m1.last_login, m1.mod_date, m2.email1, m2.email2, m2.birth,
+                   m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age,
+                   m2.gender, COUNT(r.num) as report_count
+            FROM member1 m1
+            JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+            LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+            LEFT OUTER JOIN Report r ON m1.memberIdx = r.memberIdx
+            WHERE ma.Authority = 'USER'
+            <if test="kwd != null and kwd != ''">
+                <choose>
+                    <when test="schType == 'name'">
+                        AND INSTR(m1.name, #{kwd}) > 0
+                    </when>
+                    <when test="schType == 'email'">
+                        AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+                    </when>
+                    <when test="schType == 'reg_date'">
+                        AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+                    </when>
+                </choose>
+            </if>
+            GROUP BY m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block,
+                     m1.last_login, m1.mod_date, m2.email1, m2.email2, m2.birth,
+                     m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age, m2.gender
+            ORDER BY m1.memberIdx DESC
+       	) tb WHERE ROWNUM &lt;= #{offset} + #{size}  
+    ) WHERE rnum > #{offset}
+</select>
+
+<update id="block" parameterType="String">
+	UPDATE member1 SET block = 1
+	WHERE memberIdx = #{memberIdx}
+</update>
+
+<update id="unblock" parameterType="String">
+	UPDATE member1 SET block = 0
+	WHERE memberIdx = #{memberIdx}
+</update>
+
+<select id="reportMembers" parameterType="String" resultType="com.sp.app.admin.model.MemberManage">
+    SELECT m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block, m1.last_login, m1.mod_date,
+           m2.email1, m2.email2, m2.birth, m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age, m2.gender,
+           COUNT(r.num) as report_count
+    FROM member1 m1
+    JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+    LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+    LEFT OUTER JOIN Report r ON m1.memberIdx = r.memberIdx
+    WHERE ma.Authority = #{authority}
+    GROUP BY m1.memberIdx, m1.name, m1.nickName, m1.reg_date, m1.block, m1.last_login, m1.mod_date,
+             m2.email1, m2.email2, m2.birth, m2.addr1, m2.addr2, m2.tel1, m2.tel2, m2.tel3, m2.age, m2.gender
+    HAVING COUNT(r.num) > 3
+</select>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT NVL(COUNT(DISTINCT m1.memberIdx), 0)
+    FROM member1 m1
+    JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+    LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+    WHERE ma.Authority = 'USER'
+    <if test="kwd != null and kwd != ''">
+        <choose>
+            <when test="schType == 'name'">
+                AND INSTR(m1.name, #{kwd}) > 0
+            </when>
+            <when test="schType == 'email'">
+                AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+            </when>
+            <when test="schType == 'reg_date'">
+                AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+            </when>
+        </choose>
+    </if>
 </select>
 
 </mapper>
