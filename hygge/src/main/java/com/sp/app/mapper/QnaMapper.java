@@ -10,16 +10,15 @@ import java.util.List;
 
 @Mapper
 public interface QnaMapper {
-	public void insertQuestion(Qna dto) throws SQLException;
-	public void updateQuestion(Qna dto) throws SQLException;
+	public void insertQna(Qna dto) throws SQLException;
+	public void updateQna(Qna dto) throws SQLException;
 	public void updateAnswer(Qna dto) throws SQLException;
-	public void deleteQuestion(long num) throws SQLException;
+	public void deleteQna(long num) throws SQLException;
 	
 	public int dataCount(Map<String, Object> map);
-	public List<Qna> listQuestion(Map<String, Object> map);
+	public List<Qna> listQna(Map<String, Object> map);
 	
 	public Qna findById(long num);
-	public void updateHitCount(long num) throws SQLException;
 	public Qna findByPrev(Map<String, Object> map);
 	public Qna findByNext(Map<String, Object> map);
 }

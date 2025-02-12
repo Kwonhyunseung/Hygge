@@ -4,20 +4,68 @@
 
     <!-- 문의 글 삽입 -->
     <insert id="insertQna" parameterType="com.sp.app.model.Qna">
-        INSERT INTO qna (num, memberidx, q_title, q_content, block, q_date, category)
-        VALUES (#{num}, #{memberidx}, #{qTitle}, #{qContent}, #{block}, SYSDATE, #{category})
+        INSERT INTO qna (num, memberIdx, q_Title, q_Content, block, q_date, category)
+        VALUES (qna_seq.nextval, #{memberIdx}, #{q_Title}, #{q_Content}, 0, SYSDATE, #{category})
     </insert>
-
+    
+    <!-- 공통 WHERE 조건 정의 -->
+    <sql id="where-list">
+        <if test="kwd != null and kwd != ''">
+            AND (q_title LIKE CONCAT('%', #{kwd}, '%') OR q_content LIKE CONCAT('%', #{kwd}, '%'))
+        </if>
+        <if test="category != null">
+            AND category = #{category}
+        </if>
+    </sql>
+    
     <!-- 문의 글 목록 조회 -->
-    <select id="listQna" parameterType="map" resultType="com.sp.app.model.Qna">
-        SELECT num, memberidx, q_title, q_content, block, q_date, category
-        FROM qna
+<select id="listQna" parameterType="map" resultType="com.sp.app.model.Qna">
+    SELECT qna.num, qna.memberIdx, qna.q_Title, qna.q_Content, qna.block, qna.q_date, qna.category,
+    q_category.name AS name
+    FROM qna
+    LEFT JOIN q_category ON qna.category = q_category.category
+    <where>
+        <if test="memberIdx != null and memberIdx != 0">
+            memberIdx = #{memberIdx}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (q_title LIKE CONCAT('%', #{keyword}, '%') OR q_content LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+    </where>
+       ORDER BY qna.num DESC
+</select>
+
+    <!-- 문의 글 갯수 조회 -->
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0) 
+        FROM qna q
+        JOIN member1 m ON q.memberIdx = m.memberIdx
         <where>
-            <if test="keyword != null and keyword != ''">
-                AND (q_title LIKE CONCAT('%', #{keyword}, '%') OR q_content LIKE CONCAT('%', #{keyword}, '%'))
+            <if test="kwd != null and kwd != ''">
+                <include refid="where-list"/>
             </if>
         </where>
     </select>
+<select id="findById" parameterType="long" resultType="com.sp.app.model.Qna">
+    SELECT
+        qna.num,
+        qna.memberIdx,
+        qna.q_Title,
+        qna.q_Content,
+        qna.a_Title,
+        qna.a_Content,
+        qna.block,
+        qna.q_Date,
+        qna.a_Date,
+        qna.category,
+        qna.adminIdx,
+        member1.id, 
+        q_category.name AS name  <!-- q_category 테이블에서 name 값을 가져와 name으로 지정 -->
+    FROM qna
+    LEFT JOIN member1 ON qna.memberIdx = member1.memberIdx
+    LEFT JOIN q_category ON qna.category = q_category.category <!-- q_category 테이블과 JOIN -->
+    WHERE qna.num = #{num}
+</select>
 
     <!-- 특정 문의 글 조회 -->
     <select id="selectQna" parameterType="long" resultType="com.sp.app.model.Qna">
@@ -36,7 +84,7 @@
     </select>
 
     <!-- 다음 문의 글 조회 -->
-    <select id="selectNextQna" parameterType="map" resultType="com.sp.app.model.Qna">
+    <select id="findByNext" parameterType="map" resultType="com.sp.app.model.Qna">
         SELECT num, memberidx, q_title, q_content, block, q_date, category
         FROM qna
         WHERE num &gt; #{num}

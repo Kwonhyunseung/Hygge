@@ -7,8 +7,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<title>문의 상세보기</title>
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
 /* 전체 스타일 */
 .content-wrapper {
@@ -94,7 +92,7 @@ h2 {
 
         <!-- 카테고리 정보 -->
         <div class="text-center">
-            <span class="category-label">${qna.category}</span>
+            <span class="category-label">${qna.name}</span>
         </div>
 
         <!-- 문의 정보 -->
@@ -102,33 +100,29 @@ h2 {
             <tbody>
                 <tr>
                     <th>제목</th>
-                    <td>${qna.title}</td>
-                </tr>
-                <tr>
-                    <th>작성자</th>
-                    <td>${qna.writer}</td>
+                    <td>${qna.q_Title}</td>
                 </tr>
                 <tr>
                     <th>작성일</th>
-                    <td><fmt:formatDate value="${qna.qDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+                    <td><fmt:formatDate value="${qna.q_Date}" pattern="yyyy-MM-dd HH:mm" /></td>
                 </tr>
                 <tr>
                     <th>상태</th>
-                    <td><span class="badge bg-warning">${qna.status}</span></td>
+                    <td><span class="badge bg-warning">굿</span></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="qna-content">
             <strong>질문</strong>
-            <p>${qna.content}</p>
+            <p>${qna.q_Content}</p>
         </div>
 
         <!-- 관리자 답변 -->
-        <c:if test="${not empty answer}">
+        <c:if test="${not empty qna}">
             <div class="answer-box">
                 <strong>관리자 답변</strong>
-                <p>${answer.content}</p>
+                <p>${qna.a_Content}</p>
             </div>
         </c:if>
 

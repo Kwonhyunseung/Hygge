@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1:1 문의 게시판</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
     body {
@@ -49,19 +48,21 @@
     }
 </style>
 <script>
-    function filterCategory() {
-        var selectedCategory = document.getElementById("category").value;
-        var rows = document.querySelectorAll(".qna-row");
+function filterCategory() {
+    var selectedCategory = document.getElementById("category").value;
+    var rows = document.querySelectorAll(".qna-row");
 
-        rows.forEach(function(row) {
-            var category = row.getAttribute("data-category");
-            if (selectedCategory === "all" || category === selectedCategory) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
+    rows.forEach(function(row) {
+        var category = row.getAttribute("data-category");
+
+        // 선택한 카테고리에 맞게 표시/숨김 처리
+        if (selectedCategory === "all" || category === selectedCategory) {
+            row.style.display = ""; // 카테고리가 맞으면 표시
+        } else {
+            row.style.display = "none"; // 카테고리가 맞지 않으면 숨김
+        }
+    });
+}
 </script>
 </head>
 <body>
@@ -73,17 +74,17 @@
             <h2 class="text-center mb-4">1:1 문의 게시판</h2>
             
             <!-- 카테고리 필터 -->
-            <div class="category-filter">
-                <label for="category">카테고리:</label>
-                <select id="category" class="form-select d-inline-block w-auto" onchange="filterCategory()">
-                    <option value="all">전체</option>
-                    <option value="상품">상품</option>
-                    <option value="배송">배송</option>
-                    <option value="결제">결제</option>
-                    <option value="회원">회원</option>
-                    <option value="기타">기타</option>
-                </select>
-            </div>
+<div class="category-filter">
+    <label for="category">카테고리:</label>
+    <select id="category" class="form-select d-inline-block w-auto" onchange="filterCategory()">
+        <option value="all">전체</option>
+        <option value="1">상품</option>
+        <option value="2">배송</option>
+        <option value="3">결제</option>
+        <option value="4">회원</option>
+        <option value="5">기타</option>
+    </select>
+</div>
 
             <!-- 문의 목록 -->
             <table class="table table-bordered">
@@ -98,52 +99,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="qna-row" data-category="상품">
-                        <td>1</td>
-                        <td>상품</td>
-                        <td><a href="${pageContext.request.contextPath}/qna/article">상품 문의</a></td>
-                        <td>사용자1</td>
-                        <td>2025-02-06</td>
-                        <td><span class="badge bg-warning">대기</span></td>
-                    </tr>
-                    <tr class="qna-row" data-category="배송">
-                        <td>2</td>
-                        <td>배송</td>
-                        <td><a href="${pageContext.request.contextPath}/qna/article">배송 관련 문의</a></td>
-                        <td>사용자2</td>
-                        <td>2025-02-05</td>
-                        <td><span class="badge bg-success">완료</span></td>
-                    </tr>
-                    <tr class="qna-row" data-category="결제">
-                        <td>3</td>
-                        <td>결제</td>
-                        <td><a href="${pageContext.request.contextPath}/qna/article">결제 취소 문의</a></td>
-                        <td>사용자3</td>
-                        <td>2025-02-04</td>
-                        <td><span class="badge bg-warning">대기</span></td>
-                    </tr>
-                    <tr class="qna-row" data-category="회원">
-                        <td>4</td>
-                        <td>회원</td>
-                        <td><a href="${pageContext.request.contextPath}/qna/article">회원 탈퇴 문의</a></td>
-                        <td>사용자4</td>
-                        <td>2025-02-03</td>
-                        <td><span class="badge bg-success">완료</span></td>
-                    </tr>
-                    <tr class="qna-row" data-category="기타">
-                        <td>5</td>
-                        <td>기타</td>
-                        <td><a href="${pageContext.request.contextPath}/qna/article">기타 문의</a></td>
-                        <td>사용자5</td>
-                        <td>2025-02-02</td>
-                        <td><span class="badge bg-warning">대기</span></td>
-                    </tr>
+                    <c:forEach var="qna" items="${qnaList}">
+                        <tr class="qna-row" data-category="${qna.category}">
+                            <td>${qna.num}</td>
+                            <td>${qna.name}</td>
+                            <td>
+                                <a href="${pageContext.request.contextPath}/qna/article?num=${qna.num}">
+                                    ${qna.q_Title}  <!-- 질문 제목 -->
+                                </a>
+                            </td>
+                            <td>${qna.userName}</td>
+                            <td><fmt:formatDate value="${qna.q_Date}" pattern="yyyy-MM-dd" /></td>  <!-- 질문 날짜 -->
+                            <td>
+                                <c:choose>
+                                    <c:when test="${qna.block == 1}">
+                                        <span class="badge bg-warning">대기</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="badge bg-success">완료</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
 
             <!-- 문의 작성 버튼 -->
             <div class="text-end">
-                <a href="${pageContext.request.contextPath}/qna/write" class="btn btn-primary" style="height : 39px;">문의 작성</a>
+                <a href="${pageContext.request.contextPath}/qna/write" class="btn btn-primary" style="height: 39px;">문의 작성</a>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.sp.app.mapper.QnaMapper;
 import com.sp.app.model.Qna;
 
 import lombok.RequiredArgsConstructor;
@@ -13,28 +14,59 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class QnaServiceImpl implements QnaService {@Override
-	public void insertQna(Qna dto) throws Exception {
-		// TODO Auto-generated method stub
+public class QnaServiceImpl implements QnaService {
+	private final QnaMapper mapper;
+	
+	
+	@Override
+	public void insertQna(Qna qna) throws Exception {
+		try {
+			mapper.insertQna(qna);
+		} catch (Exception e) {
+
+			log.info("insertQuestion : ", e);
+			
+			throw e;
+		}
 		
 	}
 
 	@Override
 	public int dataCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		
+		try {
+			result = mapper.dataCount(map);
+		} catch (Exception e) {
+			log.info("dataCount : ", e);
+		}
+		
+		return result;
 	}
 
 	@Override
 	public List<Qna> listQna(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Qna> list = null;
+		try {
+			list = mapper.listQna(map);
+		} catch (Exception e) {
+			log.info("listQna : ", e);
+		}
+		return list;
 	}
 
 	@Override
 	public Qna findById(long num) {
-		// TODO Auto-generated method stub
-		return null;
+		Qna dto = null;
+		
+		try {
+			dto = mapper.findById(num);
+		} catch (Exception e) {
+			log.info("findById : ", e);
+		
+		}
+		
+		return dto;
 	}
 
 	@Override
@@ -50,7 +82,7 @@ public class QnaServiceImpl implements QnaService {@Override
 	}
 
 	@Override
-	public void updateQna(Qna dto) throws Exception {
+	public void updateQna(Qna qna) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
