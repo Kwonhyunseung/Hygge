@@ -74,17 +74,17 @@ function filterCategory() {
             <h2 class="text-center mb-4">1:1 문의 게시판</h2>
             
             <!-- 카테고리 필터 -->
-<div class="category-filter">
-    <label for="category">카테고리:</label>
-    <select id="category" class="form-select d-inline-block w-auto" onchange="filterCategory()">
-        <option value="all">전체</option>
-        <option value="1">상품</option>
-        <option value="2">배송</option>
-        <option value="3">결제</option>
-        <option value="4">회원</option>
-        <option value="5">기타</option>
-    </select>
-</div>
+            <div class="category-filter">
+                <label for="category">카테고리:</label>
+                <select id="category" class="form-select d-inline-block w-auto" onchange="filterCategory()">
+                    <option value="all">전체</option>
+                    <option value="1">상품</option>
+                    <option value="2">배송</option>
+                    <option value="3">결제</option>
+                    <option value="4">회원</option>
+                    <option value="5">기타</option>
+                </select>
+            </div>
 
             <!-- 문의 목록 -->
             <table class="table table-bordered">
@@ -93,7 +93,7 @@ function filterCategory() {
                         <th>번호</th>
                         <th>카테고리</th>
                         <th>제목</th>
-                        <th>작성자</th>
+                        <th>작성자ID</th>
                         <th>작성일</th>
                         <th>상태</th>
                     </tr>
@@ -108,15 +108,15 @@ function filterCategory() {
                                     ${qna.q_Title}  <!-- 질문 제목 -->
                                 </a>
                             </td>
-                            <td>${qna.userName}</td>
+                            <td>${qna.userId}</td>
                             <td><fmt:formatDate value="${qna.q_Date}" pattern="yyyy-MM-dd" /></td>  <!-- 질문 날짜 -->
                             <td>
                                 <c:choose>
-                                    <c:when test="${qna.block == 1}">
-                                        <span class="badge bg-warning">대기</span>
+                                    <c:when test="${not empty qna.a_Content}">
+                                        <span class="badge bg-success">완료</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="badge bg-success">완료</span>
+                                        <span class="badge bg-warning">대기</span>
                                     </c:otherwise>
                                 </c:choose>
                             </td>

@@ -108,7 +108,16 @@ h2 {
                 </tr>
                 <tr>
                     <th>상태</th>
-                    <td><span class="badge bg-warning">굿</span></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${not empty qna.a_Content}">
+                                <span class="badge bg-success">완료</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-warning">대기</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -119,7 +128,7 @@ h2 {
         </div>
 
         <!-- 관리자 답변 -->
-        <c:if test="${not empty qna}">
+        <c:if test="${not empty qna.a_Content}">
             <div class="answer-box">
                 <strong>관리자 답변</strong>
                 <p>${qna.a_Content}</p>

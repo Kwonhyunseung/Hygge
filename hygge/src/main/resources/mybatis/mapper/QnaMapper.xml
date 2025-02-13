@@ -18,22 +18,24 @@
         </if>
     </sql>
     
-    <!-- 문의 글 목록 조회 -->
+  <!-- 문의 글 목록 조회 -->
 <select id="listQna" parameterType="map" resultType="com.sp.app.model.Qna">
-    SELECT qna.num, qna.memberIdx, qna.q_Title, qna.q_Content, qna.block, qna.q_date, qna.category,
-    q_category.name AS name
+    SELECT qna.num, qna.memberIdx, qna.q_Title, qna.q_Content, qna.block, qna.q_date, 
+           qna.category, qna.a_Content, q_category.name AS name, m.id AS userId
     FROM qna
     LEFT JOIN q_category ON qna.category = q_category.category
+    LEFT JOIN member1 m ON qna.memberIdx = m.memberIdx  <!-- member1 테이블과 JOIN -->
     <where>
         <if test="memberIdx != null and memberIdx != 0">
-            memberIdx = #{memberIdx}
+            qna.memberIdx = #{memberIdx}
         </if>
         <if test="keyword != null and keyword != ''">
-            AND (q_title LIKE CONCAT('%', #{keyword}, '%') OR q_content LIKE CONCAT('%', #{keyword}, '%'))
+            AND (qna.q_title LIKE CONCAT('%', #{keyword}, '%') OR qna.q_content LIKE CONCAT('%', #{keyword}, '%'))
         </if>
     </where>
-       ORDER BY qna.num DESC
+    ORDER BY qna.num DESC
 </select>
+
 
     <!-- 문의 글 갯수 조회 -->
     <select id="dataCount" parameterType="map" resultType="Integer">
