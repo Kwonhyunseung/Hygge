@@ -1,4 +1,4 @@
-﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -50,8 +50,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-   	margin-top: 40px; 
-   
+    margin-top: 40px; 
 }
 .sidebar .profile-icon-wrapper {
     display: flex;
@@ -130,7 +129,6 @@ body {
     justify-content: center;
     font-weight: bold;
     position: relative;
-    
 }
 .stats span {
     position: absolute;
@@ -229,15 +227,15 @@ body {
                         <i class="bi bi-person profile-icon"></i>
                     </a>
                 </div>
-                <h3>스프링님</h3>
+                <h3>${myPage.name}</h3>
             </div>
             <div class="bottom-section">
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/member/profileEdit">프로필 수정</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/buyHistory">구매내역</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/couponList">보유 쿠폰</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/review">후기</a></li>
-                    <li><a href="${pageContext.request.contextPath}/member/chat">채팅</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myPage/profileEdit">프로필 수정</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myPage/buyHistory">구매내역</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myPage/couponList">보유 쿠폰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myPage/review">후기</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myPage/chat">채팅</a></li>
                     <li><a href="${pageContext.request.contextPath}/qna/list">1:1 문의</a></li>
                 </ul>
                 <button type="button">로그아웃</button>
@@ -245,24 +243,52 @@ body {
         </div>
         <div class="content">
             <div class="stats">
-                <div>17 개 <span>내가 쓴 글</span></div>
-                <div>17 개 <span>내가 쓴 후기</span></div>
-                <div>17 개 <span>내가 쓴 쿠폰</span></div>
+                <div>5개 <span>내가 쓴 글</span></div>
+                <div>5 개 <span>내가 쓴 후기</span></div>
+                <div>5 개 <span>내가 쓴 쿠폰</span></div>
             </div>
             <div class="info">
-                <div><strong>이름</strong></div> <div>김선용</div>
-                <div><strong>닉네임</strong></div> <div>스프링</div>
-                <div><strong>아이디</strong></div> <div>spring11</div>
-                <div><strong>생년월일</strong></div> <div>1999-06-02 | 만 25세</div>
-                <div><strong>전화번호</strong></div> <div>010-1234-5678</div>
-                <div><strong>이메일</strong></div> <div>spring@naver.com</div>
-                <div><strong>주소</strong></div> <div>서울 마포구 월드컵북로21 풍성빌딩</div>
-                <div><strong>성별</strong></div> <div>남자</div>
-                <div><strong>선호 카테고리</strong></div> <div>가전 | 패션 | 뷰티</div>
+                <div><strong>이름</strong></div> <div>${myPage.name}</div>
+                <div><strong>닉네임</strong></div> <div>${myPage.nickName}</div>
+                <div><strong>아이디</strong></div> <div>${myPage.id}</div>
+                <div><strong>생년월일</strong></div> <div>${myPage.birth} | 만 ${myPage.age}세</div>
+                <div><strong>전화번호</strong></div> <div>${myPage.tel1}-${myPage.tel2}-${myPage.tel3}</div>
+                <div><strong>이메일</strong></div> <div>${myPage.email1}@${myPage.email2}</div>
+                <div><strong>주소</strong></div> <div>${myPage.addr1}</div>
+                <div><strong>상세주소</strong></div> <div>${myPage.addr2}</div>
+                <div><strong>성별</strong></div> 
+				<div>
+				    <c:choose>
+				        <c:when test="${myPage.gender == 1}">여성</c:when>
+				        <c:when test="${myPage.gender == 2}">남성</c:when>
+				        <c:otherwise>알 수 없음</c:otherwise>
+				    </c:choose>
+				</div>
+               <div><strong>선호 카테고리</strong></div>
+						<div>
+						    <c:choose>
+						        <c:when test="${myPage.category1 == 1}">가전</c:when>
+						        <c:when test="${myPage.category1 == 2}">패션</c:when>
+						        <c:when test="${myPage.category1 == 3}">뷰티</c:when>
+						        <c:otherwise>기타</c:otherwise>
+						    </c:choose>,
+						    <c:choose>
+						        <c:when test="${myPage.category2 == 1}">가전</c:when>
+						        <c:when test="${myPage.category2 == 2}">패션</c:when>
+						        <c:when test="${myPage.category2 == 3}">뷰티</c:when>
+						        <c:otherwise>기타</c:otherwise>
+						    </c:choose>,
+						    <c:choose>
+						        <c:when test="${myPage.category3 == 1}">가전</c:when>
+						        <c:when test="${myPage.category3 == 2}">패션</c:when>
+						        <c:when test="${myPage.category3 == 3}">뷰티</c:when>
+						        <c:otherwise>기타</c:otherwise>
+						    </c:choose>
+						</div>
             </div>
         </div>
     </div>
-  
+
     <footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     </footer>

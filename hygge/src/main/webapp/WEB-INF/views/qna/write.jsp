@@ -97,8 +97,8 @@ label {
 					<div class="select-wrapper">
 						<select class="form-control" id="category" name="category"
 							required>
-							<option value="1">배송</option>
-							<option value="2">상품</option>
+							<option value="1">상품</option>
+							<option value="2">배송</option>
 							<option value="3">결제</option>
 							<option value="4">회원</option>
 							<option value="5">기타</option>

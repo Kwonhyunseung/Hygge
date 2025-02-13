@@ -99,9 +99,10 @@ function filterCategory() {
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="qna" items="${qnaList}">
+                	
+                    <c:forEach var="qna" items="${qnaList}" varStatus="status">
                         <tr class="qna-row" data-category="${qna.category}">
-                            <td>${qna.num}</td>
+                            <td>${dataCount - (page-1) * size - status.index}</td>
                             <td>${qna.name}</td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/qna/article?num=${qna.num}">

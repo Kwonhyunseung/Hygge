@@ -93,7 +93,7 @@ h2 {
                 </tbody>
             </table>
             <div class="text-center mt-3">
-                <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
+                <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
             </div>
         </div>
     </div>
