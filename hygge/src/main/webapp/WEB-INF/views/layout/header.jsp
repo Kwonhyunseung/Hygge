@@ -4,8 +4,6 @@
 
 <head>
 
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
-
 <title>hygge</title>
 <link rel="icon" href="${pageContext.request.contextPath}/dist/images/hygge_logo.ico" type="image/x-icon">
 

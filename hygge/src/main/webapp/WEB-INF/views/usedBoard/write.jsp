@@ -8,7 +8,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/write.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/forms.css" type="text/css">
-
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 <script type="text/javascript">
 function sendOk() {
 	const f = document.usedBoardForm;

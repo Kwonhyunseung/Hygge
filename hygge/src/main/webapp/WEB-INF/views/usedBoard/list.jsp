@@ -8,7 +8,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/list.css" type="text/css">
 <script src="${pageContext.request.contextPath}/dist/js/event-list-css/btn-borderstyle-none.js"></script>
-
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 </head>
 <body>
 <header>

@@ -3,4 +3,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.FundingMainMapper">
 
+	<sql id="hotContent-list">
+	</sql>
+	<sql id="new-list">
+	</sql>
+
+	<select id="listFunding" parameterType="map" resultType="com.sp.app.model.Funding">
+		SELECT p.num num, title, thumbnail, project_info, target
+		FROM project p
+		JOIN projectRequest pr ON p.num = pr.num
+		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		<where>
+			<if test="menu != null and menu != ''">
+				<if test="menu == 'category'">
+					(pr.category_num = #{kwd} OR c.parent_num = #{kwd})
+				</if>
+				<if test="menu == 'hotContent'">
+					<include refid="hotContent-list"/>
+				</if>
+				<if test="menu == 'new'">
+					<include refid="new-list"/>
+				</if>
+				<if test="menu == 'deadline'">
+				</if>
+				<if test="menu == 'comingsoon'">
+				</if>
+			</if>
+		</where>
+	</select>
 </mapper>

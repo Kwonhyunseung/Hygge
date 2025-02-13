@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
-
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 </head>
 <body>
 <header>
@@ -51,21 +51,22 @@
 					<span class="article-dropdown"><i class="bi bi-three-dots-vertical" title="메뉴"></i></span>
 					<div class="article-menu" style="font-weight: 500;">
 						<c:choose>
-							<c:when test="${dto.memberIdx == sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
+							<c:when test="${dto.memberIdx == sessionScope.member.memberidx}">
+								<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}" style="border-bottom: 1px solid #d5d5d5;">삭제</div>
+								<div class="updateArticle article-menu-item" data-articleNum="${dto.num}">수정</div>
+							</c:when>
+							<c:when test="${sessionScope.member.authority == 'ADMIN'}">
 								<div class="deleteArticle article-menu-item" data-articleNum="${dto.num}">삭제</div>
 							</c:when>
 							<c:otherwise>
 								<div class="reportArticle article-menu-item" data-articleNum="${dto.num}" data-writer="${dto.memberIdx}">신고</div>
 							</c:otherwise>
 						</c:choose>
-						<c:if test="${sessionScope.member.memberidx == dto.memberIdx}">
-						</c:if>
-						<c:if test="${sessionScope.member.memberidx != dto.memberIdx}">
-						</c:if>
 					</div>
 				</div>
-				<div class="product">제품명&nbsp; ${dto.product}</div>
-				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">${dto.priceFormat}</span> 원</div>
+				<div class="nickName">거래유저&nbsp; ${dto.nickName}</div>
+				<div class="product">제품명&nbsp;&nbsp;&nbsp;&nbsp; ${dto.product}</div>
+				<div class="price">가격&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #E95151; font-style: italic;">${dto.priceFormat}</span> 원</div>
 				<div class="article-content">${dto.content}</div>
 			</div>
 		</div>

@@ -1,14 +1,11 @@
-package com.sp.app.mapper;
+package com.sp.app.service;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.sp.app.model.Funding;
 
-@Mapper
-public interface FundingMainMapper {
+public interface FundingService {
 	public List<Funding> listFundingRequest(Map<String, Object> map);
 	public List<Funding> listFunding(Map<String, Object> map);
 }
