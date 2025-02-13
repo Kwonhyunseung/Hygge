@@ -117,33 +117,30 @@ document.addEventListener("DOMContentLoaded", function () {
 window.addEventListener('load', function() {
 	const likeicons = document.querySelectorAll('.like-btn i');
 	for(let icon of likeicons) {
-		if (icon.classList.contains('bi-heart')) {
-			icon.addEventListener('mouseover', function() {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			});
-			icon.addEventListener('mouseout', function() {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			});
-		}
-		if (icon.classList.contains('bi-heart-fill')) {
-			icon.addEventListener('mouseover', function() {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			});
-			icon.addEventListener('mouseout', function() {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			});
-		}
-	}
-
-	// 좋아요 버튼 클릭
-	for (let icon of likeicons) {
-		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
 		let liked = icon.classList.contains('bi-heart-fill');
+		icon.addEventListener('mouseover', function() {
+			if (!liked) {
+				icon.classList.remove('bi-heart');
+				icon.classList.add('bi-heart-fill');
+			} else {
+				icon.classList.remove('bi-heart-fill');
+				icon.classList.add('bi-heart');
+			}
+		});
+		icon.addEventListener('mouseout', function() {
+			if (!liked) {
+				icon.classList.remove('bi-heart-fill');
+				icon.classList.add('bi-heart');
+			} else {
+				icon.classList.remove('bi-heart');
+				icon.classList.add('bi-heart-fill');
+			}
+		});
+
+		// 좋아요 버튼 클릭
+		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
 		icon.addEventListener('click', function() {
+			liked = !liked;
 			let url = '${pageContext.request.contextPath}/funding/userLikeProject';
 			const fn = function() {
 				if(liked) {
@@ -154,7 +151,7 @@ window.addEventListener('load', function() {
 					icon.classList.remove('bi-heart');
 				}
 			};
-			ajaxRequest(url, 'post', {num: num, liked: liked}, 'json', fn);
+			ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
 		});
 	}
 });

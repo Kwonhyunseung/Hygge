@@ -3,6 +3,7 @@ package com.sp.app.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import com.sp.app.model.Funding;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.FundingService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -99,10 +101,10 @@ import lombok.extern.slf4j.Slf4j;
 	@PostMapping("userLikeProject")
 	public Map<String, Object> fundingLike(@RequestParam(name = "num") long number,
 			@RequestParam(name = "liked") boolean isUserLiked,
-			HttpSession session) {
+			HttpSession session, HttpServletResponse resp) throws Exception {
 		Map<String, Object> model = new HashMap<>();
 		try {
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			SessionInfo info = Objects.requireNonNull((SessionInfo)session.getAttribute("member"));
 			model.put("num", number);
 			model.put("memberIdx", info.getMemberidx());
 
@@ -111,6 +113,9 @@ import lombok.extern.slf4j.Slf4j;
 			} else {
 				service.insertFundingLike(model);
 			}
+		} catch (NullPointerException e) {
+			log.info("비로그인 상태 : ");
+			resp.sendError(401);
 		} catch (Exception e) {
 			log.info("fundingLike : ", e);
 		}

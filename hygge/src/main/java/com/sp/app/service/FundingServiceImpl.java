@@ -24,9 +24,7 @@ public class FundingServiceImpl implements FundingService {
 			list = mapper.listFunding(map);
 			for (Funding dto : list) {
 				map.put("num", dto.getNum());
-				if (map.get("memberIdx") == null) {
-					map.put("memberIdx", 0);
-				}
+
 				if (mapper.isUserLiked(map) != 0) {
 					dto.setUserLiked(true);
 				} else {
