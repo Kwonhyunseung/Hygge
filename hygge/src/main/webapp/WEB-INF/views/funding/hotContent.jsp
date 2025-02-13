@@ -138,6 +138,25 @@ window.addEventListener('load', function() {
 			});
 		}
 	}
+
+	// 좋아요 버튼 클릭
+	for (let icon of likeicons) {
+		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
+		let liked = icon.classList.contains('bi-heart-fill');
+		icon.addEventListener('click', function() {
+			let url = '${pageContext.request.contextPath}/funding/userLikeProject';
+			const fn = function() {
+				if(liked) {
+					icon.classList.remove('bi-heart-fill');
+					icon.classList.add('bi-heart');
+				} else {
+					icon.classList.add('bi-heart-fill');
+					icon.classList.remove('bi-heart');
+				}
+			};
+			ajaxRequest(url, 'post', {num: num, liked: liked}, 'json', fn);
+		});
+	}
 });
 </script>
 
@@ -196,121 +215,31 @@ window.addEventListener('load', function() {
 	<div class="body-container">
 		<div class="body-main">
 			<div class="funding-list-container">
-				<div class="funding">
-					<div class="funding-thumbnail">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-						</a>
-						<div class="like-btn">
-							<i class="bi bi-heart" style="color: red;"></i>
+				<c:forEach var="dto" items="${list}">
+					<div class="funding">
+						<div class="funding-thumbnail">
+							<a href="#">
+								<img src="${pageContext.request.contextPath}/uploads/Funding/${dto.thumbnail}">
+							</a>
+							<div class="like-btn" data-num="${dto.num}">
+								<i class="bi ${dto.userLiked ? 'bi-heart-fill' : 'bi-heart'}" style="color: red;"></i>
+							</div>
+						</div>
+						<div class="funding-title-div">
+							<a href="#">${dto.title}</a>
+						</div>
+						<div class="funding-detail-div">
+							<span>${dto.project_info}</span>
+						</div>
+						<div class="funding-progress-div">
+							<span class="progress-percentage">76%</span>
+							<span class="progress-amount">760,000원</span>
+							<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
+								<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
+							</div>
 						</div>
 					</div>
-					<div class="funding-title-div">
-						<a href="#">[과학동아40주년] 슈뢰딩거의 고양이 뱃지</a>
-					</div>
-					<div class="funding-detail-div">
-						<span>뱃지를 회전하기 전까지, 고양이는 살아 있는 동시에 죽은 상태입니다. 아아 아아 아아 아 아 아ㅏㅇ ㅏㅏㅏㅇ ㅏㅏ아아아 앙 아 앙 ㅏ아 아 아 아 아 아 아 아 아 ㅇ ㅏㅇ ㅏㅇ ㅏ아 아 ㅇ ㅏㅏㅇ ㅏㅇ 아 아 아ㅏㅇ  ㅏ아 아 아아아아아 아 앙 </span>
-					</div>
-					<div class="funding-progress-div">
-						<span class="progress-percentage">76%</span>
-						<span class="progress-amount">760,000원</span>
-						<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-							<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-						</div>
-					</div>
-				</div>
-				<div class="funding">
-					<div class="funding-thumbnail">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-						</a>
-						<div class="like-btn">
-							<i class="bi bi-heart" style="color: red;"></i>
-						</div>
-					</div>
-					<div class="funding-title-div">
-						<a href="#">작가들의 테이핑 구조&lt;신개념 멀티보호대&gt;</a>
-					</div>
-					<div class="funding-detail-div">
-						<span>손목&팔꿈치가 짜릿할 때! 손목&팔꿈치를 겸용으로 착용 가능하도록 개발된 런워크 시즌3!</span>
-					</div>
-					<div class="funding-progress-div">
-						<span class="progress-percentage">76%</span>
-						<span class="progress-amount">760,000원</span>
-						<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-							<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-						</div>
-					</div>
-				</div>
-				<div class="funding">
-					<div class="funding-thumbnail">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-						</a>
-						<div class="like-btn">
-							<i class="bi bi-heart" style="color: red;"></i>
-						</div>
-					</div>
-					<div class="funding-title-div">
-						<a href="#">All in One! &lt;원고 꾸미기&gt;2</a>
-					</div>
-					<div class="funding-detail-div">
-						<span>뭔가 허전한 컷과 컷 사이! 누가 대신 채워줬으면 좋겠다. 그냥 맡겨버리자, 원고 꾸미기!</span>
-					</div>
-					<div class="funding-progress-div">
-						<span class="progress-percentage">76%</span>
-						<span class="progress-amount">760,000원</span>
-						<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-							<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-						</div>
-					</div>
-				</div>
-				<div class="funding">
-					<div class="funding-thumbnail">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-						</a>
-						<div class="like-btn">
-							<i class="bi bi-heart" style="color: red;"></i>
-						</div>
-					</div>
-					<div class="funding-title-div">
-						<a href="#">완벽적중&lt;한국풍 판타지 타로카드:삼라만상&gt;</a>
-					</div>
-					<div class="funding-detail-div">
-						<span>화려한 자개박으로 꾸며진 나전칠기 컨셉의 한국 전통 판타지풍 타로카드 78장</span>
-					</div>
-					<div class="funding-progress-div">
-						<span class="progress-percentage">76%</span>
-						<span class="progress-amount">760,000원</span>
-						<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-							<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-						</div>
-					</div>
-				</div>
-				<div class="funding">
-					<div class="funding-thumbnail">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-						</a>
-						<div class="like-btn">
-							<i class="bi bi-heart" style="color: red;"></i>
-						</div>
-					</div>
-					<div class="funding-title-div">
-						<a href="#">범죄수사물&응급재난상황자료집 | 양장본</a>
-					</div>
-					<div class="funding-detail-div">
-						<span>범죄가 일어났다, 주인공이 위험하다!</span>
-					</div>
-					<div class="funding-progress-div">
-						<span class="progress-percentage">76%</span>
-						<span class="progress-amount">760,000원</span>
-						<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-							<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-						</div>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>

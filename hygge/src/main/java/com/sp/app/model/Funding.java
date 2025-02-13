@@ -25,4 +25,7 @@ public class Funding {
 	private int block;
 	private String delivery_info;
 	private String project_info;
+
+	private int progress;
+	private boolean userLiked;
 }

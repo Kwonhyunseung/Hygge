@@ -6,6 +6,7 @@
 	<sql id="hotContent-list">
 	</sql>
 	<sql id="new-list">
+		
 	</sql>
 
 	<select id="listFunding" parameterType="map" resultType="com.sp.app.model.Funding">
@@ -30,5 +31,45 @@
 				</if>
 			</if>
 		</where>
+		ORDER BY p.num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
+
+	<select id="dataCountFunding" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM project p
+		LEFT OUTER JOIN projectRequest pr ON p.num = pr.num
+		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		<where>
+			<if test="menu != null and menu != ''">
+				<if test="menu == 'category'">
+					(pr.category_num = #{kwd} OR c.parent_num = #{kwd})
+				</if>
+				<if test="menu == 'hotContent'">
+					<include refid="hotContent-list"/>
+				</if>
+				<if test="menu == 'new'">
+					<include refid="new-list"/>
+				</if>
+				<if test="menu == 'deadline'">
+				</if>
+				<if test="menu == 'comingsoon'">
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="isUserLiked" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM projectLike
+		WHERE num = #{num} AND memberIdx = #{memberIdx}
+	</select>
+
+	<insert id="insertFundingLike" parameterType="map">
+		INSERT INTO projectLike (num, memberIdx) VALUES (#{num}, #{memberIdx})
+	</insert>
+
+	<delete id="deleteFundingLike" parameterType="map">
+		DELETE FROM projectLike WHERE num = #{num} AND memberIdx = #{memberIdx}
+	</delete>
 </mapper>

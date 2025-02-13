@@ -8,4 +8,8 @@ import com.sp.app.model.Funding;
 public interface FundingService {
 	public List<Funding> listFundingRequest(Map<String, Object> map);
 	public List<Funding> listFunding(Map<String, Object> map);
+	public int dataCountFunding(Map<String, Object> map);
+
+	public void insertFundingLike(Map<String, Object> map) throws Exception;
+	public void deleteFundingLike(Map<String, Object> map) throws Exception;
 }
