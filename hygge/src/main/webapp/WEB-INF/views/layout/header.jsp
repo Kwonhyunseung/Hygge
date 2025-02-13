@@ -342,7 +342,7 @@
         
         <c:choose>
           <c:when test="${not empty member}">
-           <a href="${pageContext.request.contextPath}/member/myPage"> <span class="nav-link me-2">${member.name}님</span></a>
+           <a href="${pageContext.request.contextPath}/myPage/myPage"> <span class="nav-link me-2">${member.name}님</span></a>
             <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
           </c:when>
           <c:otherwise>

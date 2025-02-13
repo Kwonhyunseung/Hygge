@@ -138,7 +138,7 @@ h2 {
         <!-- 버튼 영역 -->
         <div class="text-center mt-4">
             <a href="${pageContext.request.contextPath}/qna/list" class="btn btn-secondary btn-custom">목록으로</a>
-            <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-primary btn-custom" style="height: 38px; background-color:#82B10C; border-radius: 7px;">마이페이지</a>
+            <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-primary btn-custom" style="height: 38px; background-color:#82B10C; border-radius: 7px;">마이페이지</a>
         </div>
     </div>
 </div>

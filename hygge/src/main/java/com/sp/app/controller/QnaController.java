@@ -89,6 +89,7 @@ public class QnaController {
 
             String paging = paginateUtil.paging(current_page, total_page, listUrl);
 
+            System.out.println(dataCount+", "+current_page+", "+size);
             // 모델에 데이터 담기 (목록은 qnaList, 상세 링크는 articleUrl 등)
             model.addAttribute("qnaList", qnaList);
             model.addAttribute("articleUrl", articleUrl);

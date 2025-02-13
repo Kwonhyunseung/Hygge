@@ -46,6 +46,7 @@
             <if test="kwd != null and kwd != ''">
                 <include refid="where-list"/>
             </if>
+            AND  q.memberIdx = #{memberIdx}
         </where>
     </select>
 <select id="findById" parameterType="long" resultType="com.sp.app.model.Qna">
