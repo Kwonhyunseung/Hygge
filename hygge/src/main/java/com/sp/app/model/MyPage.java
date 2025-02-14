@@ -29,4 +29,9 @@ public class MyPage {
     private String category1;
     private String category2;
     private String category3;
+    private Long reviewNum;
+    private String content;
+    private int grade;
+    private Long projectNum;
+    private Long salesNum;
 }

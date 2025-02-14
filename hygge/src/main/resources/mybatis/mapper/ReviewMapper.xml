@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.ReviewMapper">
+ <!-- 후기 개수를 조회하는 쿼리 -->
+  <select id="reviewCount" resultType="int" parameterType="Long">
+    SELECT COUNT(r.review_num) AS reviewCount
+    FROM member1 m
+    JOIN payment p ON m.memberIdx = p.memberIdx
+    JOIN sales s ON p.payment_num = s.payment_num
+    LEFT JOIN review r ON s.num = r.sales_num
+    WHERE m.memberIdx = #{memberIdx}
+  </select>
+
+  <!-- 후기 내용 조회 쿼리 -->
+  <select id="getReview" resultType="com.sp.app.model.Review">
+    SELECT r.review_num, r.content, r.grade, r.project_num, r.sales_num
+    FROM member1 m
+    JOIN payment p ON m.memberIdx = p.memberIdx
+    JOIN sales s ON p.payment_num = s.payment_num
+    LEFT JOIN review r ON s.num = r.sales_num
+    WHERE m.memberIdx = #{memberIdx}
+  </select>
+</mapper>

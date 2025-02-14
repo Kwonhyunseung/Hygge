@@ -244,7 +244,9 @@ body {
         <div class="content">
             <div class="stats">
                 <div>5개 <span>내가 쓴 글</span></div>
-                <div>5 개 <span>내가 쓴 후기</span></div>
+				<div>
+				    ${reviewCount} 개 <span>내가 쓴 후기</span>
+				</div>
                 <div>5 개 <span>내가 쓴 쿠폰</span></div>
             </div>
             <div class="info">

@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.MyPageMapper">
-<select id="findById" resultType="com.sp.app.model.MyPage">
+
+  <!-- 기존 findById 쿼리 -->
+  <select id="findById" resultType="com.sp.app.model.MyPage">
     SELECT m1.memberIdx, m1.id, m1.pwd, m1.name, m2.birth,
-    m1.nickName, m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1,m2.addr2,
-    m2.gender,m1.category1,m1.category2,m1.category3,m2.age
+           m1.nickName, m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1, m2.addr2,
+           m2.gender, m1.category1, m1.category2, m1.category3, m2.age
     FROM member1 m1
     LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
     LEFT OUTER JOIN memberauthority ma ON m1.memberIdx = ma.memberIdx
     WHERE m1.id = #{id}
-</select>
+  </select>
 
+  <!-- 프로필 수정 쿼리 -->
+  <update id="ProfileEdit" parameterType="com.sp.app.model.MyPage">
+    UPDATE member1 m1
+    SET 
+        m1.nickName = #{nickName},
+        m1.name = #{name},
+        m1.category1 = #{category1, jdbcType=NUMERIC},
+        m1.category2 = #{category2, jdbcType=NUMERIC},
+        m1.category3 = #{category3, jdbcType=NUMERIC}
+    WHERE m1.id = #{id}
+  </update>
 
-
-
+  <update id="ProfileEdit2" parameterType="com.sp.app.model.MyPage">
+    UPDATE member2 m2
+    SET 
+        m2.email1 = #{email1},
+        m2.email2 = #{email2},
+        m2.tel1 = #{tel1},
+        m2.tel2 = #{tel2},
+        m2.tel3 = #{tel3},
+        m2.addr1 = #{addr1},
+        m2.addr2 = #{addr2},
+        m2.gender = #{gender}
+    WHERE m2.memberIdx = (SELECT m1.memberIdx FROM member1 m1 WHERE m1.id = #{id})
+  </update>
 </mapper>
