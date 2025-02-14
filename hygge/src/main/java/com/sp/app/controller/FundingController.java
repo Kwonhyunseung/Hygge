@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 	private final FundingService service;
 	private final PaginateUtil paginateUtil;
 	
-	@GetMapping("/product")
+	@GetMapping("product")
 	public String handleHome(Model model) {
 		try {
 		
@@ -41,21 +41,39 @@ import lombok.extern.slf4j.Slf4j;
 		return "funding/main/product";
 	}
 	
-	@GetMapping("/plan")
+	@GetMapping("plan")
 	public String plan(Model model) {
 		return "funding/main/contentPlan";
 	}
 	
-	@GetMapping("/review")
+	@GetMapping("review")
 	public String review(Model model) {
 		return "funding/main/contentReview";
 	}
-	
-	@GetMapping("/funding/{menu}")
-	public String fundingList(@RequestParam(name = "page", defaultValue = "1") int current_page,
-			@PathVariable(name = "menu") String Menu, 
+
+
+	@GetMapping("{menu}")
+	public String fundingList(@PathVariable(name = "menu") String Menu, 
 			@RequestParam(name = "kwd", defaultValue = "") String keyword,
 			Model model, HttpSession session) {
+		try {
+			model.addAttribute("menu", Menu);
+
+		} catch (Exception e) {
+			log.info("fundingList : ", e);
+		}
+		return "funding/funding_list";
+	}
+
+
+	@ResponseBody
+	@GetMapping("{menu}/fundingList")
+	public Map<String, Object> fundingList(@RequestParam(name = "page", defaultValue = "1") int current_page,
+			@PathVariable(name = "menu") String Menu,
+			@RequestParam(name = "order") String Order,
+			@RequestParam(name = "kwd", defaultValue = "") String keyword,
+			HttpSession session) {
+		Map<String, Object> model = new HashMap<>();
 		try {
 			int size = 20;
 			int total_page = 0;
@@ -64,6 +82,7 @@ import lombok.extern.slf4j.Slf4j;
 			Map<String, Object> map = new HashMap<>();
 			map.put("menu", Menu);
 			map.put("kwd", keyword);
+			map.put("order", Order);
 			
 			dataCount = service.dataCountFunding(map);
 			total_page = paginateUtil.pageCount(dataCount, size);
@@ -82,16 +101,17 @@ import lombok.extern.slf4j.Slf4j;
 
 			List<Funding> list = service.listFunding(map);
 			
-			model.addAttribute("list", list);
-			model.addAttribute("dataCount", dataCount);
-			model.addAttribute("size", size);
-			model.addAttribute("page", current_page);
-			model.addAttribute("total_page", total_page);
+			model.put("list", list);
+			model.put("dataCount", dataCount);
+			model.put("size", size);
+			model.put("page", current_page);
+			model.put("total_page", total_page);
+			model.put("menu", Menu);
 
 		} catch (Exception e) {
 			log.info("fundingList : ", e);
 		}
-		return "funding/funding_list";
+		return model;
 	}
 
 	@ResponseBody

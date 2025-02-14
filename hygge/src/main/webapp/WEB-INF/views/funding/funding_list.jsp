@@ -113,48 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// 좋아요버튼 hover 반응
-window.addEventListener('load', function() {
-	const likeicons = document.querySelectorAll('.like-btn i');
-	for(let icon of likeicons) {
-		let liked = icon.classList.contains('bi-heart-fill');
-		icon.addEventListener('mouseover', function() {
-			if (!liked) {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			} else {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			}
-		});
-		icon.addEventListener('mouseout', function() {
-			if (!liked) {
-				icon.classList.remove('bi-heart-fill');
-				icon.classList.add('bi-heart');
-			} else {
-				icon.classList.remove('bi-heart');
-				icon.classList.add('bi-heart-fill');
-			}
-		});
-
-		// 좋아요 버튼 클릭
-		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
-		icon.addEventListener('click', function() {
-			liked = !liked;
-			let url = '${pageContext.request.contextPath}/funding/userLikeProject';
-			const fn = function() {
-				if(liked) {
-					icon.classList.remove('bi-heart-fill');
-					icon.classList.add('bi-heart');
-				} else {
-					icon.classList.add('bi-heart-fill');
-					icon.classList.remove('bi-heart');
-				}
-			};
-			ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
-		});
-	}
-});
 </script>
 
 </head>
@@ -165,7 +123,7 @@ window.addEventListener('load', function() {
 
 <main>
 	<div class="search-bar">
-		<input type="text" placeholder=" 검색어를 입력해주세요!">
+		<input type="text" placeholder=" 검색어를 입력해주세요!" value="${keyword}">
 	</div>
 
 	<div class="categories">
@@ -213,7 +171,7 @@ window.addEventListener('load', function() {
 		<div class="body-main">
 			<div class="body-header">
 				<div class="body-header-dataCount">
-					<span class="dataCount-span">${dataCount}</span>개의 프로젝트가 있습니다.
+					<span class="dataCount-span">0</span>개의 프로젝트가 있습니다.
 				</div>
 				<div class="order-select-container">
 					<select class="order-select">
@@ -223,37 +181,196 @@ window.addEventListener('load', function() {
 					</select>
 				</div>
 			</div>
-			<div class="funding-list-container">
-				<c:forEach var="dto" items="${list}">
-					<div class="funding">
-						<div class="funding-thumbnail">
-							<a href="#">
-								<img src="${pageContext.request.contextPath}/uploads/Funding/${dto.thumbnail}">
-							</a>
-							<div class="like-btn" data-num="${dto.num}">
-								<i class="bi ${dto.userLiked ? 'bi-heart-fill' : 'bi-heart'}" style="color: red;"></i>
-							</div>
-						</div>
-						<div class="funding-title-div">
-							<a href="#">${dto.title}</a>
-						</div>
-						<div class="funding-detail-div">
-							<span>${dto.project_info}</span>
-						</div>
-						<div class="funding-progress-div">
-							<span class="progress-percentage">76%</span>
-							<span class="progress-amount">760,000원</span>
-							<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">
-								<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-			</div>
+			<div class="funding-list-container"></div>
+			<div class="sentinel" data-loading="false"></div>
 		</div>
 	</div>
 </main>
 
+<script type="text/javascript">
+const listNode = document.querySelector('.funding-list-container');
+const sentinelNode = document.querySelector('.sentinel');
+
+function loadContent(page, order) {
+	let url = '${pageContext.request.contextPath}/funding/${menu}/fundingList';
+	let query = 'page=' + page + '&order=' + order;
+	const fn = function(data) {
+		addNewContent(data);
+	};
+	ajaxRequest(url, 'get', query, 'json', fn);
+}
+
+function addNewContent(data) {
+	let dataCount = parseInt(data.dataCount);
+	let pageNo = parseInt(data.page);
+	let total_page = parseInt(data.total_page);
+
+	const itemCount = document.querySelector('.dataCount-span');
+
+	listNode.setAttribute('data-pageNo', pageNo);
+	listNode.setAttribute('data-totalPage', total_page);
+
+	itemCount.innerHTML = dataCount;
+	sentinelNode.style.display = 'none';
+
+	if (dataCount === 0) {
+		listNode.innerHTML = '';
+		return;
+	}
+
+	let htmlText;
+	for (let dto of data.list) {
+		let num = dto.num;
+		let icon = dto.userLiked ? 'bi-heart-fill' : 'bi-heart';
+		let thumbnail = dto.thumbnail;
+		let title = dto.title;
+		let project_info = dto.project_info;
+
+		htmlText = '<div class="funding">'
+		htmlText +=	'	<div class="funding-thumbnail">'
+		htmlText +=	'		<a href="#">'
+		htmlText +=	'			<img src="${pageContext.request.contextPath}/uploads/Funding/' + thumbnail + '">';
+		htmlText += '		</a>';
+		htmlText += '		<div class="like-btn" data-num="' + num + '">';
+		htmlText += '			<i class="bi ' + icon + '" style="color: red;"></i>';
+		htmlText += '		</div>';
+		htmlText += '	</div>';
+		htmlText += '	<div class="funding-title-div">';
+		htmlText += '		<a href="#">' + title + '</a>';
+		htmlText += '	</div>';
+		htmlText += '	<div class="funding-detail-div">';
+		htmlText += '		<span>' + project_info + '</span>';
+		htmlText += '	</div>';
+		htmlText += '	<div class="funding-progress-div">';
+		htmlText += '		<span class="progress-percentage">76%</span>';
+		htmlText += '		<span class="progress-amount">760,000원</span>';
+		htmlText += '		<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">';
+		htmlText += '			<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>';
+		htmlText += '		</div>';
+		htmlText += '	</div>';
+		htmlText += '</div>';
+
+		listNode.insertAdjacentHTML('beforeend', htmlText);
+	}
+
+	if (pageNo < total_page) {
+		sentinelNode.setAttribute('data-loading', 'false');
+		sentinelNode.style.display = 'block';
+		io.observe(sentinelNode); // 관찰 대상(요소) 등록
+	}
+
+}
+
+// 인터 섹션 옵저버를 이용한 무한 스크롤
+const ioCallback = (entries, io) => {
+	entries.forEach((entry) => {
+		if (entry.isIntersecting) {
+			// 관찰 대상의 교차(겹치는) 상태: 화면에 보이는 상태
+			let loading = sentinelNode.getAttribute('data-loading');
+			if (loading !== 'false') {
+				return;
+			}
+
+			io.unobserve(entry.target); // 기존 관찰하던 요소는 더이상 관찰하지 않음
+
+			let pageNo = parseInt(listNode.getAttribute('data-pageNo'));
+			let total_page = parseInt(listNode.getAttribute('data-totalPage'));
+			let order = $('.order-select option:selected').val();
+
+
+			if (pageNo === 0 || pageNo < total_page) {
+				pageNo++;
+				loadContent(pageNo, order);
+			}
+		}
+	});
+}
+
+const io = new IntersectionObserver(ioCallback); // 관찰자 초기화
+
+$(function() {
+	let order = $('.order-select option:selected').val();
+	loadContent(1, order);
+	// select onchange 이벤트 등록
+	$('.order-select').change(function() {
+		$('.funding-list-container').empty();
+		let url = '${pageContext.request.contextPath}/funding/${menu}/fundingList';
+		let query = 'page=1&order=' + $(this).val();
+		const fn = function(data) {
+			$('.funding-list-container').empty();
+			addNewContent(data);
+		}
+		ajaxRequest(url, 'get', query, 'json', fn);
+	});
+});
+
+//좋아요버튼
+$(function() {
+	$('.funding-list-container').on('mouseover', '.funding', function() {
+		let $icon = $(this).find('i');
+		$icon.mouseover(function() {
+			let liked = $(this).hasClass('bi-heart-fill');
+			if (!liked) {
+				$icon.removeClass('bi-heart');
+				$icon.addClass('bi-heart-fill');
+			} else {
+				$icon.removeClass('bi-heart-fill');
+				$icon.addClass('bi-heart');
+			}
+		});
+	});
+	$('.funding-list-container').on('mouseout', '.funding', function() {
+		let $icon = $(this).find('i');
+		let liked = $icon.hasClass('bi-heart-fill');
+		$icon.mouseout(function() {
+			if (!liked) {
+				$icon.removeClass('bi-heart-fill');
+				$icon.addClass('bi-heart');
+				
+			} else {
+				$icon.removeClass('bi-heart');
+				$icon.addClass('bi-heart-fill');
+			}
+		});
+	});
+	$('.funding-list-container').on('click', '.funding i', function() {
+		const num = $(this).closest('div').attr('data-num');
+		let liked = $(this).hasClass('bi-heart-fill');
+		let url = '${pageContext.request.contextPath}/funding/userLikeProject';
+		const fn = function() {
+			if(liked) {
+				$(this).innerHTML = '<i class="bi bi-heart" style="color: red;"></i>';
+			} else {
+				$(this).innerHTML = '<i class="bi bi-heart" style="color: red;"></i>';
+			}
+		};
+
+		ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
+	});
+});
+/*
+window.addEventListener('load', function() {
+		// 좋아요 버튼 클릭
+		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
+		icon.addEventListener('click', function() {
+			liked = !liked;
+			let url = '${pageContext.request.contextPath}/funding/userLikeProject';
+			const fn = function() {
+				if(liked) {
+					icon.classList.remove('bi-heart-fill');
+					icon.classList.add('bi-heart');
+				} else {
+					icon.classList.add('bi-heart-fill');
+					icon.classList.remove('bi-heart');
+				}
+			};
+			ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
+		});
+	}
+});
+ */
+
+</script>
 <footer>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </footer>
