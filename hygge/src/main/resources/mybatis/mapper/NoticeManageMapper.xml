@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.NoticeManageMapper">
+
+    <insert id="insertNotice" parameterType="com.sp.app.admin.model.NoticeManage">
+        INSERT INTO Notice(num, title, content, reg_date, memberIdx)
+        VALUES (Notice_seq.NEXTVAL, #{title}, #{content}, SYSDATE, #{memberIdx})
+        <selectKey keyProperty="num" resultType="Long" order="AFTER">
+            SELECT Notice_seq.CURRVAL FROM dual
+        </selectKey>
+    </insert>
+
+    <insert id="insertNoticeFile" parameterType="com.sp.app.admin.model.NoticeManage">
+        INSERT INTO NoticeFile(num, notice_num, s_FileName)
+        VALUES (Notice_File_seq.NEXTVAL, #{num}, #{sFileName})
+    </insert>
+
+    <select id="listNotice" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
+        SELECT n.num, n.title, n.reg_date,
+            m.name, NVL(fileCount, 0) fileCount
+        FROM notice n
+        JOIN member1 m ON n.memberIdx = m.memberIdx
+        LEFT OUTER JOIN (
+            SELECT notice_num, COUNT(*) fileCount
+            FROM noticeFile
+            GROUP BY notice_num
+        ) f ON n.num = f.notice_num
+        <where>
+            <if test="schType != null and schType != '' and kwd != null and kwd != ''">
+                <choose>
+                    <when test="schType == 'title'">
+                        INSTR(title, #{kwd}) > 0
+                    </when>
+                    <when test="schType == 'content'">
+                        INSTR(content, #{kwd}) > 0
+                    </when>
+                    <otherwise>
+                        INSTR(title, #{kwd}) > 0 OR
+                        INSTR(content, #{kwd}) > 0
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY num DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM notice n
+        JOIN member1 m ON n.memberIdx = m.memberIdx
+        <where>
+            <if test="schType != null and schType != '' and kwd != null and kwd != ''">
+                <choose>
+                    <when test="schType == 'title'">
+                        INSTR(title, #{kwd}) > 0
+                    </when>
+                    <when test="schType == 'content'">
+                        INSTR(content, #{kwd}) > 0
+                    </when>
+                    <otherwise>
+                        INSTR(title, #{kwd}) > 0 OR
+                        INSTR(content, #{kwd}) > 0
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+    
+<select id="findById" parameterType="Long" resultType="com.sp.app.admin.model.NoticeManage">
+    SELECT n.num, n.title, n.content, n.reg_date, n.memberIdx,
+           m.name
+    FROM notice n
+    JOIN member1 m ON n.memberIdx = m.memberIdx
+    WHERE n.num = #{num}
+</select>
+
+<select id="findByPrev" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
+    SELECT num, title
+    FROM notice
+    WHERE num &gt; #{num}
+    ORDER BY num ASC
+    FETCH FIRST 1 ROWS ONLY
+</select>
+
+<select id="findByNext" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
+    SELECT num, title
+    FROM notice
+    WHERE num &lt; #{num}
+    ORDER BY num DESC
+    FETCH FIRST 1 ROWS ONLY
+</select>
+
+<select id="listNoticeFile" parameterType="Long" resultType="com.sp.app.admin.model.NoticeManage">
+    SELECT num, notice_num, s_FileName
+    FROM noticeFile
+    WHERE notice_num = #{num}
+</select>
+</mapper>

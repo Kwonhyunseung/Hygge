@@ -38,10 +38,10 @@ public class MemberManage {
 	
 	private int report_count;
 	
+	// 프로젝트
 	
 	
 	/*
-	private String zip;
 	private String addr1;
 	private String addr2;
 	private int failure_cnt;

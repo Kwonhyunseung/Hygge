@@ -3,4 +3,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.admin.mapper.TesterManageMapper">
 
+<select id="testerList" parameterType="map" resultType="com.sp.app.admin.model.TesterManage">
+    SELECT s.*, m.nickname, pr.title
+    FROM Sponsor s
+    JOIN member1 m ON s.memberIdx = m.memberIdx
+    JOIN Project p ON s.num = p.num
+    JOIN ProjectRequest pr ON p.num = pr.num
+    WHERE 1=1
+    <if test="kwd != null and kwd != ''">
+        <include refid="where-list"/>
+    </if>
+    ORDER BY s.request_date DESC
+    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<sql id="where-list">
+    <choose>
+        <when test="schType == 'nickname'">
+            AND INSTR(m.nickname, #{kwd}) >= 1
+        </when>
+        <when test="schType == 'title'">
+            AND INSTR(pr.title, #{kwd}) >= 1
+        </when>
+        <otherwise>
+            AND (INSTR(m.nickname, #{kwd}) >= 1 OR INSTR(pr.title, #{kwd}) >= 1)
+        </otherwise>
+    </choose>
+</sql>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT COUNT(*) 
+    FROM Sponsor s
+    JOIN member1 m ON s.memberIdx = m.memberIdx
+    JOIN Project p ON s.num = p.num
+    JOIN ProjectRequest pr ON p.num = pr.num
+    WHERE 1=1
+    <if test="kwd != null and kwd != ''">
+        <include refid="where-list"/>
+    </if>
+</select>
+
+<select id="getStatusCount" resultType="map">
+    SELECT 
+        COUNT(*) as TOTAL,
+        COUNT(CASE WHEN s.block = 0 THEN 1 END) as PENDING,
+        COUNT(CASE WHEN s.block = 1 THEN 1 END) as APPROVED,
+        COUNT(CASE WHEN s.block = 2 THEN 1 END) as REJECTED
+    FROM Sponsor s
+    JOIN member1 m ON s.memberIdx = m.memberIdx
+    JOIN Project p ON s.num = p.num
+    JOIN ProjectRequest pr ON p.num = pr.num
+</select>
+
+<update id="approveTester" parameterType="map">
+    UPDATE Sponsor 
+    SET accept_date = SYSDATE,
+        block = 1
+    WHERE memberIdx = #{memberIdx} AND num = #{num}
+</update>
+
+<update id="rejectTester" parameterType="map">
+    UPDATE Sponsor 
+    SET accept_date = SYSDATE,
+        block = 2
+    WHERE memberIdx = #{memberIdx} AND num = #{num}
+</update>
+
 </mapper>

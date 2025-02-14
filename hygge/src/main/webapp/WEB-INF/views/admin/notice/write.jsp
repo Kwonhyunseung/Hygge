@@ -30,49 +30,32 @@
             </div>
 
             <div class="content-body">
-                <form name="noticeForm" method="post">
-                    <div class="form-grid">
-                        <div class="form-row">
-                            <label>카테고리</label>
-                            <select name="category" class="form-select">
-                                <option value="general">일반공지</option>
-                                <option value="event">이벤트</option>
-                                <option value="maintenance">투표</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-row">
-                            <label>상단고정</label>
-                            <div class="form-check">
-                                <input type="checkbox" name="isFixed" id="isFixed">
-                                <label for="isFixed">공지사항 상단에 고정</label>
-                            </div>
-                        </div>
-
-                        <div class="form-row full-width">
-                            <label>제목</label>
-                            <input type="text" name="title" class="form-input" placeholder="제목을 입력하세요">
-                        </div>
-
-                        <div class="form-row full-width">
-                            <label>내용</label>
-                            <textarea id="summernote" name="content"></textarea>
-                        </div>
-
-                        <div class="form-row full-width">
-                            <label>첨부파일</label>
-                            <div class="file-upload">
-                                <input type="file" name="attachFile" multiple>
-                                <p class="help-text">최대 5개까지 첨부 가능 (파일당 최대 10MB)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="cancel-btn" onclick="history.back();">취소</button>
-                        <button type="submit" class="submit-btn">등록하기</button>
-                    </div>
-                </form>
+				<form name="noticeForm" method="post" enctype="multipart/form-data">
+				    <div class="form-grid">
+				        <div class="form-row full-width">
+				            <label>제목</label>
+				            <input type="text" name="title" class="form-input" placeholder="제목을 입력하세요">
+				        </div>
+				
+				        <div class="form-row full-width">
+				            <label>내용</label>
+				            <textarea id="summernote" name="content"></textarea>
+				        </div>
+				
+				        <div class="form-row full-width">
+				            <label>첨부파일</label>
+				            <div class="file-upload">
+				                <input type="file" name="attachFiles" multiple>
+				                <p class="help-text">최대 5개까지 첨부 가능</p>
+				            </div>
+				        </div>
+				    </div>
+				
+				    <div class="button-group">
+				        <button type="button" class="cancel-btn" onclick="history.back();">취소</button>
+				        <button type="submit" class="submit-btn">등록하기</button>
+				    </div>
+				</form>
             </div>
         </div>
     </div>

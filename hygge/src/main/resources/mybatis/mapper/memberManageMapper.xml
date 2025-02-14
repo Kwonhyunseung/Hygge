@@ -13,7 +13,7 @@
             JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
             LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
             LEFT OUTER JOIN Report r ON m1.memberIdx = r.memberIdx
-            WHERE ma.Authority = 'USER'
+            WHERE ma.Authority = #{authority}
             <if test="kwd != null and kwd != ''">
                 <choose>
                     <when test="schType == 'name'">
