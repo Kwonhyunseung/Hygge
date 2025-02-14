@@ -56,7 +56,6 @@ import lombok.extern.slf4j.Slf4j;
 			@PathVariable(name = "menu") String Menu, 
 			@RequestParam(name = "kwd", defaultValue = "") String keyword,
 			Model model, HttpSession session) {
-		String url = "";
 		try {
 			int size = 20;
 			int total_page = 0;
@@ -80,6 +79,7 @@ import lombok.extern.slf4j.Slf4j;
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
 			}
+
 			List<Funding> list = service.listFunding(map);
 			
 			model.addAttribute("list", list);
@@ -87,14 +87,11 @@ import lombok.extern.slf4j.Slf4j;
 			model.addAttribute("size", size);
 			model.addAttribute("page", current_page);
 			model.addAttribute("total_page", total_page);
-			
-			if (Menu.equalsIgnoreCase("hotContent")) {
-				url = "funding/hotContent";
-			}
+
 		} catch (Exception e) {
 			log.info("fundingList : ", e);
 		}
-		return url;
+		return "funding/funding_list";
 	}
 
 	@ResponseBody

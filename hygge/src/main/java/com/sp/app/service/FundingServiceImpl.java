@@ -22,9 +22,11 @@ public class FundingServiceImpl implements FundingService {
 		List<Funding> list = null;
 		try {
 			list = mapper.listFunding(map);
+			if (map.get("memberIdx") == null) {
+				return list;
+			}
 			for (Funding dto : list) {
 				map.put("num", dto.getNum());
-
 				if (mapper.isUserLiked(map) != 0) {
 					dto.setUserLiked(true);
 				} else {

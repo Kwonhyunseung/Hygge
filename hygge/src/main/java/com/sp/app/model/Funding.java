@@ -12,6 +12,8 @@ public class Funding {
 	private long memberIdx;
 	private String request_date;
 	private String accept_date;
+	private int accept_return; // 승인/반려 여부: 승인 1, 반려 0
+	private String return_reason; // 반려 사유
 	private String title;
 	private int business; // 사업자 등록되어있는 경우 1, 아닌경우 0
 	private String content;
