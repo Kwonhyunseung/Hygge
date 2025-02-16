@@ -35,6 +35,7 @@ public class NoticeManagementController {
 	private final PaginateUtil paginateUtil;
 	private String uploadPath;
 	
+	// 공지 사항
     @PostConstruct
     public void init() {
         uploadPath = storageService.getRealPath("/uploads/notice");
