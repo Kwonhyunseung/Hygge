@@ -51,10 +51,6 @@ body {
 }
 
 /* 프로젝트별 펀딩 및 달성률 */
-.pundingBtn {
-	box-sizing: border-box;
-}
-
 .pundingBtn>p {
 	margin-top: 15px;
 	width: 43px;
@@ -129,12 +125,8 @@ body {
 	border-radius: 5px;
 }
 
-/* 각각의 프로젝트 */
-.row.new {
-    justify-content: space-between; /* 간격 자동 조절 */
-    gap: 20px;
-}
-
+/* 다시보기 */
+/* 신규 프로젝트 */
 .newP {
     width: 275px;
     box-sizing: border-box;

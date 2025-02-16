@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원가입</title>
-
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -265,6 +265,7 @@ label {
 				<div class="d-flex">
 					<input type="text" class="form-control me-2" id="address"
 						placeholder="주소를 입력하세요" required readonly>
+					<input type="text" class="form-control me-2" id="postCode" placeholder="우편번호" required readonly>
 					<button type="button" class="btn btn-primary"
 						onclick="daumPostcode()"style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">주소찾기</button>
 				</div>
@@ -529,11 +530,11 @@ label {
 					}
 
 					// 우편번호와 주소 정보를 해당 필드에 넣는다.
-					document.getElementById('zip').value = data.zonecode; //5자리 새우편번호 사용
-					document.getElementById('addr1').value = fullAddr;
+					document.getElementById('postCode').value = data.zonecode; //5자리 새우편번호 사용
+					document.getElementById('address').value = fullAddr;
 
 					// 커서를 상세주소 필드로 이동한다.
-					document.getElementById('addr2').focus();
+					document.getElementById('detailAddress').focus();
 				}
 			}).open();
 		}
