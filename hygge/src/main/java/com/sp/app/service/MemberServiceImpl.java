@@ -3,6 +3,7 @@ package com.sp.app.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,13 +45,19 @@ public class MemberServiceImpl implements MemberService {
 		Member dto = null;
 
 		try {
-			dto = mapper.findById(id);
+			dto = Objects.requireNonNull(mapper.findById(id));
+		} catch (NullPointerException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 		} catch (Exception e) {
 			log.info("findById", e);
 		}
 
 		return dto;
 	}
+	
+	
+	
+	
 	
 	
 	@Override
