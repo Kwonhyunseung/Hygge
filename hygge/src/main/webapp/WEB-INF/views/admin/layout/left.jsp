@@ -46,8 +46,9 @@
         <li class="menu-item">
             <span class="menu-title">공지사항</span>
             <ul class="sub-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/notice/list">글 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/qna/list">1:1문의</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/notice/list">일반공지</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/event/list">이벤트</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/vote/list">투표</a></li>
             </ul>
         </li>
         
