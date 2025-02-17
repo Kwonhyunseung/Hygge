@@ -13,12 +13,23 @@
   </select>
 
   <!-- 후기 내용 조회 쿼리 -->
-  <select id="getReview" resultType="com.sp.app.model.Review">
-    SELECT r.review_num, r.content, r.grade, r.project_num, r.sales_num
-    FROM member1 m
-    JOIN payment p ON m.memberIdx = p.memberIdx
-    JOIN sales s ON p.payment_num = s.payment_num
-    LEFT JOIN review r ON s.num = r.sales_num
-    WHERE m.memberIdx = #{memberIdx}
-  </select>
+<select id="reviewList" parameterType="map" resultType="com.sp.app.model.Review">
+    SELECT 
+        r.review_num, 
+        r.content, 
+        r.grade, 
+        p.title, 
+        pay.payment_date, 
+        pay.pay_amount 
+    FROM 
+        review r
+    JOIN 
+        sales s ON r.sales_num = s.num
+    JOIN 
+        product p ON s.product_num = p.product_num
+    JOIN 
+        payment pay ON s.payment_num = pay.payment_num
+    WHERE 
+        pay.memberIdx = #{memberIdx}
+</select>
 </mapper>

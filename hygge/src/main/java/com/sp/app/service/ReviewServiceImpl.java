@@ -24,13 +24,15 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> listReview(Map<String, Object> map) {
+    public List<Review> reviewList(Map<String, Object> map) {
+    	List<Review> list = null;
         try {
-            return mapper.listReview(map);  // Mapper에서 구현한 listReview 쿼리 호출
+           list = mapper.reviewList(map);
         } catch (Exception e) {
             log.error("리스트 조회 실패", e);
-            return null;
+          
         }
+        return list;
     }
 
     @Override
@@ -52,4 +54,10 @@ public class ReviewServiceImpl implements ReviewService {
             return 0;
         }
     }
+
+	@Override
+	public int dataCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

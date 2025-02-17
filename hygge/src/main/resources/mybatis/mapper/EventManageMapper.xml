@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.EventManageMapper">
+<sql id="where-list">
+    <if test="kwd != null and kwd != ''">
+        <if test="schType=='title'">
+            AND INSTR(title, #{kwd}) &gt; 0
+        </if>
+        <if test="schType=='content'">
+            AND INSTR(content, #{kwd}) &gt; 0
+        </if>
+        <if test="schType=='all'">
+            AND (INSTR(title,#{kwd}) &gt; 0 OR INSTR(content, #{kwd}) &gt; 0)
+        </if>
+    </if>
+</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM event
+		WHERE 1=1
+		<include refid="where-list"/>
+	</select>
+
+	<select id="listEvent" parameterType="map" resultType="com.sp.app.admin.model.EventManage">
+		SELECT num, title, evt_date, exp_date, photo, content
+		FROM (
+			SELECT ROWNUM rnum, tb.*
+			FROM (
+				SELECT num, title, evt_date, exp_date, photo, content
+				FROM event
+				WHERE 1=1
+				<include refid="where-list"/>
+				ORDER BY num DESC
+			) tb WHERE ROWNUM &lt; #{offset} + #{size}
+		) WHERE rnum &gt; #{offset}
+	</select>
+
+	<insert id="insertEvent" parameterType="com.sp.app.admin.model.EventManage">
+		INSERT INTO event(num, title, content, evt_date, exp_date, photo)
+		VALUES (event_seq.NEXTVAL, #{title}, #{content}, #{evt_date}, #{exp_date}, #{photo,jdbcType=BLOB})
+	</insert>
+	
+	<select id="getPhotoPath" parameterType="long" resultType="string">
+  	  SELECT photo_path FROM event WHERE num = #{num}
+	</select>
+	
+</mapper>

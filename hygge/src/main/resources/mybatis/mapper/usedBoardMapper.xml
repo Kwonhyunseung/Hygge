@@ -97,7 +97,7 @@
 	</insert>
 
 	<select id="listReply" parameterType="map" resultType="com.sp.app.model.Reply">
-		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name, NVL(replyCount, 0) replyCount
+		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.nickName nickName, NVL(replyCount, 0) replyCount
 		FROM usedBoardReply ubr
 		JOIN member1 m ON ubr.memberIdx = m.memberIdx AND m.block = 0
 		LEFT OUTER JOIN (
@@ -117,6 +117,12 @@
 		WHERE block = 0 AND parent_Num = 0 AND board_num = #{num}
 	</select>
 
+	<select id="findWriter">
+		SELECT memberIdx
+		FROM usedBoard
+		WHERE board_num = #{num}
+	</select>
+
 	<update id="deleteReply" parameterType="map">
 		DELETE FROM usedBoardReply
 		WHERE num = #{num}
@@ -126,7 +132,7 @@
 	</update>
 
 	<select id="listReplyAnswer" parameterType="Long" resultType="com.sp.app.model.Reply">
-		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.name name, ubr.parent_Num parent_Num
+		SELECT ubr.num num, ubr.memberIdx memberIdx, ubr.board_num board_num, content, ubr.reg_date reg_date, m.nickName nickName, ubr.parent_Num parent_Num
 		FROM usedBoardReply ubr
 		JOIN member1 m ON ubr.memberIdx = m.memberIdx AND m.block = 0
 		WHERE ubr.block = 0 AND parent_Num = #{num}
@@ -141,8 +147,8 @@
 	
 	<!-- memberIdx 별 글 갯수 -->
 	<select id="boardCount" parameterType="long" resultType="int">
-    SELECT COUNT(*) 
-    FROM usedBoard 
-    WHERE memberIdx = #{memberIdx}
-</select>
+	    SELECT COUNT(*) 
+	    FROM usedBoard 
+	    WHERE memberIdx = #{memberIdx}
+	</select>
 </mapper>

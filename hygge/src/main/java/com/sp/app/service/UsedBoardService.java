@@ -31,6 +31,8 @@ public interface UsedBoardService {
 	public List<Reply> listReplyAnswer(long num);
 	public int replyAnswerCount(long num);
 
+	public long findWriter(long num);
+
 	// 중고거래 신청
 	public void insertRequest(UsedRequest dto) throws Exception;
 	public List<UsedRequest> listRequest(Map<String, Object> map);

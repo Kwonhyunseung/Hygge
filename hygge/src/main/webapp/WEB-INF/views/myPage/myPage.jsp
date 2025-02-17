@@ -133,7 +133,7 @@ body {
 .stats span {
     position: absolute;
     margin-top: 50px;
-    bottom: -20px;
+    bottom: -30px;
     font-size: 14px;
     color: #333;
     font-weight: bold;
@@ -247,7 +247,7 @@ body {
 				<div>
 				    ${reviewCount} 개 <span>작성 후기</span>
 				</div>
-                <div>5 개 <span>보유 쿠폰</span></div>
+                <div>${couponCount} 개 <span>보유 쿠폰</span></div>
             </div>
             <div class="info">
                 <div><strong>이름</strong></div> <div>${myPage.name}</div>

@@ -8,7 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<title>보유 쿠폰</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
 
@@ -51,7 +50,6 @@ h2 {
     </header>
 <body>
 
-
     <div class="content-wrapper">
         <div class="container">
             <h2>보유 쿠폰</h2>
@@ -60,32 +58,27 @@ h2 {
                     <tr>
                         <th>쿠폰명</th>
                         <th>할인율</th>
-                        <th>유효 기간</th>
+                        <th>발급날짜</th>
                         <th>사용 가능 여부</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>웰컴 할인</td>
-                        <td>10%</td>
-                        <td>2025-12-31</td>
-                        <td>사용 가능</td>
-                    </tr>
-                    <tr>
-                        <td>특별 프로모션</td>
-                        <td>15%</td>
-                        <td>2025-06-30</td>
-                        <td>사용 가능</td>
-                    </tr>
+                    <c:forEach var="coupon" items="${listCoupon}">
+                        <tr>
+                            <td>${coupon.coupon_Name}</td>
+                            <td>${coupon.discount_Rate.intValue()}%</td> 
+                            <td>${coupon.issue_Date}</td>
+                            <td>${coupon.used_Date != null ? '사용 완료' : '사용 가능'}</td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             
             <div class="text-center mt-3">
-                <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
+                <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
             </div>
         </div>
     </div>
-
 
 
 </body>

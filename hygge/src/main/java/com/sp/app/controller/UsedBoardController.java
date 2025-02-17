@@ -231,6 +231,8 @@ public class UsedBoardController {
 
 			String paging = paginateUtil.pagingMethod(current_page, total_page, "listPage");
 
+			long writerIdx = service.findWriter(number);
+			model.addAttribute("boardwriterIdx", writerIdx);
 			model.addAttribute("listReply", listReply);
 			model.addAttribute("paging", paging);
 			model.addAttribute("replyCount", dataCount);
@@ -302,5 +304,15 @@ public class UsedBoardController {
 			model.put("state", "false");
 		}
 		return model;
+	}
+
+	@PostMapping("usedRequest")
+	public String requestSubmit() throws Exception {
+		try {
+			
+		} catch (Exception e) {
+			log.info("requestSubmit : ", e);
+		}
+		return "redirect:/";
 	}
 }

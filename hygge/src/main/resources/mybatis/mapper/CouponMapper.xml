@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.CouponMapper">
+ <!-- 후기 개수를 조회하는 쿼리 -->
+<select id="couponCount" parameterType="Long" resultType="int">
+    SELECT COUNT(*)
+    FROM coupon
+    WHERE memberIdx = #{memberIdx}
+</select>
+
+<select id="listCoupon" parameterType="map" resultType="com.sp.app.model.Coupon">
+    SELECT 
+        c.NUM, c.MEMBERIDX, c.ISSUE_DATE, c.DISCOUNT_RATE, 
+        c.DISCOUNT, c.USED_DATE, e.TITLE AS COUPON_NAME
+    FROM coupon c
+    JOIN event e ON c.NUM = e.NUM
+    WHERE c.MEMBERIDX = #{memberIdx}
+    ORDER BY c.ISSUE_DATE DESC
+</select>
+
+
+
+</mapper>
