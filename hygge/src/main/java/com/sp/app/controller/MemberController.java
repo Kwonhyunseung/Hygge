@@ -1,10 +1,12 @@
 package com.sp.app.controller;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,41 +47,61 @@ public class MemberController {
 	// 회원가입
 	@GetMapping("account")
 	public String accountSelect(Model model) {
-		
 		return "member/account";
-	}
-	@PostMapping("account")
-	public String accountSelectSubmit(Model model) {
-
-		return "member/account2";
 	}
 	
 	@GetMapping("account2")
 	public String accountForm(Model model) {
-
 		return "member/account2";
 	}
-	// 회원가입 성공 후 리다이렉트
+
 	@PostMapping("account2")
 	public String accountSubmit(Member dto, final RedirectAttributes reAttr, Model model, HttpServletRequest req) {
 	    try {
-	        service.insertMember(dto);
-	    } catch (Exception e) {
-	    }
+	    	service.insertMember(dto);
+	        
+	        StringBuilder sb = new StringBuilder();
+			sb.append(dto.getName() + "님의 회원 가입이 정상적으로 처리되었습니다.<br>");
+			sb.append("메인화면으로 이동하여 로그인 하시기 바랍니다.<br>");
+			
+			// 리다이렉트된 페이지에 값 넘기기
+			reAttr.addFlashAttribute("message", sb.toString());
+			reAttr.addFlashAttribute("title", "회원 가입");
+		
+			return "redirect:/member/complete";
+			
+		} catch (Exception e) {
+			log.info("accountSubmit: ", e);
+			log.info("아이디: " + dto.getId());
+			log.info("이름: " + dto.getName());
+			log.info("닉네임: " + dto.getNickName());
+			log.info("비밀번호: " + dto.getPwd());
+			log.info("생년월일: " + dto.getBirth());
+			log.info("전화번호: " + dto.getTel1());
+			log.info("전화번호: " + dto.getTel2());
+			log.info("전화번호: " + dto.getTel3());
+			log.info("이메일: " + dto.getEmail1());
+			log.info("이메일: " + dto.getEmail2());
+			log.info("주소: " + dto.getAddr1());
+			log.info("주소: " + dto.getAddr2());
+			log.info("우편번호: " + dto.getPostCode());
+			log.info("카테고리: " + dto.getCategory1());
+			log.info("카테고리: " + dto.getCategory2());
+			log.info("카테고리: " + dto.getCategory3());
+			log.info("성별: " + dto.getGender());
+		}
 
-	    return "account/account2";
+		return "member/account2";
 	}
 	
-	// 회원가입 완료 페이지
 	@GetMapping("complete")
 	public String complete(@ModelAttribute("message") String message) throws Exception {
-	    System.out.println("message: " + message); // message가 null이 아닌지 확인
 
-	    if (message == null || message.isBlank()) {
-	        return "redirect:/"; // F5로 새로고침했을 때 message가 null이면 홈으로 리다이렉트
-	    }
+		if (message == null || message.isBlank()) { // F5를 누른 경우
+			return "redirect:/";
+		}
 
-	    return "member/complete";
+		return "member/complete";
 	}
 	
 	@ResponseBody
@@ -101,6 +123,26 @@ public class MemberController {
 		
 		return model;
 	}
+	
+	public void calculateAge(Member dto) {
+	    String birthString = dto.getBirth();
+	    
+	    if (birthString != null && !birthString.isEmpty()) {
+	        try {
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	            LocalDate birthDate = LocalDate.parse(birthString, formatter);
+	            
+	            // 나이 계산
+	            int age = Period.between(birthDate, LocalDate.now()).getYears();
+	            dto.setAge(age);
+	            
+	        } catch (DateTimeParseException e) {
+	            System.out.println("잘못된 날짜 형식: " + birthString);
+	        }
+	    }
+	    
+	}
+
 	
 	
 	

@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sp.app.mapper.MemberMapper;
 import com.sp.app.model.Member;
@@ -21,24 +22,36 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberMapper mapper;
 	private final PasswordEncoder bcryptEncoder;
 	
+	@Transactional(rollbackFor = {Exception.class})
 	@Override
 	public void insertMember(Member dto) throws Exception {
 		try {
-			// 패스워드 암호화
-			String encPassword = bcryptEncoder.encode(dto.getPwd());
-			dto.setPwd(encPassword);
+			// 비밀번호가 null이 아니고, 비어 있지 않은지 확인
+	        if (dto.getPwd() == null || dto.getPwd().isEmpty()) {
+	            throw new IllegalArgumentException("Password cannot be null or empty");
+	        }
+	        
+	        // 패스워드 암호화
+	        String encPassword = bcryptEncoder.encode(dto.getPwd());
+	        dto.setPwd(encPassword);
 			
 			// 회원정보 저장
 			mapper.insertMember(dto);
 
 			// 권한저장
+			/*
 			dto.setAuthority("USER");
 			mapper.insertAuthority(dto);
+			*/
+			
 		} catch (Exception e) {
 			log.info("insertMember", e);
-			throw e;
+	        throw e;
 		}
 	}
+	
+	
+	
 
 	@Override
 	public Member findById(String id) {
@@ -46,6 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
 		try {
 			dto = Objects.requireNonNull(mapper.findById(id));
+			
 		} catch (NullPointerException e) {
 		} catch (ArrayIndexOutOfBoundsException e) {
 		} catch (Exception e) {
@@ -54,11 +68,6 @@ public class MemberServiceImpl implements MemberService {
 
 		return dto;
 	}
-	
-	
-	
-	
-	
 	
 	@Override
 	public void updateLastLogin(String id) throws Exception {
@@ -204,5 +213,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return authority;
 	}
+
+	
 	
 }

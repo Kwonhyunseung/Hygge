@@ -44,7 +44,8 @@ label {
 	cursor: pointer;
 }
 
-.btn-check:hover {
+.btn-check:hover,
+.btn-check:checked {
 	background-color: #9ab370;
 }
 
@@ -63,7 +64,7 @@ label {
 }
 
 .category-item.selected {
-	background-color: #ACC569; /* 선택된 경우 색 변경 */
+	background-color: #ACC569;
 	color: white;
 	font-weight: bold;
 	border-color: #ACC569;

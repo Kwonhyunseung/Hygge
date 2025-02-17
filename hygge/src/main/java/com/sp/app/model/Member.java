@@ -18,9 +18,9 @@ public class Member {
 	private String mod_date;
 	private String last_login;
 	private int login_failure;
-	private int category1;
-	private int category2;
-	private int category3;
+	private Integer category1;
+	private Integer category2;
+	private Integer category3;
 	private String birth;
 	private String email1;
 	private String email2;
