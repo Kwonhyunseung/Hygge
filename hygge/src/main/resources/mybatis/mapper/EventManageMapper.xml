@@ -42,4 +42,8 @@
 		VALUES (event_seq.NEXTVAL, #{title}, #{content}, #{evt_date}, #{exp_date}, #{photo,jdbcType=BLOB})
 	</insert>
 	
+	<select id="getPhotoPath" parameterType="long" resultType="string">
+  	  SELECT photo_path FROM event WHERE num = #{num}
+	</select>
+	
 </mapper>

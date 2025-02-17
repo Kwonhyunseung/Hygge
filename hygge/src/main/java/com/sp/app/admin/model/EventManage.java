@@ -1,6 +1,6 @@
 package com.sp.app.admin.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,14 +12,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class EventManage {
-	public long num;
-	public String title;
-	public String content;
-	public Date evt_date;
-	public Date exp_date;
-    public String photo;
+    private long num;
+    private String title;
+    private String content;
+    private Date evt_date;
+    private Date exp_date;
+    private String photo; // 이미지 경로를 저장
     private String status;
     
     // DB에 저장되지 않는 임시 필드
-    public MultipartFile photoFile;
+    private MultipartFile photoFile;
 }
