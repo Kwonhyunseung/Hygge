@@ -12,6 +12,7 @@ import com.sp.app.model.MyPage;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.MyPageService;
 import com.sp.app.service.ReviewService; // ReviewService 추가
+import com.sp.app.service.UsedBoardService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,10 @@ public class MyPageController {
 
     @Autowired
     private final ReviewService reviewService;  // ReviewService 주입
-
+    
+    @Autowired
+    private final UsedBoardService usedBoardService; //UsedBoardService 주입
+    
     @GetMapping("myPage")
     public String myPage(Model model, HttpSession session) {
         try {
@@ -42,6 +46,10 @@ public class MyPageController {
             // 리뷰 카운트 조회
             int reviewCount = reviewService.reviewCount(info.getMemberidx());  // 리뷰 카운트 조회
             model.addAttribute("reviewCount", reviewCount);  // 리뷰 카운트를 모델에 추가
+          
+            // 중고게시판 카운트 조회
+            int boardCount = usedBoardService.BoardCount(info.getMemberidx());
+            model.addAttribute("boardCount", boardCount);
             
         } catch (Exception e) {
             log.error("마이페이지 오류", e);

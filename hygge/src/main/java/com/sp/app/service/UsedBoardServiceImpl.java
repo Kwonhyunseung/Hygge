@@ -222,4 +222,15 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 		}
 	}
 
+	@Override
+	public int BoardCount(long memberIdx) {
+		try {
+		return mapper.boardCount(memberIdx);
+		} catch (Exception e) {
+            log.error("글 개수 조회 실패", e);
+            
+            throw e;
+		}
+	}
+
 }

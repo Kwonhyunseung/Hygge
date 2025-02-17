@@ -138,4 +138,11 @@
 		FROM usedBoardReply
 		WHERE block = 0 AND parent_Num = #{num}
 	</select>
+	
+	<!-- memberIdx 별 글 갯수 -->
+	<select id="boardCount" parameterType="long" resultType="int">
+    SELECT COUNT(*) 
+    FROM usedBoard 
+    WHERE memberIdx = #{memberIdx}
+</select>
 </mapper>

@@ -39,4 +39,6 @@ public interface UsedBoardMapper {
 	// 답글
 	public List<Reply> listReplyAnswer(long num);
 	public int replyAnswerCount(long num);
+	// 글 개수
+	public int boardCount(long memberIdx);
 }

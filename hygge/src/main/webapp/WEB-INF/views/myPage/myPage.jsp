@@ -243,11 +243,11 @@ body {
         </div>
         <div class="content">
             <div class="stats">
-                <div>5개 <span>내가 쓴 글</span></div>
+                <div>${boardCount} 개<span>작성 글</span></div>
 				<div>
-				    ${reviewCount} 개 <span>내가 쓴 후기</span>
+				    ${reviewCount} 개 <span>작성 후기</span>
 				</div>
-                <div>5 개 <span>내가 쓴 쿠폰</span></div>
+                <div>5 개 <span>보유 쿠폰</span></div>
             </div>
             <div class="info">
                 <div><strong>이름</strong></div> <div>${myPage.name}</div>
