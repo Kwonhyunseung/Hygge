@@ -3,17 +3,9 @@
 <mapper namespace="com.sp.app.mapper.MemberMapper">
 
 <!-- 회원 가입 -->
-<!--
-<insert id="insertMember"
-	parameterType="com.sp.app.model.Member">
-	INSERT INTO member1(memberIdx, id, pwd, name, nickName)
-	VALUES (#{memberIdx}, #{id}, #{pwd}, #{name}, #{nickName})
-</insert>
--->
-
 <update id="insertMember" parameterType="com.sp.app.model.Member">
 INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3)
-		VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1, jdbcType=INTEGER}, #{category2, jdbcType=INTEGER}, #{category3, jdbcType=INTEGER})
+		VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1}, #{category2}, #{category3})
 	INTO member2(memberIdx, birth, email1, email2, addr1, addr2, postCode, tel1, tel2, tel3, age, gender)
 		VALUES (member1_seq.NEXTVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age, jdbcType=INTEGER}, #{gender})
 	SELECT * FROM dual
@@ -25,7 +17,6 @@ INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod
 	FROM member2
 	WHERE id = #{id}
 </select>
-
 
 
 

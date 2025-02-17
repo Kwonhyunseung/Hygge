@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원가입</title>
+<title>회원가입2 - 폼</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -15,7 +15,8 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 body {
 	font-family: 'Arial', sans-serif;
@@ -161,16 +162,12 @@ label {
 	margin-left: 10px; /* 체크박스와 텍스트 간의 간격 */
 	font-weight: normal; /* 텍스트 굵기 제거 */
 }
-
 </style>
 </head>
 <body>
-
 	<div class="container">
-		<div class="text-center">
-			<img
-				src="${pageContext.request.contextPath}/dist/images/main/main_logo.png"
-				alt="Hygge Logo" width="150">
+		<div class="HYGGE LOGO">
+			<img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" width="150">
 		</div>
 
 		<h2 class="text-start"
@@ -185,9 +182,11 @@ label {
 			<div class="mb-3">
 				<label for="username">아이디 *</label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" id="username" placeholder="아이디를 입력하세요" required>
+					<input type="text" class="form-control me-2" id="username"
+						placeholder="아이디를 입력하세요" required>
 					<button type="button" class="btn btn-secondary"
-						onclick="checkUsername()" style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">중복확인</button>
+						onclick="checkUsername()"
+						style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">중복확인</button>
 
 				</div>
 				<span id="usernameStatus"></span>
@@ -197,22 +196,25 @@ label {
 			<div class="mb-3">
 				<label for="name">이름 *</label> <input type="text"
 					class="form-control" id="name" placeholder="이름을 입력하세요" required>
-					
+
 			</div>
 
 			<div class="mb-3">
 				<label for="nickname">닉네임 *</label> <input type="text"
-					class="form-control" id="nickname" placeholder="닉네임을 입력하세요" required>
+					class="form-control" id="nickname" placeholder="닉네임을 입력하세요"
+					required>
 			</div>
 
 			<div class="mb-3">
 				<label for="password">비밀번호 *</label> <input type="password"
-					class="form-control" id="password" placeholder="비밀번호를 입력하세요" required>
+					class="form-control" id="password" placeholder="비밀번호를 입력하세요"
+					required>
 			</div>
 
 			<div class="mb-3">
 				<label for="passwordConfirm">비밀번호 확인 *</label> <input
-					type="password" class="form-control" id="passwordConfirm" placeholder="비밀번호 확인" required>
+					type="password" class="form-control" id="passwordConfirm"
+					placeholder="비밀번호 확인" required>
 			</div>
 
 			<div class="mb-3">
@@ -264,10 +266,12 @@ label {
 				<label for="address">주소 *</label>
 				<div class="d-flex">
 					<input type="text" class="form-control me-2" id="address"
-						placeholder="주소를 입력하세요" required readonly>
-					<input type="text" class="form-control me-2" id="postCode" placeholder="우편번호" required readonly>
+						placeholder="주소를 입력하세요" required readonly> <input
+						type="text" class="form-control me-2" id="postCode"
+						placeholder="우편번호" required readonly>
 					<button type="button" class="btn btn-primary"
-						onclick="daumPostcode()"style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">주소찾기</button>
+						onclick="daumPostcode()"
+						style="width: 120px; background-color: #b2cc85; color: white; font-size: 1rem;">주소찾기</button>
 				</div>
 			</div>
 
@@ -300,109 +304,115 @@ label {
 				<div class="gender-divider"></div>
 			</div>
 
-		<div class="mb-3 terms">
-    <p>이용약관</p>
-    <div>
-        <input type="checkbox" id="agreeAll" required>
-        <label for="agreeAll" style="font-size: 1.2rem; font-weight: bold; margin-bottom:1px;">전체 동의합니다.</label>
-    </div>
-    <div>
-        <input type="checkbox" id="terms" required>
-        <label for="terms">
-            이용약관 동의 (필수) 
-            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalTerms">보기</button>
-        </label>
-    </div>
-    <div>
-        <input type="checkbox" id="privacy" required>
-        <label for="privacy">
-            개인정보 수집 이용 동의 (필수)
-            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalPrivacy">보기</button>
-        </label>
-    </div>
-    <div>
-        <input type="checkbox" id="marketing">
-        <label for="marketing">
-            무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
-            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
-        </label>
-    </div>
-    <div>
-        <input type="checkbox" id="age" required>
-        <label for="age">
-            본인은 만 14세 이상입니다.(필수)
-            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#modalAge">보기</button>
-        </label>
-    </div>
-</div>
+			<div class="mb-3 terms">
+				<p>이용약관</p>
+				<div>
+					<input type="checkbox" id="agreeAll" required> <label
+						for="agreeAll"
+						style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1px;">전체
+						동의합니다.</label>
+				</div>
+				<div>
+					<input type="checkbox" id="terms" required> <label
+						for="terms"> 이용약관 동의 (필수)
+						<button type="button" class="btn btn-link p-0"
+							data-bs-toggle="modal" data-bs-target="#modalTerms">보기</button>
+					</label>
+				</div>
+				<div>
+					<input type="checkbox" id="privacy" required> <label
+						for="privacy"> 개인정보 수집 이용 동의 (필수)
+						<button type="button" class="btn btn-link p-0"
+							data-bs-toggle="modal" data-bs-target="#modalPrivacy">보기</button>
+					</label>
+				</div>
+				<div>
+					<input type="checkbox" id="marketing"> <label
+						for="marketing"> 무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
+						<button type="button" class="btn btn-link p-0"
+							data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
+					</label>
+				</div>
+				<div>
+					<input type="checkbox" id="age" required> <label for="age">
+						본인은 만 14세 이상입니다.(필수)
+						<button type="button" class="btn btn-link p-0"
+							data-bs-toggle="modal" data-bs-target="#modalAge">보기</button>
+					</label>
+				</div>
+			</div>
 
-<div class="modal fade" id="modalTerms" tabindex="-1" aria-labelledby="modalTermsLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTermsLabel">이용약관</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                이용약관 내용이 여기에 들어갑니다.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="modal fade" id="modalTerms" tabindex="-1"
+				aria-labelledby="modalTermsLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalTermsLabel">이용약관</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">이용약관 내용이 여기에 들어갑니다.</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal" style="background-color: #82B10C;">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="modal fade" id="modalPrivacy" tabindex="-1" aria-labelledby="modalPrivacyLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalPrivacyLabel">개인정보 수집 이용 동의</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                개인정보 수집을 많이 합니다.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="modal fade" id="modalPrivacy" tabindex="-1"
+				aria-labelledby="modalPrivacyLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalPrivacyLabel">개인정보 수집 이용 동의</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">개인정보 수집을 많이 합니다.</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal" style="background-color: #82B10C;">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="modal fade" id="modalMarketing" tabindex="-1" aria-labelledby="modalMarketingLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalMarketingLabel">혜택/정보 수신 동의</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                마케팅 문자를 하루에 30통씩 보냅니다.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="modal fade" id="modalMarketing" tabindex="-1"
+				aria-labelledby="modalMarketingLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalMarketingLabel">혜택/정보 수신 동의</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">마케팅 문자를 하루에 30통씩 보냅니다.</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal" style="background-color: #82B10C;">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="modal fade" id="modalAge" tabindex="-1" aria-labelledby="modalAgeLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAgeLabel">만 14세 이상 확인</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                14세이상입니다.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#82B10C; ">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="modal fade" id="modalAge" tabindex="-1"
+				aria-labelledby="modalAgeLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalAgeLabel">만 14세 이상 확인</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">14세이상입니다.</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal" style="background-color: #82B10C;">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div class="mb-3">
 				<button type="submit" class="btn btn-primary">가입하기</button>
