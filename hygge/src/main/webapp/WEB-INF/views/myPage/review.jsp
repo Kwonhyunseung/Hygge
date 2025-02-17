@@ -56,28 +56,30 @@ h2 {
 <body>
     <div class="container">
         <h2 style="margin-bottom: 1.5rem;">상품 후기</h2>
-        
-        <div class="review-box">
-            <h5>무선 이어폰</h5>
-            <div class="stars">★★★★★</div>
-            <p>음질도 좋고 배터리도 오래 가요! 추천합니다.</p>
-            <p class="review-date">작성일: 2025-02-01</p>
-        </div>
-        
-        <div class="review-box">
-            <h5>블루투스 스피커</h5>
-            <div class="stars">★★★★☆</div>
-            <p>디자인도 예쁘고 음질도 만족스러워요!</p>
-            <p class="review-date">작성일: 2025-01-20</p>
-        </div>
-        
+
+        <c:forEach var="review" items="${reviewList}">
+            <div class="review-box">
+                <h5>${Review.title}</h5>
+                <div class="stars">
+                    <c:forEach begin="1" end="${review.grade}" varStatus="status">
+                        ★
+                    </c:forEach>
+                    <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
+                        ☆
+                    </c:forEach>
+                </div>
+                <p>${review.content}</p>
+                <p class="review-date"><fmt:formatDate value="${review.payment_date}" pattern="yyyy-MM-dd" /></p>
+            </div>
+        </c:forEach>
+
         <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}/member/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
+            <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
         </div>
     </div>
 </body>
-    <footer>
+<footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    </footer>
-    	<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+</footer>
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </html>

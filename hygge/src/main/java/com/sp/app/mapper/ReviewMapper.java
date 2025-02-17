@@ -10,7 +10,7 @@ import com.sp.app.model.Review;
 @Mapper
 public interface ReviewMapper {
     public int reviewCount(long memberIdx);
-    List<Review> listReview(Map<String, Object> map);
+    List<Review> reviewList(Map<String, Object> map);
 	Review findById(long num);
-	
+	public int dataCount(Map<String, Object> map);
 }

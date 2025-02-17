@@ -71,7 +71,7 @@ public class QnaController {
             
             map.put("offset", offset);
             map.put("size", size);
-;
+
 
             // DB에서 문의 목록 조회
             List<Qna> qnaList = service.listQna(map);

@@ -76,20 +76,24 @@ h2 {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-02-01</td>
-                        <td>사람</td>
-                        <td>89,000원</td>
-                        <td>배송 중</td>
-                        <td><a href="#" class="btn btn-details">보기</a></td>
-                    </tr>
-                    <tr>
-                        <td>2025-01-20</td>
-                        <td>개</td>
-                        <td>120,000원</td>
-                        <td>배송 완료</td>
-                        <td><a href="#" class="btn btn-details">보기</a></td>
-                    </tr>
+                    <c:forEach var="payment" items="${paymentList}">
+                        <tr>
+                            <td><fmt:formatDate value="${payment.payment_date}" pattern="yyyy-MM-dd" /></td>
+                            <td>${payment.title}</td>
+                            <td><fmt:formatNumber value="${payment.pay_amount}" pattern="#,###원" /></td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${payment.shipping_state == 1}">상품준비</c:when>
+                                    <c:when test="${payment.shipping_state == 2}">배송준비</c:when>
+                                    <c:when test="${payment.shipping_state == 3}">배송시작</c:when>
+                                    <c:when test="${payment.shipping_state == 4}">배송중</c:when>
+                                    <c:when test="${payment.shipping_state == 5}">배송완료</c:when>
+                                    <c:otherwise>알 수 없음</c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td><a href="#" class="btn btn-details">보기</a></td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <div class="text-center mt-3">

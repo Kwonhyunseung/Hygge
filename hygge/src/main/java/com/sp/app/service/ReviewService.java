@@ -12,8 +12,9 @@ public interface ReviewService {
 	
 	int reviewCount(long memberIdx);
 	
-	public List<Review> listReview(Map<String, Object> map);
+	public List<Review> reviewList(Map<String, Object> map);
 	public Review findById(long num);
+	public int dataCount(Map<String, Object> map);
 
 	
 }

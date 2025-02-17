@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.PaymentMapper">
+
+
+<select id="paymentList" parameterType="map" resultType="com.sp.app.model.Payment">
+  SELECT 
+        pay.payment_date,        
+        p.title,                 
+        pay.pay_amount,          
+        pay.shipping_state       
+    FROM 
+        payment pay
+    JOIN 
+        sales s ON pay.payment_num = s.payment_num  
+    JOIN 
+        product p ON s.product_num = p.product_num  
+    WHERE 
+        pay.memberIdx = #{memberIdx}  
+</select>
+
+
+
+</mapper>
