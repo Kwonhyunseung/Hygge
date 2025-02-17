@@ -233,4 +233,15 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 		}
 	}
 
+	@Override
+	public long findWriter(long num) {
+		long idx = 0;
+		try {
+			idx = mapper.findWriter(num);
+		} catch (Exception e) {
+			log.info("findWriter : ", e);
+		}
+		return idx;
+	}
+
 }

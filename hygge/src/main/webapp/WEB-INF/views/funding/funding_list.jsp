@@ -225,6 +225,8 @@ function addNewContent(data) {
 		let thumbnail = dto.thumbnail;
 		let title = dto.title;
 		let project_info = dto.project_info;
+		let progress = dto.progress;
+		let total_amount = dto.total_amount;
 
 		htmlText = '<div class="funding">'
 		htmlText +=	'	<div class="funding-thumbnail">'
@@ -242,10 +244,10 @@ function addNewContent(data) {
 		htmlText += '		<span>' + project_info + '</span>';
 		htmlText += '	</div>';
 		htmlText += '	<div class="funding-progress-div">';
-		htmlText += '		<span class="progress-percentage">76%</span>';
-		htmlText += '		<span class="progress-amount">760,000원</span>';
+		htmlText += '		<span class="progress-percentage">' + progress + '%</span>';
+		htmlText += '		<span class="progress-amount">' + total_amount + '원</span>';
 		htmlText += '		<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">';
-		htmlText += '			<div class="progress-bar" style="width: 76%; background-color: #2F9D27;"></div>';
+		htmlText += '			<div class="progress-bar" style="width: ' + progress + '%; background-color: #2F9D27;"></div>';
 		htmlText += '		</div>';
 		htmlText += '	</div>';
 		htmlText += '</div>';
@@ -306,69 +308,24 @@ $(function() {
 
 //좋아요버튼
 $(function() {
-	$('.funding-list-container').on('mouseover', '.funding', function() {
-		let $icon = $(this).find('i');
-		$icon.mouseover(function() {
-			let liked = $(this).hasClass('bi-heart-fill');
-			if (!liked) {
-				$icon.removeClass('bi-heart');
-				$icon.addClass('bi-heart-fill');
-			} else {
-				$icon.removeClass('bi-heart-fill');
-				$icon.addClass('bi-heart');
-			}
-		});
-	});
-	$('.funding-list-container').on('mouseout', '.funding', function() {
-		let $icon = $(this).find('i');
-		let liked = $icon.hasClass('bi-heart-fill');
-		$icon.mouseout(function() {
-			if (!liked) {
-				$icon.removeClass('bi-heart-fill');
-				$icon.addClass('bi-heart');
-				
-			} else {
-				$icon.removeClass('bi-heart');
-				$icon.addClass('bi-heart-fill');
-			}
-		});
-	});
 	$('.funding-list-container').on('click', '.funding i', function() {
+		let icon = $(this);
 		const num = $(this).closest('div').attr('data-num');
 		let liked = $(this).hasClass('bi-heart-fill');
 		let url = '${pageContext.request.contextPath}/funding/userLikeProject';
-		const fn = function() {
+		const fn = function(icon) {
 			if(liked) {
-				$(this).innerHTML = '<i class="bi bi-heart" style="color: red;"></i>';
+				icon.removeClass('bi-heart-fill');
+				icon.addClass('bi-heart');
 			} else {
-				$(this).innerHTML = '<i class="bi bi-heart" style="color: red;"></i>';
+				icon.addClass('bi-heart-fill');
+				icon.removeClass('bi-heart');
 			}
 		};
 
-		ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
+		ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn(icon));
 	});
 });
-/*
-window.addEventListener('load', function() {
-		// 좋아요 버튼 클릭
-		const num = icon.closest('div').getAttribute('data-num'); // 좋아요 누른 프로젝트 번호
-		icon.addEventListener('click', function() {
-			liked = !liked;
-			let url = '${pageContext.request.contextPath}/funding/userLikeProject';
-			const fn = function() {
-				if(liked) {
-					icon.classList.remove('bi-heart-fill');
-					icon.classList.add('bi-heart');
-				} else {
-					icon.classList.add('bi-heart-fill');
-					icon.classList.remove('bi-heart');
-				}
-			};
-			ajaxRequest(url, 'post', {num: num, liked: !liked}, 'json', fn);
-		});
-	}
-});
- */
 
 </script>
 <footer>

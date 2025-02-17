@@ -32,6 +32,7 @@ public class FundingServiceImpl implements FundingService {
 				} else {
 					dto.setUserLiked(false);
 				}
+				dto.setProgress(dto.getTotal_amount() / dto.getTarget() * 100);
 			}
 		} catch (Exception e) {
 			log.info("listFunding : ", e);

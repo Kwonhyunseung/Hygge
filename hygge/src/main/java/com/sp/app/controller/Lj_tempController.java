@@ -45,14 +45,4 @@ public class Lj_tempController {
 		}
 		return "vote/result";
 	}
-
-	@GetMapping("/funding/category01")
-	public String categoryList() {
-		try {
-			
-		} catch (Exception e) {
-		}
-
-		return "funding/category_list";
-	}
 }
