@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HYGGEProduct</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/funding/main/product.css" type="text/css">
@@ -115,8 +115,6 @@ $(document).on("click", ".f-select", function() {
 							</p>
 							<p class="b" style="font-size: 18px;">남은 시간</p>
 							<p class="b" id="period"><strong>5</strong>일</p>
-							<p class="c" style="font-size: 18px;">후원자</p>
-							<p class="c" id="sponsor"><strong>257</strong>명</p>
 						</div>
 						<hr style="margin: 10px 0 40px 0;">
 						<div class="row second-info">

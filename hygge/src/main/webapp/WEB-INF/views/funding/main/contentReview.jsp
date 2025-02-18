@@ -64,6 +64,8 @@ h6 {
 	font-size: 19px;
 	padding: 10px 15px;
 }
+
+/* 후기 좋아요 아이콘
 .bi-hearts {
 	margin-left: 470px;
 	margin-right: 7px;
@@ -72,6 +74,7 @@ h6 {
 .bi-hearts:hover {
 	color: red;
 }
+*/
 
 /* 페이징 처리 */
 .paging {
@@ -108,7 +111,7 @@ h6 {
 		<div class="regDate-like">
 			<p>
 				2025.02.10
-				<span><i class="bi bi-hearts"></i>50</span>
+				<!-- <span><i class="bi bi-hearts"></i>50</span> -->
 			</p>
 		</div>
 	</div>
@@ -128,7 +131,6 @@ h6 {
 		<div class="regDate-like">
 			<p>
 				2025.02.10
-				<span><i class="bi bi-hearts"></i>50</span>
 			</p>
 		</div>
 	</div>
@@ -144,26 +146,6 @@ h6 {
 		<div class="regDate-like">
 			<p>
 				2025.02.10
-				<span><i class="bi bi-hearts"></i>50</span>
-			</p>
-		</div>
-	</div>
-	<hr style="margin: 60px 0;">
-	<div class="userReview">
-		<div class="user-profile">
-			<img src="/dist/images/funding/main/review/profile.png">
-			<span class="uProfile">욕쟁이 할머니</span>
-		</div>	
-		<div class="row picture">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
-		</div>
-		<div class="review-content">
-			<p>냄새가 너무 좋아요!</p>
-		</div>
-		<div class="regDate-like">
-			<p>
-				2025.02.10
-				<span><i class="bi bi-hearts" style="font-size: 25px;"></i>50</span>
 			</p>
 		</div>
 	</div>

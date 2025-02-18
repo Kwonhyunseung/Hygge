@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.ProductMapper">
+
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+	
+</select>
+
+<select id="listProduct" parameterType="map" resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="findByNum" parameterType="Long" resultType="com.sp.app.model.Product">
+	SELECT product_num, price, num, stock, detail, title, origin
+	FROM Product
+	WEHRE product_num = #{product_num}
+</select>
+
+<select id="detailProduct" parameterType="Long" resultType="com.sp.app.model.Product">
+	SELECT product_num, price, num, stock, datail, title, origin
+	FROM Product
+	
+	카테고리(카테고리명으로), 모인금액, 달성률, 남은시간, 목표금액, 펀딩기간, 결제, 예상 발송 시작일,
+	좋아요 / 프로젝트 후원하기
+	프로젝트 신청폼(스토리) / 후기
+	메이커소개(문의, 팔로우)
+	리워드선택(선물구성)
+	
+	카테고리 가져오려면, 상품 테이블의 컬럼num과 프로젝트 테이블의 num과 조인하고, 프로젝트 테이블의 category_num과 카테고리 테이블의 parent_num이랑 조인해서 가져와야함
+	모인금액은
+		SELECT p.num num, title, thumbnail, project_info, target,
+	    (SELECT NVL(SUM(total_amount), 0) total_amount
+	    FROM PROJECT p
+	    LEFT OUTER JOIN product pr ON p.num = pr.num
+	    LEFT OUTER JOIN sales s ON pr.product_num = s.product_num
+	    LEFT OUTER JOIN payment pay ON pay.payment_num = s.payment_num
+	    GROUP BY p.num) total_amount
+		FROM project p
+		JOIN projectRequest pr ON p.num = pr.num
+		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		WHERE p.end_date > SYSDATE AND p.block = 0
+		ORDER BY p.num DESC
+		OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY;
+	
+	
+
+
+
+</select>
+
+<select id="listAllCategory" resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="listCategory" resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="listSubCategory" parameterType="Long" resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="listProductOption" parameterType="Long" resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="listOptionStock" parameterType="map"  resultType="com.sp.app.model.Product">
+
+</select>
+
+<select id="searchCount" parameterType="map" resultType="Integer">
+
+</select>
+
+<select id="listSearchProduct" parameterType="map" resultType="com.sp.app.model.Product">
+
+</select>
+
+</mapper>
