@@ -14,4 +14,6 @@ public interface EventManageMapper {
 	
 	public int dataCount(Map<String, Object> map);
 	public void insertEvent(EventManage dto) throws SQLException;
+	
+	public String getPhotoPath(long num);
 }

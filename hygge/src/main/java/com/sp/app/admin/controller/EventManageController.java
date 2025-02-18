@@ -1,26 +1,16 @@
 package com.sp.app.admin.controller;
 
-import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.app.admin.model.EventManage;
 import com.sp.app.admin.service.EventManageService;
@@ -41,7 +31,6 @@ public class EventManageController {
 	private final EventManageService service;
     private final PaginateUtil paginateUtil;
     private final StorageService storageService;
-    
     private String uploadPath;
     
     @PostConstruct
@@ -59,8 +48,8 @@ public class EventManageController {
         
         try {
             int size = 10;
-            int total_page;
-            int dataCount;
+            int total_page = 0;
+            int dataCount = 0;
             
             kwd = URLDecoder.decode(kwd , "UTF-8");
             

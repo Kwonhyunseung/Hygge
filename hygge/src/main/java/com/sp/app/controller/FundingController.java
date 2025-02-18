@@ -80,7 +80,13 @@ import lombok.extern.slf4j.Slf4j;
 			int dataCount = 0;
 			
 			Map<String, Object> map = new HashMap<>();
-			map.put("menu", Menu);
+			if (Menu.indexOf("category") >= 0) {
+				int flag = Integer.parseInt(Menu.substring(8));
+				map.put("flag", flag);
+				map.put("menu", Menu.substring(0, 8));
+			} else {
+				map.put("menu", Menu);
+			}
 			map.put("kwd", keyword);
 			map.put("order", Order);
 			

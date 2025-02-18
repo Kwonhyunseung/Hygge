@@ -9,7 +9,7 @@
 				<div class="row reply-writer">
 					<div class="col-1"><i class="bi bi-person-circle text-muted icon"></i></div>
 					<div class="col ms-2 align-self-center">
-						<div class="name">${dto.name}</div>
+						<div class="name">${dto.nickName}</div>
 					</div>
 				</div>
 			</div>

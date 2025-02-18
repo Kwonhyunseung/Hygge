@@ -114,6 +114,48 @@
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color: #ebf1db;">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">중고 거래 신청</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form action="${pageContext.request.contextPath}/usedBoard/usedRequest" style="width: 100%" method="post">
+					<table class="table" style="margin: 0px;">
+						<tr>
+							<td>제품명</td>
+							<td>${dto.product}</td>
+						</tr>
+						<tr>
+							<td>거래대상</td>
+							<td class="customer-nickName"></td>
+						</tr>
+						<tr>
+							<td>가격</td>
+							<td><input type="text" name="price" value="${dto.price}"></td>
+						</tr>
+						<tr>
+							<td>신청내용</td>
+							<td>
+								<textarea name="content" style="resize: none; width: 100%"></textarea>
+							</td>
+						</tr>
+					</table>
+					<input type="hidden" name="writer" value="${dto.memberIdx}">
+					<input type="hidden" name="customer">
+				</form>
+			</div>
+			<div class="modal-footer" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+				<button type="button" class="btn btnRequestSend" style="background-color: #45A049; color: white;">거래신청</button>
+				<button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #fefefe;">거래취소</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 </main>
 
 <footer>
@@ -336,6 +378,23 @@ $(function() {
 		};
 
 		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+
+	// 거래신청
+	$('.reply').on('click', '.requestReply', function() {
+		$('#requestModal').modal('show');
+		let customer = $(this).attr('data-writer');
+		$('#requestModal input[name="customer"]').val(customer);
+
+		let nickName = $(this).closest('td').prev().find('.reply-writer .name').text();
+		$('#requestModal .customer-nickName').text(nickName);
+	});
+
+	$('.btnRequestSend').click(function() {
+		let url = '${pageContext.request.contextPath}/usedBoard/usedReqeust';
+		if (confirm('거래 신청을 하시겠습니까?')) {
+			f.submit();
+		}
 	});
 });
 

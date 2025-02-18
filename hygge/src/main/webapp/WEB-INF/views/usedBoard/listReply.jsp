@@ -14,7 +14,7 @@
 				<div class="row reply-writer">
 					<div class="col-1"><i class="bi bi-person-circle text-muted icon"></i></div>
 					<div class="col-auto align-self-center">
-						<div class="name">${dto.name}</div>
+						<div class="name">${dto.nickName}</div>
 					</div>
 				</div>				
 			</td>
@@ -26,6 +26,10 @@
 						<c:choose>
 							<c:when test="${dto.memberIdx == sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
 								<div class="deleteReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}">삭제</div>
+							</c:when>
+							<c:when test="${sessionScope.member.memberidx == boardwriterIdx}">
+								<div class="reportReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">신고</div>
+								<div class="requestReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">거래신청</div>
 							</c:when>
 							<c:otherwise>
 								<div class="reportReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">신고</div>
@@ -62,5 +66,5 @@
 </table>
 
 <div class="page-navigation">
-	페이징처리
+	${replyCount == 0 ? '' : paging}
 </div>			

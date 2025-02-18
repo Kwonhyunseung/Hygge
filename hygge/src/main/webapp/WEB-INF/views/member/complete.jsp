@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+<title>hygge</title>
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 
@@ -16,40 +16,40 @@
 }
 </style>
 </head>
+
 <body>
-
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+	</header>
 	
-<main>
-	<div class="container">
-		<div class="body-container">	
-
-	        <div class="row justify-content-md-center mt-5">
-	            <div class="col-md-8">
-	                <div class="border border mt-5 p-4">
-		                <h4 class="text-center fw-bold">${title}</h4>
-		                <hr class="mt-4">
-	                       
-		                <div class="d-grid p-3">
-							<p class="text-center">${message}</p>
+	<main>
+		<div class="container">
+			<div class="body-container">	
+	
+		        <div class="row justify-content-md-center mt-5">
+		            <div class="col-md-8">
+		                <div class="border border mt-5 p-4">
+			                <h4 class="text-center fw-bold">${title}</h4>
+			                <hr class="mt-4">
+		                       
+			                <div class="d-grid p-3">
+								<p class="text-center">${message}</p>
+			                </div>
+		                       
+			                <div class="d-grid">
+								<button type="button" class="btn btn-lg btn-primary" onclick="location.href='${pageContext.request.contextPath}/';">메인화면 <i class="bi bi-check2"></i> </button>
+			                </div>
 		                </div>
-	                       
-		                <div class="d-grid">
-							<button type="button" class="btn btn-lg btn-primary" onclick="location.href='${pageContext.request.contextPath}/';">메인화면 <i class="bi bi-check2"></i> </button>
-		                </div>
-	                </div>
-	            </div>
-	        </div>
-        
+		            </div>
+		        </div>
+	        
+			</div>
 		</div>
-	</div>
-</main>
+	</main>
 
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-</footer>
+	<footer>
+		<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+	</footer>
 
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
 </body>

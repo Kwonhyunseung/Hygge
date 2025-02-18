@@ -4,24 +4,24 @@
 
 <!-- 회원 가입 -->
 <update id="insertMember" parameterType="com.sp.app.model.Member">
-INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3)
-		VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1}, #{category2}, #{category3})
-	INTO member2(memberIdx, birth, email1, email2, addr1, addr2, postCode, tel1, tel2, tel3, age, gender)
-		VALUES (member1_seq.NEXTVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age, jdbcType=INTEGER}, #{gender})
-	SELECT * FROM dual
+    INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3)
+        VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1, jdbcType=INTEGER}, #{category2, jdbcType=INTEGER}, #{category3, jdbcType=INTEGER})
+    INTO member2(memberIdx, birth, email1, email2, addr1, addr2, postCode, tel1, tel2, tel3, age, gender)
+        VALUES (member1_seq.CURRVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age, jdbcType=INTEGER}, #{gender})
+    SELECT * FROM dual
 </update>
 
-<select id="myAge" parameterType="String" resultType="Map">
-	SELECT id, name, birth,
-	       FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(birth, 'YYYY-MM-DD')) / 12) AS age
-	FROM member2
-	WHERE id = #{id}
-</select>
+
+<!-- 우리 코드 맞게 재작성 필요함 -->
 
 
+<!-- 회원 삭제 -->
+<delete id="deleteMember" parameterType="String">
+	DELETE FROM member1 WHERE id = #{id}
+</delete>
 
 
-<!-- ID로 회원 조회 -->
+<!-- ID로 회원 조회 --> 
 <select id="findById" parameterType="String"
 	resultType="com.sp.app.model.Member">
 	SELECT m1.memberIdx, m1.id, m1.pwd, m1.name,
@@ -35,26 +35,6 @@ INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod
 	WHERE m1.id = #{id}
 </select>
 
-<!-- 권한 목록 -->
-<select id="listAuthority" parameterType="String"
-	resultType="String">
-	SELECT authority
-	FROM memberAuthority ma
-	JOIN member1 m ON ma.memberIdx = m.memberIdx
-	WHERE m.id = #{id}
-</select>
-
-<!-- 마지막 로그인 시간 업데이트 -->
-<update id="updateLastLogin" parameterType="String">
-	UPDATE member1 SET last_login = SYSDATE
-	WHERE id = #{id}
-</update>
-
-<!-- 회원 삭제 -->
-<delete id="deleteMember" parameterType="String">
-	DELETE FROM member1 WHERE id = #{id}
-</delete>
-
 <select id="findAuthority" parameterType="map"
 	resultType="String">
 	SELECT authority
@@ -62,5 +42,21 @@ INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod
 	JOIN member1 m ON ma.memberIdx = m.memberIdx
 	WHERE m.id = #{id}
 </select>
+
+<!-- 권한 목록 --> 
+<select id="listAuthority" parameterType="String"
+	resultType="String">
+	SELECT authority
+	FROM memberAuthority ma
+	JOIN member1 m ON ma.memberIdx = m.memberIdx
+	WHERE m.id = #{id}
+</select>
+ 
+<!-- 마지막 로그인 시간 업데이트 -->
+<update id="updateLastLogin" parameterType="String">
+	UPDATE member1 SET last_login = SYSDATE
+	WHERE id = #{id}
+</update>
+
 
 </mapper>

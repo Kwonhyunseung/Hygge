@@ -29,5 +29,6 @@ public class Funding {
 	private String project_info;
 
 	private int progress;
+	private int total_amount;
 	private boolean userLiked;
 }

@@ -36,6 +36,8 @@ public interface UsedBoardMapper {
 	public List<Reply> listReply(Map<String, Object> map);
 	public int replyCount(long num);
 
+	public long findWriter(long num);
+
 	// 답글
 	public List<Reply> listReplyAnswer(long num);
 	public int replyAnswerCount(long num);

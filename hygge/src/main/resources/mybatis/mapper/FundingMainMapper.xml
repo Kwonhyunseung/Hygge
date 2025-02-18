@@ -3,35 +3,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.FundingMainMapper">
 
-	<sql id="hotContent-list">
+	<sql id="where-list">
+		<if test="menu == 'category'">
+			(pr.category_num = #{flag} OR c.parent_num = #{flag})
+		</if>
+		<if test="menu == 'hotContent'"></if>
+		<if test="menu == 'new'"></if>
+		<if test="menu == 'deadline'"></if>
+		<if test="menu == 'comingsoon'"></if>
 	</sql>
-	<sql id="new-list">
-		
+	<sql id="order-list">
+		<if test="order == 'latest'">
+			p.num DESC
+		</if>
+		<if test="order == 'popular'">
+			total_amount DESC
+		</if>
+		<if test="order == 'deadline'">
+			end_date ASC, total_amount DESC
+		</if>
 	</sql>
 
 	<select id="listFunding" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT p.num num, title, thumbnail, project_info, target
+		SELECT p.num num, title, thumbnail, project_info, target,
+			(SELECT NVL(SUM(total_amount), 0) total_amount
+    		FROM PROJECT p
+    		LEFT OUTER JOIN product pr ON p.num = pr.num
+    		LEFT OUTER JOIN sales s ON pr.product_num = s.product_num
+    		LEFT OUTER JOIN payment pay ON pay.payment_num = s.payment_num
+    		GROUP BY p.num) total_amount
 		FROM project p
 		JOIN projectRequest pr ON p.num = pr.num
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
 		<where>
 			<if test="menu != null and menu != ''">
-				<if test="menu == 'category'">
-					(pr.category_num = #{kwd} OR c.parent_num = #{kwd})
-				</if>
-				<if test="menu == 'hotContent'">
-					<include refid="hotContent-list"/>
-				</if>
-				<if test="menu == 'new'">
-					<include refid="new-list"/>
-				</if>
-				<if test="menu == 'deadline'">
-				</if>
-				<if test="menu == 'comingsoon'">
-				</if>
+				<include refid="where-list"/>
 			</if>
+			AND p.end_date > SYSDATE AND p.block = 0
 		</where>
-		ORDER BY p.num DESC
+		ORDER BY <include refid="order-list"/>
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
 
@@ -42,20 +52,9 @@
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
 		<where>
 			<if test="menu != null and menu != ''">
-				<if test="menu == 'category'">
-					(pr.category_num = #{kwd} OR c.parent_num = #{kwd})
-				</if>
-				<if test="menu == 'hotContent'">
-					<include refid="hotContent-list"/>
-				</if>
-				<if test="menu == 'new'">
-					<include refid="new-list"/>
-				</if>
-				<if test="menu == 'deadline'">
-				</if>
-				<if test="menu == 'comingsoon'">
-				</if>
+				<include refid="where-list"/>
 			</if>
+			AND p.end_date > SYSDATE AND p.block = 0
 		</where>
 	</select>
 
