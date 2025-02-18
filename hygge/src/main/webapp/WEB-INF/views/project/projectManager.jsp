@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hyka 메이커 스튜디오</title>
 <style>
 * {
 	margin: 0;
@@ -206,7 +205,7 @@
 
 <header>
 	<div class="header-container">
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
+		<jsp:include page="/WEB-INF/views/project/layout/header.jsp"/>
 	</div>
 </header>
 
@@ -222,7 +221,6 @@
 
 	<div class="filter-buttons">
 		<button class="active">전체</button>
-		<button>작성중</button>
 		<button>심사중</button>
 		<button>승인완료</button>
 		<button>거절</button>
@@ -257,12 +255,11 @@
 		<button>&gt;</button>
 	</div>
 </div>
+</body>
 
 <footer>
 	<div class="footer-container">
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 	</div>
 </footer>
-
-</body>
 </html>
