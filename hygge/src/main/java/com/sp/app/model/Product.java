@@ -16,38 +16,4 @@ public class Product {
 	private String origin; //원산지
 	
 	private int num; //신청번호
-	
-	// project
-	private String start_date;
-	private String end_date; //종료일
-	private int block;
-	private String delivery_info;
-	private String project_info;
-	
-	// projectLike
-	
-	// projectRequest
-	private String accept_date; //승인일
-	private String content;
-	private int target; //목표금액
-	private int term; //프로젝트 기간
-	
-	// memberAuthority
-	private String authority;
-	
-	// follow
-	
-	
-	
-	
-	
-	
-	
-	private String request_date;
-	private String return_reason;
-	private String thumbnail;
-	private int category_num;
-	
-	private int parent_num;
-	private String name;
 }

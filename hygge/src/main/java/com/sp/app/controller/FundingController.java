@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Product;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.FundingService;
+import com.sp.app.service.ProductService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -28,11 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value = "/funding/*")
-	public class FundingController {
+public class FundingController {
 	private final FundingService service;
 	private final PaginateUtil paginateUtil;
+	private final ProductService productService;
 	
-	@GetMapping("product")
+	@GetMapping("main/product")
 	public String handleHome(Model model) {
 		try {
 		
@@ -50,6 +54,23 @@ import lombok.extern.slf4j.Slf4j;
 	public String review(Model model) {
 		return "funding/main/contentReview";
 	}
+	
+
+	    @GetMapping("/{product_num}")
+	    public ResponseEntity<?> getFundingDetail(@PathVariable long product_num) {
+	        Product product = productService.detailProduct(product_num);
+	        int totalAmount = productService.totalAmountProduct(product_num);
+	        int likeCount = productService.projectLikeCount(product_num);
+
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("product", product);
+	        response.put("totalAmount", totalAmount);
+	        response.put("likeCount", likeCount);
+
+	        return ResponseEntity.ok(response);
+	    }
+	
+
 
 
 	@GetMapping("{menu}")
