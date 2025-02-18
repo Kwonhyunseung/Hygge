@@ -27,7 +27,7 @@
 							<c:when test="${dto.memberIdx == sessionScope.member.memberidx || sessionScope.member.authority == 'ADMIN'}">
 								<div class="deleteReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}">삭제</div>
 							</c:when>
-							<c:when test="${sessionScope.member.memberidx == boardwriterIdx}">
+							<c:when test="${!requested && sessionScope.member.memberidx == boardwriterIdx}">
 								<div class="reportReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">신고</div>
 								<div class="requestReply reply-menu-item" data-replyNum="${dto.num}" data-pageNo="${pageNo}" data-writer="${dto.memberIdx}">거래신청</div>
 							</c:when>

@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 <title>메이커 스튜디오</title>
 <style>
 /* 기본적인 초기화 */
@@ -102,6 +103,11 @@ html, body {
     box-sizing: border-box;
 }
 
+.category-container {
+	display: flex;
+	flex-direction: row;
+}
+
 /* 카테고리 버튼 */
 .category-btn {
     padding: 14px 28px;
@@ -111,6 +117,7 @@ html, body {
     margin: 5px;
     cursor: pointer;
     font-size: 16px;
+    width: auto;
 }
 
 .selected {
@@ -165,16 +172,13 @@ html, body {
 			</h2>
 			<p style="color: gray; font-size: 16px;">(나중에 변경 가능합니다.)</p>
 
-			<div>
-				<button class="category-btn">가전</button>
-				<button class="category-btn">패션</button>
-				<button class="category-btn">뷰티</button>
-				<button class="category-btn">홈·리빙</button>
-				<button class="category-btn">푸드</button>
-				<button class="category-btn">캐릭터·굿즈</button>
-				<button class="category-btn selected">도서</button>
-				<button class="category-btn">문화</button>
-				<button class="category-btn">반려동물</button>
+			<div class="category-container">
+				<c:forEach var="dto" items="${parentCategory}">
+					<div class="category-btn" data-parentnum="${dto.category_num}">${dto.name}</div>
+				</c:forEach>
+			</div>
+
+			<div class="category-container child-category-container">
 			</div>
 
 			<h3 style="font-size: 20px; font-weight: bold;">프로젝트를 간단하게 소개해
@@ -187,4 +191,24 @@ html, body {
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+$(function() {
+	$('.category-btn').click(function() {
+		$(this).addClass('selected');
+		let category_num = $(this).attr('data-parentnum');
+		let url = '${pageContext.request.contextPath}/makerPage/categories';
+
+		const fn = function(data) {
+			let categories = data.categories;
+			console.log(data);
+		};
+		ajaxRequest(url, 'get', {num: category_num}, 'json', fn);
+	});
+
+	$('.selected').click(function() {
+		$(this).removeClass('selected');
+	});
+});
+</script>
 </html>

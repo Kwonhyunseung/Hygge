@@ -140,11 +140,10 @@
 						<tr>
 							<td>신청내용</td>
 							<td>
-								<textarea name="content" style="resize: none; width: 100%"></textarea>
+								<textarea name="request-content" style="resize: none; width: 100%"></textarea>
 							</td>
 						</tr>
 					</table>
-					<input type="hidden" name="writer" value="${dto.memberIdx}">
 					<input type="hidden" name="customer">
 				</form>
 			</div>
@@ -380,7 +379,7 @@ $(function() {
 		ajaxRequest(url, 'post', params, 'json', fn);
 	});
 
-	// 거래신청
+	// 거래신청 모달창
 	$('.reply').on('click', '.requestReply', function() {
 		$('#requestModal').modal('show');
 		let customer = $(this).attr('data-writer');
@@ -390,11 +389,25 @@ $(function() {
 		$('#requestModal .customer-nickName').text(nickName);
 	});
 
+	// 거래신청
 	$('.btnRequestSend').click(function() {
-		let url = '${pageContext.request.contextPath}/usedBoard/usedReqeust';
-		if (confirm('거래 신청을 하시겠습니까?')) {
-			f.submit();
+		let url = '${pageContext.request.contextPath}/usedBoard/usedRequest';
+		let num = '${dto.num}';
+		let writer = '${dto.memberIdx}';
+		let customer = $('input[name="customer"]').val();
+		let price = $('input[name="price"]').val();
+		let content = $('textarea[name="request-content"]').val();
+		let params = {num: num, writer: writer, customer: customer, price: price, content: content};
+
+		const fn = function(data) {
+			$('#requestModal textarea').val('');
+			$('#requestModal').modal('hide');
+			if (data.state === 'true') {
+				alert('거래 신청이 정상적으로 완료되었습니다.');
+			}
 		}
+
+		ajaxRequest(url, 'post', params, 'json', fn);
 	});
 });
 

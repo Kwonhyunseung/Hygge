@@ -36,6 +36,8 @@ public interface UsedBoardService {
 	// 중고거래 신청
 	public void insertRequest(UsedRequest dto) throws Exception;
 	public List<UsedRequest> listRequest(Map<String, Object> map);
-	public int BoardCount(long memberIdx);
+	public boolean isArticleRequested(long num);
+
 	// 작성 글 갯수 
+	public int BoardCount(long memberIdx);
 }

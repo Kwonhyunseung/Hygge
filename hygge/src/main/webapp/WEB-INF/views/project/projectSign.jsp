@@ -6,18 +6,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hygge - 프로젝트 신청</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/style.css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/style.css">
 <style>
 body {
 	font-family: Arial, sans-serif;
 }
 
-.container {
+.body-container {
 	max-width: 800px;
-	margin: 50px auto;
+	margin: auto;
 	text-align: center;
+	height: 574px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 h2 {
@@ -50,17 +53,17 @@ h2 {
 </style>
 </head>
 <body>
-	<header style="all: unset;">
-		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
-	</header>
+<header style="all: unset;">
+	<jsp:include page="/WEB-INF/views/layout/header.jsp" />
+</header>
 
-	<main class="container">
+	<main class="body-container">
 		<h2>쉽고 빠르게 프로젝트를 신청하실 수 있습니다.</h2>
 		<p style="font-size: 18px; color: red; font-weight: bold;">지금 바로
 			HYGGE를 통해 프로젝트를 신청해보세요!</p>
 
 		<div class="button-container">
-			<a href="#" class="btn-custom">프로젝트 시작하기</a> <a href="#"
+			<a href="${pageContext.request.contextPath}/makerPage/projectSubmit" class="btn-custom">프로젝트 시작하기</a> <a href="#"
 				class="btn-custom">메이커 가이드</a>
 		</div>
 	</main>

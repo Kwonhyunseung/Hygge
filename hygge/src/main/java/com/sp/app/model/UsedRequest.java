@@ -9,8 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UsedRequest {
 	private long num; // 게시글 번호
-	private String writerIdx; // 게시글 작성자 idx
-	private String custormerIdx; // 거래유저 idx
+	private String writer; // 게시글 작성자 idx
+	private String customer; // 거래유저 idx
 	private int price;
 	private String content;
+	private int progress;
 }

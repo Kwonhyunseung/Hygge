@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.sp.app.model.Reply;
 import com.sp.app.model.Report;
 import com.sp.app.model.UsedBoard;
+import com.sp.app.model.UsedRequest;
 
 @Mapper
 public interface UsedBoardMapper {
@@ -29,6 +30,9 @@ public interface UsedBoardMapper {
 	public UsedBoard findByNext(Map<String, Object> map);
 
 	public void reportUsedBoard(Report dto) throws SQLException;
+
+	public void usedBoardRequest(UsedRequest dto);
+	public UsedRequest isArticleRequested(long num);
 
 	// 댓글
 	public void insertReply(Reply dto) throws SQLException;

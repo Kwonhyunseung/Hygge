@@ -89,6 +89,13 @@
 		INSERT INTO report (num, tablename, reportedNumber, memberIdx, memberIdx2) VALUES (report_seq.NEXTVAL, #{tablename}, #{reportedNumber}, #{memberIdx}, #{memberIdx2})
 	</insert>
 
+	<insert id="usedBoardRequest" parameterType="com.sp.app.model.UsedRequest">
+		INSERT INTO usedRequest (board_num, writer, customer, price, content, progress) VALUES (#{num}, #{writer}, #{customer}, #{price}, #{content}, 0)
+	</insert>
+
+	<select id="isArticleRequested" parameterType="Long" resultType="com.sp.app.model.UsedRequest">
+		SELECT * FROM usedRequest WHERE board_num = #{num}
+	</select>
 
 
 	<insert id="insertReply" parameterType="com.sp.app.model.Reply">

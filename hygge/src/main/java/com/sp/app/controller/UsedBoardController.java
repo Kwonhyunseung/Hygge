@@ -21,6 +21,7 @@ import com.sp.app.model.Reply;
 import com.sp.app.model.Report;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.model.UsedBoard;
+import com.sp.app.model.UsedRequest;
 import com.sp.app.service.UsedBoardService;
 
 import jakarta.annotation.PostConstruct;
@@ -231,6 +232,7 @@ public class UsedBoardController {
 
 			String paging = paginateUtil.pagingMethod(current_page, total_page, "listPage");
 
+			boolean isArticleRequested = service.isArticleRequested(number);
 			long writerIdx = service.findWriter(number);
 			model.addAttribute("boardwriterIdx", writerIdx);
 			model.addAttribute("listReply", listReply);
@@ -238,6 +240,7 @@ public class UsedBoardController {
 			model.addAttribute("replyCount", dataCount);
 			model.addAttribute("pageNo", current_page);
 			model.addAttribute("total_page", total_page);
+			model.addAttribute("requested", isArticleRequested);
 		} catch (Exception e) {
 			log.info("listReply : ", e);
 		}
@@ -307,12 +310,15 @@ public class UsedBoardController {
 	}
 
 	@PostMapping("usedRequest")
-	public String requestSubmit() throws Exception {
+	public Map<String, Object> requestSubmit(UsedRequest req) throws Exception {
+		Map<String, Object> model = new HashMap<>();
 		try {
-			
+			service.insertRequest(req);
+			model.put("state", "true");
 		} catch (Exception e) {
+			model.put("state", "false");
 			log.info("requestSubmit : ", e);
 		}
-		return "redirect:/";
+		return model;
 	}
 }

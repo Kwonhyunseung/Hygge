@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sp.app.common.MyUtil;
 import com.sp.app.common.StorageService;
 import com.sp.app.mapper.UsedBoardMapper;
 import com.sp.app.model.Reply;
@@ -24,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class UsedBoardServiceImpl implements UsedBoardService {
 	private final UsedBoardMapper mapper;
 	private final StorageService storageService;
-	private final MyUtil myUtil;
 
 	@Override
 	public void insertBoard(UsedBoard dto, String uploadPath) throws Exception {
@@ -202,8 +200,12 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public void insertRequest(UsedRequest dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.usedBoardRequest(dto);
+		} catch (Exception e) {
+			log.info("insertRequest : ", e);
+			throw e;
+		}
 	}
 
 	@Override
@@ -242,6 +244,20 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 			log.info("findWriter : ", e);
 		}
 		return idx;
+	}
+
+	@Override
+	public boolean isArticleRequested(long num) {
+		UsedRequest dto = null;
+		try {
+			dto = mapper.isArticleRequested(num);
+			if (dto == null || dto.getProgress() == -1) {
+				return false;
+			}
+		} catch (Exception e) {
+			log.info("isArticleRequested : ", e);
+		}
+		return true;
 	}
 
 }
