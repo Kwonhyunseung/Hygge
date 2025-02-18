@@ -54,7 +54,7 @@
 				<div class="event-grid">
 				    <c:forEach var="dto" items="${list}">
 				        <div class="event-card">
-				            <img src="${dto.photo}" alt="이벤트 이미지" class="event-image">
+				            <img src="${pageContext.request.contextPath}/uploads/event/${dto.photo}" alt="이벤트 이미지" class="event-image">
 				            <div class="event-info">
 				                <div class="event-title">${dto.title}</div>
 				                <div class="event-date">

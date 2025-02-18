@@ -10,10 +10,13 @@ import com.sp.app.admin.model.EventManage;
 
 @Mapper
 public interface EventManageMapper {
-	public List<EventManage> listEvent(Map<String, Object> map) throws Exception;
+	public List<EventManage> listEvent(Map<String, Object> map) throws SQLException;
 	
 	public int dataCount(Map<String, Object> map);
-	public void insertEvent(EventManage dto) throws SQLException;
 	
-	public String getPhotoPath(long num);
+	public void insertEvent(EventManage dto);
+	
+	public EventManage readEvent(long num);
+	public void updateEvent(EventManage dto);
+	public void deleteEvent(long num);
 }

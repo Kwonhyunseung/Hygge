@@ -38,12 +38,38 @@
 	</select>
 
 	<insert id="insertEvent" parameterType="com.sp.app.admin.model.EventManage">
-		INSERT INTO event(num, title, content, evt_date, exp_date, photo)
-		VALUES (event_seq.NEXTVAL, #{title}, #{content}, #{evt_date}, #{exp_date}, #{photo,jdbcType=BLOB})
+	    INSERT INTO event(num, title, content, evt_date, exp_date, photo) 
+	    VALUES (
+	        event_seq.NEXTVAL, 
+	        #{title}, 
+	        #{content}, 
+	        #{evt_date,jdbcType=DATE}, 
+	        #{exp_date,jdbcType=DATE}, 
+	        #{photo,jdbcType=BLOB}
+	    )
 	</insert>
 	
 	<select id="getPhotoPath" parameterType="long" resultType="string">
   	  SELECT photo_path FROM event WHERE num = #{num}
 	</select>
 	
+	
+	<select id="readEvent" parameterType="Long" resultType="com.sp.app.admin.model.EventManage">
+        SELECT num, title, evt_date, exp_date, photo
+        FROM Event
+        WHERE num = #{num}
+    </select>
+    
+     <update id="updateEvent" parameterType="com.sp.app.admin.model.EventManage">
+        UPDATE Event SET title=#{title}, evt_date=#{evt_date}, 
+            exp_date=#{exp_date}
+            <if test="photo != null and photo != ''">
+                , photo=#{photo}
+            </if>
+        WHERE num=#{num}
+    </update>
+    
+     <delete id="deleteEvent" parameterType="Long">
+        DELETE FROM Event WHERE num=#{num}
+    </delete>
 </mapper>

@@ -1,5 +1,6 @@
 package com.sp.app.admin.controller;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +21,7 @@ import com.sp.app.common.StorageService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,11 +34,19 @@ public class EventManageController {
 	private final EventManageService service;
     private final PaginateUtil paginateUtil;
     private final StorageService storageService;
+    
     private String uploadPath;
     
     @PostConstruct
     public void init() {
-        uploadPath = this.storageService.getRealPath("/uploads/event");    
+        uploadPath = storageService.getRealPath("/uploads/event");
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        
+        System.out.println(uploadPath);
+        log.info("uploadPath: " + uploadPath);
     }
     
     @GetMapping("list")
@@ -103,10 +114,21 @@ public class EventManageController {
     
     @GetMapping("write")
     public String writeForm(Model model) throws Exception {
-        model.addAttribute("mode", "write");
-        return "admin/event/write";
+    	model.addAttribute("mode", "write");
+    	return "admin/event/write";
     }
     
+    @PostMapping("write")
+    public String writeSubmit(EventManage dto) throws Exception {
+        try {
+            service.insertEvent(dto, uploadPath);
+        } catch (Exception e) {
+            log.error("writeSubmit : ", e);
+            throw e;
+        }
+        
+        return "redirect:/admin/event/list";
+    }
     
 	
 }

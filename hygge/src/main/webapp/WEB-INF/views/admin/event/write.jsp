@@ -35,10 +35,9 @@
                     <div class="form-group">
                         <label>이벤트 이미지</label>
                         <div class="image-upload" onclick="document.getElementById('imageFile').click();">
-                            <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;">
+                            <input type="file" id="imageFile" name="imageFile" style="display: none;">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <p>이미지를 업로드하려면 클릭하세요</p>
-                            <p class="text-muted">권장 크기: 800x400px</p>
                         </div>
                         <div class="image-preview">
                             <img id="preview" src="#" alt="이미지 미리보기">
@@ -48,9 +47,9 @@
                     <div class="form-group">
                         <label>이벤트 기간</label>
                         <div class="date-container">
-                            <input type="date" name="startDate" required>
+                            <input type="date" name="evt_date" required>
                             <span>~</span>
-                            <input type="date" name="endDate" required>
+                            <input type="date" name="exp_date" required>
                         </div>
                     </div>
 
@@ -111,13 +110,13 @@ function sendOk() {
         return false;
     }
     
-    if(!f.startDate.value) {
+    if(!f.evt_date.value) {
         alert("시작일을 선택하세요.");
         f.startDate.focus();
         return false;
     }
     
-    if(!f.endDate.value) {
+    if(!f.exp_date.value) {
         alert("종료일을 선택하세요.");
         f.endDate.focus();
         return false;

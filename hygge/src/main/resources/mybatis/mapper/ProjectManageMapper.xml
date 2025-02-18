@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.ProjectManageMapper">
+<select id="projectList" parameterType="map" resultType="com.sp.app.admin.model.ProjectManage">
+	SELECT num, memberIdx, request_date, accept_date, title, business, content, target, 
+   		 term, thumbnail, category_num, accept_return, return_reason
+	FROM projectRequest
+</select>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT NVL(COUNT(*), 0)
+    FROM ProjectRequest p
+    <where>
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'title'">
+                    AND INSTR(p.title, #{kwd}) > 0
+                </when>
+                <when test="schType == 'request_date'">
+                    AND TO_CHAR(p.request_date, 'YYYY-MM-DD') = #{kwd}
+                </when>
+                <when test="schType == 'accept_date'">
+                    AND TO_CHAR(p.accept_date, 'YYYY-MM-DD') = #{kwd}
+                </when>
+                <when test="schType == 'category'">
+                    AND p.category_num = #{kwd}
+                </when>
+            </choose>
+        </if>
+    </where>
+</select>
+
+<update id="approveProject" parameterType="Long">
+    UPDATE ProjectRequest SET 
+        accept_return = 1,
+        accept_date = SYSDATE
+    WHERE num = #{num}
+</update>
+
+<update id="rejectProject" parameterType="map">
+    UPDATE ProjectRequest SET 
+        accept_return = 0,
+        return_reason = #{reason},
+        accept_date = SYSDATE
+    WHERE num = #{num}
+</update>
+
+</mapper>
