@@ -99,8 +99,8 @@ $(document).on("click", ".f-select", function() {
 		
 			<div class="product-main">
 				<div class="title">
-					<p>향수</p>
-					<h3>스노우볼 속에 담긴 고요한 폭설의 향</h3>
+					<p>${funding.category}</p>
+					<h3>${funding.title}</h3>
 				</div>
 				
 				<div class="row">
@@ -125,10 +125,10 @@ $(document).on("click", ".f-select", function() {
 									<p class="d" style="margin-top: 49px;"><strong>예상 발송 시작일</strong></p>
 								</div>
 								<div class="col-7">
-									<p class="d">5,000,000원</p>
+									<p class="d">${funding.target}원</p>
 									<p class="d">2025.01.19 ~ 2025.02.02</p>
 									<p class="d">목표금액 달성시 <br>&nbsp;&nbsp; 2025.02.03에 결제 진행</p>
-									<p class="d">2025.03.31</p>
+									<p class="d">${funding.delivery_info}</p>
 								</div>
 						</div>
 						<div class="row third-info" style="margin: 23px 0 10px 0;">

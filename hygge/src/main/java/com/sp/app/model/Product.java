@@ -16,4 +16,12 @@ public class Product {
 	private String origin; //원산지
 	
 	private int num; //신청번호
+	
+	// Sales
+	
+	
+	// Payment
+	
+	
+	
 }

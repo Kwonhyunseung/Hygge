@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.model.Funding;
-import com.sp.app.model.Product;
 import com.sp.app.model.SessionInfo;
+import com.sp.app.service.FundingProjectService;
 import com.sp.app.service.FundingService;
-import com.sp.app.service.ProductService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,18 +30,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(value = "/funding/*")
 public class FundingController {
+	private final FundingProjectService detailService;
 	private final FundingService service;
 	private final PaginateUtil paginateUtil;
-	private final ProductService productService;
-	
-	@GetMapping("main/product")
-	public String handleHome(Model model) {
-		try {
-		
-		} catch (Exception e) {
-		}
-		return "funding/main/product";
+
+	@GetMapping("main/product/{num}")
+	public String productDetail(@PathVariable("num") long num, Model model) {
+	    try {
+	        // 서비스에서 프로젝트 정보 가져오기
+	        Funding project = detailService.detailProduct(num);
+
+	        if (project != null) {
+	            model.addAttribute("project", project);
+	        } else {
+	            model.addAttribute("error", "해당 프로젝트를 찾을 수 없습니다.");
+	        }
+	    } catch (Exception e) {
+	        log.error("Error fetching project details", e);
+	        model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
+	    }
+	    return "funding/main/product";
 	}
+
 	
 	@GetMapping("plan")
 	public String plan(Model model) {
@@ -56,20 +64,6 @@ public class FundingController {
 	}
 	
 
-	    @GetMapping("/{product_num}")
-	    public ResponseEntity<?> getFundingDetail(@PathVariable long product_num) {
-	        Product product = productService.detailProduct(product_num);
-	        int totalAmount = productService.totalAmountProduct(product_num);
-	        int likeCount = productService.projectLikeCount(product_num);
-
-	        Map<String, Object> response = new HashMap<>();
-	        response.put("product", product);
-	        response.put("totalAmount", totalAmount);
-	        response.put("likeCount", likeCount);
-
-	        return ResponseEntity.ok(response);
-	    }
-	
 
 
 

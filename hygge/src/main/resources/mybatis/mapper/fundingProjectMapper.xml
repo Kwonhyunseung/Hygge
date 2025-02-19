@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.FundingProjectMapper">
+
+<select id="detailProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
+<!-- 현승 처음 코드 - product로 착각해서 만든 코드
+SELECT
+p.product_num,
+c.category_num,
+p.title,
+NVL(pay.total_amount, 0) AS total_amount,
+pro.end_date,
+pr.target,
+pr.accept_date
+FROM Product p
+JOIN Project pro ON p.num = pro.num
+JOIN ProjectRequest pr ON p.num = pr.num
+JOIN Category c ON pr.category_num = c.category_num
+LEFT JOIN Sales s ON p.product_num = s.product_num
+LEFT JOIN Payment pay ON s.payment_num = pay.payment_num
+WHERE p.product_num = #{productNum} -->
+
+<!--
+	카테고리, 제목, 모인금액, 달성률(모인금액과 목표금액에 비례해서 계산), 남은시간(end_date - sysdate?), 목표금액(target), 기간(term), 썸네일, 배송정보, 프로젝트 상세정보,
+	좋아요, 결제창(후원하기버튼)
+	
+	프로젝트 스토리(내용), 후기
+	
+	메이커소개 : 메이커명, 팔로우수, 메이커문의버튼, 메이커팔로우버튼
+	리워드 선택 : product
+ -->
+	SELECT p.num,
+		c.category_num,
+		pay.total_amount,
+		pr.title, pr.target, pr.term, pr.thumbnail, pr.delivery_info, pr.project_info,
+	FROM project p
+	JOIN projectRequest pr ON p.num = pr.num
+	JOIN category c ON pr.category_num = c.category_num
+	JOIN product pd ON pr.num = pd.num
+	LEFT JOIN sales s ON pd.product_num = s.product_num
+	LEFT JOIN payment pay ON s.payment_num = pay.payment_num
+	WHERE p.num = #{num}
+</select>
+
+
+<select id="totalAmountProduct" parameterType="Long"
+	resultType="Integer">
+	SELECT NVL(SUM(s.sum), 0)
+	FROM Sales s
+	JOIN Product p ON s.product_num = p.product_num
+	WHERE p.product_num = #{product_num}
+</select>
+
+<select id="projectLikeCount" parameterType="Long"
+	resultType="Integer">
+	SELECT COUNT(*)
+	FROM ProjectLike pl
+	JOIN Product p ON pl.num = p.num
+	WHERE p.product_num = #{product_num}
+</select>
+
+<select id="productReviews" parameterType="Long"
+	resultType="com.sp.app.model.Funding">
+	<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
+		mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
+		r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
+		r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
+		WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
+		#{product_num}) SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
+		mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
+		r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
+		r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
+		WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
+		#{product_num}) -->
+</select>
+
+</mapper>
