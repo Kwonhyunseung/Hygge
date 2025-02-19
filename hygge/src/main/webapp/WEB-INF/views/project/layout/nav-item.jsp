@@ -13,7 +13,6 @@
 	
 	
     <nav class="nav">
-		<a href="#" class="nav-item">요금제 선택</a>
 		<a href="#" class="nav-item active">판매 계획</a>
 		<a href="#" class="nav-item">상품 구성</a>
 		<a href="#" class="nav-item">프로젝트 정보</a>
