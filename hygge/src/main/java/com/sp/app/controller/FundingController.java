@@ -38,7 +38,7 @@ public class FundingController {
 	public String productDetail(@PathVariable("num") long num, Model model) {
 	    try {
 	        // 서비스에서 프로젝트 정보 가져오기
-	        Funding project = detailService.detailProduct(num);
+	        Funding project = detailService.fundingProduct(num);
 
 	        if (project != null) {
 	            model.addAttribute("project", project);

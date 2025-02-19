@@ -19,8 +19,8 @@ public class Product {
 	
 	// Sales
 	
-	
 	// Payment
+	private int total_amount;
 	
 	
 	

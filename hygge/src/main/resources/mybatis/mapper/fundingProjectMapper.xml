@@ -41,6 +41,13 @@ WHERE p.product_num = #{productNum} -->
 	LEFT JOIN sales s ON pd.product_num = s.product_num
 	LEFT JOIN payment pay ON s.payment_num = pay.payment_num
 	WHERE p.num = #{num}
+	
+	
+	<!-- 
+	1. 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나, 해당 프로젝트의 Product(상품)들의 정보를 담고 있는 List 객체 하나
+
+	현재: 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나
+	 -->
 </select>
 
 
