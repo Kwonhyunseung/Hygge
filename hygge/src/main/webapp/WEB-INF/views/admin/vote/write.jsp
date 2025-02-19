@@ -25,52 +25,73 @@
                 </div>
             </div>
 
-            <form name="voteForm" method="post">
+            <form name="voteForm" method="post" onsubmit="return submitVoteForm();">
                 <div class="write-container">
                     <div class="form-group">
                         <label for="vote-title">투표 제목</label>
                         <input type="text" id="vote-title" name="title" placeholder="투표 제목을 입력하세요" required>
                     </div>
-
+                    
                     <div class="form-group">
-                        <label>투표 유형</label>
-                        <select name="voteType" required>
-                            <option value="best">이달의 최고 프로젝트</option>
-                            <option value="worst">이달의 최악 프로젝트</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>투표 기간</label>
-                        <div class="date-container">
-                            <input type="date" name="startDate" required>
-                            <span>~</span>
-                            <input type="date" name="endDate" required>
+                        <label for="start-date">시작 날짜</label>
+                        <div class="date-input-wrapper">
+                            <input type="date" id="start-date" name="startDate" required>
+                            <i class="fa-regular fa-calendar"></i>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>프로젝트 선택</label>
-                        <div class="project-grid">
-                            <c:forEach var="i" begin="1" end="6">
-                                <div class="project-card" onclick="toggleSelection(this, ${i})">
-                                    <div class="checkbox-wrapper">
-                                        <div class="custom-checkbox">
-                                            <i class="fas fa-check"></i>
-                                        </div>
-                                        <input type="checkbox" name="selectedProjects" value="${i}" style="display: none;">
-                                    </div>
-                                    <div class="project-image-container">
-                                        <img src="/dist/images/choco.png" alt="프로젝트 이미지" class="project-image">
-                                    </div>
-                                    <div class="project-info">
-                                        <div class="project-title">친환경 텀블러 프로젝트 ${i}</div>
-                                        <div class="project-details">
-                                            달성률: 128% | 후원금: 50,000,000원
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
+                    <div class="candidates-container">
+                        <h3>프로젝트 후보 선택</h3>
+                        <div class="form-group">
+                            <label>프로젝트 후보 1</label>
+                            <select name="candidates[0].projectNum" id="projectSelect1" onchange="updateThumbnail(this, 'projectImg1')" required>
+                                <option value="">프로젝트를 선택하세요</option>
+                                <c:forEach var="project" items="${projects}">
+                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="thumbnail-container">
+                                <img id="projectImg1" src="" alt="프로젝트 썸네일 1" style="max-width: 300px; display: none;">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>프로젝트 후보 2</label>
+                            <select name="candidates[1].projectNum" id="projectSelect2" onchange="updateThumbnail(this, 'projectImg2')" required>
+                                <option value="">프로젝트를 선택하세요</option>
+                                <c:forEach var="project" items="${projects}">
+                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="thumbnail-container">
+                                <img id="projectImg2" src="" alt="프로젝트 썸네일 2" style="max-width: 300px; display: none;">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>프로젝트 후보 3</label>
+                            <select name="candidates[2].projectNum" id="projectSelect3" onchange="updateThumbnail(this, 'projectImg3')" required>
+                                <option value="">프로젝트를 선택하세요</option>
+                                <c:forEach var="project" items="${projects}">
+                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="thumbnail-container">
+                                <img id="projectImg3" src="" alt="프로젝트 썸네일 3" style="max-width: 300px; display: none;">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>프로젝트 후보 4</label>
+                            <select name="candidates[3].projectNum" id="projectSelect4" onchange="updateThumbnail(this, 'projectImg4')" required>
+                                <option value="">프로젝트를 선택하세요</option>
+                                <c:forEach var="project" items="${projects}">
+                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="thumbnail-container">
+                                <img id="projectImg4" src="" alt="프로젝트 썸네일 4" style="max-width: 300px; display: none;">
+                            </div>
                         </div>
                     </div>
 
@@ -84,11 +105,36 @@
     </div>
 
     <script>
-        function toggleSelection(card, id) {
-            card.classList.toggle('selected');
-            const checkbox = card.querySelector('input[type="checkbox"]');
-            checkbox.checked = !checkbox.checked;
+    function submitVoteForm() {
+        const projects = [
+            document.getElementById('projectSelect1').value,
+            document.getElementById('projectSelect2').value,
+            document.getElementById('projectSelect3').value,
+            document.getElementById('projectSelect4').value
+        ];
+        
+        // 중복 선택 체크
+        const uniqueProjects = new Set(projects);
+        if (uniqueProjects.size !== 4) {
+            alert('프로젝트는 중복 선택할 수 없습니다.');
+            return false;
         }
+        
+        return true;
+    }
+
+    function updateThumbnail(selectElement, imgId) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const thumbnail = selectedOption.getAttribute('data-thumbnail');
+        const imgElement = document.getElementById(imgId);
+        
+        if (thumbnail) {
+            imgElement.src = '${pageContext.request.contextPath}/uploads/project/' + thumbnail;
+            imgElement.style.display = 'block';
+        } else {
+            imgElement.style.display = 'none';
+        }
+    }
     </script>
 </body>
 </html>

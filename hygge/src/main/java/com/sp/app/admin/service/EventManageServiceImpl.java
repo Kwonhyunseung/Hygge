@@ -14,6 +14,7 @@ import com.sp.app.common.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Base64;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -35,22 +36,22 @@ public class EventManageServiceImpl implements EventManageService {
         return mapper.dataCount(map);
     }
 
-	@Override
-	public void insertEvent(EventManage dto, String pathname) throws Exception {
-		try {
-			String filename = null;
-			MultipartFile mf = dto.getPhotoFile();
-			if(mf != null && !mf.isEmpty()) {
-				filename = storageService.uploadFileToServer(mf, filename);
-				dto.setPhoto(filename);
-			}
-			
-			mapper.insertEvent(dto);
-		} catch (Exception e) {
-			log.info("insertEvent : ", e);
-		}
+    @Override
+    public void insertEvent(EventManage dto, String pathname) throws Exception {
+        try {
+            // 게시글 저장
+            mapper.insertEvent(dto);
+            
+            if(! dto.getPhotoFiles().isEmpty()) {
+            	
+            }
+            
+        } catch (Exception e) {
+            log.error("insertEvent : ", e);
+            throw e;
+        }
+    }
 		
-	}
 
 	@Override
 	public EventManage readEvent(long num) throws Exception {
@@ -65,9 +66,21 @@ public class EventManageServiceImpl implements EventManageService {
 
 	@Override
 	public void updateEvent(EventManage dto, String pathname) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteEvent(long num, String pathname) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	@Override
+	public void updateEvent(EventManage dto, String pathname) throws Exception {
 		try {
 			String filename = null;
-			MultipartFile mf = dto.getPhotoFile();
+			MultipartFile mf = dto.getPhotoFiles();
 			if(mf != null && !mf.isEmpty()) {
 				EventManage oldDto = readEvent(dto.getNum());
 				
@@ -83,7 +96,7 @@ public class EventManageServiceImpl implements EventManageService {
 			log.info("updateEvent : ", e);
 		}
 	}
-
+	
 	@Override
 	public void deleteEvent(long num, String pathname) throws Exception {
 		try {
@@ -97,4 +110,7 @@ public class EventManageServiceImpl implements EventManageService {
 			log.info("deleteEvent : ", e );
 		}
 	}
+	*/
+	
+	
 }

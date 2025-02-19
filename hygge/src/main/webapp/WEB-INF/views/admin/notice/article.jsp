@@ -42,6 +42,8 @@
                             </td>
                         </tr>
                         
+                        <img src="/uploads/notice/스크린샷 2025-01-21 152649.png" alt="공지사항 이미지">
+                        
                         <c:if test="${not empty files}">
                             <tr>
                                 <td class="files" colspan="2">

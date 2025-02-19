@@ -43,7 +43,7 @@ public class NoticeManageServiceImpl implements NoticeManageService{
 							
 					//파일 정보 db 저장
                     dto.setNoticeNum(dto.getNum()); // notice_num에 현재 게시글 번호 설정
-                    dto.setSFileName(originalFilename);  // s_FileName에 저장된 파일명 설정
+                    dto.setS_FileName(originalFilename);  // s_FileName에 저장된 파일명 설정
                     
 					mapper.insertNoticeFile(dto);
 				}

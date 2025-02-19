@@ -9,6 +9,43 @@
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
     <link rel="stylesheet" href="/dist/css/admin/vote/list.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+	<style type="text/css">
+	.filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-write {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-write:hover {
+    background-color: #2980b9;
+}
+
+.btn-write i {
+    font-size: 14px;
+}
+	</style>
 </head>
 <body>
     <header>
@@ -37,6 +74,10 @@
                         <option value="active">진행중</option>
                         <option value="ended">종료</option>
                     </select>
+                    
+	             <button type="button" class="btn-write" onclick="location.href='${pageContext.request.contextPath}/admin/vote/write';">
+		            <i class="fas fa-pen"></i> 글등록
+		        </button>
                 </div>
             </div>
 
@@ -62,7 +103,7 @@
                     </div>
                 </c:forEach>
             </div>
-
+            
             <div class="pagination">
                 <a href="#" class="active">1</a>
                 <a href="#">2</a>

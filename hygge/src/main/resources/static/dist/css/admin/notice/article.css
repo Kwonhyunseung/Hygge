@@ -1,0 +1,141 @@
+﻿@charset "UTF-8";
+
+/* 메인 컨텐츠 영역 */
+.main-content {
+    margin-left: 250px;  /* 사이드바 너비만큼 여백 */
+    padding: 20px;
+    padding-top: 80px;   /* 헤더 높이 + 여백 */
+}
+
+/* 컨텐츠 헤더 */
+.content-header {
+    margin-bottom: 30px;
+}
+
+.content-title h2 {
+    color: #34495e;
+    font-size: 24px;
+    margin: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #34495e;
+}
+
+/* 게시글 테이블 */
+.article-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #34495e;
+    margin-bottom: 20px;
+}
+
+.article-table td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 게시글 제목 */
+.article-table .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #34495e;
+    padding: 20px 15px;
+}
+
+/* 작성자, 날짜 정보 */
+.article-table .writer,
+.article-table .date {
+    color: #666;
+    font-size: 14px;
+    width: 50%;
+}
+
+/* 게시글 내용 */
+.article-table .content {
+    padding: 30px 15px;
+    min-height: 300px;
+    line-height: 1.6;
+}
+
+/* 첨부파일 영역 */
+.article-table .files {
+    background-color: #f8f9fa;
+    padding: 15px;
+}
+
+.article-table .files .label {
+    color: #34495e;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.file-item {
+    margin: 5px 0;
+}
+
+.file-item a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.file-item a:hover {
+    text-decoration: underline;
+}
+
+/* 이전글, 다음글 영역 */
+.prev-next {
+    padding: 15px;
+}
+
+.prev-next .item {
+    margin: 10px 0;
+}
+
+.prev-next .label {
+    color: #34495e;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.prev-next a {
+    color: #666;
+    text-decoration: none;
+}
+
+.prev-next a:hover {
+    color: #3498db;
+}
+
+/* 버튼 그룹 */
+.button-group {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.button-group .btn {
+    padding: 8px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.button-group .update-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.button-group .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.button-group .list-btn {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.button-group .btn:hover {
+    opacity: 0.9;
+}

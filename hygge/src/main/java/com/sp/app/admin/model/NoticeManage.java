@@ -22,7 +22,7 @@ public class NoticeManage {
     // 파일 관리를 위한 필드
     private List<MultipartFile> attachFiles;
     private long noticeNum;  // notice_num 용
-    private String sFileName; // s_FileName 용
+    private String s_FileName; // s_FileName 용
     
     private String name;
 }

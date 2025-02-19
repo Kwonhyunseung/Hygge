@@ -45,7 +45,7 @@
 	        #{content}, 
 	        #{evt_date,jdbcType=DATE}, 
 	        #{exp_date,jdbcType=DATE}, 
-	        #{photo,jdbcType=BLOB}
+	        #{photo,jdbcType=CLOB}
 	    )
 	</insert>
 	

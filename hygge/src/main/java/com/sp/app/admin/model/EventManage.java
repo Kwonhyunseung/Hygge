@@ -1,6 +1,7 @@
 package com.sp.app.admin.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,7 @@ public class EventManage {
     
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date exp_date;
-    private String photo; // 이미지 경로를 저장
-    private String status;
     
-    // DB에 저장되지 않는 임시 필드
-    private MultipartFile photoFile;
+    private String photo;      // DB에서 가져온 파일명 리스트
+    private List<MultipartFile> photoFiles; // 업로드할 파일들
 }

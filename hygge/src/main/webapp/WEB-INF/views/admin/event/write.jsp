@@ -34,8 +34,8 @@
 
                     <div class="form-group">
                         <label>이벤트 이미지</label>
-                        <div class="image-upload" onclick="document.getElementById('imageFile').click();">
-                            <input type="file" id="imageFile" name="imageFile" style="display: none;">
+                        <div class="image-upload" onclick="document.getElementById('photoFiles').click();">
+                            <input type="file" id="photoFiles" name="photoFiles" style="display: none;">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <p>이미지를 업로드하려면 클릭하세요</p>
                         </div>
@@ -52,7 +52,8 @@
                             <input type="date" name="exp_date" required>
                         </div>
                     </div>
-
+					
+					<%-- 
                     <div class="form-group">
                         <label>이벤트 상태</label>
                         <select name="status" class="status-select">
@@ -61,7 +62,7 @@
                             <option value="ended">종료</option>
                         </select>
                     </div>
-
+					--%>
                     <div class="form-group">
                         <label for="event-content">이벤트 내용</label>
                         <div class="editor-container">

@@ -18,6 +18,7 @@ import com.sp.app.admin.model.EventManage;
 import com.sp.app.admin.service.EventManageService;
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.common.StorageService;
+import com.sp.app.model.SessionInfo;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,14 +40,7 @@ public class EventManageController {
     
     @PostConstruct
     public void init() {
-        uploadPath = storageService.getRealPath("/uploads/event");
-        File dir = new File(uploadPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        
-        System.out.println(uploadPath);
-        log.info("uploadPath: " + uploadPath);
+    	uploadPath = this.storageService.getRealPath("/uploads/event");
     }
     
     @GetMapping("list")
@@ -122,9 +116,9 @@ public class EventManageController {
     public String writeSubmit(EventManage dto) throws Exception {
         try {
             service.insertEvent(dto, uploadPath);
+            
         } catch (Exception e) {
-            log.error("writeSubmit : ", e);
-            throw e;
+        	log.info("writeSubmit : ", e);
         }
         
         return "redirect:/admin/event/list";
