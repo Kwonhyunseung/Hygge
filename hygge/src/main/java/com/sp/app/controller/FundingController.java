@@ -1,5 +1,6 @@
 package com.sp.app.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Product;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.FundingProjectService;
 import com.sp.app.service.FundingService;
@@ -37,11 +39,17 @@ public class FundingController {
 	@GetMapping("main/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model) {
 	    try {
-	        // 서비스에서 프로젝트 정보 가져오기
 	        Funding project = detailService.fundingProduct(num);
+	        
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("num", num);
+	        List<Product> productList = detailService.detailProduct(map);
 
 	        if (project != null) {
+	        	model.addAttribute("thumbnail", "/uploads/Funding/" + project.getThumbnail());
 	            model.addAttribute("project", project);
+	            model.addAttribute("product", productList);
+	            model.addAttribute("now", new Date());  // 현재 날짜 추가
 	        } else {
 	            model.addAttribute("error", "해당 프로젝트를 찾을 수 없습니다.");
 	        }

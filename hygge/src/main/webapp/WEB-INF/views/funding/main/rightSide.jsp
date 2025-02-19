@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <head>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
@@ -52,56 +53,31 @@
 		</div>
 		
 		<div class="product-buy">
-				<h4>리워드 선택</h4>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p><strong>1,000원</strong></p>
-					<p>리워드 선택 없이 후원하기</p>
-				</button>
-			</div>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p><strong>89,000원</strong></p>
-					<p class="composition">[얼리버드 2] 백설 2개</p>
-					<div class="option">
-						<p>💚백설 50ml (x2)</p>
-						<p>💚[선물] 백설 디스커버리 샘플 2.5ml (x1)</p>
-					</div>
-				</button>
-			</div>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p><strong>99,000원</strong></p>
-					<p class="composition">[얼리버드 2-1] 백설 1개 + 원하는 가나다람쥐 향수 1개</p>
-					<div class="option">
-						<p>💚백설 50ml (x2)</p>
-						<p>💚원하는 가나다람쥐 향수 50ml (x1)
-						<p>💚[선물] 백설 디스커버리 샘플 2.5ml (x1)</p>
-					</div>
-				</button>
-			</div>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p><strong>51,000원</strong></p>
-					<p class="composition">[백설 1] 백설 1개</p>
-					<div class="option">
-						<p>💚백설 50ml (x1)</p>
-						<p>💚[선물] 백설 디스커버리 샘플 2.5ml (x1)</p>
-					</div>
-				</button>
-			</div>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p><strong>98,000원</strong></p>
-					<p class="composition">[백설 2] 백설 2개</p>
-					<div class="option">
-						<p>💚백설 50ml (x2)</p>
-						<p>💚[선물] 백설 디스커버리 샘플 2.5ml (x1)</p>
-					</div>
-				</button>
-			</div>
-			
-		</div>
-
+        <h4>리워드 선택</h4>
+	        <div class="product-select">
+	            <button type="button" class="buyBtn" onclick="productBuy();">
+	                <p><strong>1,000원</strong></p>
+	                <p>리워드 선택 없이 후원하기</p>
+	            </button>
+	        </div>
+	
+	        <c:forEach var="product" items="${product}">
+	            <div class="product-select">
+	                <button type="button" class="buyBtn" onclick="productBuy();">
+	                    <p><strong>
+	                        <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+	                    </strong></p>
+	                    <p class="composition">${product.title}</p>
+	                    <div class="option">
+	                        <c:forEach var="detailLine" items="${fn:split(product.detail, '💚')}">
+	                            <c:if test="${!empty detailLine}">
+	                                <p>💚${detailLine}</p>
+	                            </c:if>
+	                        </c:forEach>
+	                    </div>
+	                </button>
+	            </div>
+	        </c:forEach>
+    	</div>
 	</div>
 </body>

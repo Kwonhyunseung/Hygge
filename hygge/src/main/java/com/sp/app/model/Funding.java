@@ -31,4 +31,6 @@ public class Funding {
 	private int progress;
 	private int total_amount;
 	private boolean userLiked;
+	
+	private String name; //카테고리명 추가
 }

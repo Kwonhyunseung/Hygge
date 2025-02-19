@@ -7,7 +7,8 @@ import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
 
 public interface FundingProjectService {
-public Funding fundingProduct(long num); //프로젝트 상세화면 - 상단 메인 정보
+	
+	public Funding fundingProduct(long num); //프로젝트 상세화면 - 상단 메인 정보
 	
 	/*public Funding detailProduct(long num);*/
 	public List<Product> detailProduct(Map<String, Object> map); //프로젝트 상세화면 - 상품구성
