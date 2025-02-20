@@ -14,14 +14,11 @@ public class Product {
 	private String detail; //상품상세정보
 	private String title;
 	private String origin; //원산지
-	
 	private int num; //신청번호
 	
 	// Sales
 	
 	// Payment
 	private int total_amount;
-	
-	
 	
 }

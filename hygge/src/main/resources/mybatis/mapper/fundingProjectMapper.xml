@@ -3,89 +3,103 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.FundingProjectMapper">
 
-<!-- 프로젝트 상세화면 - 상단메인정보 -->
-<!--
-	카테고리, 제목, 모인금액, 달성률(모인금액과 목표금액에 비례해서 계산), 남은시간(end_date - sysdate?), 목표금액(target), 기간(term), 썸네일, 배송정보, 프로젝트 상세정보,
-	좋아요, 결제창(후원하기버튼)
+	<!-- 프로젝트 상세화면 - 상단메인정보 -->
+	<!-- 카테고리, 제목, 모인금액, 달성률(모인금액과 목표금액에 비례해서 계산), 남은시간(end_date - sysdate?), 
+		목표금액(target), 기간(term), 썸네일, 배송정보, 프로젝트 상세정보, 좋아요, 결제창(후원하기버튼) 프로젝트 스토리(내용), 
+		후기 메이커소개 : 메이커명, 팔로우수, 메이커문의버튼, 메이커팔로우버튼 리워드 선택 : product -->
+	<select id="fundingProduct" parameterType="Long"
+		resultType="com.sp.app.model.Funding">
+		SELECT DISTINCT
+		p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
+		pr.delivery_info, m.nickname,
+		TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
+		TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date,
+		NVL(total_amount, 0) AS total_amount,
+		(SELECT COUNT(1) FROM follow f
+		WHERE f.following = pr.MEMBERIDX) AS followingCount
+		FROM project p
+		JOIN projectRequest pr ON p.num = pr.num
+		JOIN category c ON pr.category_num = c.category_num
+		JOIN MEMBERAUTHORITY ma ON ma.MEMBERIDX = pr.MEMBERIDX
+		JOIN member1 m ON m.memberidx = ma.MEMBERIDX
+		LEFT JOIN ( SELECT pr.num,
+		SUM(DISTINCT pm.total_amount) AS total_amount
+		FROM projectRequest pr
+		JOIN product pd ON pr.num = pd.num
+		LEFT JOIN sales s ON pd.product_num = s.product_num
+		LEFT JOIN payment pm ON s.payment_num = pm.payment_num
+		GROUP BY pr.num
+		) payment_summary ON p.num = payment_summary.num
+		WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER'
+	</select>
 	
-	프로젝트 스토리(내용), 후기
-	
-	메이커소개 : 메이커명, 팔로우수, 메이커문의버튼, 메이커팔로우버튼
-	리워드 선택 : product
--->
-<select id="fundingProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
-	SELECT p.num, c.name, block,
-	    TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') as start_date, 
-	    TO_CHAR((pr.accept_date + 7) + pr.term, 'YYYY-MM-DD') as end_date,
-	    NVL(SUM(pm.total_amount), 0) as total_amount,
-	    pr.title, pr.target, pr.term, pr.thumbnail, pr.delivery_info
-	FROM project p
-	JOIN projectRequest pr ON p.num = pr.num
-	JOIN category c ON pr.category_num = c.category_num
-	JOIN product pd ON pr.num = pd.num
-	LEFT OUTER JOIN sales s ON pd.product_num = s.product_num
-	LEFT OUTER JOIN payment pm ON s.payment_num = pm.payment_num
-	WHERE p.num = #{num}
-	GROUP BY p.num, pr.accept_date, pr.term, block, c.name, pr.title, pr.target, pr.term, pr.thumbnail, pr.delivery_info
-</select>
+	<!-- 프로젝트 상세화면 - 상품구성 -->
+	<select id="detailProduct" parameterType="map"
+		resultType="com.sp.app.model.Product">
+		<!-- 1. 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나, 해당 프로젝트의 Product(상품)들의 정보를 담고 
+			있는 List 객체 하나 현재: 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나 -->
+		<!-- 리워드 : 가격, title:상품명( [얼리버드 2] 백설 2개 ), detail:상품구성( 백설 50ml(x1) ), 
+			stock상품 수량? -->
+		SELECT p.product_num, p.title, p.price, p.detail, p.num
+		FROM product p
+		JOIN projectRequest pr ON p.num = pr.num
+		WHERE p.num = #{num}
+	</select>
 
-<!-- 프로젝트 상세화면 - 상품구성 -->
-<select id="detailProduct" parameterType="map" resultType="com.sp.app.model.Product">
-<!-- 1. 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나, 해당 프로젝트의 Product(상품)들의 정보를 담고 있는 List 객체 하나
-	현재: 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나 -->
-	<!-- 리워드 : 가격, title:상품명( [얼리버드 2] 백설 2개 ), detail:상품구성( 백설 50ml(x1) ), stock상품 수량? -->
-	SELECT p.product_num, p.title, p.price, p.detail, p.num
-	FROM product p
-	JOIN projectRequest pr ON p.num = pr.num
-	WHERE p.num = #{num}
-</select>
+	<!-- 프로젝트 좋아요 -->
+	<select id="projectLikeCount" parameterType="Long"
+		resultType="Integer">
+		SELECT COUNT(*)
+		FROM ProjectLike
+		WHERE num = #{num}
+	</select>
 
-<!-- 프로젝트 좋아요 -->
-<select id="projectLikeCount" parameterType="Long" resultType="Integer">
-	SELECT COUNT(*)
-    FROM ProjectLike 
-    WHERE num = #{num}
-</select>
+	<insert id="insertProjectLikeCount" parameterType="map">
+		INSERT INTO
+		ProjectLike(num, memberIdx) VALUES (#{num}, #{memberIdx})
+	</insert>
 
-<insert id="insertProjectLikeCount" parameterType="map">
-	INSERT INTO ProjectLike(num, memberIdx) VALUES (#{num}, #{memberIdx})
-</insert>
+	<delete id="deleteProjectLikeCount" parameterType="map">
+		DELETE FROM
+		ProjectLike WHERE num=#{num} AND memberIdx=#{memberIdx}
+	</delete>
 
-<delete id="deleteProjectLikeCount" parameterType="map">
-	DELETE FROM ProjectLike WHERE num=#{num} AND memberIdx=#{memberIdx}
-</delete>
-
-<select id="userFundingLiked" parameterType="map" resultType="int">
-    SELECT NVL(COUNT(*), 0)
-    FROM ProjectLike
-    WHERE num = #{num} AND memberIdx = #{memberIdx}
-</select>
+	<select id="userFundingLiked" parameterType="map"
+		resultType="int">
+		SELECT NVL(COUNT(*), 0)
+		FROM ProjectLike
+		WHERE num = #{num}
+		AND memberIdx = #{memberIdx}
+	</select>
 
 
 
-<select id="totalAmountProduct" parameterType="Long"
-	resultType="Integer">
-	SELECT NVL(SUM(s.sum), 0)
-	FROM Sales s
-	JOIN Product p ON s.product_num = p.product_num
-	WHERE p.product_num = #{product_num}
-</select>
 
 
 
-<select id="productReviews" parameterType="Long"
-	resultType="com.sp.app.model.Funding">
-	<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
-		mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
-		r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
-		r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
-		WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
-		#{product_num}) SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
-		mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
-		r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
-		r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
-		WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
-		#{product_num}) -->
-</select>
+	<select id="totalAmountProduct" parameterType="Long"
+		resultType="Integer">
+		SELECT NVL(SUM(s.sum), 0)
+		FROM Sales s
+		JOIN Product p ON
+		s.product_num = p.product_num
+		WHERE p.product_num = #{product_num}
+	</select>
+
+
+	<select id="productReviews" parameterType="Long"
+		resultType="com.sp.app.model.Funding">
+		<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
+			mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
+			r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
+			r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
+			WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
+			#{product_num}) SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
+			mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
+			r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
+			r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
+			WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
+			#{product_num}) -->
+	</select>
 
 </mapper>

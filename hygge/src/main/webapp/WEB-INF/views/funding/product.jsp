@@ -183,13 +183,11 @@ $(function(){
 							<p class="a" style="font-size: 18px;">모인 금액</p>
 							<p class="a" id="price">
 								<strong><fmt:formatNumber value="${project.total_amount}" pattern="#,###" /></strong>원
-								<span class="punding-goal"><fmt:formatNumber value="${(project.total_amount / project.target) * 100}" pattern="#,###" />% 달성</span>
+								<span class="punding-goal">${project.funding_goal}% 달성</span>
 							</p>
 							<p class="b" style="font-size: 18px;">남은 시간</p>
 							<p class="b" id="period">
-								<fmt:parseDate value="${project.end_date}" pattern="yyyy-MM-dd" var="endDate" />
-								<jsp:useBean id="now" class="java.util.Date" />
-								<strong><fmt:formatNumber value="${((endDate.time - now.time) / (1000*60*60*24)) + 2}" pattern="0" /></strong>일
+								<strong>${project.remained_date}</strong>일
 							</p>
 						</div>
 						<hr style="margin: 10px 0 40px 0;">
@@ -212,11 +210,8 @@ $(function(){
 									<fmt:formatDate value="${endDate}" pattern="yyyy.MM.dd" />
 								</p>
 								<p class="d">
-									목표금액 달성시 <br>&nbsp;&nbsp;
-									<fmt:parseDate value="${project.end_date}" pattern="yyyy-MM-dd" var="endDate" />
-									<jsp:useBean id="paymentDate" class="java.util.Date" />
-									<c:set target="${paymentDate}" property="time" value="${endDate.time + 86400000}" /> <!-- 86400000은 1일을 밀리초로 표현 -->
-									<fmt:formatDate value="${paymentDate}" pattern="yyyy.MM.dd" />에 결제 진행
+									목표금액 달성시 <br>&nbsp;
+									${project.payment_date}
 								</p>
 								<p class="d">
 									<fmt:parseDate value="${project.delivery_info}" pattern="yyyyMMdd" var="deliveryDate" />
@@ -261,7 +256,7 @@ $(function(){
 					</div>
 
 					<div class="col-5 right-sidebar">
-						<jsp:include page="/WEB-INF/views/funding/main/rightSide.jsp" />
+						<jsp:include page="/WEB-INF/views/funding/rightSide.jsp" />
 					</div>
 				</div>
 			</div>

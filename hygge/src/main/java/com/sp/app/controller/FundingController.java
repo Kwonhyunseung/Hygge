@@ -1,6 +1,9 @@
 package com.sp.app.controller;
 
-import java.util.Date;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +39,16 @@ public class FundingController {
 	private final FundingService service;
 	private final PaginateUtil paginateUtil;
 
-	@GetMapping("main/product/{num}")
+	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
 		try {
 			Funding project = detailService.fundingProduct(num);
 
+			int funding_goal = project.getTotal_amount() / project.getTarget() * 100;
+			project.setFunding_goal(Integer.toString(funding_goal));
+			project.setRemained_date(calDiffDate(project.getEnd_date()));
+			project.setPayment_date(payOneDay(project.getEnd_date()));
+			
 			Map<String, Object> map = new HashMap<>();
 			map.put("num", num);
 			List<Product> productList = detailService.detailProduct(map);
@@ -63,17 +71,48 @@ public class FundingController {
 				model.addAttribute("likeCount", likeCount);
 				model.addAttribute("isUserLiked", isUserLiked);
 				model.addAttribute("product", productList);
-				model.addAttribute("now", new Date());
-			} else {
-				model.addAttribute("error", "해당 프로젝트를 찾을 수 없습니다.");
 			}
+			
 		} catch (Exception e) {
 			log.error("Error fetching project details", e);
 			model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
 		}
-		return "funding/main/product";
+		return "funding/product";
+	}
+	
+	// 남은 시간
+	public static String calDiffDate(String dateString) {
+		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		// 문자열을 LocalDate로 변환
+		LocalDate inputDate = LocalDate.parse(dateString, formatter);
+
+		// 현재 날짜 가져오기
+		LocalDate currentDate = LocalDate.now();
+
+		// 두 날짜 사이의 차이 계산
+		return String.valueOf(ChronoUnit.DAYS.between(currentDate, inputDate));
 	}
 
+	// 결제일
+	public static String payOneDay(String dateString) {
+		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		// 문자열을 LocalDate로 변환
+		LocalDate inputDate = LocalDate.parse(dateString, formatter);
+
+		// 두 날짜 사이의 차이 계산
+		return String.valueOf(inputDate.plusDays(1));
+	}
+
+	public static String convertToString(Double input) {
+		DecimalFormat df = new DecimalFormat("#,##0.00"); // 소수점 둘째 자리까지 표시
+		String formattedValue = df.format(input);
+		return formattedValue;
+	}
+	
 	@ResponseBody
 	@PostMapping("userFundingLiked")
 	public Map<String, Object> productLiked(@RequestParam(name = "num") long num,
@@ -123,14 +162,18 @@ public class FundingController {
 
 	@GetMapping("plan")
 	public String plan(Model model) {
-		return "funding/main/contentPlan";
+		return "funding/contentPlan";
 	}
 
 	@GetMapping("review")
 	public String review(Model model) {
-		return "funding/main/contentReview";
+		return "funding/contentReview";
 	}
 
+	
+	// -------------------------------------------------------------------
+
+	
 	@GetMapping("{menu}")
 	public String fundingList(@PathVariable(name = "menu") String Menu,
 			@RequestParam(name = "kwd", defaultValue = "") String keyword, Model model, HttpSession session) {
@@ -220,4 +263,5 @@ public class FundingController {
 		}
 		return model;
 	}
+
 }

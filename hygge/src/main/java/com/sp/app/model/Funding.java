@@ -39,4 +39,12 @@ public class Funding {
 	private MultipartFile thumbnail_File;
 	private MultipartFile business_File;
 	
+	//TODO 메이커 소개
+	private int followingCount; //팔로우 수
+	private String nickname;
+	//TODO Custom
+	private String funding_goal;
+	private String remained_date;
+	private String payment_date;
+	
 }
