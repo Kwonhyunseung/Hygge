@@ -65,15 +65,20 @@
 
             <div class="filter-section">
                 <div class="filter-wrapper">
-                    <select name="voteType">
-                        <option value="best">이달의 최고 프로젝트</option>
-                        <option value="worst">이달의 최악 프로젝트</option>
+                <form method="get" action="${pageContext.request.contextPath}/admin/vote/list">
+                    <select name="schType">
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
                     </select>
                     <select name="status">
                         <option value="all">전체 상태</option>
                         <option value="active">진행중</option>
                         <option value="ended">종료</option>
                     </select>
+				      <input class="" type="text" name="kwd" value="${kwd}" placeholder="검색어를 입력하세요">
+				      <button type="submit">검색</button>  
+				 </form>                  
+                    
                     
 	             <button type="button" class="btn-write" onclick="location.href='${pageContext.request.contextPath}/admin/vote/write';">
 		            <i class="fas fa-pen"></i> 글등록
@@ -81,33 +86,34 @@
                 </div>
             </div>
 
-            <div class="vote-grid">
-                <c:forEach var="i" begin="1" end="6">
-                    <div class="vote-card">
-                        <span class="vote-category">최고의 프로젝트</span>
-                        <img src="/dist/images/choco.png" alt="프로젝트 이미지" class="vote-image">
-                        <div class="vote-info">
-                            <div class="vote-title">친환경 텀블러 제작 프로젝트</div>
-                            <div class="vote-period">
-                                <i class="far fa-calendar-alt"></i>
-                                2024.02.01 - 2024.02.29
-                            </div>
-                            <div class="vote-stats">
-                                <div class="vote-count">
-                                    <i class="fas fa-vote-yea"></i>
-                                    현재 투표수: 128
-                                </div>
-                                <span class="vote-status status-active">진행중</span>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
+			<div class="vote-grid">
+			  <c:forEach var="vote" items="${vote}">
+			    <div class="vote-card">
+			      <span class="vote-category">최악의 프로젝트</span>
+			      <img src="/dist/images/choco.png" alt="프로젝트 이미지" class="vote-image">
+			      <div class="vote-info">
+			        <div class="vote-num">${vote.vote_num}</div>
+			        <a href="/vote/article">${vote.title}</a>
+			        <div class="vote-period">
+			          <i class="far fa-calendar-alt"></i>
+			          <fmt:formatDate value="${vote.start_date}" pattern="yyyy.MM.dd"/>
+			        </div>
+			        <div class="vote-stats">
+			          <div class="vote-count">
+			            <i class="fas fa-vote-yea"></i>
+			            현재 투표수: 곧 구현
+			          </div>
+			          <span class="vote-status status-active">
+			            진행중
+			          </span>
+			        </div>
+			      </div>
+			    </div>
+			  </c:forEach>
+			</div>
             
             <div class="pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
+            	${paging}
             </div>
         </div>
     </div>

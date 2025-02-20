@@ -1,6 +1,7 @@
 package com.sp.app.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sp.app.admin.model.ProjectManage;
 import com.sp.app.admin.model.VoteManage;
@@ -11,6 +12,8 @@ public interface VoteManageService {
 	public List<ProjectManage> projectList() throws Exception;
 	
 	public void insertVote(VoteManage dto) throws Exception;
-	//public void insertVoteCandidate(List<int, int>)
-
+	public void insertVoteCandidate(long num) throws Exception;
+	
+	public List<VoteManage> voteList(Map<String, Object> map) throws Exception;
+	public int dataCount(Map<String, Object> map) throws Exception;
 }
