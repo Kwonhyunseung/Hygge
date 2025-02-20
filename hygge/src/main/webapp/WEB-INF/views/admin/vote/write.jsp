@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <form name="voteForm" method="post" onsubmit="return submitVoteForm();">
+            <form name="voteForm" method="post" onsubmit="submitVoteForm();">
                 <div class="write-container">
                     <div class="form-group">
                         <label for="vote-title">투표 제목</label>
@@ -33,9 +33,14 @@
                     </div>
                     
                     <div class="form-group">
+                        <label for="vote-title">내용</label>
+                        <input type="text" id="content" name="content" placeholder="내용을 입력하세요.">
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="start-date">시작 날짜</label>
                         <div class="date-input-wrapper">
-                            <input type="date" id="start-date" name="startDate" required>
+                            <input type="date" id="start-date" name="start_date" required>
                             <i class="fa-regular fa-calendar"></i>
                         </div>
                     </div>
@@ -44,54 +49,42 @@
                         <h3>프로젝트 후보 선택</h3>
                         <div class="form-group">
                             <label>프로젝트 후보 1</label>
-                            <select name="candidates[0].projectNum" id="projectSelect1" onchange="updateThumbnail(this, 'projectImg1')" required>
+                            <select name="projectNum1" id="projectSelect1" required>
                                 <option value="">프로젝트를 선택하세요</option>
                                 <c:forEach var="project" items="${projects}">
-                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                    <option value="${project.num}">${project.title}</option>
                                 </c:forEach>
                             </select>
-                            <div class="thumbnail-container">
-                                <img id="projectImg1" src="" alt="프로젝트 썸네일 1" style="max-width: 300px; display: none;">
-                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>프로젝트 후보 2</label>
-                            <select name="candidates[1].projectNum" id="projectSelect2" onchange="updateThumbnail(this, 'projectImg2')" required>
+                            <select name="projectNum2" id="projectSelect2" required>
                                 <option value="">프로젝트를 선택하세요</option>
                                 <c:forEach var="project" items="${projects}">
-                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                    <option value="${project.num}">${project.title}</option>
                                 </c:forEach>
                             </select>
-                            <div class="thumbnail-container">
-                                <img id="projectImg2" src="" alt="프로젝트 썸네일 2" style="max-width: 300px; display: none;">
-                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>프로젝트 후보 3</label>
-                            <select name="candidates[2].projectNum" id="projectSelect3" onchange="updateThumbnail(this, 'projectImg3')" required>
+                            <select name="projectNum3" id="projectSelect3" required>
                                 <option value="">프로젝트를 선택하세요</option>
                                 <c:forEach var="project" items="${projects}">
-                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                    <option value="${project.num}">${project.title}</option>
                                 </c:forEach>
                             </select>
-                            <div class="thumbnail-container">
-                                <img id="projectImg3" src="" alt="프로젝트 썸네일 3" style="max-width: 300px; display: none;">
-                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>프로젝트 후보 4</label>
-                            <select name="candidates[3].projectNum" id="projectSelect4" onchange="updateThumbnail(this, 'projectImg4')" required>
+                            <select name="projectNum4" id="projectSelect4" required>
                                 <option value="">프로젝트를 선택하세요</option>
                                 <c:forEach var="project" items="${projects}">
-                                    <option value="${project.num}" data-thumbnail="${project.thumbnail}">${project.title}</option>
+                                    <option value="${project.num}">${project.title}</option>
                                 </c:forEach>
                             </select>
-                            <div class="thumbnail-container">
-                                <img id="projectImg4" src="" alt="프로젝트 썸네일 4" style="max-width: 300px; display: none;">
-                            </div>
                         </div>
                     </div>
 
@@ -121,20 +114,10 @@
         }
         
         return true;
+        
+        f.action = '${pageContext.request.contextPath}/admin/vote/write';
     }
 
-    function updateThumbnail(selectElement, imgId) {
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const thumbnail = selectedOption.getAttribute('data-thumbnail');
-        const imgElement = document.getElementById(imgId);
-        
-        if (thumbnail) {
-            imgElement.src = '${pageContext.request.contextPath}/uploads/project/' + thumbnail;
-            imgElement.style.display = 'block';
-        } else {
-            imgElement.style.display = 'none';
-        }
-    }
     </script>
 </body>
 </html>

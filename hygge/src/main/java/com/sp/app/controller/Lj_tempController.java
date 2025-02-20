@@ -27,22 +27,4 @@ public class Lj_tempController {
 		}
 		return "vote/list";
 	}
-
-	@GetMapping("/vote/article")
-	public String voteArticle(Model model) {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "vote/article";
-	}
-
-	@GetMapping("/vote/result")
-	public String voteResult(Model model) {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "vote/result";
-	}
 }
