@@ -159,16 +159,16 @@
             <textarea class="form-input introduction-input" placeholder="간단한 이력과 소개를 적어주세요."></textarea>
         </div>
 
-        <div class="maker-section">
-            <div class="section-title">연금 계좌</div>
-            <div class="section-description">후원금을 전달받을 계좌를 등록해주세요.</div>
-            <div class="contact-grid">
-                <div class="contact-label">은행명</div>
-                <input type="text" class="form-input" placeholder="은행명">
-                <div class="contact-label">계좌번호</div>
-                <input type="text" class="form-input" placeholder="숫자만 입력해주세요">
-            </div>
-        </div>
+	<div class="maker-section">
+		<div class="section-title">연동 계좌</div>
+		<div class="section-description">후원금을 전달받을 계좌를 등록해주세요.</div>
+		<div class="contact-grid">
+			<div class="contact-label">은행명</div>
+			<input type="text" class="form-input" placeholder="은행명">
+			<div class="contact-label">계좌번호</div>
+			<input type="text" class="form-input" placeholder="숫자만 입력해주세요">
+		</div>
+	</div>
 
         <button class="save-button">저장</button>
     </div>

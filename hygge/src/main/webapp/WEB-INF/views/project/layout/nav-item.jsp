@@ -20,6 +20,7 @@
 		<a href="#" class="nav-item">메이커 정보</a>
     </nav>
 
+<!-- 
 	<main class="main-content">
         <div class="project-header">
             <img src="/dist/images/logo.jpg" alt="프로젝트 사진" class="project-image">
@@ -29,6 +30,7 @@
             </div>
         </div>
    </main>
+ -->
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.sp.app.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -33,4 +35,8 @@ public class Funding {
 	private boolean userLiked;
 	
 	private String name; //카테고리명 추가
+
+	private MultipartFile thumbnail_File;
+	private MultipartFile business_File;
+	
 }

@@ -1,4 +1,4 @@
-package com.sp.app.admin.model;
+package com.sp.app.model;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VoteManage {
+public class Vote {
     private long vote_num; // 회차번호
     private Date start_date; // 투표기간
     private String content;
@@ -21,5 +21,4 @@ public class VoteManage {
     private long project_num2; // 프로젝트 번호
     private long project_num3; // 프로젝트 번호
     private long project_num4; // 프로젝트 번호
-    
 }

@@ -20,7 +20,7 @@
 
     <main class="main-content">
 
-        <form method="post" enctype="multipart/form-data">
+        <form name="submit1" method="post" enctype="multipart/form-data">
             <div class="goal-amount-section">
                 <h2 class="section-title">목표 금액<span class="required">*</span></h2>
                 <p class="amount-description">프로젝트를 완수하기 위해 필요한 금액을 설정해주세요.</p>
@@ -65,13 +65,13 @@
 
             <div class="form-section">
                 <h2 class="section-title">대표 사진<span class="required">*</span></h2>
-                <input type="file" name="thumbnail" class="input-field" accept="image/*">
+                <input type="file" name="thumbnail_File" class="input-field" accept="image/*">
             </div>
 
             <div class="form-section">
                 <h2 class="section-title">사업자 등록증</h2>
                 <p class="info-text">사업자가 등록되어 있을 경우 사업자 등록증을 첨부해주세요.</p>
-                <input type="file" name="business" class="input-field">
+                <input type="file" name="business_File" class="input-field">
                 <div class="button-container">
                     <button type="button" class="submit-button" onclick="sendNext();">다음</button>
                 </div>
@@ -80,19 +80,26 @@
     </main>
 <script type="text/javascript">
 function sendNext() {
-	let value = $('input[name="target"]').val();
-	console.log(value);
+	const f = document.submit1;
+	/* 임시저장 개념으로 작성하지 않더라도 다음 단계로 제출 가능. 하지만 마지막 단계에서 필수 내용이 다 있는지 확인이 필요해짐
+	let value = f.target.value;
 	if (!value) {
-		$('input[name="target"]').focus();
+		f.target.focus();
+		return false;
 	}
 	value = $('input[name="term"]').val();
 	if (!value) {
 		$('input[name="term"]').focus();
+		return false;
 	}
 	value = $('input[name="thumbnail"]').val();
 	if (!value) {
 		$('input[name="thumbnail"]').focus();
+		return false;
 	}
+	*/
+	f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit1';
+	f.submit();
 }
 </script>
 </body>

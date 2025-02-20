@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.admin.model.MemberManage;
 import com.sp.app.admin.service.MemberManageService;
-import com.sp.app.common.MyUtil;
 import com.sp.app.common.PaginateUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberManageController {
 	private final MemberManageService service;
 	private final PaginateUtil paginateUtil;
-	private final MyUtil myUtil;
 	
 	@GetMapping("normal")
 	public String normalMember(
