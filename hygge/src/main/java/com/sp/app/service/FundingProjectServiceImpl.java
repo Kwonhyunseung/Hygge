@@ -5,9 +5,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.sp.app.common.MyUtil;
 import com.sp.app.mapper.FundingProjectMapper;
 import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
+import com.sp.app.model.Review;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FundingProjectServiceImpl implements FundingProjectService {
 	private final FundingProjectMapper mapper;
+	private final MyUtil myUtil;
 
 	@Override
 	public Funding fundingProduct(long num) {
@@ -43,15 +46,74 @@ public class FundingProjectServiceImpl implements FundingProjectService {
 		
 		return list;
 	}
-
+	
 	@Override
-	public int totalAmountProduct(long num) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int projectLikeCount(long num) {
+		int result = 0;
+		try {
+			result = mapper.projectLikeCount(num);
+		} catch (Exception e) {
+			log.info("projectLikeCount: ", e);
+		}
+		return result;
 	}
 
 	@Override
-	public int projectLikeCount(long num) {
+	public void insertProjectLikeCount(Map<String, Object> map) {
+		try {
+			mapper.insertProjectLikeCount(map);
+		} catch (Exception e) {
+			log.info("insertProjectLikeCount: ", e);
+		}
+	}
+
+	@Override
+	public void deleteProjectLikeCount(Map<String, Object> map) {
+		try {
+			mapper.deleteProjectLikeCount(map);
+		} catch (Exception e) {
+			log.info("deleteProjectLikeCount: ", e);
+		}
+		
+	}
+
+	@Override
+	public int userFundingLiked(Map<String, Object> map) {
+	    int result = 0;
+	    try {
+	        result = mapper.userFundingLiked(map);
+	    } catch (Exception e) {
+	        log.info("userFundingLiked: ", e);
+	    }
+	    return result;
+	}
+	
+	@Override
+	public List<Review> listProductReview(Map<String, Object> map) {
+		List<Review> list = null;
+		
+		try {
+			list = mapper.listProductReview(map);
+			
+			for(Review dto : list) {
+				dto.setMemberName(myUtil.nameMasking(dto.getMemberName()));
+				
+				
+			}
+			
+		} catch (Exception e) {
+			log.info("listProductReview: ", e);
+		}
+		return list;
+	}
+
+	
+	
+	
+	
+	
+	@Override
+	public int totalAmountProduct(long num) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

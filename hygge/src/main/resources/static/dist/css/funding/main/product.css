@@ -63,22 +63,44 @@
 	font-size: 18px;
 	line-height: 180%;
 }
-.like i {
-    font-size: 1.8rem;
-    margin-left: 1px;
+
+/* 좋아요 버튼 - 글씨 */
+.like-btn {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1px;
+   padding: 8px 16px;
+   border: none;
+   background: transparent; /* 배경 투명으로 */
+   cursor: pointer;
+   transition: all 0.2s;
 }
-.like p {
-    font-size: 1.2rem;
+.like-btn.active {
+   color: #000;
 }
+/* 좋아요 - 수 */
+.like-count {
+   margin-top: 1px;
+   font-size: 16px;
+}
+/* 좋아요 - 아이콘 */
+.like-btn.active i {
+   color: #ff0000;
+}
+.like-btn i {
+   font-size: 30px;
+}
+
 #buyBtn {
 	background: #678D06;
 	color: #fff;
 	border-radius: 5px;
 	border: 1px solid #fff;
-	width: 220px;
-	height: 43px;
-	font-size: 18px;
-	margin-top: 14px;
+	width: 225px;
+	height: 50px;
+	font-size: 19px;
+	margin-top: 15px;
 }
 
 /* 프로젝트계획|후기 선택 */

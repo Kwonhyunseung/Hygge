@@ -16,7 +16,7 @@
 <select id="fundingProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
 	SELECT p.num, c.name, block,
 	    TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') as start_date, 
-	    TO_CHAR(pr.accept_date + pr.term, 'YYYY-MM-DD') as end_date,
+	    TO_CHAR((pr.accept_date + 7) + pr.term, 'YYYY-MM-DD') as end_date,
 	    NVL(SUM(pm.total_amount), 0) as total_amount,
 	    pr.title, pr.target, pr.term, pr.thumbnail, pr.delivery_info
 	FROM project p
@@ -31,31 +31,34 @@
 
 <!-- 프로젝트 상세화면 - 상품구성 -->
 <select id="detailProduct" parameterType="map" resultType="com.sp.app.model.Product">
-	<!-- SELECT p.num,
-		pay.total_amount, NVL(pay.total_amount, 0) AS total_amount,
-		pr.title, pr.target, pr.term, pr.thumbnail, pr.delivery_info, pr.project_info
-	FROM project p
-	JOIN projectRequest pr ON p.num = pr.num
-	JOIN category c ON pr.category_num = c.category_num
-	JOIN product pd ON pr.num = pd.num
-	LEFT OUTER JOIN sales s ON pd.product_num = s.product_num
-	LEFT OUTER JOIN payment pay ON s.payment_num = pay.payment_num
-	WHERE p.num = #{num} -->
-	
-<!-- 위에거 틀림. 아래 다시 시작 -->
-
-	<!-- 
-	1. 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나, 해당 프로젝트의 Product(상품)들의 정보를 담고 있는 List 객체 하나
-
-	현재: 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나
-	 -->
-	
+<!-- 1. 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나, 해당 프로젝트의 Product(상품)들의 정보를 담고 있는 List 객체 하나
+	현재: 프로젝트에 대한 정보를 담고 있는 Funding 객체 하나 -->
 	<!-- 리워드 : 가격, title:상품명( [얼리버드 2] 백설 2개 ), detail:상품구성( 백설 50ml(x1) ), stock상품 수량? -->
 	SELECT p.product_num, p.title, p.price, p.detail, p.num
 	FROM product p
 	JOIN projectRequest pr ON p.num = pr.num
 	WHERE p.num = #{num}
-	
+</select>
+
+<!-- 프로젝트 좋아요 -->
+<select id="projectLikeCount" parameterType="Long" resultType="Integer">
+	SELECT COUNT(*)
+    FROM ProjectLike 
+    WHERE num = #{num}
+</select>
+
+<insert id="insertProjectLikeCount" parameterType="map">
+	INSERT INTO ProjectLike(num, memberIdx) VALUES (#{num}, #{memberIdx})
+</insert>
+
+<delete id="deleteProjectLikeCount" parameterType="map">
+	DELETE FROM ProjectLike WHERE num=#{num} AND memberIdx=#{memberIdx}
+</delete>
+
+<select id="userFundingLiked" parameterType="map" resultType="int">
+    SELECT NVL(COUNT(*), 0)
+    FROM ProjectLike
+    WHERE num = #{num} AND memberIdx = #{memberIdx}
 </select>
 
 
@@ -65,15 +68,6 @@
 	SELECT NVL(SUM(s.sum), 0)
 	FROM Sales s
 	JOIN Product p ON s.product_num = p.product_num
-	WHERE p.product_num = #{product_num}
-</select>
-
-
-<select id="projectLikeCount" parameterType="Long"
-	resultType="Integer">
-	SELECT COUNT(*)
-	FROM ProjectLike pl
-	JOIN Product p ON pl.num = p.num
 	WHERE p.product_num = #{product_num}
 </select>
 
