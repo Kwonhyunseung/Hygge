@@ -231,7 +231,7 @@ function addNewContent(data) {
 		htmlText = '<div class="funding">'
 		htmlText +=	'	<div class="funding-thumbnail">'
 		htmlText +=	'		<a href="#">'
-		htmlText +=	'			<img src="${pageContext.request.contextPath}/uploads/Funding/' + thumbnail + '">';
+		htmlText +=	'			<img src="${pageContext.request.contextPath}/uploads/project/' + thumbnail + '">';
 		htmlText += '		</a>';
 		htmlText += '		<div class="like-btn" data-num="' + num + '">';
 		htmlText += '			<i class="bi ' + icon + '" style="color: red;"></i>';

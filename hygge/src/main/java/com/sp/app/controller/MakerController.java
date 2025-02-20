@@ -7,9 +7,12 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
@@ -19,6 +22,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@SessionAttributes("funding")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/makerPage/*")
@@ -41,21 +45,26 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit1")
-	public String projectSubmit1(Funding dto, Model model, HttpSession session) throws Exception {
+	public String projectForm1(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
-			if (session.getAttribute("submit1") == null) {
-				session.setAttribute("submit1", dto);
-			}
 		} catch (Exception e) {
-			log.info("projectSubmit1 : ", e);
+			log.info("projectForm1 : ", e);
 		}
 		return "makerPage/submit1";
 	}
 
-	@GetMapping("projectSubmit2")
-	public String projectSubmit2(Funding dto, Model model, HttpSession session) throws Exception {
+	@PostMapping("projectSubmit1")
+	public String projectSubmit1(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
-			session.setAttribute("submit1", dto);
+		} catch (Exception e) {
+			log.info("projectSubmit1 : ", e);
+		}
+		return "redirect:/makerPage/projectSubmit2";
+	}
+
+	@GetMapping("projectSubmit2")
+	public String projectForm2(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+		try {
 		} catch (Exception e) {
 			log.info("projectSubmit2 : ", e);
 		}
@@ -63,11 +72,10 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit3")
-	public String projectSubmit3(Funding dto, Model model, HttpSession session) throws Exception {
+	public String projectForm3(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
 			List<Category> parentCategory = service.listCategory(0);
 			model.addAttribute("parentCategory", parentCategory);
-			session.setAttribute("submit1", dto);
 		} catch (Exception e) {
 			log.info("projectSubmit3 : ", e);
 		}
@@ -75,9 +83,8 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit4")
-	public String projectSubmit4(Funding dto, Model model, HttpSession session) throws Exception {
+	public String projectForm4(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
-			session.setAttribute("submit1", dto);
 		} catch (Exception e) {
 			log.info("projectSubmit4 : ", e);
 		}
@@ -85,12 +92,17 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit5")
-	public String projectSubmit5(Funding dto, Model model) throws Exception {
+	public String projectForm5(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit5 : ", e);
 		}
 		return "makerPage/submit5";
+	}
+
+	@ModelAttribute("funding")
+	public Funding getFunding() {
+		return new Funding();
 	}
 
 	@ResponseBody

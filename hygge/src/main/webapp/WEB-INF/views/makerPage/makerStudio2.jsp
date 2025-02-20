@@ -160,7 +160,7 @@ function sendOk() {
 		$('.alarm').css('display', 'block');
 	}
 	if (allchecked) {
-		let url = '${pageContext.request.contextPath}/makerPage/projectSubmit';
+		let url = '${pageContext.request.contextPath}/makerPage/projectSubmit1';
 		location.href = url;
 	}
 }

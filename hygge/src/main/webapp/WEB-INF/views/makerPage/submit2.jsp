@@ -8,9 +8,9 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
+<link rel="stylesheet" href="/dist/css/project/button.css">
 
 <style type="text/css">
-@charset "UTF-8";
 
 * {
     margin: 0;
@@ -211,6 +211,12 @@ body {
 .action-btn:hover {
     background-color: #f5f5f5;
 }
+
+.origin-info {
+	font-size: 0.7rem;
+	color: gray;
+	margin-left: 10px;
+}
 </style>
 </head>
 <body>
@@ -221,105 +227,75 @@ body {
     <jsp:include page="/WEB-INF/views/project/layout/nav-item.jsp"/>
     
     <main class="main-content">
-        <div class="content-wrapper">
-            <div class="gift-list">
-                <div class="gift-item">
-                    <div>
-                        <div class="gift-price">33,911 원</div>
-                        <div class="gift-details">
-                            노션프로덕트 젤
-                        </div>
-                    </div>
-                    <div class="gift-actions">
-                        <button class="action-btn">수정</button>
-                        <button class="action-btn">삭제</button>
-                    </div>
-                </div>
-                <div class="gift-item">
-                    <div>
-                        <div class="gift-price">2,912 원</div>
-                        <div class="gift-details">
-                            체험판
-                        </div>
-                    </div>
-                    <div class="gift-actions">
-                        <button class="action-btn">수정</button>
-                        <button class="action-btn">삭제</button>
-                    </div>
-                </div>
-            </div>
+    	<form action="">
+	        <div class="content-wrapper">
+	            <div class="gift-list">
+	                <div class="gift-item">
+	                    <div>
+	                        <div class="gift-price">33,911 원</div>
+	                        <div class="gift-details">
+	                            노션프로덕트 젤
+	                        </div>
+	                    </div>
+	                    <div class="gift-actions">
+	                        <button class="action-btn">수정</button>
+	                        <button class="action-btn">삭제</button>
+	                    </div>
+	                </div>
+	                <div class="gift-item">
+	                    <div>
+	                        <div class="gift-price">2,912 원</div>
+	                        <div class="gift-details">
+	                            체험판
+	                        </div>
+	                    </div>
+	                    <div class="gift-actions">
+	                        <button class="action-btn">수정</button>
+	                        <button class="action-btn">삭제</button>
+	                    </div>
+	                </div>
+	            </div>
+	
+	            <div class="gift-form">
+	                <h2 class="form-title">선물 만들기+</h2>
+	                <p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
+	                    이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
+					<div class="form-group">
+						<label class="form-label">상품 제목</label>
+						<input type="text" class="form-input">
+					</div>
 
-            <div class="gift-form">
-                <h2 class="form-title">선물 만들기+</h2>
-                <p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
-                    이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
+					<div class="form-group">
+					    <label class="form-label">선물 구성 및 세부 설명</label><i class="bi bi-info-circle"></i>
+					    <input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요.">
+					</div>
 
-                <form>
-                    <div class="form-group">
-                        <label class="form-label">금액</label>
-                        <input type="text" class="form-input" placeholder="원">
-                    </div>
+					<div class="form-group">
+					    <label class="form-label">금액</label>
+					    <input type="text" class="form-input" placeholder="원">
+					</div>
 
-                    <div class="form-group">
-                        <label class="form-label">선물 구성 (선택)</label>
-                        <input type="text" class="form-input" placeholder="예시) 데모데이+메인 프로젝트+무료 서브프로젝트 1개">
-                    </div>
+					<div class="form-group">
+						<label class="form-label">상품 재고 수량</label>
+						<input type="text" class="form-input">
+					</div>
 
-                    <div class="form-group">
-                        <label class="form-label">선물 설명</label>
-                        <input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요.">
-                    </div>
+					<div class="form-group">
+						<label class="form-label">원산지<span class="origin-info">원산지 기재 필수 품목: 수입물품</span></label>
+						<input type="text" class="form-input">
+					</div>
 
-                    <div class="form-group">
-                        <label class="form-label">선물 구성 방식</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="giftType" class="radio-input">
-                                메인 선물
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="giftType" class="radio-input">
-                                서브 선물
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">배송여부</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="checkbox" class="radio-input">
-                                배송있음
-                            </label>
-                            <label class="radio-label">
-                                <input type="checkbox" class="radio-input">
-                                배송없음
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">배송비</label>
-                        <input type="text" class="form-input" placeholder="원">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">선물하기 여부</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="checkbox" class="radio-input">
-                                선물하기 가능
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn btn-cancel">취소</button>
-                        <button type="submit" class="btn btn-submit">추가</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+					<div class="button-group">
+					    <button type="button" class="btn btn-cancel">취소</button>
+					    <button type="submit" class="btn btn-submit">추가</button>
+					</div>
+	            </div>
+	        </div>
+			<div class="button-container">
+				<button type="button" class="prev-button">이전</button>
+				<button type="button" class="next-button" onclick="sendNext();">다음</button>
+			</div>
+        </form>
     </main>
 </body>
 </html>
