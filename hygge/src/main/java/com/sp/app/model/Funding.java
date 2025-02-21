@@ -37,6 +37,8 @@ public class Funding {
 	private boolean userLiked;
 	
 	private String name; //카테고리명 추가
+	
+	private String profile_img; //프로필 이미지
 
 	private MultipartFile thumbnail_File;
 	private MultipartFile business_File;

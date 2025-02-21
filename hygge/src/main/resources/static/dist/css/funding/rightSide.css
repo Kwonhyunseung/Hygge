@@ -36,7 +36,15 @@ h5{ margin-bottom: 25px; }
 	color: #fff;
 	border: 1px solid #fff;
 }
-
+/* 호버 시 버튼 내부의 모든 요소가 흰색이 되도록 설정 */
+.maker-btn button:hover i,
+.maker-btn button:hover span {
+    color: #fff !important;
+}
+.bi-suit-heart-fill {
+    color: #F8652A;
+}
+    
 .maker-complaint {
 	border: 1px solid #fff;
 	border-radius: 7px;
@@ -57,6 +65,7 @@ h5{ margin-bottom: 25px; }
     text-decoration-color : red;
     font-weight: bold;
 }
+
 
 /* 리워드 선택 */
 h4 {

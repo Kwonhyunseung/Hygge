@@ -19,12 +19,4 @@ public class Lj_tempController {
 		return "event/list";
 	}
 
-	@GetMapping("/vote/list")
-	public String handleVote(Model model) {
-		try {
-			
-		} catch (Exception e) {
-		}
-		return "vote/list";
-	}
 }

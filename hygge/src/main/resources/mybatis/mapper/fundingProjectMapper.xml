@@ -19,11 +19,12 @@
 			= payment_summary.num WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER' -->
 		SELECT DISTINCT
 			p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
-			pr.delivery_info, m.nickname,
+			pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,
 			TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
 			TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date,
 			NVL(payment_summary.total_amount, 0) AS total_amount,
-			(SELECT COUNT(1) FROM follow f
+			(SELECT COUNT(1)
+			FROM follow f
 			WHERE f.following = pr.MEMBERIDX) AS followingCount
 		FROM project p
 		JOIN projectRequest pr ON p.num = pr.num
@@ -69,11 +70,24 @@
 		FROM ProjectLike
 		WHERE num = #{num} AND memberIdx = #{memberIdx}
 	</select>
-
-
-
-
-
+	
+	<!-- 프로젝트 상세화면 - 메이커 팔로우 -->
+	<insert id="insertFollowing" parameterType="map">
+	    INSERT INTO Follow(following, follower) VALUES (#{makerIdx}, #{memberIdx})
+	</insert>
+	
+	<delete id="deleteFollowing" parameterType="map">
+	    DELETE FROM Follow WHERE following=#{makerIdx} AND follower=#{memberIdx}
+	</delete>
+	
+	<select id="userFollowing" parameterType="map" resultType="int">
+	    SELECT NVL(COUNT(*), 0)
+	    FROM Follow
+	    WHERE following=#{makerIdx} AND follower=#{memberIdx}
+	</select>
+	
+	
+	
 	<select id="productReviews" parameterType="Long"
 		resultType="com.sp.app.model.Funding">
 		<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 

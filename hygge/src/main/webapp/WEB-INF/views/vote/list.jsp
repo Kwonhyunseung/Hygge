@@ -21,56 +21,23 @@
 	<div class="body-title">
 		<div class="title">투표</div>
 	</div>
-	<div class="body-container">
-		<div class="event">
-		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-			<div class="event-img-div">
-				<a href="${pageContext.request.contextPath}/vote/article" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-				</a>
-			</div>
-			<a href="${pageContext.request.contextPath}/vote/article" class="">이달의 투표(2025.01)</a>
-		</div>
-		<div class="event">
-		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-			<div class="event-img-div">
-				<a href="${pageContext.request.contextPath}/vote/result" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-				</a>
-			</div>
-			<a href="${pageContext.request.contextPath}/vote/result" class="">이달의 투표(2025.01)</a>
-		</div>
-		<div class="event">
-		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-			<div class="event-img-div">
-				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-				</a>
-			</div>
-			<a href="#" class="">이달의 투표(2025.01)</a>
-		</div>
-		<div class="event">
-		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-			<div class="event-img-div">
-				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-				</a>
-			</div>
-			<a href="#" class="">이달의 투표(2025.01)</a>
-		</div>
-		<div class="event">
-		<span class="period" style="text-align: left;">25.01.23 - 25.01.31</span>
-			<div class="event-img-div">
-				<a href="#" class="event-img">
-					<img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
-				</a>
-			</div>
-			<a href="#" class="">이달의 투표(2025.01)</a>
-		</div>
-	</div>
-</div>
+        <div class="body-container">
+            <c:forEach var="item" items="${vote}">
+                <div class="event">
+                    <span class="period" style="text-align: left;">
+                        <fmt:formatDate value="${item.start_date}" pattern="yy.MM.dd"/>
+                    </span>
+                    <div class="event-img-div">
+                        <a href="${pageContext.request.contextPath}/vote/article/${item.vote_num}?page=${page}" class="event-img">
+                            <img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
+                        </a>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/vote/article/${item.vote_num}?page=${page}">${item.title}</a>
+                </div>
+            </c:forEach>
+        </div></div>
 
-<div style="text-align: center; border: 1px solid black;">페이징처리</div>
+<div style="text-align: center; border: 1px solid black;">${paging}</div>
 </main>
 
 <footer>

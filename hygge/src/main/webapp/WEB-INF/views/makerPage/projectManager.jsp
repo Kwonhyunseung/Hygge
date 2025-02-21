@@ -284,7 +284,7 @@
                         <p class="status">${statusLabel}/ ${progressStatus}</p>
                     </div>
                     <div class="bottom-section">
-                        <button onclick="location.href='/funding/main/product/${project.num}'">프로젝트 바로가기</button>
+                        <button onclick="location.href='/funding/product/${project.num}'">프로젝트 바로가기</button>
                     </div>
                 </div>
             </c:forEach>

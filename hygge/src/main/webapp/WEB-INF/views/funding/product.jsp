@@ -9,7 +9,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/funding/main/product.css"
+	href="${pageContext.request.contextPath}/dist/css/funding/product.css"
 	type="text/css">
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
@@ -157,6 +157,7 @@ $(function(){
         });
     });
 });
+
 </script>
 
 </head>

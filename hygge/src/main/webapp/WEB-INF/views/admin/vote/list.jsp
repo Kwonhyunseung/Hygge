@@ -90,10 +90,10 @@
 			  <c:forEach var="vote" items="${vote}">
 			    <div class="vote-card">
 			      <span class="vote-category">최악의 프로젝트</span>
-			      <img src="/dist/images/choco.png" alt="프로젝트 이미지" class="vote-image">
+			      <img src="${pageContext.request.contextPath}/uploads/project/${vote.thumbnail}" alt="프로젝트 이미지" class="vote-image">
 			      <div class="vote-info">
 			        <div class="vote-num">${vote.vote_num}</div>
-			        <a href="/vote/article">${vote.title}</a>
+			        <a href="${pageContext.request.contextPath}/vote/article/${vote.vote_num}?page=${page}">${vote.title}</a>
 			        <div class="vote-period">
 			          <i class="far fa-calendar-alt"></i>
 			          <fmt:formatDate value="${vote.start_date}" pattern="yyyy.MM.dd"/>
@@ -101,7 +101,7 @@
 			        <div class="vote-stats">
 			          <div class="vote-count">
 			            <i class="fas fa-vote-yea"></i>
-			            현재 투표수: 곧 구현
+			            total: ${vote.vote_count}
 			          </div>
 			          <span class="vote-status status-active">
 			            진행중

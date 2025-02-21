@@ -16,84 +16,58 @@
 </header>
 
 <main>
-<div class="title">2024년 12월 투표를 실시합니다!</div>
+<div class="title">${dto.title}</div>
 
-<div class="body-container">
-	<div class="notice">12월 슬픔의 프로젝트에 투표해주세요!(중복 투표 불가)</div>
-	<form action="" name="voteForm">
-		<div class="candidate-list">
-		    <label for='r1'>
-			    <div class="candidate">
-			    	<div class="left">
-				        <div class="candidate-img-container">
-				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-				        </div>
-				        <div class="textArea">
-				        	<p>[재주는 AI가 넘고 돈은 내가 버는 전자책 수익화 시스템 비결]</p>
-				        </div>
-			    	</div>
-			        <div class="right">
-				        <input type="radio" name="candidate" id="r1">
-			        </div>
-			    </div>
-		    </label>
-		    <label for='r2'>
-			    <div class="candidate">
-			    	<div class="left">
-				        <div class="candidate-img-container">
-				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-				        </div>
-				        <div class="textArea">
-				        	<p>어쩌구저쩌구</p>
-				        </div>
-			    	</div>
-			        <div class="right">
-				        <input type="radio" name="candidate" id="r2">
-			        </div>
-			    </div>
-		    </label>
-		    <label for='r3'>
-			    <div class="candidate">
-			    	<div class="left">
-				        <div class="candidate-img-container">
-				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-				        </div>
-				        <div class="textArea">
-				        	<p>어쩌구저쩌구</p>
-				        </div>
-			    	</div>
-			        <div class="right">
-				        <input type="radio" name="candidate" id="r3">
-			        </div>
-			    </div>
-		    </label>
-		    <label for='r4'>
-			    <div class="candidate">
-			    	<div class="left">
-				        <div class="candidate-img-container">
-				            <img src="${pageContext.request.contextPath}/dist/images/main/ad2.jpg" class="candidate-img">
-				        </div>
-				        <div class="textArea">
-				        	<p>어쩌구저쩌구</p>
-				        </div>
-			    	</div>
-			        <div class="right">
-				        <input type="radio" name="candidate" id="r4">
-			        </div>
-			    </div>
-		    </label>
+	<div class="body-container">
+		<div class="notice">${dto.content}</div>
+		
+	    <form action="" name="voteForm">
+	        <div class="candidate-list">
+	            <c:forEach var="project" items="${projectDto}" varStatus="status">
+	                <label for="r${status.count}">
+	                    <div class="candidate">
+	                        <div class="left">
+	                            <div class="candidate-img-container">
+	                                <img src="/uploads/project/${project.thumbnail}" class="candidate-img">
+	                            </div>
+	                            <div class="textArea">
+	                                <p>${project.title}</p>
+	                            </div>
+	                        </div>
+	                        <div class="right">
+	                            <input type="radio" name="candidate" id="r${status.count}">
+	                        </div>
+	                    </div>
+	                </label>
+	            </c:forEach>
+	        </div>
+	    </form>	
+		
+		<div class="vote-btn">
+		    <button type="button" class="btn-submit">투표</button>
+		    <c:if test="${sessionScope.member.authority == 'ADMIN'}">
+		  <div class="admin-buttons">
+		    <button type="button" class="admin-btn btn-modify" onclick="location.href='${pageContext.request.contextPath}/admin/vote/update?vote_num=${vote_num}'">수정</button>
+		    <button type="button" class="admin-btn btn-delete" onclick="deleteVote();">삭제</button>
+		  </div>
+		</c:if>
 		</div>
-	</form>
-	<div class="vote-btn">
-	    <button type="button" class="btn-submit">투표</button>
 	</div>
-</div>
-
 </main>
 
 <footer>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </footer>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+
+<script type="text/javascript">
+
+function deleteVote() {
+    if(confirm("투표를 삭제하시겠습니까?")) {
+        location.href = "${pageContext.request.contextPath}/vote/delete?vote_num=${dto.vote_num}";
+    }
+}
+
+</script>
 </body>
 </html>

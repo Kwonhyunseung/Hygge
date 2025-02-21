@@ -89,6 +89,39 @@ public class FundingProjectServiceImpl implements FundingProjectService {
 	}
 	
 	@Override
+	public int userFollowing(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = mapper.userFollowing(map);
+		} catch (Exception e) {
+			log.info("isUserFollowing: ", e);
+		}
+		return result;
+	}
+
+	@Override
+	public void insertFollowing(Map<String, Object> map) {
+		try {
+			mapper.insertFollowing(map);
+		} catch (Exception e) {
+			log.info("insertFollowing: ", e);
+		}
+	}
+
+	@Override
+	public void deleteFollowing(Map<String, Object> map) {
+		try {
+			mapper.deleteFollowing(map);
+		} catch (Exception e) {
+			log.info("deleteFollowing: ", e);
+		}
+		
+	}
+	
+
+	
+	
+	@Override
 	public List<Review> listProductReview(Map<String, Object> map) {
 		List<Review> list = null;
 		

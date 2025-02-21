@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="temp">
-
+<mapper namespace="com.sp.app.mapper.VoteMapper">
+	<select id="projectList" resultType="com.sp.app.admin.model.ProjectManage">
+		select pr.num, pr.title 
+		FROM projectRequest pr
+		LEFT JOIN project p ON p.num = pr.num
+		WHERE p.block = 1
+	</select>
+	
+<select id="voteList" parameterType="map" resultType="com.sp.app.admin.model.VoteManage">
+  SELECT *
+  FROM (
+    SELECT ROWNUM rnum, vote_num, content, title, start_date
+    FROM (
+      SELECT vote_num, content, title, start_date 
+      FROM vote
+      <where>
+        <if test="kwd != null and kwd != ''">
+          <choose>
+            <when test="schType == 'title'">
+              INSTR(title, #{kwd}) > 0
+            </when>
+            <when test="schType == 'content'">
+              INSTR(content, #{kwd}) > 0
+            </when>
+          </choose>
+        </if>
+      </where>
+      ORDER BY vote_num DESC
+    )
+  )
+  WHERE rnum BETWEEN #{offset}+1 AND #{offset}+#{size}
+</select>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM vote v
+		<if test="kwd != null and kwd != '' ">
+			<choose>
+				<when test="schType == 'title'">
+					AND INSTR(title, #{title}) gt; 0
+				</when>
+	            <when test="schType == 'content'">
+	           		 AND INSTR(content, #{content}) gt; 0
+	            </when>
+			</choose>
+		</if>
+	</select>	
+	
+	<insert id="insertVote" parameterType="com.sp.app.admin.model.VoteManage">
+		INSERT INTO vote (vote_num , start_date, title, content) 
+		VALUES (vote_seq.NEXTVAL, #{start_date, jdbcType=DATE}, #{title, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertVoteCandidate" parameterType="Long">
+		INSERT INTO voteCandidate (project_num, vote_num)
+		VALUES (#{num}, vote_seq.CURRVAL)
+	</insert>
 </mapper>
