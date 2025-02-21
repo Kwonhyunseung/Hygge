@@ -58,4 +58,9 @@
 		INSERT INTO voteCandidate (project_num, vote_num)
 		VALUES (#{num}, vote_seq.CURRVAL)
 	</insert>
+	
+	<insert id="voteSubmit" parameterType="map">
+		INSERT INTO voteHistory(memberIdx, project_num, vote_num, vote_date)
+		VALUES (#{memberIdx}, #{project_num}, #{vote_num}, sysdate)
+	</insert>
 </mapper>

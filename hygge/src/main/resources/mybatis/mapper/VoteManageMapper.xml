@@ -94,7 +94,6 @@ FROM (
 	</delete>
 	
 	<update id="updateVote" parameterType="com.sp.app.admin.model.VoteManage">
-		UPDATE vote SET
 	
 	</update>
 	

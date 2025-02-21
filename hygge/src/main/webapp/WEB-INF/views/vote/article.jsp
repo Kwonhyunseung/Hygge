@@ -21,7 +21,10 @@
 	<div class="body-container">
 		<div class="notice">${dto.content}</div>
 		
-	    <form action="" name="voteForm">
+	    <form action="" name="voteForm" method="post">
+	    	<input type="hidden" name="page" value="${page}">
+		    <input type="hidden" name="schType" value="${schType}">
+		    <input type="hidden" name="kwd" value="${kwd}">
 	        <div class="candidate-list">
 	            <c:forEach var="project" items="${projectDto}" varStatus="status">
 	                <label for="r${status.count}">
@@ -35,16 +38,19 @@
 	                            </div>
 	                        </div>
 	                        <div class="right">
-	                            <input type="radio" name="candidate" id="r${status.count}">
+	                            <input type="radio" name="project_num" id="r${status.count}" value="${project.num}">
 	                        </div>
 	                    </div>
 	                </label>
 	            </c:forEach>
 	        </div>
+	        <div class="vote-btn">
+	        	<button type="button" class="btn-submit" onclick="submitVote()">투표</button>
+	        </div>
 	    </form>	
 		
 		<div class="vote-btn">
-		    <button type="button" class="btn-submit">투표</button>
+		    
 		    <c:if test="${sessionScope.member.authority == 'ADMIN'}">
 		  <div class="admin-buttons">
 		    <button type="button" class="admin-btn btn-modify" onclick="location.href='${pageContext.request.contextPath}/admin/vote/update?vote_num=${vote_num}'">수정</button>
@@ -53,6 +59,10 @@
 		</c:if>
 		</div>
 	</div>
+	
+	<input type="hidden" name="page" value="${page}">
+    <input type="hidden" name="schType" value="${schType}">
+    <input type="hidden" name="kwd" value="${kwd}">
 </main>
 
 <footer>
@@ -67,6 +77,24 @@ function deleteVote() {
         location.href = "${pageContext.request.contextPath}/vote/delete?vote_num=${dto.vote_num}";
     }
 }
+
+
+function submitVote() {
+    const f = document.voteForm;
+    
+    const selectedProject = document.querySelector('input[name="project_num"]:checked');
+    
+    if(!selectedProject) {
+        alert("투표할 프로젝트를 선택해주세요.");
+        return;
+    }
+    
+    if(confirm("투표하시겠습니까?")) {
+        f.action = "${pageContext.request.contextPath}/vote/article/${dto.vote_num}";
+        f.submit();
+    }
+}
+
 
 </script>
 </body>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.sp.app.admin.mapper.VoteManageMapper;
 import com.sp.app.admin.model.ProjectManage;
 import com.sp.app.admin.model.VoteManage;
+import com.sp.app.mapper.VoteMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class VoteServiceImpl implements VoteService{
 	private final VoteManageMapper mapper;
+	private final VoteMapper mapper1;
 
 	@Override
 	public void insertVote(VoteManage dto) throws Exception {
@@ -63,6 +65,11 @@ public class VoteServiceImpl implements VoteService{
 			log.info("dataCount :", e);
 		}
 		return result;
+	}
+
+	@Override
+	public void voteSubmit(Map<String, Object> map) throws Exception {
+		 mapper1.voteSubmit(map);
 	}
 	
 }

@@ -21,6 +21,8 @@ import com.sp.app.admin.model.ProjectManage;
 import com.sp.app.admin.model.VoteManage;
 import com.sp.app.admin.service.VoteManageService;
 import com.sp.app.common.PaginateUtil;
+import com.sp.app.model.SessionInfo;
+import com.sp.app.service.VoteService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/vote/*")
 public class VoteController {
 	private final VoteManageService service;
+	private final VoteService service1;
 	private final PaginateUtil paginateUtil;
 	
 	
@@ -212,4 +215,34 @@ public class VoteController {
 		return "redirect:/vote/list";
 	}
 	
+	@PostMapping("article/{vote_num}")
+	public String voteSubmit(@PathVariable("vote_num") long vote_num,
+			@RequestParam(name = "page", defaultValue = "1") int current_page,
+			@RequestParam(name = "schType", defaultValue = "all") String schType,
+			@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			@RequestParam(name = "project_num") long num,
+			HttpSession session) throws Exception {
+		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		
+		try {
+			long memberIdx = info.getMemberidx();
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("memberIdx", memberIdx); // memberIdx 전달
+			map.put("project_num", num);
+			map.put("vote_num", vote_num);
+			map.put("page", current_page);
+			map.put("schType", schType);
+			map.put("kwd", kwd);
+			
+			service1.voteSubmit(map);
+			
+		} catch (Exception e) {
+			log.info("voteSubmit : ", e);
+		}
+		
+		return "redirect:/vote/list";
+	}
 }
