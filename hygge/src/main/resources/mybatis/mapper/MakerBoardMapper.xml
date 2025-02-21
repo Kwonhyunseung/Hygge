@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.MakerBoardMapper">
+	<select id="listBoard" parameterType="map"
+	resultType="com.sp.app.model.MakerBoard">
+   SELECT 
+        b.mkboard_Num,
+        MAX(b.TITLE) AS TITLE,
+        MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS CONTENT,
+        MAX(b.CATEGORY) AS CATEGORY,
+        MAX(b.MAKERIDX) AS MAKERIDX,
+        MAX(maker.makername) AS name,
+        NVL(COUNT(l.MEMBERIDX), 0) AS likeCount
+    FROM MakerBoard b
+    LEFT JOIN MakerBoardLike l ON b.mkboard_Num = l.mkboard_Num
+    LEFT JOIN Maker maker ON b.MAKERIDX = maker.memberIdx
+    WHERE b.MAKERIDX = #{makerIdx, jdbcType=NUMERIC}
+    GROUP BY b.mkboard_Num
+    ORDER BY b.mkboard_Num DESC
+</select>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT COUNT(DISTINCT b.mkboard_Num)
+    FROM MakerBoard b
+    WHERE b.MAKERIDX = #{makerIdx, jdbcType=NUMERIC}
+</select>
+
+  <select id="countLike" parameterType="Long" resultType="Integer">
+    SELECT COUNT(*)
+    FROM MakerBoardLike
+    WHERE mkboard_Num = #{num}
+  </select>
+
+  <select id="userBoardLiked" parameterType="map" resultType="Integer">
+    SELECT NVL(COUNT(*), 0)
+    FROM MakerBoardLike
+    WHERE mkboard_num = #{num} AND memberIdx = #{memberIdx}
+  </select>
+
+  <!-- 좋아요 추가 -->
+  <insert id="insertBoardLike" parameterType="map">
+    INSERT INTO MakerBoardLike (MEMBERIDX, mkboard_Num)
+    VALUES (#{memberIdx, jdbcType=NUMERIC}, #{num, jdbcType=NUMERIC})
+  </insert>
+
+  <!-- 좋아요 삭제 -->
+  <delete id="deleteBoardLike" parameterType="map">
+    DELETE FROM MakerBoardLike
+    WHERE MEMBERIDX = #{memberIdx, jdbcType=NUMERIC}
+      AND mkboard_Num = #{num, jdbcType=NUMERIC}
+  </delete>
+</mapper>
