@@ -43,6 +43,9 @@ public class FundingController {
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
 		try {
 			Funding project = detailService.fundingProduct(num);
+			
+			 // 로그 추가
+	        log.info("memberIdx: " + project.getMemberIdx());
 
 			double funding_goal = (double)project.getTotal_amount() / project.getTarget() * 100;
 			project.setFunding_goal(String.format("%.0f", funding_goal)); // 소수점 없이 반올림
@@ -56,21 +59,34 @@ public class FundingController {
 
 			// 좋아요 수 조회
 			int likeCount = detailService.projectLikeCount(num);
-
-			// 로그인 상태 및 좋아요 상태 확인
+			
+			// 좋아요 / 팔로우 상태 확인
 			boolean isUserLiked = false;
+			boolean isUserFollow = false;
+			
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
+				map.put("makerIdx", project.getMemberIdx());
+				
+				// 좋아요가 있으면 true
 				int count = detailService.userFundingLiked(map);
-				isUserLiked = count > 0; // 좋아요가 있으면 true
+				isUserLiked = count > 0;
+				
+				// 팔로우 중이면 true
+				int followCount = detailService.userFollowing(map);
+				isUserFollow = followCount > 0;
+				
 			}
 
 			if (project != null) {
 				model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
+				model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
 				model.addAttribute("project", project);
 				model.addAttribute("likeCount", likeCount);
 				model.addAttribute("isUserLiked", isUserLiked);
+				model.addAttribute("isUserFollow", isUserFollow);
 				model.addAttribute("product", productList);
 			}
 			
@@ -235,6 +251,64 @@ public class FundingController {
 		}
 
 		return model;
+	}
+	
+	@ResponseBody
+	@PostMapping("toggleFollow")
+	public Map<String, Object> toggleFollow(
+	        @RequestParam(name = "makerIdx") long makerIdx,
+	        @RequestParam(name = "num", required = false, defaultValue = "0") long num,
+	        HttpSession session,
+	        HttpServletResponse resp) {
+
+	    Map<String, Object> model = new HashMap<>();
+	    String state = "true";
+
+	    try {
+	        // 로그 추가
+	        log.info("toggleFollow - makerIdx: {}, num: {}", makerIdx, num);
+	        
+	        // 로그인 체크
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if (info == null) {
+	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            model.put("message", "로그인이 필요한 서비스입니다.");
+	            return model;
+	        }
+
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("makerIdx", makerIdx);
+	        map.put("memberIdx", info.getMemberidx());
+	        map.put("num", num);
+
+	        // 현재 팔로우 상태 확인
+	        int count = detailService.userFollowing(map);
+
+	        if (count > 0) { // 이미 팔로우 중이면
+	            detailService.deleteFollowing(map);
+	        } else { // 팔로우 중이 아니면
+	            detailService.insertFollowing(map);
+	        }
+
+	        // 업데이트된 팔로워 수 - num 파라미터가 필요
+	        int followingCount = 0;
+	        if (num > 0) {
+	            Funding project = detailService.fundingProduct(num);
+	            followingCount = project != null ? project.getFollowingCount() : 0;
+	        }
+
+	        model.put("state", state);
+	        model.put("followingCount", followingCount);
+	        model.put("isFollowing", count == 0);
+
+	    } catch (Exception e) {
+	        log.error("팔로우 처리 중 오류", e);
+	        state = "false";
+	        model.put("state", state);
+	        model.put("message", "서버 오류가 발생했습니다: " + e.getMessage());
+	    }
+
+	    return model;
 	}
 
 	@GetMapping("plan")
