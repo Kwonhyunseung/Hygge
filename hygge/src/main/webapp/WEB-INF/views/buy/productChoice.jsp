@@ -93,8 +93,8 @@ h3>img {
 	height: 350px;
 }
 
-.m_Info {
-	padding: 50px 0;
+.mInfo {
+	padding: 70px 0;
 }
 
 
@@ -148,37 +148,49 @@ h3>img {
 		</h3>
 		
 		<div class="choicedProduct">
-			<!--  -->
+			
 			<div class="row mainInfo">
 				<div class="col-4 thumbnail">
 					<img src="${pageContext.request.contextPath}/uploads/project/perfume_1.jpg">
 				</div>
-				<div class="col-8 m_Info">
+				<div class="col-8 mInfo">
 					<p class="title">[얼리버드 2] 백설 2개</p>
+					<p class="detail" style="margin-left: 30px;">💚 백설 50ml(x1)</p>
 					<div class="row m_Info2">
-						<div class="col-4 q_Info">
+						<div class="col-4 mq_Info">
 							<p class="stock">구매 수량</p>
 							<p class="coupon">쿠폰</p>
 						</div>
-						<div class="col-8 a_Info">
+						<div class="col-8 ma_Info">
 							<p class="stock">2개</p>
 							<select name="coupon">
 								<option selected> 쿠폰을 선택해주세요.</option>
 								<option selected>아무개</option>
 								<option selected>아무개2</option>
 							</select>
-							<p><input type="hidden"></p>
 						</div>
 					</div>
-					<div class="row subInfo">
-						<
+				</div>
+				<div class="row subInfo">
+					<h4>결제 금액</h4>
+					<div class="col-5 sInfo">
+						<div class="col 4 sq_Info">
+							<p class="rewardPrice">리워드 금액</p>
+							<p class="couponPrice">쿠폰 금액</p> 
+							<p class="deliveryFee">배송비</p>
+							<p class="totalPrice">총 결제 금액</p>
+						</div>
+					</div>
+					<div class="col 7 sa_Info">
+						<p class="rewardPrice">1,000,000원</p> <!-- 가격*수량 -->
+						<p class="couponPrice">50,000원</p> 
+						<p class="deliveryFee">1,000원</p>
+						<p class="totalPrice">953,000원</p>
 					</div>
 				</div>
-
 			</div>
 			
-			<!--  -->
-			<div class="subInfo">
+			<div class="userInfo">
 				
 				
 					
