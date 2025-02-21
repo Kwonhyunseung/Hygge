@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
 <link rel="stylesheet" href="/dist/css/project/button.css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
 * {
@@ -237,22 +238,20 @@ textarea.form-input {
 	<div class="form-section">
 		<h2>프로젝트 카테고리</h2>
 		<p>프로젝트의 성격과 가장 일치하는 카테고리를 선택해주세요.</p>
-		<select>
-			<option>가전</option>
-			<option>패션</option>
-			<option>뷰티</option>
-			<option>홈*리빙</option>
-			<option>푸드</option>
-			<option>도서</option>
-			<option>캐릭터*굿즈</option>
-			<option>문화</option>
-			<option>반려동물</option>
+		<select class="parent-category">
+			<option value="1">가전</option>
+			<option value="2">패션</option>
+			<option value="3">뷰티</option>
+			<option value="4">홈*리빙</option>
+			<option value="5">푸드</option>
+			<option value="6">도서</option>
+			<option value="7">캐릭터*굿즈</option>
+			<option value="8">문화</option>
+			<option value="9">반려동물</option>
 		</select>
 		<div>세부 카테고리</div>
-		<select>
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
+		<select class="child-category">
+			<option>대분류를 선택해주세요.</option>
 		</select>
 	</div>
 	
@@ -307,5 +306,46 @@ textarea.form-input {
 	</div>
 </div>
 
+<script type="text/javascript">
+$(function() {
+	let value = $('.parent-category:selected').val();
+	loadCategory(value);
+	$('.parent-category').change(function() {
+		let value = $('.parent-category:selected').val();
+		let url = '${pageContext.request.contextPath}/makerPage/categories';
+		let childcategory = $('.child-category');
+		const fn = function(data) {
+			let list = data.categories;
+			let out = '';
+			for (let category of list) {
+				let category_num = category.category_num;
+				let name = category.name;
+				out = '<option value="' + category_num + '">' + name + '</option>';
+			}
+			childcategory.html(out);
+		};
+		ajaxRequest(url, 'get', {num: value}, 'json', fn);
+	});
+});
+
+function addCategory(data) {
+	let categories = data.categories;
+	let out = '';
+	for (let category of categories) {
+		let category_num = category.category_num;
+		let name = category.name;
+		out = '<option value="' + category_num + '">' + name + '</option>';
+	}
+	childcategory.html(out);
+}
+
+function loadCategory(num) {
+	let url = '${pageContext.request.contextPath}/makerPage/categories';
+	const fn = function(data) {
+		addCategory(data);
+	};
+	ajaxRequest(url, 'get', {num: num}, 'json', fn);
+}
+</script>
 </body>
 </html>

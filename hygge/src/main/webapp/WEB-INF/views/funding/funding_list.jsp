@@ -226,7 +226,7 @@ function addNewContent(data) {
 		let title = dto.title;
 		let project_info = dto.project_info;
 		let progress = dto.progress;
-		let total_amount = dto.total_amount;
+		let total_amount = dto.funding_goal;
 
 		htmlText = '<div class="funding">'
 		htmlText +=	'	<div class="funding-thumbnail">'
@@ -245,7 +245,7 @@ function addNewContent(data) {
 		htmlText += '	</div>';
 		htmlText += '	<div class="funding-progress-div">';
 		htmlText += '		<span class="progress-percentage">' + progress + '%</span>';
-		htmlText += '		<span class="progress-amount">' + total_amount + '원</span>';
+		htmlText += '		<span class="progress-amount">' + total_amount + ' 원</span>';
 		htmlText += '		<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 0.7rem">';
 		htmlText += '			<div class="progress-bar" style="width: ' + progress + '%; background-color: #2F9D27;"></div>';
 		htmlText += '		</div>';

@@ -25,21 +25,22 @@
 	</sql>
 
 	<select id="listFunding" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT p.num num, title, thumbnail, project_info, target,
-			(SELECT NVL(SUM(total_amount), 0) total_amount
-    		FROM PROJECT p
-    		LEFT OUTER JOIN product pr ON p.num = pr.num
-    		LEFT OUTER JOIN sales s ON pr.product_num = s.product_num
-    		LEFT OUTER JOIN payment pay ON pay.payment_num = s.payment_num
-    		GROUP BY p.num) total_amount
+		SELECT p.num num, title, thumbnail, project_info, target, sub.total_amount total_amount, p.end_date end_date
 		FROM project p
 		JOIN projectRequest pr ON p.num = pr.num
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		LEFT OUTER JOIN
+			(SELECT NVL(SUM(total_amount), 0) total_amount, project.num num
+    		FROM PROJECT
+    		LEFT OUTER JOIN product ON project.num = product.num
+    		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
+    		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
+    		GROUP BY project.num) sub ON sub.num = p.num
 		<where>
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>
 			</if>
-			AND p.end_date > SYSDATE AND p.block = 0
+			AND p.end_date > SYSDATE AND p.block = 1
 		</where>
 		ORDER BY <include refid="order-list"/>
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
@@ -54,7 +55,7 @@
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>
 			</if>
-			AND p.end_date > SYSDATE AND p.block = 0
+			AND p.end_date > SYSDATE AND p.block = 1
 		</where>
 	</select>
 

@@ -43,9 +43,13 @@ public class FundingController {
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
 		try {
 			Funding project = detailService.fundingProduct(num);
+			
+			 // 로그 추가
+	        log.info("memberIdx: " + project.getMemberIdx());
 
-			int funding_goal = project.getTotal_amount() / project.getTarget() * 100;
-			project.setFunding_goal(Integer.toString(funding_goal));
+			double funding_goal = (double)project.getTotal_amount() / project.getTarget() * 100;
+			project.setFunding_goal(String.format("%.0f", funding_goal)); // 소수점 없이 반올림
+			
 			project.setRemained_date(calDiffDate(project.getEnd_date()));
 			project.setPayment_date(payOneDay(project.getEnd_date()));
 			
@@ -55,21 +59,34 @@ public class FundingController {
 
 			// 좋아요 수 조회
 			int likeCount = detailService.projectLikeCount(num);
-
-			// 로그인 상태 및 좋아요 상태 확인
+			
+			// 좋아요 / 팔로우 상태 확인
 			boolean isUserLiked = false;
+			boolean isUserFollow = false;
+			
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
+				map.put("makerIdx", project.getMemberIdx());
+				
+				// 좋아요가 있으면 true
 				int count = detailService.userFundingLiked(map);
-				isUserLiked = count > 0; // 좋아요가 있으면 true
+				isUserLiked = count > 0;
+				
+				// 팔로우 중이면 true
+				int followCount = detailService.userFollowing(map);
+				isUserFollow = followCount > 0;
+				
 			}
 
 			if (project != null) {
 				model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
+				model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
 				model.addAttribute("project", project);
 				model.addAttribute("likeCount", likeCount);
 				model.addAttribute("isUserLiked", isUserLiked);
+				model.addAttribute("isUserFollow", isUserFollow);
 				model.addAttribute("product", productList);
 			}
 			
@@ -80,6 +97,7 @@ public class FundingController {
 		return "funding/product";
 	}
 	
+	/*
 	// 남은 시간
 	public static String calDiffDate(String dateString) {
 		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
@@ -94,7 +112,7 @@ public class FundingController {
 		// 두 날짜 사이의 차이 계산
 		return String.valueOf(ChronoUnit.DAYS.between(currentDate, inputDate));
 	}
-
+	
 	// 결제일
 	public static String payOneDay(String dateString) {
 		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
@@ -106,12 +124,87 @@ public class FundingController {
 		// 두 날짜 사이의 차이 계산
 		return String.valueOf(inputDate.plusDays(1));
 	}
-
+	
 	public static String convertToString(Double input) {
 		DecimalFormat df = new DecimalFormat("#,##0.00"); // 소수점 둘째 자리까지 표시
 		String formattedValue = df.format(input);
 		return formattedValue;
 	}
+	*/
+	// 공통 날짜 파싱 메소드
+	private static LocalDate parseDate(String dateString) {
+	    try {
+	        // 숫자만 있는 경우 (예: "20240312")
+	        if (dateString.matches("\\d{8}")) {
+	            return LocalDate.parse(
+	                dateString.substring(0, 4) + "-" + 
+	                dateString.substring(4, 6) + "-" + 
+	                dateString.substring(6, 8), 
+	                DateTimeFormatter.ofPattern("yyyy-MM-dd")
+	            );
+	        }
+	        
+	        // 하이픈, 점, 슬래시 형식 변환
+	        String normalizedDate = dateString
+	            .replace(".", "-")
+	            .replace("/", "-");
+	            
+	        if (normalizedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+	            return LocalDate.parse(normalizedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        }
+	        
+	        // 다양한 포맷 시도
+	        DateTimeFormatter[] formatters = {
+	            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+	            DateTimeFormatter.ofPattern("yyyy.MM.dd"),
+	            DateTimeFormatter.ofPattern("yyyy/MM/dd"),
+	            DateTimeFormatter.ofPattern("yyyyMMdd"),
+	            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+	            DateTimeFormatter.ofPattern("MM/dd/yyyy")
+	        };
+	        
+	        for (DateTimeFormatter fmt : formatters) {
+	            try {
+	                return LocalDate.parse(dateString, fmt);
+	            } catch (Exception e) {
+	                // 이 형식으로 파싱 불가능하면 다음 형식 시도
+	                continue;
+	            }
+	        }
+	        
+	        // 모든 형식이 실패하면 현재 날짜 반환
+	        return LocalDate.now();
+	    } catch (Exception e) {
+	        return LocalDate.now();
+	    }
+	}
+
+	// 남은 시간
+	public static String calDiffDate(String dateString) {
+	    try {
+	        LocalDate inputDate = parseDate(dateString);
+	        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
+	        return String.valueOf(daysBetween);
+	    } catch (Exception e) {
+	        return "0";
+	    }
+	}
+
+	// 결제일
+	public static String payOneDay(String dateString) {
+	    try {
+	        LocalDate inputDate = parseDate(dateString);
+	        return inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+	    } catch (Exception e) {
+	        return LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	    }
+	}
+
+	// 숫자 포맷팅
+	public static String convertToString(Double input) {
+	    return new DecimalFormat("#,##0.00").format(input);
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("userFundingLiked")
@@ -158,6 +251,64 @@ public class FundingController {
 		}
 
 		return model;
+	}
+	
+	@ResponseBody
+	@PostMapping("toggleFollow")
+	public Map<String, Object> toggleFollow(
+	        @RequestParam(name = "makerIdx") long makerIdx,
+	        @RequestParam(name = "num", required = false, defaultValue = "0") long num,
+	        HttpSession session,
+	        HttpServletResponse resp) {
+
+	    Map<String, Object> model = new HashMap<>();
+	    String state = "true";
+
+	    try {
+	        // 로그 추가
+	        log.info("toggleFollow - makerIdx: {}, num: {}", makerIdx, num);
+	        
+	        // 로그인 체크
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if (info == null) {
+	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            model.put("message", "로그인이 필요한 서비스입니다.");
+	            return model;
+	        }
+
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("makerIdx", makerIdx);
+	        map.put("memberIdx", info.getMemberidx());
+	        map.put("num", num);
+
+	        // 현재 팔로우 상태 확인
+	        int count = detailService.userFollowing(map);
+
+	        if (count > 0) { // 이미 팔로우 중이면
+	            detailService.deleteFollowing(map);
+	        } else { // 팔로우 중이 아니면
+	            detailService.insertFollowing(map);
+	        }
+
+	        // 업데이트된 팔로워 수 - num 파라미터가 필요
+	        int followingCount = 0;
+	        if (num > 0) {
+	            Funding project = detailService.fundingProduct(num);
+	            followingCount = project != null ? project.getFollowingCount() : 0;
+	        }
+
+	        model.put("state", state);
+	        model.put("followingCount", followingCount);
+	        model.put("isFollowing", count == 0);
+
+	    } catch (Exception e) {
+	        log.error("팔로우 처리 중 오류", e);
+	        state = "false";
+	        model.put("state", state);
+	        model.put("message", "서버 오류가 발생했습니다: " + e.getMessage());
+	    }
+
+	    return model;
 	}
 
 	@GetMapping("plan")

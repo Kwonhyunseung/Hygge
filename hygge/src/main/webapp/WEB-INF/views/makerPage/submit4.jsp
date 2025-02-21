@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
 <link rel="stylesheet" href="/dist/css/project/button.css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
         .policy-container {
