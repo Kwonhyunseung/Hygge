@@ -1,6 +1,8 @@
 package com.sp.app.service;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -20,8 +22,13 @@ public class FundingServiceImpl implements FundingService {
 	@Override
 	public List<Funding> listFunding(Map<String, Object> map) {
 		List<Funding> list = null;
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
 		try {
 			list = mapper.listFunding(map);
+			for (Funding dto : list) {
+				dto.setFunding_goal(numberFormat.format(dto.getTotal_amount()));
+				dto.setProgress((int)((float)dto.getTotal_amount() / (float)dto.getTarget() * 100));
+			}
 			if (map.get("memberIdx") == null) {
 				return list;
 			}
@@ -32,7 +39,6 @@ public class FundingServiceImpl implements FundingService {
 				} else {
 					dto.setUserLiked(false);
 				}
-				dto.setProgress(dto.getTotal_amount() / dto.getTarget() * 100);
 			}
 		} catch (Exception e) {
 			log.info("listFunding : ", e);

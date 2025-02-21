@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
 <link rel="stylesheet" href="/dist/css/project/button.css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
 
@@ -151,12 +152,12 @@ body {
     color: #666;
 }
 
-.btn-submit {
+.btn-add {
     border-color: #FF5733;
     color: #FF5733;
 }
 
-.btn-submit:hover {
+.btn-add:hover {
     background-color: #FF5733;
     color: white;
 }
@@ -226,76 +227,111 @@ body {
     
     <jsp:include page="/WEB-INF/views/project/layout/nav-item.jsp"/>
     
-    <main class="main-content">
-    	<form action="">
-	        <div class="content-wrapper">
-	            <div class="gift-list">
-	                <div class="gift-item">
-	                    <div>
-	                        <div class="gift-price">33,911 원</div>
-	                        <div class="gift-details">
-	                            노션프로덕트 젤
-	                        </div>
-	                    </div>
-	                    <div class="gift-actions">
-	                        <button class="action-btn">수정</button>
-	                        <button class="action-btn">삭제</button>
-	                    </div>
-	                </div>
-	                <div class="gift-item">
-	                    <div>
-	                        <div class="gift-price">2,912 원</div>
-	                        <div class="gift-details">
-	                            체험판
-	                        </div>
-	                    </div>
-	                    <div class="gift-actions">
-	                        <button class="action-btn">수정</button>
-	                        <button class="action-btn">삭제</button>
-	                    </div>
-	                </div>
-	            </div>
-	
-	            <div class="gift-form">
-	                <h2 class="form-title">선물 만들기+</h2>
-	                <p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
-	                    이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
-					<div class="form-group">
-						<label class="form-label">상품 제목</label>
-						<input type="text" class="form-input">
+<main class="main-content">
+	<div class="content-wrapper">
+		<div class="gift-list">
+			<c:forEach var="dto" items="${funding.product}">
+				<div class="gift-item">
+					<div>
+						<div class="gift-price">${dto.price} 원</div>
+						<div class="gift-details">${dto.title}</div>
 					</div>
+					<div class="gift-actions">
+						<button class="action-btn update-btn">수정</button>
+						<button class="action-btn delete-btn">삭제</button>
+					</div>
+				</div>
+			</c:forEach>
+			<c:if test="${empty funding.product}">
+				<div style="font-style: italic; color: gray; padding: 20px;">상품을 추가해주세요</div>
+			</c:if>
+		</div>
+		
+		<div class="gift-form">
+			<form name="submit2">
+				<h2 class="form-title">선물 만들기+</h2>
+				<p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
+					이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
+				<div class="form-group">
+					<label class="form-label">상품 제목</label>
+					<input type="text" class="form-input" name="title">
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">선물 구성 및 세부 설명<i class="bi bi-info-circle" style="margin-left: 5px;"></i></label>
+					<input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요." name="detail">
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">금액</label>
+					<input type="text" class="form-input" placeholder="원" name="price">
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">상품 재고 수량</label>
+					<input type="text" class="form-input" name="stock">
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">원산지<span class="origin-info">원산지 기재 필수 품목: 수입물품</span></label>
+					<input type="text" class="form-input" name="origin">
+				</div>
+				
+				<div class="button-group">
+					<button type="reset" class="btn btn-cancel">지우기</button>
+					<button type="submit" class="btn btn-add">추가</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="button-container">
+		<button type="button" class="prev-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit1'">이전</button>
+		<button type="button" class="next-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit3'">다음</button>
+	</div>
+ </main>
 
-					<div class="form-group">
-					    <label class="form-label">선물 구성 및 세부 설명</label><i class="bi bi-info-circle"></i>
-					    <input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요.">
-					</div>
+<script type="text/javascript">
+$(function() {
+	$('.btn-add').click(function() {
+		let url = '${pageContext.request.contextPath}/makerPage/addProduct';
+		let title = $('input[name="title"]').val();
+		if (!title) {
+			$('input[name="title"]').focus();
+			return false;
+		}
+		let detail = $('input[name="detail"]').val();
+		if (!detail) {
+			$('input[name="detail"]').focus();
+			return false;
+		}
+		let price = $('input[name="price"]').val();
+		if (!price) {
+			$('input[name="price"]').focus();
+			return false;
+		}
+		let stock = $('input[name="stock"]').val();
+		if (!stock) {
+			$('input[name="stock"]').focus();
+			return false;
+		}
+		let origin = $('input[name="origin"]').val();
+		if (!origin) {
+			$('input[name="origin"]').focus();
+			return false;
+		}
+		let params = {title: title, detail: detail, price: price, stock: stock, origin: origin};
 
-					<div class="form-group">
-					    <label class="form-label">금액</label>
-					    <input type="text" class="form-input" placeholder="원">
-					</div>
+		ajaxRequest(url, 'post', params, 'json', fn);
+	});
+});
 
-					<div class="form-group">
-						<label class="form-label">상품 재고 수량</label>
-						<input type="text" class="form-input">
-					</div>
+function sendNext() {
+	const f = document.submit2;
 
-					<div class="form-group">
-						<label class="form-label">원산지<span class="origin-info">원산지 기재 필수 품목: 수입물품</span></label>
-						<input type="text" class="form-input">
-					</div>
+	f.action = '${pageContext.request.contextPath}/makerPage/addProduct';
+	f.submit();
+}
+</script>
 
-					<div class="button-group">
-					    <button type="button" class="btn btn-cancel">취소</button>
-					    <button type="submit" class="btn btn-submit">추가</button>
-					</div>
-	            </div>
-	        </div>
-			<div class="button-container">
-				<button type="button" class="prev-button">이전</button>
-				<button type="button" class="next-button" onclick="sendNext();">다음</button>
-			</div>
-        </form>
-    </main>
 </body>
 </html>

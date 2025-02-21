@@ -13,16 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Product;
 import com.sp.app.service.MakerService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@SessionAttributes("funding")
+@SessionAttributes({"funding", "product"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/makerPage/*")
@@ -45,7 +46,7 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit1")
-	public String projectForm1(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectForm1(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectForm1 : ", e);
@@ -63,7 +64,7 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit2")
-	public String projectForm2(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectForm2(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit2 : ", e);
@@ -71,8 +72,29 @@ public class MakerController {
 		return "makerPage/submit2";
 	}
 
+	@ResponseBody
+	@PostMapping("addProduct")
+	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto, Product product) {
+		Map<String, Object> model = new HashMap<>();
+		try {
+			dto.getProduct().add(product);
+		} catch (Exception e) {
+			log.info("addProduct : ", e);
+		}
+		return model;
+	}
+
+	@PostMapping("projectSubmit2")
+	public String projectSubmit2(@ModelAttribute("funding") Funding dto, @ModelAttribute("product") List<Product> list, Model model) throws Exception {
+		try {
+		} catch (Exception e) {
+			log.info("projectSubmit1 : ", e);
+		}
+		return "redirect:/makerPage/projectSubmit3";
+	}
+
 	@GetMapping("projectSubmit3")
-	public String projectForm3(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectForm3(Model model) throws Exception {
 		try {
 			List<Category> parentCategory = service.listCategory(0);
 			model.addAttribute("parentCategory", parentCategory);
@@ -81,23 +103,56 @@ public class MakerController {
 		}
 		return "makerPage/submit3";
 	}
+	
+	@PostMapping("projectSubmit3")
+	public String projectSubmit3(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+		try {
+		} catch (Exception e) {
+			log.info("projectSubmit1 : ", e);
+		}
+		return "redirect:/makerPage/projectSubmit4";
+	}
 
 	@GetMapping("projectSubmit4")
-	public String projectForm4(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectForm4(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit4 : ", e);
 		}
 		return "makerPage/submit4";
 	}
+	
+	@PostMapping("projectSubmit4")
+	public String projectSubmit4(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+		try {
+		} catch (Exception e) {
+			log.info("projectSubmit1 : ", e);
+		}
+		return "redirect:/makerPage/projectSubmit5";
+	}
 
 	@GetMapping("projectSubmit5")
-	public String projectForm5(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectForm5(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit5 : ", e);
 		}
 		return "makerPage/submit5";
+	}
+
+	@PostMapping("projectSubmit5")
+	public String projectSubmit5(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus) throws Exception {
+		try {
+			sessionStatus.setComplete(); // 세션에 저장된 내용 지우기
+		} catch (Exception e) {
+			log.info("projectSubmit5 : ", e);
+		}
+		return "redirect:/makerPage/projectSubmit";
+	}
+
+	@GetMapping("projectSubmit")
+	public String submit() {
+		return "";
 	}
 
 	@ModelAttribute("funding")

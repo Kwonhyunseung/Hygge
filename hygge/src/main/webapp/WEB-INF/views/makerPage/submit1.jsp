@@ -34,7 +34,7 @@
                     </ul>
                 </div>
 
-                <input type="text" name="target" class="input-field" placeholder="500만원 미만의 금액을 입력하세요">
+                <input type="text" name="target" class="input-field" placeholder="500만원 미만의 금액을 입력하세요" value="${funding.target}">
                 
                 <div class="amount-info">
                     <div class="amount-row">
@@ -54,7 +54,7 @@
                 
                 <div class="date-section">
                     <label>펀딩기간</label>
-                    <input type="text" name="term" class="input-field">
+                    <input type="text" name="term" class="input-field" value="${funding.term}">
                 </div>
             </div>
 
@@ -65,13 +65,13 @@
 
             <div class="form-section">
                 <h2 class="section-title">대표 사진<span class="required">*</span></h2>
-                <input type="file" name="thumbnail_File" class="input-field" accept="image/*">
+                <input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail_File}">
             </div>
 
             <div class="form-section">
                 <h2 class="section-title">사업자 등록증</h2>
                 <p class="info-text">사업자가 등록되어 있을 경우 사업자 등록증을 첨부해주세요.</p>
-                <input type="file" name="business_File" class="input-field">
+                <input type="file" name="business_File" class="input-field" value="${funding.business_File}">
                 <div class="button-container">
                     <button type="button" class="submit-button" onclick="sendNext();">다음</button>
                 </div>
@@ -81,7 +81,7 @@
 <script type="text/javascript">
 function sendNext() {
 	const f = document.submit1;
-	/* 임시저장 개념으로 작성하지 않더라도 다음 단계로 제출 가능. 하지만 마지막 단계에서 필수 내용이 다 있는지 확인이 필요해짐
+	/*
 	let value = f.target.value;
 	if (!value) {
 		f.target.focus();
@@ -92,9 +92,9 @@ function sendNext() {
 		$('input[name="term"]').focus();
 		return false;
 	}
-	value = $('input[name="thumbnail"]').val();
+	value = $('input[name="thumbnail_File"]').val();
 	if (!value) {
-		$('input[name="thumbnail"]').focus();
+		$('input[name="thumbnail_File"]').focus();
 		return false;
 	}
 	*/

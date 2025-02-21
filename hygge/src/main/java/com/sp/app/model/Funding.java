@@ -1,5 +1,7 @@
 package com.sp.app.model;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -46,5 +48,6 @@ public class Funding {
 	private String funding_goal;
 	private String remained_date;
 	private String payment_date;
-	
+
+	private List<Product> product;
 }

@@ -9,6 +9,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
+<jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
         .maker-container {
