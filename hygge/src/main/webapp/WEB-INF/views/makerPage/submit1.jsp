@@ -65,17 +65,21 @@
 
             <div class="form-section">
                 <h2 class="section-title">대표 사진<span class="required">*</span></h2>
-                <input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail_File}">
+                <input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail}">
             </div>
 
             <div class="form-section">
                 <h2 class="section-title">사업자 등록증</h2>
                 <p class="info-text">사업자가 등록되어 있을 경우 사업자 등록증을 첨부해주세요.</p>
-                <input type="file" name="business_File" class="input-field" value="${funding.business_File}">
+                <div style="padding: 5px 0px; display: flex; flex-direction: row;">
+	                <input type="checkbox" name="isBusiness" style="padding: 5px;" ${funding.business == 1 ? 'checked' : ''}><span style="margin-left: 5px; margin-bottom: 0px;" class="section-title">사업자 등록이 되어있으신가요?</span>
+                </div>
+                <input type="file" name="business_File" class="input-field" value="${funding.business_File}" style="display: none;">
                 <div class="button-container">
                     <button type="button" class="submit-button" onclick="sendNext();">다음</button>
                 </div>
             </div>
+            <input type="hidden" value="${funding.thumbnail}">
         </form>
     </main>
 <script type="text/javascript">
@@ -101,6 +105,20 @@ function sendNext() {
 	f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit1';
 	f.submit();
 }
+
+$(function() {
+	if ($('input[name="isBusiness"]').is(':checked')) {
+		$('input[name="business_File"]').css('display', 'block');
+	}
+	
+	$('input[name="isBusiness"]').change(function() {
+		if ($(this).is(':checked')) {
+			$('input[name="business_File"]').slideDown(300);
+		} else {
+			$('input[name="business_File"]').slideUp(300);
+		}
+	});
+});
 </script>
 </body>
 </html>

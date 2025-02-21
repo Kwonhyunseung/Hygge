@@ -9,29 +9,24 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
+<link rel="stylesheet" href="/dist/css/project/button.css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
-        .maker-container {
+        .policy-container {
             width: 1000px;
             margin: 0 auto;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        .maker-section {
+        .section {
             margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .maker-section:last-child {
-            border-bottom: none;
         }
 
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
         }
@@ -42,72 +37,117 @@
             margin-left: 2px;
         }
 
-        .section-description {
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 120px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .policy-list {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .policy-list ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .policy-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #666;
+            font-size: 14px;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .policy-list li::before {
+            content: "•";
+            position: absolute;
+            left: -2px;
+        }
+
+        .notice-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+                .policy-container {
+            width: 1000px;
+            margin: 0 auto;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::after {
+            content: "*";
+            color: #FF5733;
+            margin-left: 2px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 120px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        /* 새로운 스타일 추가 */
+        .as-section {
+            margin-bottom: 40px;
+        }
+
+        .as-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .as-title::after {
+            content: "(선택)";
+            color: #999;
+            font-size: 14px;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+
+        .as-description {
             color: #666;
             font-size: 14px;
             margin-bottom: 15px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .profile-image-section {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
-        .profile-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 1px dashed #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f9fa;
-            overflow: hidden;
-        }
-
-        .upload-button {
-		    color: #FF5733;
-		    font-size: 13px;
-		    cursor: pointer;
-		    text-decoration: none;
-		    text-align: center;
-		    width: 100%;
-		    height: 100%;
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .profile-circle img {
-		    width: 100%;
-		    height: 100%;
-		    object-fit: cover;
-		}
-
-        .contact-label {
-            font-size: 14px;
-            color: #333;
-        }
-
-        .introduction-input {
-            min-height: 100px;
-            resize: vertical;
         }
 
         .save-button {
@@ -126,6 +166,12 @@
         .save-button:hover {
             background-color: #ff4518;
         }
+
+        .button-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
 </style>
 </head>
 <body>
@@ -133,45 +179,59 @@
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/header.jsp"/>
 </header>
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/nav-item.jsp"/>
+	
+	
+	<div class="policy-container">
+		<div class="section">
+			<div class="section-title">기본 환불 정책</div>
+			<div class="policy-list">
+				<ul>
+					<li>아래의 정책 사조건가 귀한 신용장 수 있어요.</li>
+					<li>프로젝트 종료 후 리워드가 발송되기 전까지 '펀딩 취소' 환불</li>
+					<li>명확한 리워드 발송 예정일까지 리워드가 발송되지 않은 경우 리워드 지연 환불</li>
+					<li>리워드 수령에 문제가 발생했을 경우 '수령후 취 리워드 하자' 환불</li>
+					<li>환불 불가 유형 및 기타 환불 규정에 해당하지 않는 경우 '단순 변심' 환불</li>
+					<li>리워드 배송 전 일어 취소된 환불된 건과 리워드 배송 후로 이루 '단순 변심'으로 환불 된 건은 취을 정산 내역 중개수수료에서 제외되어요.</li>
+					<li>리워드 배송 후 이루어 환불 산정 전은 환불 신청서를 확인하고 승인할 수 있어요.</li>
+				</ul>
+			</div>
+		</div>
 
-    <div class="maker-container">
-        <div class="maker-section">
-            <div class="section-title">메이커 이름</div>
-            <div class="section-description">메이커 개인이나 팀을 대표할 수 있는 이름을 써주세요.</div>
-            <input type="text" class="form-input" placeholder="이름">
-        </div>
+		<div class="section">
+			<div class="section-title">공통 환불 불가 유형</div>
+			<div class="policy-list">
+				<ul>
+					<li>서포터의 단순변심으로 인한 발송/명품 유형이 리워드롤 수령일 날로부터 7일이 지난 경우</li>
+					<li>서포터의 귀책 사유로 인하여 상품이 멸실∙훼손된 경우 (파손에 버렸을 당하이 콜어있는 경우, 구성품이 누락, 멸실 상품의 포장을 체손된 경우 등)</li>
+					<li>리워드의 사용 또는 소비로 인해 가치 등이 감소한 경우 (전자기기의 전력 연결 등 사용 흔적이 있는 없는 경우, 화장품 사용을 등을 시용된 경우 등)</li>
+					<li>잡지책, CD, DVD, 소프트웨어 등 복제가 가능한 리워드를 개시 및 열람한 경우</li>
+					<li>기타 법령 및 약관에 의해 리워드 반품이 허용되는 경우</li>
+				</ul>
+			</div>
+		</div>
 
-        <div class="maker-section">
-            <div class="section-title">프로필 이미지</div>
-            <div class="section-description">메이커 개인이나 팀의 사진을 올려주세요.</div>
-			<div class="profile-image-section">
-			    <div class="profile-circle">
-			        <label for="profile-upload" class="upload-button">
-			            이미지 파일<br>업로드
-			            <input type="file" id="profile-upload" accept="image/*" style="display: none;">
-			        </label>
-			    </div>
+        <div class="section">
+			<div class="section-title">리워드 특성상 환불이 불가한 경우</div>
+				<div class="policy-list">
+				<ul>
+					<li>저권, 도장, 1:1 맞춤 제작 등 주문에 따라 개별적으로 생산되는 리워드인 경우</li>
+					<li>신선/냉동식품, 식품 등 품질이 빠르게 파먹치 따라 리워너가 곤란할 정도로 가치가 떨어지는 리워드인 경우</li>
+					<li>육류품, 환불성 등 이런 에먹어 환불과 리워드의 사용 기간이 임달하에 게만대가 이력품 우우 단, 사용 기 없식 업대 저롭은 에먹가가 호한 나용을 머들난다.</li>
+					<li>우산 티켓(아트쇼트, 페포토 포함) 등 시상화 보추가 보기눌먹어 메이커에게 충대한 피높가 에산되는 경우</li>
+					<li>제작에서 개별적으로 수집되는 게록으로서 단품 호류내용 용망 및 주인 저먹에 보가 등으로 메이커에게 호대한 피높가 에산되는 경우</li>
+					<li>기부/후원 특성으로 상품글급 모집 및 사용하는 펀딩 프로젝트인 경우</li>
+				</ul>
 			</div>
         </div>
-
-        <div class="maker-section">
-            <div class="section-title">메이커 소개</div>
-            <div class="section-description">2~3문장으로 메이커님의 이력과 간단한 소개를 써주세요.</div>
-            <textarea class="form-input introduction-input" placeholder="간단한 이력과 소개를 적어주세요."></textarea>
-        </div>
-
-	<div class="maker-section">
-		<div class="section-title">연동 계좌</div>
-		<div class="section-description">후원금을 전달받을 계좌를 등록해주세요.</div>
-		<div class="contact-grid">
-			<div class="contact-label">은행명</div>
-			<input type="text" class="form-input" placeholder="은행명">
-			<div class="contact-label">계좌번호</div>
-			<input type="text" class="form-input" placeholder="숫자만 입력해주세요">
+		<div class="checkbox-label">
+			<input type="checkbox" id="policy-check">
+			<label for="policy-check">환불정책을 모두 읽고 정책에 대해 숙지하셨습니까?<span style="color: #FF5733; margin-left: 2px;">*</span></label>
 		</div>
-	</div>
 
-        <button class="save-button">저장</button>
+        <div class="button-container">
+            <button type="button" class="prev-button">이전</button>
+			<button type="button" class="next-button" onclick="sendNext();">다음</button>
+        </div>
     </div>
 </body>
 </html>

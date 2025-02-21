@@ -6,6 +6,7 @@ import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
 
 public interface MakerService {
-	public void insertProjectRequest(Funding dto) throws Exception;
+	public long insertTempProjectRequest(Funding dto) throws Exception;
+	public void updateProjectRequest(long num) throws Exception;
 	public List<Category> listCategory(long num);
 }
