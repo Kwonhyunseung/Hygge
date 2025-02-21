@@ -18,8 +18,7 @@ public class MakerServiceImpl implements MakerService {
 	private final MakerMapper mapper;
 
 	@Override
-	public void insertProjectRequest(Funding dto) throws Exception {
-		// TODO Auto-generated method stub
+	public void updateProjectRequest(long num) throws Exception {
 		
 	}
 
@@ -32,6 +31,20 @@ public class MakerServiceImpl implements MakerService {
 			log.info("listCategory : ", e);
 		}
 		return list;
+	}
+
+	@Override
+	public long insertTempProjectRequest(Funding dto) throws Exception {
+		long num = 0;
+		try {
+			num = mapper.getPR_SEQ();
+			dto.setNum(num);
+			mapper.insertTempProjectRequest(dto);
+		} catch (Exception e) {
+			log.info("insertTempProjectRequest : ", e);
+			throw e;
+		}
+		return num;
 	}
 
 }

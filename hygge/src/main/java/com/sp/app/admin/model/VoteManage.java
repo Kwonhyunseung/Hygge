@@ -14,12 +14,9 @@ public class VoteManage {
     private Date start_date; // 투표기간
     private String content;
     private String title;
+    private String thumbnail;
     
-    private int voteCount; // 투표 수
-    
-    private long project_num1; // 프로젝트 번호
-    private long project_num2; // 프로젝트 번호
-    private long project_num3; // 프로젝트 번호
-    private long project_num4; // 프로젝트 번호
+    private long total_votes;
+    private long vote_count; // 프로젝트 번호
     
 }

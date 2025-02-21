@@ -3,10 +3,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.MakerMapper">
 
+	<select id="getPR_SEQ" resultType="Long">
+		SELECT project_request_seq.NEXTVAL FROM dual
+	</select>
 	<select id="listCategory" parameterType="Long" resultType="com.sp.app.model.Category">
 		SELECT category_num, parent_num, name
 		FROM category
 		WHERE parent_num = #{num}
 	</select>
 
+	<insert id="insertTempProjectRequest" parameterType="com.sp.app.model.Funding">
+		INSERT INTO ProjectRequest (num, memberIdx, request_date, title, business, content, target, term, thumbnail, category_num, project_info, delivery_info, submit)
+			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{deliver_info}, 0)
+	</insert>
 </mapper>

@@ -17,4 +17,13 @@ public interface VoteManageMapper {
 	
 	public List<VoteManage> voteList(Map<String, Object> map) throws SQLException;
 	public int dataCount(Map<String, Object> map) throws SQLException;
+	
+	public VoteManage findVote(long vote_num) throws SQLException;
+	public List<ProjectManage> findVoteCandidates(long vote_num) throws SQLException;
+	
+	public void deleteVote(long vote_num) throws SQLException;
+	public void deleteVoteCandidate(long vote_num) throws Exception;
+	public void deleteVoteHistory(long vote_num) throws Exception;
+	public void updateVote(VoteManage dto) throws Exception;
+	
 }

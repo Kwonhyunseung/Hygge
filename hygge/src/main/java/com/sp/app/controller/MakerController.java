@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.sp.app.common.StorageService;
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
-import com.sp.app.model.Product;
 import com.sp.app.service.MakerService;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MakerController {
 	private final MakerService service;
+	private final StorageService storageService;
+	private String uploadPath;
+
+	@PostConstruct
+	public void init() {
+		uploadPath = storageService.getRealPath("/uploads/project");
+	}
 
 	@GetMapping("projectSign")
 	public String projectSign() throws Exception {
@@ -46,7 +54,7 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit1")
-	public String projectForm1(Model model) throws Exception {
+	public String projectForm1(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectForm1 : ", e);
@@ -57,6 +65,14 @@ public class MakerController {
 	@PostMapping("projectSubmit1")
 	public String projectSubmit1(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
+			if (dto.getThumbnail_File() != null) {
+				dto.setThumbnail(storageService.uploadFileToServer(dto.getThumbnail_File(), uploadPath));
+			}
+			if (dto.getBusiness_File() != null) {
+				dto.setBusiness(1);
+			} else {
+				dto.setBusiness(0);
+			}
 		} catch (Exception e) {
 			log.info("projectSubmit1 : ", e);
 		}
@@ -64,20 +80,20 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit2")
-	public String projectForm2(Model model) throws Exception {
+	public String projectForm2(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
+			System.out.println(dto.getThumbnail_File() == null);
 		} catch (Exception e) {
-			log.info("projectSubmit2 : ", e);
+			log.info("projectForm2 : ", e);
 		}
 		return "makerPage/submit2";
 	}
 
 	@ResponseBody
 	@PostMapping("addProduct")
-	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto, Product product) {
+	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto) {
 		Map<String, Object> model = new HashMap<>();
 		try {
-			dto.getProduct().add(product);
 		} catch (Exception e) {
 			log.info("addProduct : ", e);
 		}
@@ -85,10 +101,13 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit2")
-	public String projectSubmit2(@ModelAttribute("funding") Funding dto, @ModelAttribute("product") List<Product> list, Model model) throws Exception {
+	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus) throws Exception {
 		try {
+			service.insertTempProjectRequest(dto);
+			model.addAttribute("msg", "임시 저장되었습니다.");
+			sessionStatus.setComplete();
 		} catch (Exception e) {
-			log.info("projectSubmit1 : ", e);
+			log.info("projectSubmit2 : ", e);
 		}
 		return "redirect:/makerPage/projectSubmit3";
 	}
@@ -99,7 +118,7 @@ public class MakerController {
 			List<Category> parentCategory = service.listCategory(0);
 			model.addAttribute("parentCategory", parentCategory);
 		} catch (Exception e) {
-			log.info("projectSubmit3 : ", e);
+			log.info("projectForm3 : ", e);
 		}
 		return "makerPage/submit3";
 	}
@@ -108,7 +127,7 @@ public class MakerController {
 	public String projectSubmit3(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
 		} catch (Exception e) {
-			log.info("projectSubmit1 : ", e);
+			log.info("projectSubmit3 : ", e);
 		}
 		return "redirect:/makerPage/projectSubmit4";
 	}
@@ -126,7 +145,7 @@ public class MakerController {
 	public String projectSubmit4(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
 		} catch (Exception e) {
-			log.info("projectSubmit1 : ", e);
+			log.info("projectSubmit4 : ", e);
 		}
 		return "redirect:/makerPage/projectSubmit5";
 	}
@@ -135,15 +154,14 @@ public class MakerController {
 	public String projectForm5(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
-			log.info("projectSubmit5 : ", e);
+			log.info("projectForm5 : ", e);
 		}
 		return "makerPage/submit5";
 	}
 
 	@PostMapping("projectSubmit5")
-	public String projectSubmit5(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus) throws Exception {
+	public String projectSubmit5(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
-			sessionStatus.setComplete(); // 세션에 저장된 내용 지우기
 		} catch (Exception e) {
 			log.info("projectSubmit5 : ", e);
 		}

@@ -20,4 +20,6 @@ public class TesterManage {
 	
 	private String title;
 	private String name;
+	
+	private long project_num;
 }

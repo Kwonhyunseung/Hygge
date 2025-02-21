@@ -43,7 +43,7 @@ public class VoteManageController {
 			) throws Exception {
 		
 		try {
-			int size = 3;
+			int size = 6;
 			int total_page = 0;
 			int dataCount = 0;
 			
@@ -79,6 +79,8 @@ public class VoteManageController {
 			
 			List<VoteManage> vote = service.voteList(map);
 			
+			//총 투표수
+			
 			model.addAttribute("vote", vote);
 			model.addAttribute("dataCount", dataCount);
 			model.addAttribute("size", size);
@@ -97,15 +99,27 @@ public class VoteManageController {
 	}
 	
 	@GetMapping("write")
-	public String writeForm(Model model) throws Exception {
+	public String writeForm(@RequestParam(name = "vote_num") Long vote_num,
+			Model model) throws Exception {
+		
+		String mode = "write";
 		List<ProjectManage> projects = null;
+		VoteManage dto = new VoteManage();
+		List<ProjectManage> selectedProjects = null;
+		
 		try {
-			
 			projects = service.projectList();
 			
-			model.addAttribute("projects", projects);
+			if(vote_num != null) {
+				mode = "update";
+				dto = service.findVote(vote_num);
+				selectedProjects = service.findVoteCandidates(vote_num);
+			}
 			
-			 System.out.println(projects.size());
+	        model.addAttribute("mode", mode);
+	        model.addAttribute("dto", dto);
+	        model.addAttribute("projects", projects);
+	        model.addAttribute("selectedProjects", selectedProjects);			
 			
 		} catch (Exception e) {
 			log.info("writeForm : ",e);
@@ -125,6 +139,7 @@ public class VoteManageController {
 			@RequestParam(name = "projectNum4") long projectNum4,
 			Model model) throws Exception {
 		
+		
 		try {
 			
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -134,10 +149,6 @@ public class VoteManageController {
 			voteDto.setContent(content);
 			voteDto.setTitle(title);
 			voteDto.setStart_date(startDate);
-			voteDto.setProject_num1(projectNum1);
-			voteDto.setProject_num2(projectNum2);
-			voteDto.setProject_num3(projectNum3);
-			voteDto.setProject_num4(projectNum4);
 			service.insertVote(voteDto);
 			
 			service.insertVoteCandidate(projectNum1);
@@ -151,12 +162,58 @@ public class VoteManageController {
 		
 		return "redirect:/admin/vote/list";
 	}
-
 	
-	@GetMapping("article")
-	public String article() throws Exception {
+	@GetMapping("update")
+	public String updateForm(@RequestParam(name = "vote_num") long vote_num,
+			Model model) {
 		
 		
-		return "vote/article";
-	}	
+		try {
+			VoteManage dto = service.findVote(vote_num);
+			if(dto == null) {
+				return "redirect:/admin/vote/list";
+			}
+			
+			List<ProjectManage> projects = service.projectList();
+			
+			List<ProjectManage> currentCandidates = service.findVoteCandidates(vote_num);
+			
+			model.addAttribute("dto", dto);
+			model.addAttribute("projects", projects);
+			model.addAttribute("currentCandidates", currentCandidates);
+			
+			
+		} catch (Exception e) {
+			log.info("updateForm : ", e);
+		}
+		
+		return "admin/vote/write";
+	}
+	
+	@PostMapping("update")
+	public String updateSubmit(VoteManage voteManage,
+		    @RequestParam(name = "projectNum1") long projectNum1,
+		    @RequestParam(name = "projectNum1") long projectNum2,
+		    @RequestParam(name = "projectNum1") long projectNum3,
+		    @RequestParam(name = "projectNum1") long projectNum4
+		    ) throws Exception {
+		
+		try {
+			service.updateVote(voteManage);
+			
+			service.deleteVoteCandidate(voteManage.getVote_num());
+			
+	        service.insertVoteCandidate(projectNum1);
+	        service.insertVoteCandidate(projectNum2);
+	        service.insertVoteCandidate(projectNum3);
+	        service.insertVoteCandidate(projectNum4);
+			
+		} catch (Exception e) {
+			log.info("updateSubmit : ", e);
+		}
+		
+		return "redirect:/admin/vote/list";
+	}
+	
+
 }
