@@ -9,30 +9,37 @@
 	</select>
 	
 <select id="voteList" parameterType="map" resultType="com.sp.app.admin.model.VoteManage">
-  SELECT *
-  FROM (
-    SELECT ROWNUM rnum, vote_num, content, title, start_date
+SELECT * 
+FROM (
+    SELECT ROWNUM rnum, tb.* 
     FROM (
-      SELECT vote_num, content, title, start_date 
-      FROM vote
-      <where>
-        <if test="kwd != null and kwd != ''">
-          <choose>
-            <when test="schType == 'title'">
-              INSTR(title, #{kwd}) > 0
-            </when>
-            <when test="schType == 'content'">
-              INSTR(content, #{kwd}) > 0
-            </when>
-          </choose>
-        </if>
-      </where>
-      ORDER BY vote_num DESC
-    )
-  )
-  WHERE rnum BETWEEN #{offset}+1 AND #{offset}+#{size}
+        SELECT v.vote_num, v.content, v.title, v.start_date,
+               (SELECT MIN(p.thumbnail) 
+                FROM ProjectRequest p 
+                JOIN VoteCandidate vc 
+                ON p.num = vc.project_num 
+                WHERE vc.vote_num = v.vote_num) as thumbnail,
+               COUNT(vh.memberIdx) as vote_count
+        FROM vote v
+        LEFT JOIN VoteHistory vh ON v.vote_num = vh.vote_num
+        <where>
+            <if test="kwd != null and kwd != ''">
+                <choose>
+                    <when test="schType == 'title'">
+                        INSTR(v.title, #{kwd}) > 0
+                    </when>
+                    <when test="schType == 'content'">
+                        INSTR(v.content, #{kwd}) > 0
+                    </when>
+                </choose>
+            </if>
+        </where>
+        GROUP BY v.vote_num, v.content, v.title, v.start_date
+        ORDER BY v.vote_num DESC
+    ) tb
+) WHERE rnum BETWEEN #{offset}+1 AND #{offset}+#{size}
 </select>
-	
+
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*)
 		FROM vote v
@@ -57,5 +64,38 @@
 		INSERT INTO voteCandidate (project_num, vote_num)
 		VALUES (#{num}, vote_seq.CURRVAL)
 	</insert>
+	
+	<select id="findVote" parameterType="Long" resultType="com.sp.app.admin.model.VoteManage">
+		SELECT vote_num, title, start_date, content
+	    FROM vote
+	    WHERE vote_num = #{vote_num}
+	</select>
+	
+	<select id="findVoteCandidates" parameterType="Long" resultType="com.sp.app.admin.model.ProjectManage">
+		SELECT vc.project_num AS num, pr.title, pr.thumbnail
+	    FROM voteCandidate vc
+	    JOIN projectRequest pr ON pr.num = vc.project_num
+	    WHERE vote_num = #{vote_num}
+	</select>
+	
+	<delete id="deleteVote" parameterType="Long">
+		DELETE FROM vote
+		WHERE vote_num = #{vote_num}
+	</delete>
+	
+	<delete id="deleteVoteCandidate" parameterType="Long">
+		DELETE FROM voteCandidate
+		WHERE vote_num = #{vote_num}
+	</delete>
+	
+	<delete id="deleteVoteHistory" parameterType="long">
+		DELETE FROM voteCandidate
+		WHERE vote_num = #{vote_num}
+	</delete>
+	
+	<update id="updateVote" parameterType="com.sp.app.admin.model.VoteManage">
+		UPDATE vote SET
+	
+	</update>
 	
 </mapper>
