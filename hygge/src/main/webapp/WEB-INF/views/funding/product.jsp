@@ -182,8 +182,8 @@ $(function(){
 						<div class="first-info">
 							<p class="a" style="font-size: 18px;">모인 금액</p>
 							<p class="a" id="price">
-								<strong><fmt:formatNumber value="${project.total_amount}" pattern="#,###" /></strong>원
-								<span class="punding-goal">${project.funding_goal}% 달성</span>
+							    <strong><fmt:formatNumber value="${project.total_amount}" pattern="#,###" /></strong>원
+							    <span class="punding-goal"><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</span>
 							</p>
 							<p class="b" style="font-size: 18px;">남은 시간</p>
 							<p class="b" id="period">

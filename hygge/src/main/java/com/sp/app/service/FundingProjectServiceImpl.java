@@ -106,17 +106,6 @@ public class FundingProjectServiceImpl implements FundingProjectService {
 		}
 		return list;
 	}
-
 	
 	
-	
-	
-	
-	@Override
-	public int totalAmountProduct(long num) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 }

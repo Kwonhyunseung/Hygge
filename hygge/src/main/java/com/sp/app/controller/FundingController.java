@@ -44,8 +44,9 @@ public class FundingController {
 		try {
 			Funding project = detailService.fundingProduct(num);
 
-			int funding_goal = project.getTotal_amount() / project.getTarget() * 100;
-			project.setFunding_goal(Integer.toString(funding_goal));
+			double funding_goal = (double)project.getTotal_amount() / project.getTarget() * 100;
+			project.setFunding_goal(String.format("%.0f", funding_goal)); // 소수점 없이 반올림
+			
 			project.setRemained_date(calDiffDate(project.getEnd_date()));
 			project.setPayment_date(payOneDay(project.getEnd_date()));
 			
@@ -80,6 +81,7 @@ public class FundingController {
 		return "funding/product";
 	}
 	
+	/*
 	// 남은 시간
 	public static String calDiffDate(String dateString) {
 		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
@@ -94,7 +96,7 @@ public class FundingController {
 		// 두 날짜 사이의 차이 계산
 		return String.valueOf(ChronoUnit.DAYS.between(currentDate, inputDate));
 	}
-
+	
 	// 결제일
 	public static String payOneDay(String dateString) {
 		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
@@ -106,12 +108,87 @@ public class FundingController {
 		// 두 날짜 사이의 차이 계산
 		return String.valueOf(inputDate.plusDays(1));
 	}
-
+	
 	public static String convertToString(Double input) {
 		DecimalFormat df = new DecimalFormat("#,##0.00"); // 소수점 둘째 자리까지 표시
 		String formattedValue = df.format(input);
 		return formattedValue;
 	}
+	*/
+	// 공통 날짜 파싱 메소드
+	private static LocalDate parseDate(String dateString) {
+	    try {
+	        // 숫자만 있는 경우 (예: "20240312")
+	        if (dateString.matches("\\d{8}")) {
+	            return LocalDate.parse(
+	                dateString.substring(0, 4) + "-" + 
+	                dateString.substring(4, 6) + "-" + 
+	                dateString.substring(6, 8), 
+	                DateTimeFormatter.ofPattern("yyyy-MM-dd")
+	            );
+	        }
+	        
+	        // 하이픈, 점, 슬래시 형식 변환
+	        String normalizedDate = dateString
+	            .replace(".", "-")
+	            .replace("/", "-");
+	            
+	        if (normalizedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+	            return LocalDate.parse(normalizedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        }
+	        
+	        // 다양한 포맷 시도
+	        DateTimeFormatter[] formatters = {
+	            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+	            DateTimeFormatter.ofPattern("yyyy.MM.dd"),
+	            DateTimeFormatter.ofPattern("yyyy/MM/dd"),
+	            DateTimeFormatter.ofPattern("yyyyMMdd"),
+	            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+	            DateTimeFormatter.ofPattern("MM/dd/yyyy")
+	        };
+	        
+	        for (DateTimeFormatter fmt : formatters) {
+	            try {
+	                return LocalDate.parse(dateString, fmt);
+	            } catch (Exception e) {
+	                // 이 형식으로 파싱 불가능하면 다음 형식 시도
+	                continue;
+	            }
+	        }
+	        
+	        // 모든 형식이 실패하면 현재 날짜 반환
+	        return LocalDate.now();
+	    } catch (Exception e) {
+	        return LocalDate.now();
+	    }
+	}
+
+	// 남은 시간
+	public static String calDiffDate(String dateString) {
+	    try {
+	        LocalDate inputDate = parseDate(dateString);
+	        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
+	        return String.valueOf(daysBetween);
+	    } catch (Exception e) {
+	        return "0";
+	    }
+	}
+
+	// 결제일
+	public static String payOneDay(String dateString) {
+	    try {
+	        LocalDate inputDate = parseDate(dateString);
+	        return inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+	    } catch (Exception e) {
+	        return LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	    }
+	}
+
+	// 숫자 포맷팅
+	public static String convertToString(Double input) {
+	    return new DecimalFormat("#,##0.00").format(input);
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("userFundingLiked")

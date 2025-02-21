@@ -20,9 +20,5 @@ public interface FundingProjectService {
 
 	public List<Review> listProductReview(Map<String, Object> map); //프로젝트 - 후기 리스트
 	
-	
-	// ------------
-	public int totalAmountProduct(long num); //모인 금액
-	
 }
 

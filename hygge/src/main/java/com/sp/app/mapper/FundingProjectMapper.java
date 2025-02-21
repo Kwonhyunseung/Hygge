@@ -21,11 +21,10 @@ public interface FundingProjectMapper {
 	public void deleteProjectLikeCount(Map<String, Object> map);
 	public int userFundingLiked(Map<String, Object> map);
 	
+	public Funding makerInfo(long num);
+	
 	public List<Review> listProductReview(Map<String, Object> map); //프로젝트 - 후기 리스트
 	// 후기는 마이페이지에서 내가 산 물품 후기 작성 가능
 	// 펀딩 화면은 후기 리스트만 보이게?
-	
-	// ------------
-	public int totalAmountProduct(long num); //모인 금액
 	
 }
