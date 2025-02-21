@@ -5,18 +5,12 @@
 <head>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/funding/rightSide.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/funding/rightSide.css" type="text/css">
 
 <!-- js 파일 빼기! -->
 <script type="text/javascript">
 	function makerInquiry() {
 		alert("메이커 문의로 이동하기");
-	}
-
-	function makerFollow() {
-		alert("메이커 팔로우로 이동하기");
 	}
 
 	function complaint() {
@@ -112,15 +106,6 @@ $(function() {
 
 		<div class="product-buy">
 			<h4>리워드 선택</h4>
-			<div class="product-select">
-				<button type="button" class="buyBtn" onclick="productBuy();">
-					<p>
-						<strong>1,000원</strong>
-					</p>
-					<p>리워드 선택 없이 후원하기</p>
-				</button>
-			</div>
-
 			<c:forEach var="product" items="${product}">
 				<div class="product-select">
 					<button type="button" class="buyBtn" onclick="productBuy();">
@@ -129,8 +114,7 @@ $(function() {
 						</p>
 						<p class="composition">${product.title}</p>
 						<div class="option">
-							<c:forEach var="detailLine"
-								items="${fn:split(product.detail, '💚')}">
+							<c:forEach var="detailLine" items="${fn:split(product.detail, '💚')}">
 								<c:if test="${!empty detailLine}">
 									<p>💚${detailLine}</p>
 								</c:if>
@@ -140,5 +124,6 @@ $(function() {
 				</div>
 			</c:forEach>
 		</div>
+		
 	</div>
 </body>

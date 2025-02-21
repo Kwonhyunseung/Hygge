@@ -211,8 +211,7 @@ $(function(){
 									<fmt:formatDate value="${endDate}" pattern="yyyy.MM.dd" />
 								</p>
 								<p class="d">
-									목표금액 달성시 <br>&nbsp;
-									${project.payment_date}
+									목표금액 달성시 <br> <span style="margin-left: 113px;">${project.payment_date}</span>
 								</p>
 								<p class="d">
 									<fmt:parseDate value="${project.delivery_info}" pattern="yyyyMMdd" var="deliveryDate" />

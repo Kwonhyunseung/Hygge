@@ -216,7 +216,6 @@ public class FundingController {
 		String state = "true";
 
 		try {
-			// 로그인 체크
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			if (info == null) {
 				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -233,7 +232,7 @@ public class FundingController {
 
 			if (count > 0) { // 이미 좋아요가 존재하면
 				detailService.deleteProjectLikeCount(map);
-			} else { // 좋아요가 없으면
+			} else {
 				detailService.insertProjectLikeCount(map);
 			}
 
@@ -268,7 +267,6 @@ public class FundingController {
 	        // 로그 추가
 	        log.info("toggleFollow - makerIdx: {}, num: {}", makerIdx, num);
 	        
-	        // 로그인 체크
 	        SessionInfo info = (SessionInfo) session.getAttribute("member");
 	        if (info == null) {
 	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -286,11 +284,11 @@ public class FundingController {
 
 	        if (count > 0) { // 이미 팔로우 중이면
 	            detailService.deleteFollowing(map);
-	        } else { // 팔로우 중이 아니면
+	        } else {
 	            detailService.insertFollowing(map);
 	        }
 
-	        // 업데이트된 팔로워 수 - num 파라미터가 필요
+	        // 업데이트된 팔로워 수
 	        int followingCount = 0;
 	        if (num > 0) {
 	            Funding project = detailService.fundingProduct(num);

@@ -25,7 +25,8 @@
 					<a href="#">공지사항</a> <br>
 					<a href="#">서비스 소개</a> <br>
 					<a href="#">HYGGE 광고센터</a><br>
-					<a href="https://icons8.com/">Icons by Icon8</a>
+					<a href="https://icons8.com/">Icons by Icon8</a> | 
+					<a href="https://www.flaticon.com/kr/free-icons/-">Icons by FLATICON</a>
 				</div>
 				<div class="col section">
 					<h4>이용안내</h4>
