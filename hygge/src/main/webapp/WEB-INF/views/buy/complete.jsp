@@ -9,32 +9,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
-<style type="text/css">
-.body-container {
-	max-width: 1200px; /* 중앙 정렬 및 여백 조절 */
-	margin: 0 auto; /* 좌우 여백 균등 */
-}
-
-
-.buyBtn {
-	display: block;
-	width: 300px;
-	height: 70px;
-	margin: 60px auto;
-	background-color: #709B04;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	font-size: 25px;
-	font-weight: bold;
-	cursor: pointer;
-	transition: background-color 0.3s;
-}
-
-.buyBtn:hover {
-	background-color: #5B7D05;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/buy/complete.css" type="text/css">
 
 <script type="text/javascript">
 	function three() {
@@ -49,11 +24,25 @@
 	</header>
 
 	<div class="body-container">
-
-
-
-
-
+		<h3>구매 완료</h3>
+		<hr style="border:0; height:4px; margin-bottom: 30px; background: #537300;">
+		<div class="row buyInfo">
+			<p class="title"> 구매상품
+				<span class="title">[얼리버드 2] 백설 2개</span>				
+			</p>
+			<p class="name"> 이름
+				<span class="name">김선웅</span>				
+			</p>
+			<p class="stock"> 수량
+				<span class="stock">2개</span>				
+			</p>
+			<p class="home"> 배송지
+				<span class="">(01234) 서울 월드컵북로 쌍용 2층</span>				
+			</p>
+			<p class="price"> 금액
+				<span class="price">800,000</span>				
+			</p>
+		</div>
 
 		<button type="button" class="buyBtn" onclick="three()">메인으로</button>
 

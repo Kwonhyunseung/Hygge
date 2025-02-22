@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+.body-container {
+	max-width: 850px;
+    margin: 0 auto;
+}
+
+.buyInfo {
+	max-width: 750px;
+    margin: 0 auto;
+}
+
+h3 {
+	font-size: 35px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 120px;
+	margin-bottom: 50px;
+}
+
+.buyInfo p {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: baseline;
+    gap: 50px;
+    margin: 25px 0;
+    font-size: 28px;
+    min-height: 3px;
+}
+
+.buyInfo p > span {
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+.buyBtn {
+	display: block;
+	width: 300px;
+	height: 70px;
+	margin: 100px auto;
+	background-color: #709B04;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 25px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.buyBtn:hover {
+	background-color: #5B7D05;
+}

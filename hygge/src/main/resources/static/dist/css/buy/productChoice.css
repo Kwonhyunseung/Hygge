@@ -1,0 +1,318 @@
+@charset "UTF-8";
+
+.body-container {
+	max-width: 1200px; /* 중앙 정렬 및 여백 조절 */
+	margin: 0 auto; /* 좌우 여백 균등 */
+}
+
+.choicedProduct {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.tow-circle {
+	display: flex;
+	justify-content: center;
+	margin: 100px 0;
+	
+	/* 선을 위한 css */
+  	align-items: center;
+  	position: relative;
+  	padding: 30px;
+}
+
+.connecting-line {
+  position: absolute;
+  height: 1px;
+  background-color: #363636;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  z-index: 1;
+}
+
+.circle {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 30px;
+	border: 2px solid #eee;
+}
+
+.circle p {
+	text-align: center;
+	font-weight: bold;
+	line-height: 1.6;
+	font-size: 20px;
+	margin-top: 15px;
+}
+
+.circle:first-child {
+	background-color: #F6F6F6;
+	border-color: #363636;
+}
+
+.circle:last-child {
+	background-color: #709B04;
+	color: white;
+	border-color: #fff;
+}
+
+/* 선물 선택 섹션 */
+h3 {
+	font-size: 28px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #333;
+}
+
+h3>img {
+	width: 50px;
+	height: 50px;
+}
+
+/* choicedProduct */
+h4 {
+	font-size: 25px;
+	font-weight: bold;
+}
+.supporterInfo,
+.deliveryInfo,
+.coupon,
+.paymentMethod,
+.finalPayment,
+.payNote,
+.payAgree { margin-top: 90px; }
+
+.supporterInfo > h4,
+.deliveryInfo > h4,
+.coupon > h4,
+.paymentMethod > h4,
+.finalPayment > h4,
+.payNote > h4, 
+.payAgree > h4 {margin-bottom: 30px;}
+
+.productInfo p,
+.supporterInfo p,
+.finalPayment p {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 15px 0;
+	font-size: 24px;
+}
+
+/* 상품 정보 */
+.thumbnail > img {
+	margin-top: 50px;
+	width: 350px;
+	height: 350px;
+}
+
+.productInfo>h4{margin-top: 85px;}
+
+
+
+/* 배송 정보 */
+#addr1, #addr2, #postCode, #aInfo { font-size: 22px; }
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  outline: none;
+}
+/* 신규배송지 버튼 */
+#addr {
+	font-size: 20px;
+	background-color: #709B04;
+	border-color: #fff;
+	border-radius: 5px;
+	color: #fff;
+	padding: 8px 14px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+}
+#addr:hover{
+	background-color: #608700;
+}
+
+.deliveryInfo input[type="text"] {
+   	font-size: 22px;
+    width: 100%;
+    padding: 13px;
+    border: 2px solid #AAA;
+    border-radius: 5px;
+    /* cursor: pointer; */
+}
+
+/* 주소와 우편번호을 감싼 div */
+.deliveryInfo > div {
+    display: flex;
+    gap: 20px;
+    margin: 12px 0;
+}
+
+#postCode {
+    width: 250px !important;
+}
+
+#aInfo { /* 주문 요청 사항 */
+    margin-top: 17px;
+    min-height: 50px;
+}
+
+/* readonly 스타일 */
+.deliveryInfo input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+/* 쿠폰 정보 */
+.couponSelect {
+    font-size: 22px;
+    width: 100%;
+    padding: 13px;
+    border: 2px solid #AAA;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.couponSelect:focus {
+    border-color: #709B04;
+    outline: none;
+}
+
+/* 결제 수단 */
+.paymentMethod {
+	font-size: 24px;
+}
+.paymentMethod div {
+    margin-bottom: 15px;
+}
+
+/* 기본 라디오 버튼 숨기기 */
+.paymentMethod input[type="radio"] {
+    display: none;
+}
+.paymentMethod label {
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+    line-height: 22px;
+}
+.paymentMethod label:before {
+    content: '⚪';
+    position: absolute;
+    left: 0;
+    font-size: 22px;
+}
+.paymentMethod input[type="radio"]:checked + label:before {
+    content: '🟢';
+}
+.paymentMethod label:hover:before {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* 결제 | 약관 */
+.payNote, .payAgree {
+  text-align: left;
+}
+
+/* 결제 유의사항 */
+.payNote {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px 24px 20px 24px;
+    border-left: 5px solid #4CAF50;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.payNote h4 {
+    color: #2b642e;
+    position: relative;
+    padding-left: 40px;
+}
+.payNote h4:before {
+    content: '💡';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+}
+
+.payNote p {
+	font-size: 23px;
+	line-height: 1.6;
+    padding: 5px 30px;
+    position: relative;
+    left: 20px;
+}
+.payNote p:before {
+    content: '•';
+    color: #4CAF50;
+    position: absolute;
+    left: 10px;
+    font-size: 23px;
+}
+
+/* 약관 동의 */
+.payAgree input[type="checkbox"] {
+    display: none;
+}
+.payAgree label {
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+    line-height: 1.6;
+    display: block;
+}
+.payAgree label:before {
+    content: '🤍';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    transition: all 0.3s ease;
+}
+.payAgree input[type="checkbox"]:checked + label:before {
+    content: '💚';
+}
+.agreeAll label {
+    font-size: 23px;
+}
+.agree {
+	font-size: 23px;
+    margin: 10px 0;
+    padding-left: 15px;
+}
+.payAgree label:hover:before {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.buyBtn {
+	display: block;
+	width: 300px;
+	height: 70px;
+	margin: 100px auto;
+	background-color: #709B04;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 25px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.buyBtn:hover {
+	background-color: #5B7D05;
+}

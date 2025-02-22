@@ -42,42 +42,33 @@ public class FundingController {
 	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
 		try {
+			// 프로젝트 상세 정보 조회
 			Funding project = detailService.fundingProduct(num);
-			
-			 // 로그 추가
-	        log.info("memberIdx: " + project.getMemberIdx());
+			log.info("memberIdx: {}", project.getMemberIdx());
 
-			double funding_goal = (double)project.getTotal_amount() / project.getTarget() * 100;
-			project.setFunding_goal(String.format("%.0f", funding_goal)); // 소수점 없이 반올림
-			
-			project.setRemained_date(calDiffDate(project.getEnd_date()));
-			project.setPayment_date(payOneDay(project.getEnd_date()));
-			
+			// 펀딩 정보 계산
+			calculateProjectMetrics(project);
+
+			// 제품 목록 조회
 			Map<String, Object> map = new HashMap<>();
 			map.put("num", num);
 			List<Product> productList = detailService.detailProduct(map);
 
 			// 좋아요 수 조회
 			int likeCount = detailService.projectLikeCount(num);
-			
-			// 좋아요 / 팔로우 상태 확인
+
+			// 세션 정보 확인 및 사용자 상태 설정
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			boolean isUserLiked = false;
 			boolean isUserFollow = false;
-			
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			
+
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
 				map.put("makerIdx", project.getMemberIdx());
-				
-				// 좋아요가 있으면 true
-				int count = detailService.userFundingLiked(map);
-				isUserLiked = count > 0;
-				
-				// 팔로우 중이면 true
-				int followCount = detailService.userFollowing(map);
-				isUserFollow = followCount > 0;
-				
+
+				// 좋아요 및 팔로우 상태 확인
+				isUserLiked = detailService.userFundingLiked(map) > 0;
+				isUserFollow = detailService.userFollowing(map) > 0;
 			}
 
 			if (project != null) {
@@ -89,7 +80,7 @@ public class FundingController {
 				model.addAttribute("isUserFollow", isUserFollow);
 				model.addAttribute("product", productList);
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error fetching project details", e);
 			model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
@@ -97,115 +88,86 @@ public class FundingController {
 		return "funding/product";
 	}
 	
-	/*
-	// 남은 시간
-	public static String calDiffDate(String dateString) {
-		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	// 계산
+	private void calculateProjectMetrics(Funding project) {
+		// 펀딩 달성률
+		double fundingGoal = (double) project.getTotal_amount() / project.getTarget() * 100;
+		project.setFunding_goal(String.format("%.0f", fundingGoal)); // 소수점 없이 반올림
 
-		// 문자열을 LocalDate로 변환
-		LocalDate inputDate = LocalDate.parse(dateString, formatter);
-
-		// 현재 날짜 가져오기
-		LocalDate currentDate = LocalDate.now();
-
-		// 두 날짜 사이의 차이 계산
-		return String.valueOf(ChronoUnit.DAYS.between(currentDate, inputDate));
+		// 남은 기간과 결제일
+		project.setRemained_date(calDiffDate(project.getEnd_date()));
+		project.setPayment_date(payOneDay(project.getEnd_date()));
 	}
-	
-	// 결제일
-	public static String payOneDay(String dateString) {
-		// 날짜 형식 지정 (입력 문자열이 "yyyy-MM-dd" 형식일 경우)
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		// 문자열을 LocalDate로 변환
-		LocalDate inputDate = LocalDate.parse(dateString, formatter);
-
-		// 두 날짜 사이의 차이 계산
-		return String.valueOf(inputDate.plusDays(1));
-	}
-	
-	public static String convertToString(Double input) {
-		DecimalFormat df = new DecimalFormat("#,##0.00"); // 소수점 둘째 자리까지 표시
-		String formattedValue = df.format(input);
-		return formattedValue;
-	}
-	*/
-	// 공통 날짜 파싱 메소드
+	// 날짜 파싱
 	private static LocalDate parseDate(String dateString) {
-	    try {
-	        // 숫자만 있는 경우 (예: "20240312")
-	        if (dateString.matches("\\d{8}")) {
-	            return LocalDate.parse(
-	                dateString.substring(0, 4) + "-" + 
-	                dateString.substring(4, 6) + "-" + 
-	                dateString.substring(6, 8), 
-	                DateTimeFormatter.ofPattern("yyyy-MM-dd")
-	            );
-	        }
-	        
-	        // 하이픈, 점, 슬래시 형식 변환
-	        String normalizedDate = dateString
-	            .replace(".", "-")
-	            .replace("/", "-");
-	            
-	        if (normalizedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
-	            return LocalDate.parse(normalizedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	        }
-	        
-	        // 다양한 포맷 시도
-	        DateTimeFormatter[] formatters = {
-	            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-	            DateTimeFormatter.ofPattern("yyyy.MM.dd"),
-	            DateTimeFormatter.ofPattern("yyyy/MM/dd"),
-	            DateTimeFormatter.ofPattern("yyyyMMdd"),
-	            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
-	            DateTimeFormatter.ofPattern("MM/dd/yyyy")
-	        };
-	        
-	        for (DateTimeFormatter fmt : formatters) {
-	            try {
-	                return LocalDate.parse(dateString, fmt);
-	            } catch (Exception e) {
-	                // 이 형식으로 파싱 불가능하면 다음 형식 시도
-	                continue;
-	            }
-	        }
-	        
-	        // 모든 형식이 실패하면 현재 날짜 반환
-	        return LocalDate.now();
-	    } catch (Exception e) {
-	        return LocalDate.now();
-	    }
+		try {
+			// 숫자만 있는 경우 (예: "20240312")
+			if (dateString.matches("\\d{8}")) {
+				return LocalDate.parse(dateString.substring(0, 4) + "-" + dateString.substring(4, 6) + "-"
+						+ dateString.substring(6, 8), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			}
+
+			// 하이픈, 점, 슬래시 형식 변환
+			String normalizedDate = dateString.replace(".", "-").replace("/", "-");
+
+			if (normalizedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+				return LocalDate.parse(normalizedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			}
+
+			DateTimeFormatter[] formatters = {
+					DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+					DateTimeFormatter.ofPattern("yyyy.MM.dd"),
+					DateTimeFormatter.ofPattern("yyyy/MM/dd"),
+					DateTimeFormatter.ofPattern("yyyyMMdd"),
+					DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+					DateTimeFormatter.ofPattern("MM/dd/yyyy")
+			};
+
+			for (DateTimeFormatter fmt : formatters) {
+				try {
+					return LocalDate.parse(dateString, fmt);
+				} catch (Exception e) {
+					// 이 형식으로 파싱 불가능하면 다음 형식 시도
+					continue;
+				}
+			}
+
+			// 모든 형식이 실패하면 현재 날짜 반환
+			return LocalDate.now();
+		} catch (Exception e) {
+			return LocalDate.now();
+		}
 	}
 
-	// 남은 시간
+	// 남은 일수
 	public static String calDiffDate(String dateString) {
-	    try {
-	        LocalDate inputDate = parseDate(dateString);
-	        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
-	        return String.valueOf(daysBetween);
-	    } catch (Exception e) {
-	        return "0";
-	    }
+		try {
+			LocalDate inputDate = parseDate(dateString);
+			long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
+			return String.valueOf(Math.max(0, daysBetween)); // 음수 방지
+		} catch (Exception e) {
+			return "0";
+		}
 	}
 
 	// 결제일
 	public static String payOneDay(String dateString) {
-	    try {
-	        LocalDate inputDate = parseDate(dateString);
-	        return inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-	    } catch (Exception e) {
-	        return LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	    }
+		try {
+			LocalDate inputDate = parseDate(dateString);
+			return inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+		} catch (Exception e) {
+			return LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+		}
 	}
 
 	// 숫자 포맷팅
 	public static String convertToString(Double input) {
-	    return new DecimalFormat("#,##0.00").format(input);
-	}
-	
-	
+        if (input == null) return "0.00";
+        return new DecimalFormat("#,##0.00").format(input);
+    }
+
+	// 프로젝트 좋아요
 	@ResponseBody
 	@PostMapping("userFundingLiked")
 	public Map<String, Object> productLiked(@RequestParam(name = "num") long num,
@@ -213,116 +175,110 @@ public class FundingController {
 			HttpServletResponse resp) {
 
 		Map<String, Object> model = new HashMap<>();
-		String state = "true";
 
 		try {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			if (info == null) {
-				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				model.put("message", "로그인이 필요한 서비스입니다.");
-				return model;
+				return handleUnauthorized(resp, model);
 			}
 
 			Map<String, Object> map = new HashMap<>();
 			map.put("num", num);
 			map.put("memberIdx", info.getMemberidx());
 
-			// 현재 좋아요 상태 확인
 			int count = detailService.userFundingLiked(map);
+			boolean newLikeState;
 
-			if (count > 0) { // 이미 좋아요가 존재하면
+			if (count > 0) {
 				detailService.deleteProjectLikeCount(map);
+				newLikeState = false;
 			} else {
 				detailService.insertProjectLikeCount(map);
+				newLikeState = true;
 			}
 
-			// 업데이트된 좋아요 수 반환
 			int likeCount = detailService.projectLikeCount(num);
-			model.put("state", state);
+			model.put("state", "true");
 			model.put("likeCount", likeCount);
-			model.put("isLiked", count == 0); // 좋아요가 없었으면 true, 있었으면 false
+			model.put("isLiked", newLikeState);
 
 		} catch (Exception e) {
 			log.error("좋아요 처리 중 오류", e);
-			state = "false";
-			model.put("state", state);
+			model.put("state", "false");
 			model.put("message", "서버 오류가 발생했습니다.");
 		}
 
 		return model;
 	}
-	
+
+	// 메이커 팔로우
 	@ResponseBody
 	@PostMapping("toggleFollow")
-	public Map<String, Object> toggleFollow(
-	        @RequestParam(name = "makerIdx") long makerIdx,
-	        @RequestParam(name = "num", required = false, defaultValue = "0") long num,
-	        HttpSession session,
-	        HttpServletResponse resp) {
+	public Map<String, Object> toggleFollow(@RequestParam(name = "makerIdx") long makerIdx,
+			@RequestParam(name = "num", required = false, defaultValue = "0") long num, HttpSession session,
+			HttpServletResponse resp) {
 
-	    Map<String, Object> model = new HashMap<>();
-	    String state = "true";
+		Map<String, Object> model = new HashMap<>();
 
-	    try {
-	        // 로그 추가
-	        log.info("toggleFollow - makerIdx: {}, num: {}", makerIdx, num);
-	        
-	        SessionInfo info = (SessionInfo) session.getAttribute("member");
-	        if (info == null) {
-	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	            model.put("message", "로그인이 필요한 서비스입니다.");
-	            return model;
-	        }
+		try {
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			if (info == null) {
+				return handleUnauthorized(resp, model);
+			}
 
-	        Map<String, Object> map = new HashMap<>();
-	        map.put("makerIdx", makerIdx);
-	        map.put("memberIdx", info.getMemberidx());
-	        map.put("num", num);
+			Map<String, Object> map = new HashMap<>();
+			map.put("makerIdx", makerIdx);
+			map.put("memberIdx", info.getMemberidx());
+			map.put("num", num);
 
-	        // 현재 팔로우 상태 확인
-	        int count = detailService.userFollowing(map);
+			int count = detailService.userFollowing(map);
+			boolean newFollowState;
 
-	        if (count > 0) { // 이미 팔로우 중이면
-	            detailService.deleteFollowing(map);
-	        } else {
-	            detailService.insertFollowing(map);
-	        }
+			if (count > 0) {
+				detailService.deleteFollowing(map);
+				newFollowState = false;
+			} else {
+				detailService.insertFollowing(map);
+				newFollowState = true;
+			}
 
-	        // 업데이트된 팔로워 수
-	        int followingCount = 0;
-	        if (num > 0) {
-	            Funding project = detailService.fundingProduct(num);
-	            followingCount = project != null ? project.getFollowingCount() : 0;
-	        }
+			int followingCount = 0;
+			if (num > 0) {
+				Funding project = detailService.fundingProduct(num);
+				followingCount = project != null ? project.getFollowingCount() : 0;
+			}
 
-	        model.put("state", state);
-	        model.put("followingCount", followingCount);
-	        model.put("isFollowing", count == 0);
+			model.put("state", "true");
+			model.put("followingCount", followingCount);
+			model.put("isFollowing", newFollowState);
 
-	    } catch (Exception e) {
-	        log.error("팔로우 처리 중 오류", e);
-	        state = "false";
-	        model.put("state", state);
-	        model.put("message", "서버 오류가 발생했습니다: " + e.getMessage());
-	    }
+		} catch (Exception e) {
+			log.error("팔로우 처리 중 오류", e);
+			model.put("state", "false");
+			model.put("message", "서버 오류가 발생했습니다: " + e.getMessage());
+		}
 
-	    return model;
+		return model;
 	}
 
 	@GetMapping("plan")
-	public String plan(Model model) {
+	public String plan() {
 		return "funding/contentPlan";
 	}
 
 	@GetMapping("review")
-	public String review(Model model) {
+	public String review() {
 		return "funding/contentReview";
 	}
-
 	
+	private Map<String, Object> handleUnauthorized(HttpServletResponse resp, Map<String, Object> model) {
+		resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		model.put("message", "로그인이 필요한 서비스입니다.");
+		return model;
+	}
+
 	// -------------------------------------------------------------------
 
-	
 	@GetMapping("{menu}")
 	public String fundingList(@PathVariable(name = "menu") String Menu,
 			@RequestParam(name = "kwd", defaultValue = "") String keyword, Model model, HttpSession session) {

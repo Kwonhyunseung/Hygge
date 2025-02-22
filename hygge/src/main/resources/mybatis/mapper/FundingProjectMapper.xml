@@ -32,8 +32,7 @@
 		JOIN MEMBERAUTHORITY ma ON ma.MEMBERIDX = pr.MEMBERIDX
 		JOIN member1 m ON m.memberidx = ma.MEMBERIDX
 		LEFT JOIN (
-			SELECT pd.num,
-			SUM(s.sum) AS total_amount -- sales 테이블의 sum 필드 사용
+			SELECT pd.num, SUM(s.sum) AS total_amount
 			FROM product pd
 			LEFT JOIN sales s ON pd.product_num = s.product_num
 			WHERE pd.num = #{num}
@@ -87,7 +86,7 @@
 	</select>
 	
 	
-	
+	<!-- 프로젝트 - 후기 -->
 	<select id="productReviews" parameterType="Long"
 		resultType="com.sp.app.model.Funding">
 		<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
@@ -102,12 +101,5 @@
 			WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
 			#{product_num}) -->
 	</select>
-
-
-
-	<!-- <select id="totalAmountProduct" parameterType="Long" resultType="Integer"> 
-		SELECT NVL(SUM(s.sum), 0) FROM Sales s JOIN Product p ON s.product_num = 
-		p.product_num WHERE p.product_num = #{product_num} </select> -->
-
 
 </mapper>
