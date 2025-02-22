@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectManager {
     private Long num;              // 프로젝트 ID
+    private Long mkboard_Num;      // 게시판 num
     private Long memberIdx;        // 회원 ID
     private String name;           // 회원 이름 (member1 테이블)
     private Date request_date;     // 신청 날짜
@@ -19,6 +20,7 @@ public class ProjectManager {
     private Integer business;      // 사업 여부 (1=사업, 0=개인)
     private Integer end_date;      // 프로젝트 종료 날짜
     private String content;        // 프로젝트 내용 (CLOB)
+    private String category;        // 게시글 카테고리 
     private Long target;           // 목표 금액
     private Integer term;          // 진행 기간 (일)
     private String thumbnail;      // 대표 이미지 경로

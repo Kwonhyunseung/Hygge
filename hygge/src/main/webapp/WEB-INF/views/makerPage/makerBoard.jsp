@@ -59,16 +59,6 @@
         line-height: 1.6;
         text-align: center;
     }
-    .custom-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #ff7f50;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 14px;
-        text-align: center;
-    }
     .custom-like-section {
         text-align: center;
         margin-top: 15px;
@@ -90,96 +80,29 @@
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    /* 1대1문의 버튼 스타일 */
-    .inquiry-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 9999;
-    }
-    .inquiry-btn {
-        background: #ff7f50;
-        color: white;
-        padding: 12px 20px;
-        text-decoration: none;
-        border-radius: 21px;
-        font-size: 17px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        font-weight: bold;
-    }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // 기존 좋아요 토글 함수 (필요 시 jQuery AJAX 코드와 별도로 사용)
-    function toggleLike(button) {
-        var likeCount = button.querySelector(".like-count");
-        var count = parseInt(likeCount.innerText);
-        if (button.classList.contains("liked")) {
-            button.classList.remove("liked");
-            likeCount.innerText = count - 1;
-        } else {
-            button.classList.add("liked");
-            likeCount.innerText = count + 1;
-        }
-    }
-    
-    // jQuery를 사용한 좋아요 AJAX 처리 코드
     $(function(){
-        let isLiked = $('.custom-like-btn').hasClass('active');  // 초기 좋아요 상태 저장
         $('.custom-like-btn').click(function(e){
             e.preventDefault();
             const $btn = $(this);
-            // <i> 요소가 있다면 선택, 없다면 빈 객체
-            const $i = $btn.find('i');
-            // 버튼에 data-num 속성이 있어야 함 (게시글 번호)
+            const $likeCount = $btn.find(".like-count");
             const num = $btn.data('num');
-            let msg;
-            
-            if($btn.hasClass('active')) {
-                msg = '좋아요를 취소하시겠습니까?';
-            } else {
-                msg = '이 프로젝트를 좋아요 하시겠습니까?';
-            }
-    
-            if(!confirm(msg)) {
-                return false;
-            }
-    
             let url = '/makerPage/boardLike';
             let params = {
-            		mkboard_Num : num,
+                mkboard_Num: num,
                 userLiked: $btn.hasClass('active')
             };
-    
             $.ajax({
                 type: 'post',
                 url: url,
                 data: params,
                 dataType: 'json',
                 success: function(data) {
-                    if(data.message) {
-                        alert(data.message);
-                        if(data.message === '로그인이 필요한 서비스입니다.') {
-                            location.href = '/member/login';
-                        }
-                        return;
-                    }
-    
                     if(data.state === "true") {
-                        if(data.isLiked) {
-                            if($i.length){
-                                $i.removeClass('bi-suit-heart').addClass('bi-suit-heart-fill');
-                            }
-                            $btn.addClass('active');
-                        } else {
-                            if($i.length){
-                                $i.removeClass('bi-suit-heart-fill').addClass('bi-suit-heart');
-                            }
-                            $btn.removeClass('active');
-                        }
-                        $('.like-count').text(data.likeCount);
-                        
-                        // 좋아요 상태 업데이트
-                        isLiked = data.isLiked;
+                        $btn.toggleClass('active');
+                        $likeCount.text(data.likeCount);
                     } else {
                         alert('서버 오류가 발생했습니다.');
                     }
@@ -202,11 +125,9 @@
 <header>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </header>
-
 <main>
    <div class="custom-board-container">
     <c:if test="${not empty listBoard}">
-        <!-- 게시판 헤더는 리스트의 첫 번째 항목의 이름으로 표시 -->
         <div class="custom-board-header">${listBoard[0].name}님의 게시판</div>
     </c:if>
     <div class="custom-board-posts">
@@ -229,15 +150,9 @@
     </div>
 </div>
 </main>
-
 <footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 </footer>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
-
-<div class="inquiry-button">
-    <a href="#" class="inquiry-btn">1대1문의</a>
-</div>
-
 </body>
 </html>
