@@ -15,5 +15,8 @@ public interface NoticeManageService {
     public NoticeManage findByPrev(Map<String, Object> map);
     public NoticeManage findByNext(Map<String, Object> map);
     public List<NoticeManage> listNoticeFile(long num);
+    public void updateNotice(NoticeManage dto, String pathname);
+    public void deleteNoticeFile(long num, String pathname) throws Exception;
+    public void deleteNotice(long num, String pathname) throws Exception;
     
 }

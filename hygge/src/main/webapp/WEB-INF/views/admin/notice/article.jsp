@@ -34,15 +34,19 @@
                         </tr>
                         <tr>
                             <td class="writer">작성자: ${dto.name}</td>
-                            <td class="date">작성일: ${dto.regDate}</td>
+                            <td class="date"><fmt:formatDate value="${dto.regDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         </tr>
                         <tr>
                             <td class="content" colspan="2">
                                 ${dto.content}
+						        <c:if test="${not empty files}">
+						            <c:forEach var="file" items="${files}">
+						                    <img alt="" src="/uploads/notice/${file.s_FileName}">
+						            </c:forEach>
+						        </c:if>                                
                             </td>
                         </tr>
                         
-                        <img src="/uploads/notice/스크린샷 2025-01-21 152649.png" alt="공지사항 이미지">
                         
                         <c:if test="${not empty files}">
                             <tr>

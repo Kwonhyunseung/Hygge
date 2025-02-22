@@ -3,6 +3,7 @@ package com.sp.app.admin.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class NoticeManage {
     private long num;
     private String title;
     private String content;
+    
     private Date regDate;
     private long memberIdx;
     

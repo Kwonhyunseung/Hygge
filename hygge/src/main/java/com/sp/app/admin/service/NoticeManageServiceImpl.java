@@ -86,4 +86,94 @@ public class NoticeManageServiceImpl implements NoticeManageService{
 		return mapper.listNoticeFile(num);
 	}
 
+    @Override
+    public void updateNotice(NoticeManage dto, String pathname) {
+    	
+        try {
+            // 게시글 내용 수정
+            mapper.updateNotice(dto);
+            
+            // 파일 업로드가 있는 경우에만 처리
+            if(dto.getAttachFiles() != null) {
+                // 기존 파일 정보 가져오기
+                List<NoticeManage> fileList = listNoticeFile(dto.getNum());
+                
+                // 디렉토리가 없으면 생성
+                fileManager.createAllDirectories(pathname);
+                
+                // 기존 파일 삭제
+                for(NoticeManage vo : fileList) {
+                    // 실제 파일 삭제
+                    fileManager.deletePath(pathname + File.separator + vo.getS_FileName());
+                    // DB에서 파일 정보 삭제
+                    mapper.deleteNoticeFile(vo.getNum());
+                }
+                
+                // 새로운 파일 업로드
+                for(MultipartFile file : dto.getAttachFiles()) {
+                    if(file.isEmpty()) {
+                        continue;
+                    }
+                    
+                    // 원본 파일명
+                    String originalFilename = file.getOriginalFilename();
+                    // 파일 확장자
+                    String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                    // 서버에 저장할 새로운 파일명
+                    String saveFilename = fileManager.generateUniqueFileName(pathname, extension);
+                    
+                    // 파일 업로드
+                    File dest = new File(pathname, saveFilename);
+                    file.transferTo(dest);
+                    
+                    dto.setNoticeNum(dto.getNum());
+                    dto.setS_FileName(saveFilename);
+                    mapper.insertNoticeFile(dto);
+                }
+            }
+            
+        } catch(Exception e) {
+            log.info("updateNotice : ", e);
+        }
+    }
+
+	@Override
+	public void deleteNoticeFile(long num, String pathname) throws Exception {
+	    try {
+	        NoticeManage dto = mapper.findById(num);
+	        if(dto == null) {
+	            return;
+	        }
+	        
+	        List<NoticeManage> listFile = listNoticeFile(num);
+	        
+	        for(NoticeManage vo : listFile) {
+	            fileManager.deletePath(pathname + File.separator + vo.getS_FileName());
+	            
+	            mapper.deleteNoticeFile(vo.getNum());
+	        }
+	        
+	    } catch(Exception e) {
+	        log.error("deleteNoticeFile error", e);
+	        throw e;
+	    }		
+	}
+	@Override
+	public void deleteNotice(long num, String pathname) throws Exception {
+	    try {
+	        List<NoticeManage> fileList = listNoticeFile(num);
+	        
+	        for(NoticeManage vo : fileList) {
+	            fileManager.deletePath(pathname + File.separator + vo.getS_FileName());
+	        }
+	        
+	        mapper.deleteAllNoticeFiles(num);
+	        
+	        mapper.deleteNotice(num);
+	        
+	    } catch(Exception e) {
+	        log.error("deleteNotice error", e);
+	        throw e;
+	    }
+	}
 }

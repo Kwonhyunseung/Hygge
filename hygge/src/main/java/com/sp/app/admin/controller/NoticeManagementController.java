@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -126,8 +127,6 @@ public class NoticeManagementController {
 	            }
 			dto.setMemberIdx(info.getMemberidx());
 			
-           
-			
 			service.insertNotice(dto, uploadPath);
 			
 		} catch (Exception e) {
@@ -181,5 +180,73 @@ public class NoticeManagementController {
 		}
 	}
 	
+	@GetMapping("update")
+	public String updateForm(
+	        @RequestParam(name = "num") long num,
+	        @RequestParam(name = "page", defaultValue = "1") String page,
+	        HttpSession session,
+	        Model model) throws Exception {
+	    
+	    try {
+	        NoticeManage dto = service.findById(num);
+	        if(dto == null) {
+	            return "redirect:/admin/notice/list?page=" + page;
+	        }
+	        
+	        // 파일 리스트
+	        List<NoticeManage> files = service.listNoticeFile(num);
+	        
+	        model.addAttribute("dto", dto);
+	        model.addAttribute("files", files);
+	        model.addAttribute("page", page);
+	        model.addAttribute("mode", "update");
+	        
+	    } catch (Exception e) {
+	        log.info("updateForm : ", e);
+	    }
+	    
+	    return "admin/notice/write";
+	}
+
+	@PostMapping("update")
+	public String updateSubmit(
+	        NoticeManage dto,
+	        @RequestParam(name = "page", defaultValue = "1") String page,
+	        HttpSession session) throws Exception {
+	    
+	    try {
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if(info == null) {
+	            return "redirect:/member/login";
+	        }
+	        
+	        service.updateNotice(dto, uploadPath);
+	        
+	    } catch (Exception e) {
+	        log.info("updateSubmit : ", e);
+	    }
+	    
+	    return "redirect:/admin/notice/list?page=" + page;
+	}
 	
+	@GetMapping("delete")
+	public String delete(
+	        @RequestParam(name = "num") long num,
+	        @RequestParam(name = "page") String page,
+	        HttpSession session) throws Exception {
+	    
+	    try {
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if(info == null) {
+	            return "redirect:/member/login";
+	        }
+	        
+	        service.deleteNotice(num, uploadPath);
+	        
+	    } catch (Exception e) {
+	        log.info("delete : ", e);
+	    }
+	    
+	    return "redirect:/admin/notice/list?page=" + page;
+	}
 }

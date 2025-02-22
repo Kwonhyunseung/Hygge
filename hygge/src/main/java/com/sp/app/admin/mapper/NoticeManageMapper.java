@@ -20,5 +20,8 @@ public interface NoticeManageMapper {
     public NoticeManage findByPrev(Map<String, Object> map);
     public NoticeManage findByNext(Map<String, Object> map);
     public List<NoticeManage> listNoticeFile(long num);
-    // public void updateHitCount(long num);
+    public void updateNotice(NoticeManage dto) throws SQLException;
+    public void deleteNoticeFile(long num) throws SQLException;
+    public void deleteNotice(long num) throws SQLException;
+    public void deleteAllNoticeFiles(long num) throws SQLException;
 }

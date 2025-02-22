@@ -12,11 +12,11 @@
 
     <insert id="insertNoticeFile" parameterType="com.sp.app.admin.model.NoticeManage">
         INSERT INTO NoticeFile(num, notice_num, s_FileName)
-        VALUES (Notice_File_seq.NEXTVAL, #{num}, #{sFileName})
+        VALUES (Notice_File_seq.NEXTVAL, #{num}, #{s_FileName})
     </insert>
 
     <select id="listNotice" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
-        SELECT n.num, n.title, n.reg_date,
+        SELECT n.num, n.title, n.reg_date AS regDate,
             m.name, NVL(fileCount, 0) fileCount
         FROM notice n
         JOIN member1 m ON n.memberIdx = m.memberIdx
@@ -68,7 +68,7 @@
     </select>
     
 <select id="findById" parameterType="Long" resultType="com.sp.app.admin.model.NoticeManage">
-    SELECT n.num, n.title, n.content, n.reg_date, n.memberIdx,
+    SELECT n.num, n.title, n.content,n.reg_date AS regDate, n.memberIdx,
            m.name
     FROM notice n
     JOIN member1 m ON n.memberIdx = m.memberIdx
@@ -96,4 +96,22 @@
     FROM noticeFile
     WHERE notice_num = #{num}
 </select>
+
+<update id="updateNotice" parameterType="com.sp.app.admin.model.NoticeManage">
+    UPDATE notice SET title=#{title}, content=#{content}
+    WHERE num=#{num}
+</update>
+
+<delete id="deleteNoticeFile" parameterType="Long">
+    DELETE FROM noticeFile 
+    WHERE num = #{num}
+</delete>
+
+<delete id="deleteNotice" parameterType="Long">
+    DELETE FROM notice WHERE num = #{num}
+</delete>
+
+<delete id="deleteAllNoticeFiles" parameterType="Long">
+    DELETE FROM noticeFile WHERE notice_num = #{num}
+</delete>
 </mapper>
