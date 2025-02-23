@@ -42,12 +42,16 @@ public class FundingController {
 	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
 		try {
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			boolean isUserLiked = false;
+			boolean isUserFollow = false;
+
 			// 프로젝트 상세 정보 조회
 			Funding project = detailService.fundingProduct(num);
 			log.info("memberIdx: {}", project.getMemberIdx());
 
 			// 펀딩 정보 계산
-			calculateProjectMetrics(project);
+			calculateProject(project);
 
 			// 제품 목록 조회
 			Map<String, Object> map = new HashMap<>();
@@ -56,11 +60,6 @@ public class FundingController {
 
 			// 좋아요 수 조회
 			int likeCount = detailService.projectLikeCount(num);
-
-			// 세션 정보 확인 및 사용자 상태 설정
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			boolean isUserLiked = false;
-			boolean isUserFollow = false;
 
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
@@ -89,14 +88,25 @@ public class FundingController {
 	}
 	
 	// 계산
-	private void calculateProjectMetrics(Funding project) {
-		// 펀딩 달성률
-		double fundingGoal = (double) project.getTotal_amount() / project.getTarget() * 100;
-		project.setFunding_goal(String.format("%.0f", fundingGoal)); // 소수점 없이 반올림
+	private void calculateProject(Funding project) {
+	    // 펀딩 달성률
+	    double fundingGoal = (double) project.getTotal_amount() / project.getTarget() * 100;
+	    project.setFunding_goal(String.format("%.0f", fundingGoal)); // 소수점 없이 반올림
 
-		// 남은 기간과 결제일
-		project.setRemained_date(calDiffDate(project.getEnd_date()));
-		project.setPayment_date(payOneDay(project.getEnd_date()));
+	    try {
+	    	LocalDate inputDate = parseDate(project.getEnd_date());
+
+	    	// 남은 기간 계산
+	        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
+	        project.setRemained_date(String.valueOf(Math.max(0, daysBetween))); // 음수 방지
+
+	        // 결제일 계산
+	        project.setPayment_date(inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+	    } catch (Exception e) {
+	        // 에러시 기본값
+	        project.setRemained_date("0");
+	        project.setPayment_date(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+	    }
 	}
 
 	// 날짜 파싱
@@ -137,27 +147,6 @@ public class FundingController {
 			return LocalDate.now();
 		} catch (Exception e) {
 			return LocalDate.now();
-		}
-	}
-
-	// 남은 일수
-	public static String calDiffDate(String dateString) {
-		try {
-			LocalDate inputDate = parseDate(dateString);
-			long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), inputDate);
-			return String.valueOf(Math.max(0, daysBetween)); // 음수 방지
-		} catch (Exception e) {
-			return "0";
-		}
-	}
-
-	// 결제일
-	public static String payOneDay(String dateString) {
-		try {
-			LocalDate inputDate = parseDate(dateString);
-			return inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-		} catch (Exception e) {
-			return LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
 		}
 	}
 
