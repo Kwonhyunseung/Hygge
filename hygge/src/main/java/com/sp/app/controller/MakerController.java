@@ -82,22 +82,11 @@ public class MakerController {
 	@GetMapping("projectSubmit2")
 	public String projectForm2(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
 		try {
-			System.out.println(dto.getThumbnail_File() == null);
+			
 		} catch (Exception e) {
 			log.info("projectForm2 : ", e);
 		}
 		return "makerPage/submit2";
-	}
-
-	@ResponseBody
-	@PostMapping("addProduct")
-	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto) {
-		Map<String, Object> model = new HashMap<>();
-		try {
-		} catch (Exception e) {
-			log.info("addProduct : ", e);
-		}
-		return model;
 	}
 
 	@PostMapping("projectSubmit2")
@@ -110,6 +99,17 @@ public class MakerController {
 			log.info("projectSubmit2 : ", e);
 		}
 		return "redirect:/makerPage/projectSubmit3";
+	}
+	
+	@ResponseBody
+	@PostMapping("addProduct")
+	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto) {
+		Map<String, Object> model = new HashMap<>();
+		try {
+		} catch (Exception e) {
+			log.info("addProduct : ", e);
+		}
+		return model;
 	}
 
 	@GetMapping("projectSubmit3")

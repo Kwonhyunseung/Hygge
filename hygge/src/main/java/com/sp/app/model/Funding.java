@@ -24,6 +24,7 @@ public class Funding {
 	private int target;
 	private int term;
 	private String thumbnail;
+	private int parent_num;
 	private int category_num;
 
 	private String start_date;

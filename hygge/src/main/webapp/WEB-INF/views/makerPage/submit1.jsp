@@ -64,7 +64,7 @@
             </div>
 
             <div class="form-section">
-                <h2 class="section-title">대표 사진<span class="required">*</span></h2>
+                <h2 class="section-title">썸네일 등록<span class="required">*</span></h2>
                 <input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail}">
             </div>
 
@@ -74,7 +74,7 @@
                 <div style="padding: 5px 0px; display: flex; flex-direction: row;">
 	                <input type="checkbox" name="isBusiness" style="padding: 5px;" ${funding.business == 1 ? 'checked' : ''}><span style="margin-left: 5px; margin-bottom: 0px;" class="section-title">사업자 등록이 되어있으신가요?</span>
                 </div>
-                <input type="file" name="business_File" class="input-field" value="${funding.business_File}" style="display: none;">
+	            <input type="file" name="business_File" class="input-field" value="${funding.business_File}" style="display: none;">
                 <div class="button-container">
                     <button type="button" class="submit-button" onclick="sendNext();">다음</button>
                 </div>

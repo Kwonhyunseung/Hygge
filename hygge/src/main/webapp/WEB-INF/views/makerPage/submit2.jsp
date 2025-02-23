@@ -234,11 +234,12 @@ textarea.form-input {
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/nav-item.jsp"/>
 
 
+<form name="submit2" method="post">
 <div class="form-container">
 	<div class="form-section">
 		<h2>프로젝트 카테고리</h2>
 		<p>프로젝트의 성격과 가장 일치하는 카테고리를 선택해주세요.</p>
-		<select class="parent-category">
+		<select class="parent_num" name="parent_num">
 			<option value="1">가전</option>
 			<option value="2">패션</option>
 			<option value="3">뷰티</option>
@@ -250,7 +251,7 @@ textarea.form-input {
 			<option value="9">반려동물</option>
 		</select>
 		<div>세부 카테고리</div>
-		<select class="child-category">
+		<select class="category_num" name="category_num">
 			<option>대분류를 선택해주세요.</option>
 		</select>
 	</div>
@@ -262,24 +263,24 @@ textarea.form-input {
 	</div>
 	
 	<div class="form-section">
-		<h2>프로젝트 대표 이미지</h2>
-		<p>서포터들이 프로젝트의 내용을 쉽게 이해할 수 있도록 프로젝트 대표 이미지를 등록해주세요.</p>
+		<h2>프로젝트 요약 이미지</h2>
+		<p>서포터들이 프로젝트의 내용을 쉽게 이해할 수 있도록 프로젝트 요약 이미지들을 등록해주세요.</p>
 		<div class="radio-container">
-			<input type="radio" id="option1" name="image-type">
-			<label for="option1">이미지 업로드</label>
+			<input type="file" name="photoFiles" multiple>
 		</div>
-	</div>
-	
-	<div class="form-section">
-		<h2>프로젝트 소개</h2>
-		<p>프로젝트를 간단히 소개하는 글을 작성해주세요.</p>
-		<textarea class="form-input" placeholder="프로젝트 소개를 입력해주세요" style="resize: none;"></textarea>
 	</div>
 	
 	<div class="form-section">
 		<h2>프로젝트 요약</h2>
 		<p>소개 영상이나 사진과 함께 보이는 글이에요. 프로젝트를 쉽고 간결하게 소개해 주세요.</p>
-		<textarea class="form-input" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+		<textarea class="form-input" placeholder="내용을 입력해주세요." style="resize: none;" name="project_info"></textarea>
+	</div>
+	
+	<div class="form-section">
+		<h2>배송 일정</h2>
+		<p>프로젝트가 성공적으로 완료된 후, 진행될 배송일정에 대해 간단히 적어주세요.</p>
+		<input type="checkbox" name="isDelivery" id="checkbox1"><label style="margin-left: 5px;" for="checkbox1">배송이 필요한 상품입니다.</label>
+		<input type="text" class="form-input" placeholder="배송일정을 적어주세요" style="display: none;" name="delivery_info">
 	</div>
 	
 	<div class="tip-section">
@@ -305,37 +306,51 @@ textarea.form-input {
 		<button type="button" class="next-button" onclick="sendNext();">다음</button>
 	</div>
 </div>
+</form>
 
 <script type="text/javascript">
 $(function() {
-	let value = $('.parent-category option:selected').val();
+	let value = $('.parent_num option:selected').val();
 	loadCategory(value);
-	$('.parent-category').change(function() {
-		let value = $('.parent-category option:selected').val();
+	$('.parent_num').change(function() {
+		let value = $('.parent_num option:selected').val();
 		let url = '${pageContext.request.contextPath}/makerPage/categories';
-		let childcategory = $('.child-category');
+		let childcategory = $('.category_num');
 		const fn = function(data) {
 			let list = data.categories;
 			let out = '';
 			for (let category of list) {
 				let category_num = category.category_num;
 				let name = category.name;
-				out = '<option value="' + category_num + '">' + name + '</option>';
+				out += '<option value="' + category_num + '">' + name + '</option>';
 			}
 			childcategory.html(out);
 		};
 		ajaxRequest(url, 'get', {num: value}, 'json', fn);
 	});
+	// 배송일정 작성
+	$('input[name="isDelivery"]').change(function() {
+		if ($(this).is(':checked')) {
+			$('input[name="delivery_info"]').slideDown(200);
+		} else {
+			$('input[name="delivery_info"]').slideUp(200);
+		}
+	});
 });
 
 function addCategory(data) {
+	let categoryNum = '${funding.category_num}';
 	let categories = data.categories;
-	let childcategory = $('.child-category');
+	let childcategory = $('.category_num');
 	let out = '';
 	for (let category of categories) {
 		let category_num = category.category_num;
 		let name = category.name;
-		out += '<option value="' + category_num + '">' + name + '</option>';
+		if (category_num = categoryNum) {
+			out += '<option value="' + category_num + '" selected>' + name + '</option>';
+		} else {
+			out += '<option value="' + category_num + '">' + name + '</option>';
+		}
 	}
 	childcategory.html(out);
 }
@@ -346,6 +361,13 @@ function loadCategory(num) {
 		addCategory(data);
 	};
 	ajaxRequest(url, 'get', {num: num}, 'json', fn);
+}
+
+// 제출 버튼(다음 단계)
+function sendNext() {
+	const f = document.submit2;
+	f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit2';
+	f.submit();
 }
 </script>
 </body>
