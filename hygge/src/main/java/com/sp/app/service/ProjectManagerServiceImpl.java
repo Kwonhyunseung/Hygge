@@ -66,4 +66,56 @@ public class ProjectManagerServiceImpl implements ProjectManagerService{
 		return dto;
 	}
 
+
+
+	@Override
+	public List<ProjectManager> listBoard(Map<String, Object> map) {
+		List<ProjectManager> list = null;
+		
+		try {
+			list = mapper.listBoard(map);
+		} catch (Exception e) {
+			log.error("리스트 조회 실패 : " , e);
+		}	
+		return list;	
+	}
+
+
+
+	@Override
+	public int b_dataCount(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = mapper.b_dataCount(map);
+		} catch (Exception e) {
+			log.error("dataCount : " , e);
+		}
+		
+		return result;
+	}
+
+
+
+	@Override
+	public void insertBoard(ProjectManager dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void updateBoard(ProjectManager dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void deleteBoard(ProjectManager dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

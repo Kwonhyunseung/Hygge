@@ -305,14 +305,15 @@
         <div class="tab-content" id="board">
             <div class="filter-buttons" id="board-filter-buttons">
                 <button class="active" data-filter="all">전체</button>
-                <button data-filter="#">카테고리1</button>
-                <button data-filter="#2">카테고리2</button>
+                <button data-filter="패션">패션</button>
+                <button data-filter="뷰티">뷰티</button>
+                <button data-filter="가전">가전</button>
                 <button data-filter="0">기타</button>
             </div>
 
             <div class="board-list">
-                <c:forEach var="board" items="${listBoard}">
-                    <div class="project-card board-card" data-category="${board.category}">
+                <c:forEach var="board" items="${listboard}">
+                    <div class="project-card board-card" data-category="${board.b_category}">
                         <div class="top-section">
                             <span>게시판</span>
                             <c:choose>
@@ -320,13 +321,13 @@
                                     <p>대표 이미지 등록 필요</p>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="${pageContext.request.contextPath}/uploads/board/${board.thumbnail}" alt="썸네일 이미지" style="max-width: 100%; height: auto;" />
+                                    <img src="${pageContext.request.contextPath}/uploads/project/perfume_1.jpg" alt="썸네일 이미지" style="max-width: 100%; height: auto;" />
                                 </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="middle-section">
-                            <p>${board.title}</p>
-                            <p class="status">${board.category}</p>
+                            <p>${board.b_title}</p>
+                            <p class="status">${board.b_category}</p>
                         </div>
                         <div class="bottom-section">
                             <button onclick="location.href='#'">게시글 보기</button>

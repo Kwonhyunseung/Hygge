@@ -39,7 +39,13 @@
 			</if>
 		</where>
 	</select>
-
+	
+	<select id="b_dataCount" parameterType="map" resultType="Integer">
+    SELECT COUNT(DISTINCT b.mkboard_Num)
+    FROM MakerBoard b
+    WHERE b.MAKERIDX = #{makerIdx, jdbcType=NUMERIC}
+</select>
+	
 	<update id="approveProject" parameterType="Long">
 		UPDATE ProjectRequest SET
 		accept_return = 1,
@@ -54,5 +60,21 @@
 		accept_date = SYSDATE
 		WHERE num = #{num}
 	</update>
-
+<select id="listBoard" parameterType="map"
+	resultType="com.sp.app.model.ProjectManager">
+   SELECT 
+        b.mkboard_Num,
+        MAX(b.TITLE) AS b_title,
+        MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS b_content,
+        MAX(b.CATEGORY) AS b_CATEGORY,
+        MAX(b.MAKERIDX) AS MAKERIDX,
+        MAX(maker.makername) AS b_name,
+        NVL(COUNT(l.MEMBERIDX), 0) AS likeCount
+    FROM MakerBoard b
+    LEFT JOIN MakerBoardLike l ON b.mkboard_Num = l.mkboard_Num
+    LEFT JOIN Maker maker ON b.MAKERIDX = maker.memberIdx
+    WHERE b.MAKERIDX = #{memberIdx, jdbcType=NUMERIC}
+    GROUP BY b.mkboard_Num
+    ORDER BY b.mkboard_Num DESC
+</select>
 </mapper>

@@ -34,7 +34,8 @@ public class ProjectManagerController {
 	private final ProjectManagerService service;
    
 	@Autowired
-    private final PaginateUtil paginateUtil;
+    private final PaginateUtil paginateUtil;	
+	
 	
 	@GetMapping("projectManager")
 	public String projectManager(Model model,
@@ -60,8 +61,11 @@ public class ProjectManagerController {
 	         map.put("schType", schType);
 	         map.put("kwd", kwd);
 	         map.put("memberIdx", info.getMemberidx());
+	         map.put("makeridx", info.getMemberidx());
+	         
 	         
 	         dataCount = service.dataCount(map);
+	         dataCount = service.b_dataCount(map);
 	         total_page = paginateUtil.pageCount(dataCount, size);
 	         current_page = Math.min(current_page, total_page);
 	         
@@ -74,6 +78,7 @@ public class ProjectManagerController {
 	         
 	         
 	         List<ProjectManager> listProject = service.listProject(map);
+	         List<ProjectManager> listboard = service.listBoard(map);
 	         String cp = req.getContextPath();
 	         String query = "";
 	         String listUrl = cp + "/makerPage/projectManager";
@@ -88,6 +93,7 @@ public class ProjectManagerController {
 	            System.out.println(dataCount+", "+current_page+", "+size);
 	            // 모델에 데이터 담기 (목록은 qnaList, 상세 링크는 articleUrl 등)
 	            model.addAttribute("listProject", listProject);
+	            model.addAttribute("listboard", listboard);
 	            //model.addAttribute("articleUrl", articleUrl);
 	            model.addAttribute("page", current_page);
 	            model.addAttribute("dataCount", dataCount);

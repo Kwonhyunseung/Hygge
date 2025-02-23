@@ -13,4 +13,12 @@ public interface ProjectManagerMapper {
 	public ProjectManager findById(String id) throws SQLException;
 	public int dataCount(Map<String, Object> map);
 	List<ProjectManager> listProject(Map<String, Object> map); 
+	
+	public List<ProjectManager> listBoard(Map<String, Object> map);
+
+	public void insertBoard(ProjectManager dto) throws SQLException;
+	public void updateBoard(ProjectManager dto) throws SQLException;
+	public void deleteBoard(ProjectManager dto) throws SQLException;
+	
+	public int b_dataCount(Map<String, Object> map);
 }

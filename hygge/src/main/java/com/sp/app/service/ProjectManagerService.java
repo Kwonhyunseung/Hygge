@@ -11,4 +11,11 @@ public interface ProjectManagerService {
 	
 	public int dataCount(Map<String, Object> map);
 	public ProjectManager findById(String id) throws SQLException;
+	
+	public List<ProjectManager> listBoard(Map<String, Object> map);
+	public int b_dataCount(Map<String, Object> map);
+	
+	public void insertBoard(ProjectManager dto) throws SQLException;
+	public void updateBoard(ProjectManager dto) throws SQLException;
+	public void deleteBoard(ProjectManager dto) throws SQLException;
 }
