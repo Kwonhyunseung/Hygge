@@ -41,6 +41,8 @@ public class FundingController {
 
 	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		
 		try {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
 			boolean isUserLiked = false;
@@ -54,7 +56,6 @@ public class FundingController {
 			calculateProject(project);
 
 			// 제품 목록 조회
-			Map<String, Object> map = new HashMap<>();
 			map.put("num", num);
 			List<Product> productList = detailService.detailProduct(map);
 

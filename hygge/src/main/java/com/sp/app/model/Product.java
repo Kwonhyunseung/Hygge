@@ -18,4 +18,8 @@ public class Product {
 	
 	// Payment
 	private int total_amount;
+	
+	// TODO 결제 때문에 추가
+	private String delivery_info; //배송정보
+	private int shipping_fee; //배송비
 }

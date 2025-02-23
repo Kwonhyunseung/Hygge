@@ -2,8 +2,30 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.BuyMapper">
-	<select id="">
+
+	<!-- 결제창 상품리스트 : 가격, 상품명, 상세정보, 원산지, 배송일정, 배송비 -->
+	<select id="productList" parameterType="map" resultType="com.sp.app.model.Product">
+		SELECT DISTINCT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
+		    pr.delivery_info, 
+		    pm.shipping_fee
+	    FROM product p
+	    JOIN projectRequest pr ON p.num = pr.num
+	    LEFT JOIN sales s ON p.product_num = s.product_num
+	    LEFT JOIN payment pm ON s.payment_num = pm.payment_num
+	    WHERE p.num = #{num}
+	</select>
 	
+	<!-- 결제창 상품선택 -->
+	<select id="findByProductNum" parameterType="long" resultType="com.sp.app.model.Product">
+		SELECT DISTINCT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
+			pr.delivery_info, 
+		    pm.shipping_fee,
+		    s.amount, s.sum
+		FROM product p
+		JOIN projectRequest pr ON p.num = pr.num
+	    LEFT JOIN sales s ON p.product_num = s.product_num
+	    LEFT JOIN payment pm ON s.payment_num = pm.payment_num
+		WHERE p.product_num = #{product_num}
 	</select>
 	
 	

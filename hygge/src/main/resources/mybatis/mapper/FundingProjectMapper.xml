@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.FundingProjectMapper">
 
-	<!-- 프로젝트 상세화면 - 상단메인정보 -->
+	<!-- 프로젝트 상세화면 - 전반적인 메인 정보들 -->
 	<select id="fundingProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
 		<!-- SELECT DISTINCT p.num, c.name, m.block, pr.title, pr.target, pr.term, 
 			pr.thumbnail, pr.delivery_info, m.nickname, TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') 
@@ -79,11 +79,13 @@
 	    DELETE FROM Follow WHERE following=#{makerIdx} AND follower=#{memberIdx}
 	</delete>
 	
+	<!-- 사용자가 메이커를 팔로우 중인지 -->
 	<select id="userFollowing" parameterType="map" resultType="int">
 	    SELECT NVL(COUNT(*), 0)
 	    FROM Follow
 	    WHERE following=#{makerIdx} AND follower=#{memberIdx}
 	</select>
+	
 	
 	
 	<!-- 프로젝트 - 후기 -->
