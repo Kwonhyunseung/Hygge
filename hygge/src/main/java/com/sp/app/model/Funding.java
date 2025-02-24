@@ -43,7 +43,12 @@ public class Funding {
 
 	private MultipartFile thumbnail_File;
 	private MultipartFile business_File;
-	
+	private List<MultipartFile> photoFiles;
+
+	private long photo_num;
+	private String sfileName; // ProjectPhoto 에 들어갈 서버에 저장된 파일 이름
+	private int photo_order;
+
 	//TODO 메이커 소개
 	private int followingCount; //팔로우 수
 	private String nickname;

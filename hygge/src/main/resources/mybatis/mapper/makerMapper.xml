@@ -16,4 +16,9 @@
 		INSERT INTO ProjectRequest (num, memberIdx, request_date, title, business, content, target, term, thumbnail, category_num, project_info, delivery_info, submit)
 			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{delivery_info}, 0)
 	</insert>
+
+	<insert id="insertProjectPhoto" parameterType="com.sp.app.model.Funding">
+		INSERT INTO ProjectPhoto(photo_num, s_FileName, photo_order, num2)
+			VALUES (#{project_photo_seq.NEXTVAL}, #{sfileName}, #{photo_order}, #{num})
+	</insert>
 </mapper>

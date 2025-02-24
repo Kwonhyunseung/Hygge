@@ -97,8 +97,12 @@ public class MakerController {
 	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus, HttpSession session) throws Exception {
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			if (info == null) {
+				model.addAttribute("msg", "로그인처리가 되지 않았습니다.");
+				return "redirect:/makerPage/projectSubmit2";
+			}
 			dto.setMemberIdx(info.getMemberidx());
-			service.insertTempProjectRequest(dto);
+			service.insertTempProjectRequest(dto, uploadPath);
 			model.addAttribute("msg", "임시 저장되었습니다.");
 			sessionStatus.setComplete();
 		} catch (Exception e) {
