@@ -63,30 +63,24 @@
 			VALUES (PAYMENT_SEQ.NEXTVAL, #{memberIdx}, #{total_amount}, #{pay_amount}, #{pay_way}, #{sort}, #{shipping_fee}, #{coupon}, SYSDATE, #{shipping_state})
 	</insert>
 	
-	
-<!-- // 서비스 임플 매퍼 메소드명 고쳐야함. Long으로 바뀜 -->
 	<!-- 사용 가능한 쿠폰 리스트 -->
-	<select id="couponList" parameterType="Long" resultType="com.sp.app.model.Coupon">
+	<select id="listCoupon" parameterType="Long" resultType="com.sp.app.model.Coupon">
 		<!-- 쿠폰명, 만기일, 할인율, 할인최대금액 -->
 		SELECT c.num, memberIdx, discount_rate, discount, title, exp_date
-    	FROM Coupon c
-    	JOIN Event e ON c.num = e.num
-    	WHERE memberIdx = #{memberIdx} AND used_date IS NULL
-    	ORDER BY used_date DESC
+		FROM Coupon c
+		JOIN Event e ON c.num = e.num
+		WHERE memberIdx = #{memberIdx} AND used_date IS NULL
+		ORDER BY exp_date DESC
 	</select>
 
-
-<!-- //서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜 -->
-	<update id="updateCoupon" parameterType="map">
-	    UPDATE coupon 
+	<update id="updateCoupon" parameterType="com.sp.app.model.Coupon">
+	    UPDATE Coupon
 	    SET USED_DATE = SYSDATE
 	    WHERE NUM = #{num} AND MEMBERIDX = #{memberIdx} AND USED_DATE IS NULL
 	</update>
 	
-	
-<!-- //서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜 -->
 	<!-- 판매 개수에 따른 재고 감소 -->
-	<update id="updateProductStock" parameterType="map">
+	<update id="updateStock" parameterType="com.sp.app.model.Product">
 	    UPDATE Product 
 	    SET stock = stock - #{amount}
 	    WHERE product_num = #{product_num}

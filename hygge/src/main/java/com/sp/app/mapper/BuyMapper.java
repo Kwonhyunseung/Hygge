@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sp.app.model.Coupon;
 import com.sp.app.model.DeliveryList;
-import com.sp.app.model.Event;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
 
@@ -23,11 +23,8 @@ public interface BuyMapper {
 	public void insertBuyDelivery(DeliveryList dto) throws SQLException;
 	public void insertBuyPayment(Payment dto) throws SQLException;
 	
-	//public List<Event> couponList(Map<String, Object> map);
-	public List<Event> listAvailableCoupons(Long memberIdx);
-	//public void updateCoupon(Event dto) throws SQLException;
-    public int updateCouponUsage(Map<String, Object> map) throws SQLException;
+	public List<Coupon> listCoupon(Long memberIdx);
+    public void updateCoupon(Coupon dto) throws SQLException;
     
-	//public void updateProductStock(Product dto) throws SQLException;
-    public int updateStock(Map<String, Object> map) throws SQLException;
+    public void updateStock(Product dto) throws SQLException;
 }
