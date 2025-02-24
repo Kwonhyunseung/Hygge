@@ -3,14 +3,20 @@ package com.sp.app.service;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sp.app.mapper.BuyMapper;
-import com.sp.app.model.Buy;
+import com.sp.app.model.DeliveryList;
+import com.sp.app.model.Event;
+import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
+import com.sp.app.model.Sales;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,41 +90,67 @@ public class BuyServiceImpl implements BuyService {
 	}
 
 	@Override
-	public void insertBuy(Buy dto) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void insertBuyCoupon(Buy dto) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void insertBuyDelivery(Buy dto) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateProductStock(Buy dto) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Buy findByBuyProduct(long payment_num) {
+	public Product buyProductAllInfo(long num) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Buy> listBuyProduct(List<Map<String, Long>> list) {
+	public void insertBuyDelivery(DeliveryList dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertBuyPayment(Payment dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Event> couponList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public void updateCoupon(Event dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateProductStock(Product dto) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		
+	}
+	/*
+	@Transactional
+	public boolean processPurchase(Sales sales) {
+	    // 1. 재고 확인
+	    Product product = productMapper.selectProduct(sales.getProduct_num());
+	    if (product.getStock() < sales.getAmount()) {
+	        throw new OutOfStockException("재고가 부족합니다");
+	    }
+	    
+	    // 2. 재고 업데이트
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("product_num", sales.getProduct_num());
+	    params.put("amount", sales.getAmount());
+	    
+	    int updated = productMapper.updateProductStock(params);
+	    if (updated == 0) {
+	        throw new ConcurrentModificationException("재고 업데이트에 실패했습니다");
+	    }
+	    
+	    // 3. 판매 정보 저장
+	    salesMapper.insertSales(sales);
+	    
+	    return true;
+	}
+	*/
+
 	
 	
 }

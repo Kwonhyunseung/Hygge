@@ -105,7 +105,7 @@
 			<div class="col paymentMethod">
 				<h4>결제 수단</h4>
 				<div>
-				    <input id="card" name="payMethod" type="radio" value="card">
+				    <input id="card" name="payMethod" type="radio" id="card" value="1">
 				    <label for="card">카드</label>
 				</div>
 				<!-- <div>

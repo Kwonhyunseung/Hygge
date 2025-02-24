@@ -16,8 +16,8 @@
 	</select>
 	
 	<!-- 결제창 상품선택 -->
-	<select id="findByProductNum" parameterType="long" resultType="com.sp.app.model.Product">
-		SELECT DISTINCT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
+	<select id="findByProductNum" parameterType="Long" resultType="com.sp.app.model.Product">
+		SELECT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
 			pr.delivery_info, 
 		    pm.shipping_fee,
 		    s.amount, s.sum
@@ -27,6 +27,70 @@
 	    LEFT JOIN payment pm ON s.payment_num = pm.payment_num
 		WHERE p.product_num = #{product_num}
 	</select>
+
 	
+	<!-- 결제창 - 상품선택시 결제를 위한 상품정보 가져오기. 상품정보(썸네일, 상품명, 상품구성, 구매수량, 결제금액) 서포터정보(이름, 이메일, 핸드폰번호) 배송지정보(받는사람=>유저, 주소1,2, 우편번호) -->
+	<select id="buyProductAllInfo" parameterType="Long" resultType="com.sp.app.model.Product">
+		SELECT p.product_num, p.title, p.detail, p.price,
+			pr.thumbnail,
+			s.amount, s.sum,
+			m.name,
+			m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1, m2.addr2, m2.postCode,
+			COALESCE(d.receiver, m.name) as receiver
+		FROM Product p
+		JOIN ProjectRequest pr ON p.num = pr.num
+		JOIN Sales s ON p.product_num = s.product_num
+		JOIN Member1 m ON pr.memberIdx = m.memberIdx
+		JOIN Member2 m2 ON m.memberIdx = m2.memberIdx
+		LEFT JOIN (
+	        SELECT * FROM DeliveryList 
+	        WHERE default_dest = 0
+	    ) d ON m.memberIdx = d.memberIdx
+		WHERE p.product_num = #{product_num}
+	</select>
+
+	<!-- 배송지 등록(신규 배송지일 경우) -->
+	<insert id="insertBuyDelivery" parameterType="com.sp.app.model.DeliveryList">
+		<!-- default_dest -> 기본:0, 나머지(신규, 등):1 -->
+		INSERT INTO DeliveryList (dest_num, memberIdx, addr1, addr2, postCode, receiver, default_dest, request)
+			VALUES (DELIVERY_SEQ.NEXTVAL, #{memberIdx}, #{addr1}, #{addr2}, #{postCode}, 1, #{request})
+	</insert>
+	
+	<!-- 결제내역 등록 -->
+	<insert id="insertBuyPayment" parameterType="com.sp.app.model.Payment">
+		<!-- pay_way -> 카드:1 -->
+		INSERT INTO Payment (payment_num, memberIdx, total_amount, pay_amount, pay_way, sort, shipping_fee, coupon, payment_date, shipping_state)
+			VALUES (PAYMENT_SEQ.NEXTVAL, #{memberIdx}, #{total_amount}, #{pay_amount}, #{pay_way}, #{sort}, #{shipping_fee}, #{coupon}, SYSDATE, #{shipping_state})
+	</insert>
+	
+	
+// 서비스 임플 매퍼 메소드명 고쳐야함. Long으로 바뀜
+	<!-- 사용 가능한 쿠폰 리스트 -->
+	<select id="couponList" parameterType="Long" resultType="com.sp.app.model.Coupon">
+		<!-- 쿠폰명, 만기일, 할인율, 할인최대금액 -->
+		SELECT c.num, memberIdx, discount_rate, discount, title, exp_date
+    	FROM Coupon c
+    	JOIN Event e ON c.num = e.num
+    	WHERE memberIdx = #{memberIdx} AND used_date IS NULL
+    	ORDER BY used_date DESC
+	</select>
+
+
+//서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜
+	<update id="updateCoupon" parameterType="map">
+	    UPDATE coupon 
+	    SET USED_DATE = SYSDATE
+	    WHERE NUM = #{num} AND MEMBERIDX = #{memberIdx} AND USED_DATE IS NULL
+	</update>
+	
+	
+//서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜
+	<!-- 판매 개수에 따른 재고 감소 -->
+	<update id="updateProductStock" parameterType="map">
+	    UPDATE Product 
+	    SET stock = stock - #{amount}
+	    WHERE product_num = #{product_num}
+	    AND stock >= #{amount}
+	</update>
 	
 </mapper>

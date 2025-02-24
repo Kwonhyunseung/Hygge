@@ -6,7 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.sp.app.model.Buy;
+import com.sp.app.model.DeliveryList;
+import com.sp.app.model.Event;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
 
@@ -17,17 +18,16 @@ public interface BuyMapper {
 	public Product findByProductNum(long num);
 	
 	// productChoice
-	public String findByMaxBuyNum();
+	public Product buyProductAllInfo(long num);
 	
-	public List<Buy> buyProductAllInfo(long num); // 상품정보(상품명, 상품구성, 구매수량, 결제금액) 서포터정보(이름, 이메일, 핸드폰번호) 배송지정보(받는사람=>유저, 주소1,2, 우편번호)
+	public void insertBuyDelivery(DeliveryList dto) throws SQLException;
+	public void insertBuyPayment(Payment dto) throws SQLException;
 	
-	public void insertBuy(Buy dto) throws SQLException; //주문 등록(구매상품명, 이름, 수량, 배송지, 결제금액)
-	public void insertBuyDetail() throws SQLException; //주문상세정보 등록
-	public void insertBuyDelivery(Buy dto) throws SQLException; //배송지 등록(신규 배송지일 경우)
-	public void insertBuyCoupon(Buy dto) throws SQLException; //쿠폰 등록
-	public void insertBuyPayment(Payment dto) throws SQLException; //결제내역 등록
-	
-	public void updateProductStock(Buy dto) throws SQLException;// 판매 개수에 따른 재고 감소
-	
-	
+	//public List<Event> couponList(Map<String, Object> map);
+	public List<Event> listAvailableCoupons(Long memberIdx);
+	//public void updateCoupon(Event dto) throws SQLException;
+    public int updateCouponUsage(Map<String, Object> map) throws SQLException;
+    
+	//public void updateProductStock(Product dto) throws SQLException;
+    public int updateStock(Map<String, Object> map) throws SQLException;
 }

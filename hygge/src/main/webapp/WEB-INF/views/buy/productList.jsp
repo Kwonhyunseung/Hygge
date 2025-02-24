@@ -82,7 +82,7 @@ $(function(){
             let out = "";
             out += '<div class="selected-product-info">';
             out += '    <span class="close-btn"><i class="bi bi-x-square"></i></span>';
-            out += '    <h4>[' + productInfo.title + ']</h4>';
+            out += '    <h4>' + productInfo.title + '</h4>';
             out += '    <div class="quantity-control">';
             out += '        <i class="bi bi-dash-circle minus"></i>';
             out += '        	<input type="text" name="quantity" value="1" readonly data-price="' + productInfo.price + '" data-shipping="' + productInfo.shippingFee + '" data-stock="' + productInfo.stock + '">';
@@ -97,7 +97,7 @@ $(function(){
             
             $quantitySelector.html(out).show();
             
-            // 수량 증가 아이콘 클릭 이벤트
+            // 수량 증가
             $quantitySelector.find('.bi-plus-circle').click(function(e) {
                 e.stopPropagation();
                 const $input = $(this).siblings('input[name="quantity"]');
@@ -110,7 +110,7 @@ $(function(){
                 }
             });
             
-            // 수량 감소 아이콘 클릭 이벤트
+            // 수량 감소
             $quantitySelector.find('.bi-dash-circle').click(function(e) {
                 e.stopPropagation();
                 const $input = $(this).siblings('input[name="quantity"]');
@@ -124,7 +124,6 @@ $(function(){
         });
     });
 
-    // 닫기 버튼 클릭 이벤트
     $(document).on('click', '.close-btn', function(e) {
         e.stopPropagation();
         $(this).closest('.quantity-selector').hide();

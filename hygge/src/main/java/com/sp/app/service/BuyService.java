@@ -4,24 +4,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.sp.app.model.Buy;
+import com.sp.app.model.DeliveryList;
+import com.sp.app.model.Event;
+import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
 
 public interface BuyService {
-
-	public List<Product> productList(Map<String, Object> map); //구매 - 상품리스트
+	// productList
+	public List<Product> productList(Map<String, Object> map);
+	public Product findByProductNum(long num);
 	
-	public Product findByProductNum(long num); //상품 선택
+	// productChoice
+	public Product buyProductAllInfo(long num);
 	
-	// 결제
-	public void insertBuy(Buy dto) throws SQLException;
-	public void insertBuyCoupon(Buy dto) throws SQLException;
-	public void insertBuyDelivery(Buy dto) throws SQLException;
+	public void insertBuyDelivery(DeliveryList dto) throws SQLException;
+	public void insertBuyPayment(Payment dto) throws SQLException;
 	
-	public void updateProductStock(Buy dto) throws SQLException;
+	public List<Event> couponList(Map<String, Object> map);
+	public void updateCoupon(Event dto) throws SQLException;
 	
-	public Buy findByBuyProduct(long payment_num);
-	
-	public List<Buy> listBuyProduct(List<Map<String, Long>> list);
+	public void updateProductStock(Product dto) throws SQLException;
 
 }
