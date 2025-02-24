@@ -240,15 +240,15 @@ textarea.form-input {
 		<h2>프로젝트 카테고리</h2>
 		<p>프로젝트의 성격과 가장 일치하는 카테고리를 선택해주세요.</p>
 		<select class="parent_num" name="parent_num">
-			<option value="1">가전</option>
-			<option value="2">패션</option>
-			<option value="3">뷰티</option>
-			<option value="4">홈*리빙</option>
-			<option value="5">푸드</option>
-			<option value="6">도서</option>
-			<option value="7">캐릭터*굿즈</option>
-			<option value="8">문화</option>
-			<option value="9">반려동물</option>
+			<option value="1" ${funding.parent_num == 1 ? 'selected' : ''}>가전</option>
+			<option value="2" ${funding.parent_num == 2 ? 'selected' : ''}>패션</option>
+			<option value="3" ${funding.parent_num == 3 ? 'selected' : ''}>뷰티</option>
+			<option value="4" ${funding.parent_num == 4 ? 'selected' : ''}>홈*리빙</option>
+			<option value="5" ${funding.parent_num == 5 ? 'selected' : ''}>푸드</option>
+			<option value="6" ${funding.parent_num == 6 ? 'selected' : ''}>도서</option>
+			<option value="7" ${funding.parent_num == 7 ? 'selected' : ''}>캐릭터*굿즈</option>
+			<option value="8" ${funding.parent_num == 8 ? 'selected' : ''}>문화</option>
+			<option value="9" ${funding.parent_num == 9 ? 'selected' : ''}>반려동물</option>
 		</select>
 		<div>세부 카테고리</div>
 		<select class="category_num" name="category_num">
@@ -259,14 +259,14 @@ textarea.form-input {
 	<div class="form-section">
 		<h2>프로젝트 제목</h2>
 		<p>프로젝트의 주요 내용을 담을 수 있고, 서포터들이 쉽게 이해할 수 있는 제목을 작성해주세요.</p>
-		<input type="text" class="form-input" placeholder="제목을 입력해주세요">
+		<input type="text" class="form-input" placeholder="제목을 입력해주세요" name="title">
 	</div>
 	
 	<div class="form-section">
 		<h2>프로젝트 요약 이미지</h2>
 		<p>서포터들이 프로젝트의 내용을 쉽게 이해할 수 있도록 프로젝트 요약 이미지들을 등록해주세요.</p>
 		<div class="radio-container">
-			<input type="file" name="photoFiles" multiple>
+			<input type="file" name="photoFiles" class="form-input" multiple>
 		</div>
 	</div>
 	
@@ -300,10 +300,15 @@ textarea.form-input {
 			</ul>
 		</div>
 	</div>
-	<p> 스마트 에디터 사용</p>
-	<div class="button-container">
+	<div class="form-section">
+		<textarea name="content" id="ir1" class="form-control" style="max-width: 98%; height: 290px;">${funding.content}</textarea>
+	</div>
+	<div class="button-container" style="padding-bottom: 10px;">
 		<button type="button" class="prev-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit1'">이전</button>
-		<button type="button" class="next-button" onclick="sendNext();">다음</button>
+		<button type="button" class="next-button" onclick="submitContents(this.form);">다음</button>
+	</div>
+	<div class="alert-container" style="display: none; justify-content: flex-end;">
+		<span style="font-size: 13px; color: #ff4019;" class="alert-msg"></span>
 	</div>
 </div>
 </form>
@@ -362,12 +367,107 @@ function loadCategory(num) {
 	};
 	ajaxRequest(url, 'get', {num: num}, 'json', fn);
 }
-
+/*
 // 제출 버튼(다음 단계)
 function sendNext() {
 	const f = document.submit2;
+	// f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit2';
+	// f.submit();
+}
+ */
+</script>
+
+<!-- 스마트 에디터 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/dist/vendor/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: 'ir1',
+	sSkinURI: '${pageContext.request.contextPath}/dist/vendor/se2/SmartEditor2Skin.html',
+	fCreator: 'createSEditor2',
+	fOnAppLoad: function(){
+		// 로딩 완료 후
+		oEditors.getById['ir1'].setDefaultFont('돋움', 12);
+	},
+});
+
+function check() {
+	const f = document.submit2;
+	let str;
+	// 1단계 기입 내용 확인(target, term, thumbnail, business)
+	let value = '${funding.target}';
+	let alertmsg = '이전 단계의 내용 입력을 완료해야 넘어갈 수 있습니다.';
+	if (!value || value == 0) {
+		$('.alert-msg').html(alertmsg);
+		$('.alert-container').css('display', 'flex');
+		return false;
+	}
+	value = '${funding.term}';
+	if (!value || value == 0) {
+		$('.alert-msg').html(alertmsg);
+		$('.alert-container').css('display', 'flex');
+		return false;
+	}
+	value = '${funding.thumbnail}';
+	if (!value || value == '') {
+		$('.alert-msg').html(alertmsg);
+		$('.alert-container').css('display', 'flex');
+		return false;
+	}
+	value = '${funding.business}';
+	if (!value || value == 0) {
+		$('.alert-msg').html(alertmsg);
+		$('.alert-container').css('display', 'flex');
+		return false;
+	}
+	// 제목 확인
+	str = f.title.value.trim();
+	if (!str) {
+		f.title.focus();
+		return false;
+	}
+	// 프로젝트 요약 확인
+	str = f.project_info.value.trim();
+	if (!str) {
+		f.project_info.focus();
+		return false;
+	}
+	// 내용 확인
+	str = f.content.value.trim();
+	if (!str) {
+		f.content.focus();
+		return false;
+	}
+	// 배송 메세지 확인
+	if ($('input[name="isDeliver"]').is(':checked')) {
+		str = f.delivery_info.value.trim();
+		if (!str) {
+			f.delivery_info.focus();
+		}
+	}
+	// 요약 이미지들 확인
+	let files = f.photoFiles.value;
+	if (!files || files == null || files == '') {
+		$('.alert-msg').html('프로젝트 요약 이미지들이 업로드되지 않았습니다.');
+		$('.alert-container').css('display', 'flex');
+		return false;
+	}
 	f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit2';
-	f.submit();
+	return true;
+}
+
+function submitContents(elClickedObj) {
+	 oEditors.getById['ir1'].exec('UPDATE_CONTENTS_FIELD', []);
+	 try {
+		if(! check()) {
+			return;
+		}
+		
+		elClickedObj.submit();
+		
+	} catch(e) {
+	}
 }
 </script>
 </body>

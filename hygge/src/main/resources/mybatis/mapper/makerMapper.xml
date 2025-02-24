@@ -14,6 +14,6 @@
 
 	<insert id="insertTempProjectRequest" parameterType="com.sp.app.model.Funding">
 		INSERT INTO ProjectRequest (num, memberIdx, request_date, title, business, content, target, term, thumbnail, category_num, project_info, delivery_info, submit)
-			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{deliver_info}, 0)
+			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{delivery_info}, 0)
 	</insert>
 </mapper>

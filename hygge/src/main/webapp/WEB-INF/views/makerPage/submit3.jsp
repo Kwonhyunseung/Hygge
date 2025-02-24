@@ -133,7 +133,7 @@ body {
 /* Button Styles */
 .button-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #eee;
@@ -188,7 +188,7 @@ body {
     color: #333;
 }
 
-.gift-details {
+.gift-title {
     margin-top: 8px;
     color: #666;
     font-size: 14px;
@@ -229,59 +229,44 @@ body {
     
 <main class="main-content">
 	<div class="content-wrapper">
-		<div class="gift-list">
-			<c:forEach var="dto" items="${funding.product}">
-				<div class="gift-item">
-					<div>
-						<div class="gift-price">${dto.price} 원</div>
-						<div class="gift-details">${dto.title}</div>
-					</div>
-					<div class="gift-actions">
-						<button class="action-btn update-btn">수정</button>
-						<button class="action-btn delete-btn">삭제</button>
-					</div>
-				</div>
-			</c:forEach>
-			<c:if test="${empty funding.product}">
+		<form name="submit2" style="display: flex; width: 48%;">
+			<div class="gift-list">
 				<div style="font-style: italic; color: gray; padding: 20px;">상품을 추가해주세요</div>
-			</c:if>
-		</div>
+			</div>
+		</form>
 		
 		<div class="gift-form">
-			<form name="submit2">
-				<h2 class="form-title">선물 만들기+</h2>
-				<p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
-					이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
-				<div class="form-group">
-					<label class="form-label">상품 제목</label>
-					<input type="text" class="form-input" name="title">
-				</div>
-				
-				<div class="form-group">
-					<label class="form-label">선물 구성 및 세부 설명<i class="bi bi-info-circle" style="margin-left: 5px;"></i></label>
-					<input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요." name="detail">
-				</div>
-				
-				<div class="form-group">
-					<label class="form-label">금액</label>
-					<input type="text" class="form-input" placeholder="원" name="price">
-				</div>
-				
-				<div class="form-group">
-					<label class="form-label">상품 재고 수량</label>
-					<input type="text" class="form-input" name="stock">
-				</div>
-				
-				<div class="form-group">
-					<label class="form-label">원산지<span class="origin-info">원산지 기재 필수 품목: 수입물품</span></label>
-					<input type="text" class="form-input" name="origin">
-				</div>
-				
-				<div class="button-group">
-					<button type="reset" class="btn btn-cancel">지우기</button>
-					<button type="submit" class="btn btn-add">추가</button>
-				</div>
-			</form>
+			<h2 class="form-title">선물 만들기+</h2>
+			<p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
+				이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
+			<div class="form-group">
+				<label class="form-label">상품 제목</label>
+				<input type="text" class="form-input" name="title">
+			</div>
+			
+			<div class="form-group">
+				<label class="form-label">선물 구성 및 세부 설명<i class="bi bi-info-circle" style="margin-left: 5px;"></i></label>
+				<input type="text" class="form-input" placeholder="선물 구성을 자세하게 작성해주세요." name="detail">
+			</div>
+			
+			<div class="form-group">
+				<label class="form-label">금액</label>
+				<input type="text" class="form-input" placeholder="원" name="price">
+			</div>
+			
+			<div class="form-group">
+				<label class="form-label">상품 재고 수량</label>
+				<input type="text" class="form-input" name="stock">
+			</div>
+			
+			<div class="form-group">
+				<label class="form-label">원산지<span class="origin-info">원산지 기재 필수 품목: 수입물품</span></label>
+				<input type="text" class="form-input" name="origin">
+			</div>
+			
+			<div class="button-group">
+				<button type="button" class="btn btn-add">추가</button>
+			</div>
 		</div>
 	</div>
 	<div class="button-container">
@@ -319,18 +304,63 @@ $(function() {
 			$('input[name="origin"]').focus();
 			return false;
 		}
-		let params = {title: title, detail: detail, price: price, stock: stock, origin: origin};
+		console.log(stock);
+		console.log(origin);
+		console.log(detail);
+		let out = '';
+		out += '<div class="gift-item">';
+		out += '	<div>';
+		out += '		<div class="gift-price">' + price + ' 원</div>';
+		out += '		<div class="gift-title">' + title + '</div>';
+		out += '	</div>';
+		out += '	<div class="gift-actions">';
+		out += '		<button class="action-btn update-btn">수정</button>';
+		out += '		<button class="action-btn delete-btn">삭제</button>';
+		out += '	</div>';
+		out += '	<input type="hidden" name="stock" value="' + stock + '">';
+		out += '	<input type="hidden" name="origin" value="' + origin + '">';
+		out += '	<input type="hidden" name="detail" value="' + detail + '">';
+		out += '</div>';
 
-		ajaxRequest(url, 'post', params, 'json', fn);
+		if ($('.gift-item').length > 0) {
+			$('.gift-list').insertAdjacentHTML('afterbegin', out);
+		} else {
+			$('.gift-list').html(out);
+		}
+		$('input[name="title"]').val('');
+		$('input[name="detail"]').val('');
+		$('input[name="price"]').val('');
+		$('input[name="stock"]').val('');
+		$('input[name="origin"]').val('');
+	});
+
+	// 상품 수정
+	$('.gift-list').on('click', '.update-btn', function() {
+		let $item = $(this).closest('.gift-item');
+		console.log($item.html());
+		/*
+		let price = $item.find('.gift-price').html();
+		let title = $item.find('.gift-title').html();
+		let detail = $item.find('input[name="detail"]').val();
+		let stock = $item.find('input[name="stock"]').val();
+		let origin = $item.find('input[name="origin"]').val();
+		$('input[name="title"]').val(title);
+		$('input[name="detail"]').val(detail);
+		$('input[name="price"]').val(price);
+		$('input[name="stock"]').val(stock);
+		$('input[name="origin"]').val(origin);
+		$item.remove();
+		*/
+	});
+	// 상품 삭제
+	$('.gift-list').on('click', '.delete-btn', function() {
+		$(this).closest('.gift-item').remove();
+		if ($('.gift-item').length < 1) {
+			$('.gift-list').html('<div style="font-style: italic; color: gray; padding: 20px;">상품을 추가해주세요</div>');
+		}
 	});
 });
 
-function sendNext() {
-	const f = document.submit2;
-
-	f.action = '${pageContext.request.contextPath}/makerPage/addProduct';
-	f.submit();
-}
 </script>
 
 </body>

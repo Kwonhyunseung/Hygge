@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,9 +8,6 @@
 <link rel="stylesheet" href="/dist/css/project/submit1.css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 <meta charset="UTF-8">
-<style>
-
-</style>
 </head>
 <body>
 <header>
@@ -65,7 +64,18 @@
 
             <div class="form-section">
                 <h2 class="section-title">썸네일 등록<span class="required">*</span></h2>
-                <input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail}">
+                <div class="thumbnail-container">
+                <c:choose>
+                	<c:when test="${not empty funding.thumbnail}">
+                		<div class="thumbnail-img-container" style="width: 100px; height: 76px; border: 1px solid #E6E6E6; cursor: pointer;">
+                			<img src="${pageContext.request.contextPath}/uploads/project/${funding.thumbnail}" style="width: 100%; height: 100%;">
+                		</div>
+                	</c:when>
+                	<c:otherwise>
+		                <input type="file" name="thumbnail_File" class="input-field" accept="image/*">
+                	</c:otherwise>
+                </c:choose>
+                </div>
             </div>
 
             <div class="form-section">
@@ -117,6 +127,21 @@ $(function() {
 		} else {
 			$('input[name="business_File"]').slideUp(300);
 		}
+	});
+
+	$('.thumbnail-img-container').click(function() {
+		if (!confirm('기존에 올리신 썸네일 이미지를 삭제하시겠습니까?')) {
+			return false;
+		}
+		let url = '${pageContext.request.contextPath}/makerPage/deleteThumbnail';
+		let fileName = '${funding.thumbnail}';
+		let params = {fileName: fileName};
+		let thumbnail = $('.thumbnail-container');
+		const fn = function(data) {
+			thumbnail.html('<input type="file" name="thumbnail_File" class="input-field" accept="image/*" value="${funding.thumbnail}">');
+		}
+
+		ajaxRequest(url, 'post', params, 'json', fn);
 	});
 });
 </script>

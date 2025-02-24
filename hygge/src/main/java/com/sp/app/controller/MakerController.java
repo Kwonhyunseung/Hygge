@@ -1,5 +1,6 @@
 package com.sp.app.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.sp.app.common.StorageService;
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Product;
+import com.sp.app.model.SessionInfo;
 import com.sp.app.service.MakerService;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,8 +94,10 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit2")
-	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus) throws Exception {
+	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus, HttpSession session) throws Exception {
 		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setMemberIdx(info.getMemberidx());
 			service.insertTempProjectRequest(dto);
 			model.addAttribute("msg", "임시 저장되었습니다.");
 			sessionStatus.setComplete();
@@ -100,23 +106,10 @@ public class MakerController {
 		}
 		return "redirect:/makerPage/projectSubmit3";
 	}
-	
-	@ResponseBody
-	@PostMapping("addProduct")
-	public Map<String, Object> addProduct(@ModelAttribute("funding") Funding dto) {
-		Map<String, Object> model = new HashMap<>();
-		try {
-		} catch (Exception e) {
-			log.info("addProduct : ", e);
-		}
-		return model;
-	}
 
 	@GetMapping("projectSubmit3")
 	public String projectForm3(Model model) throws Exception {
 		try {
-			List<Category> parentCategory = service.listCategory(0);
-			model.addAttribute("parentCategory", parentCategory);
 		} catch (Exception e) {
 			log.info("projectForm3 : ", e);
 		}
@@ -124,7 +117,7 @@ public class MakerController {
 	}
 	
 	@PostMapping("projectSubmit3")
-	public String projectSubmit3(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectSubmit3(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit3 : ", e);
@@ -160,7 +153,7 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit5")
-	public String projectSubmit5(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectSubmit5(Model model) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit5 : ", e);
@@ -177,6 +170,12 @@ public class MakerController {
 	public Funding getFunding() {
 		return new Funding();
 	}
+	
+	@ModelAttribute("product")
+	public List<Product> getProductList() {
+		List<Product> listProduct = new ArrayList<>();
+		return listProduct;
+	}
 
 	@ResponseBody
 	@GetMapping("categories")
@@ -189,6 +188,21 @@ public class MakerController {
 		} catch (Exception e) {
 			model.put("state", "false");
 			log.info("projectPreSubmitCategories : ", e);
+		}
+		return model;
+	}
+
+	@ResponseBody
+	@PostMapping("deleteThumbnail")
+	public Map<String, Object> deleteThumbnail(@ModelAttribute("funding") Funding dto, @RequestParam(name = "fileName") String filename) throws Exception {
+		Map<String, Object> model = new HashMap<>();
+		try {
+			storageService.deleteFile(uploadPath, filename);
+			dto.setThumbnail(null);
+			model.put("state", "true");
+		} catch (Exception e) {
+			log.info("deleteThumbnail : ", e);
+			model.put("state", "false");
 		}
 		return model;
 	}
