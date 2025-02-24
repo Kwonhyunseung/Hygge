@@ -21,4 +21,8 @@ public interface ProjectManagerMapper {
 	public void deleteBoard(ProjectManager dto) throws SQLException;
 	
 	public int b_dataCount(Map<String, Object> map);
+	
+	// 새로 추가된 메서드
+	public void insertFile(Map<String, Object> map) throws SQLException; // 파일 정보 삽입
+	public long makerBoardSeq();
 }

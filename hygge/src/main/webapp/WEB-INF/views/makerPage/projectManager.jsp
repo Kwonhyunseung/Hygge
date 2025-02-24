@@ -21,6 +21,7 @@
     }
 
     .container {
+    	position: relative; /* 작성 버튼 위치 기준 설정 */
         width: 90%;
         max-width: 1200px;
         margin: 100px auto 40px;
@@ -220,6 +221,27 @@
         background: #FF5733;
         color: white;
     }
+    
+  .write-btn {
+    position: absolute;
+    bottom: 12px; /* 컨테이너 하단에서 위치 조정 */
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    background: #FF7F50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    z-index: 10;
+}
+    .write-btn:hover {
+        background: #FF5733;
+        transform: scale(1.1);
+    }
 </style>
 </head>
 <body class="main-container">
@@ -313,24 +335,24 @@
 
             <div class="board-list">
                 <c:forEach var="board" items="${listboard}">
-                    <div class="project-card board-card" data-category="${board.b_category}">
+                    <div class="project-card board-card" data-category="${board.category}">
                         <div class="top-section">
                             <span>게시판</span>
                             <c:choose>
-                                <c:when test="${empty board.thumbnail}">
+                                <c:when test="${empty board.sfileName}">
                                     <p>대표 이미지 등록 필요</p>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="${pageContext.request.contextPath}/uploads/project/perfume_1.jpg" alt="썸네일 이미지" style="max-width: 100%; height: auto;" />
+                                    <img src="${pageContext.request.contextPath}/uploads/makerBoard/${board.sfileName}" alt="썸네일 이미지" style="max-width: 100%; height: auto;" />
                                 </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="middle-section">
-                            <p>${board.b_title}</p>
-                            <p class="status">${board.b_category}</p>
+                            <p>${board.title}</p>
+                            <p class="status">${board.category}</p>
                         </div>
                         <div class="bottom-section">
-                            <button onclick="location.href='#'">게시글 보기</button>
+                            <button onclick="location.href='#'" class="btn-edit">게시글 수정</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -345,6 +367,7 @@
                     <button>&gt;</button>
                 </div>
             </c:if>
+            <button class="write-btn" onclick="location.href='${pageContext.request.contextPath}/makerPage/mwrite'">+</button>
         </div>
 
         <!-- 1:1 문의 탭 -->
@@ -374,7 +397,7 @@
                             <p class="status">${board.category}</p>
                         </div>
                         <div class="bottom-section">
-                            <button onclick="location.href='/board/view/${board.id}'">게시글 보기</button>
+                            <button onclick="location.href='/board/view/${board.id}'">몰라</button>
                         </div>
                     </div>
                 </c:forEach>

@@ -134,9 +134,16 @@
         <c:forEach var="board" items="${listBoard}">
             <div class="custom-container">
                 <div class="custom-title">${board.title}</div>
-                <div class="custom-image-container">
-                    <img src="${pageContext.request.contextPath}/uploads/project/perfume_1.jpg" alt="신제품 이미지">
-                </div>
+              	<div class="custom-image-container">
+				    <c:choose>
+				        <c:when test="${not empty board.sfileName}">
+				            <img src="${pageContext.request.contextPath}/uploads/makerBoard/${board.sfileName}" alt="신제품 이미지">
+				        </c:when>
+				        <c:otherwise>
+				            <img src="${pageContext.request.contextPath}/uploads/makerBoard/nophoto.jpg" alt="대체 이미지">
+				        </c:otherwise>
+				    </c:choose>
+				</div>
                 <div class="custom-content">
                     ${board.content}
                 </div>

@@ -4,20 +4,22 @@
 <mapper namespace="com.sp.app.mapper.MakerBoardMapper">
 	<select id="listBoard" parameterType="map"
 	resultType="com.sp.app.model.MakerBoard">
-   SELECT 
-        b.mkboard_Num,
-        MAX(b.TITLE) AS TITLE,
-        MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS CONTENT,
-        MAX(b.CATEGORY) AS CATEGORY,
-        MAX(b.MAKERIDX) AS MAKERIDX,
-        MAX(maker.makername) AS name,
-        NVL(COUNT(l.MEMBERIDX), 0) AS likeCount
-    FROM MakerBoard b
-    LEFT JOIN MakerBoardLike l ON b.mkboard_Num = l.mkboard_Num
-    LEFT JOIN Maker maker ON b.MAKERIDX = maker.memberIdx
-    WHERE b.MAKERIDX = #{makerIdx, jdbcType=NUMERIC}
-    GROUP BY b.mkboard_Num
-    ORDER BY b.mkboard_Num DESC
+SELECT 
+    b.mkboard_Num,
+    MAX(b.TITLE) AS TITLE,
+    MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS CONTENT,
+    MAX(b.CATEGORY) AS CATEGORY,
+    MAX(b.MAKERIDX) AS MAKERIDX,
+    MAX(maker.makername) AS name,
+    NVL(COUNT(l.MEMBERIDX), 0) AS likeCount,
+    MAX(mf.s_fileName) AS sfileName  
+FROM MakerBoard b
+LEFT JOIN MakerBoardLike l ON b.mkboard_Num = l.mkboard_Num
+LEFT JOIN Maker maker ON b.MAKERIDX = maker.memberIdx
+LEFT JOIN makerFile mf ON b.mkboard_Num = mf.mkboard_Num
+WHERE b.MAKERIDX = #{makerIdx, jdbcType=NUMERIC}
+GROUP BY b.mkboard_Num
+ORDER BY b.mkboard_Num DESC
 </select>
 
 <select id="dataCount" parameterType="map" resultType="Integer">

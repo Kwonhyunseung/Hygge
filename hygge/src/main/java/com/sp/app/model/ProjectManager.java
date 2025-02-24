@@ -1,6 +1,9 @@
 package com.sp.app.model;
 
 import java.sql.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +31,11 @@ public class ProjectManager {
     private Integer accept_return; // 승인 여부 (0=대기, 1=승인, 2=반려)
     private String return_reason;  // 반려 사유 (반려 시 입력됨)
     
-    private String b_title;   // 제목
-    private String b_content; // 내용 (CLOB)
-    private String b_category; // 카테고리
-    private int makeridx;   // 메이커 인덱스
+    private Long makerIdx;   // 메이커 인덱스
     private int likeCount;  // 좋아요 개수
-    private String b_name; // 이름
     private boolean userLiked;
+    private List<MultipartFile> selectFile;
+    
+    private String cfileName;  // 원본 파일 이름
+    private String sfileName;  // 저장된 파일 이름
 }

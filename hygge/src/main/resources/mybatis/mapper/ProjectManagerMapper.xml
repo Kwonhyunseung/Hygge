@@ -64,17 +64,33 @@
 	resultType="com.sp.app.model.ProjectManager">
    SELECT 
         b.mkboard_Num,
-        MAX(b.TITLE) AS b_title,
-        MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS b_content,
-        MAX(b.CATEGORY) AS b_CATEGORY,
+        MAX(b.TITLE) AS title,
+        MAX(DBMS_LOB.SUBSTR(b.CONTENT, 4000, 1)) AS content,
+        MAX(b.CATEGORY) AS category,
         MAX(b.MAKERIDX) AS MAKERIDX,
-        MAX(maker.makername) AS b_name,
-        NVL(COUNT(l.MEMBERIDX), 0) AS likeCount
+        MAX(maker.makername) AS name,
+        NVL(COUNT(l.MEMBERIDX), 0) AS likeCount,
+        MAX(mf.s_filename) AS sfileName
     FROM MakerBoard b
     LEFT JOIN MakerBoardLike l ON b.mkboard_Num = l.mkboard_Num
     LEFT JOIN Maker maker ON b.MAKERIDX = maker.memberIdx
+    LEFT JOIN makerFile mf ON b.mkboard_Num = mf.mkboard_num 
     WHERE b.MAKERIDX = #{memberIdx, jdbcType=NUMERIC}
     GROUP BY b.mkboard_Num
     ORDER BY b.mkboard_Num DESC
 </select>
+
+<select id="makerBoardSeq" resultType="Long">
+SELECT maker_board_seq.NEXTVAL FROM dual
+</select>
+
+<insert id="insertBoard" parameterType="com.sp.app.model.ProjectManager">
+    INSERT INTO MakerBoard (mkboard_Num, TITLE, CONTENT, CATEGORY, MAKERIDX)
+    VALUES (#{mkboard_Num}, #{title}, #{content}, #{category,jdbcType=VARCHAR}, #{makerIdx})
+</insert>
+
+<insert id="insertFile" parameterType="com.sp.app.model.ProjectManager">
+    INSERT INTO makerFile (FILE_NUM,S_FILENAME, MKBOARD_NUM)
+    VALUES (maker_file_seq.NEXTVAL, #{sfileName}, #{mkboard_Num})
+</insert>
 </mapper>

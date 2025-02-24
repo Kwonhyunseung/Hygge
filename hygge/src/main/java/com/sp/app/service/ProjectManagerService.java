@@ -15,7 +15,10 @@ public interface ProjectManagerService {
 	public List<ProjectManager> listboard(Map<String, Object> map);
 	public int b_dataCount(Map<String, Object> map);
 	
-	public void insertBoard(ProjectManager dto) throws SQLException;
-	public void updateBoard(ProjectManager dto) throws SQLException;
+	public void insertBoard(ProjectManager dto,String uploadPath) throws SQLException;
+	public void updateBoard(ProjectManager dto,String uploadPath) throws SQLException;
 	public void deleteBoard(ProjectManager dto) throws SQLException;
+	public void insertFile(ProjectManager dto,String uploadPath) throws SQLException;
+	
+	
 }

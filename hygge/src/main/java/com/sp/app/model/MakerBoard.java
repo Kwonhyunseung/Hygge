@@ -17,4 +17,5 @@ public class MakerBoard {
     private int likeCount;  // 좋아요 개수
     private String name; // 이름
     private boolean userLiked;
+    private String sfileName;  // 저장된 파일 이름
 }
