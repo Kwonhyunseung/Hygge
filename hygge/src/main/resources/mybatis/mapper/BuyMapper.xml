@@ -64,7 +64,7 @@
 	</insert>
 	
 	
-// 서비스 임플 매퍼 메소드명 고쳐야함. Long으로 바뀜
+<!-- // 서비스 임플 매퍼 메소드명 고쳐야함. Long으로 바뀜 -->
 	<!-- 사용 가능한 쿠폰 리스트 -->
 	<select id="couponList" parameterType="Long" resultType="com.sp.app.model.Coupon">
 		<!-- 쿠폰명, 만기일, 할인율, 할인최대금액 -->
@@ -76,7 +76,7 @@
 	</select>
 
 
-//서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜
+<!-- //서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜 -->
 	<update id="updateCoupon" parameterType="map">
 	    UPDATE coupon 
 	    SET USED_DATE = SYSDATE
@@ -84,7 +84,7 @@
 	</update>
 	
 	
-//서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜
+<!-- //서비스 임플 매퍼 메소드명 고쳐야함. map으로 바뀜 -->
 	<!-- 판매 개수에 따른 재고 감소 -->
 	<update id="updateProductStock" parameterType="map">
 	    UPDATE Product 
