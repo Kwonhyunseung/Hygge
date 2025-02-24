@@ -78,7 +78,7 @@ public class ProjectManagerController {
 	         
 	         
 	         List<ProjectManager> listProject = service.listProject(map);
-	         List<ProjectManager> listboard = service.listBoard(map);
+	         List<ProjectManager> listboard = service.listboard(map);
 	         String cp = req.getContextPath();
 	         String query = "";
 	         String listUrl = cp + "/makerPage/projectManager";

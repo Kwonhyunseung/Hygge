@@ -69,11 +69,11 @@ public class ProjectManagerServiceImpl implements ProjectManagerService{
 
 
 	@Override
-	public List<ProjectManager> listBoard(Map<String, Object> map) {
+	public List<ProjectManager> listboard(Map<String, Object> map) {
 		List<ProjectManager> list = null;
 		
 		try {
-			list = mapper.listBoard(map);
+			list = mapper.listboard(map);
 		} catch (Exception e) {
 			log.error("리스트 조회 실패 : " , e);
 		}	

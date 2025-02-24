@@ -60,7 +60,7 @@
 		accept_date = SYSDATE
 		WHERE num = #{num}
 	</update>
-<select id="listBoard" parameterType="map"
+<select id="listboard" parameterType="map"
 	resultType="com.sp.app.model.ProjectManager">
    SELECT 
         b.mkboard_Num,

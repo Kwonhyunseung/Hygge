@@ -14,7 +14,7 @@ public interface ProjectManagerMapper {
 	public int dataCount(Map<String, Object> map);
 	List<ProjectManager> listProject(Map<String, Object> map); 
 	
-	public List<ProjectManager> listBoard(Map<String, Object> map);
+	public List<ProjectManager> listboard(Map<String, Object> map);
 
 	public void insertBoard(ProjectManager dto) throws SQLException;
 	public void updateBoard(ProjectManager dto) throws SQLException;
