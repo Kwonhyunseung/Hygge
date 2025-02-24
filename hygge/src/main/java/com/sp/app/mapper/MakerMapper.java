@@ -13,4 +13,5 @@ public interface MakerMapper {
 	public long getPR_SEQ();
 	public List<Category> listCategory(long num);
 	public void insertTempProjectRequest(Funding dto) throws SQLException;
+	public void insertProjectPhoto(Funding dto) throws SQLException;
 }
