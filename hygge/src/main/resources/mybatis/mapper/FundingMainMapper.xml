@@ -72,4 +72,10 @@
 	<delete id="deleteFundingLike" parameterType="map">
 		DELETE FROM projectLike WHERE num = #{num} AND memberIdx = #{memberIdx}
 	</delete>
+
+	<select id="listReview" parameterType="Long" resultType="com.sp.app.model.Review">
+		SELECT review_num, r.content content, r.grade
+		FROM review
+		WHERE project_num = #{num}
+	</select>
 </mapper>

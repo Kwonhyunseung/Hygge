@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sp.app.mapper.FundingMainMapper;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Review;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +82,17 @@ public class FundingServiceImpl implements FundingService {
 			log.info("deleteFundingLike : ", e);
 			throw e;
 		}
+	}
+
+	@Override
+	public List<Review> listReview(long num) {
+		List<Review> list = null;
+		try {
+			
+		} catch (Exception e) {
+			log.info("listReview : ", e);
+		}
+		return list;
 	}
 
 }

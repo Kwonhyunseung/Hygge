@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sp.app.model.Funding;
+import com.sp.app.model.Review;
 
 @Mapper
 public interface FundingMainMapper {
@@ -17,4 +18,6 @@ public interface FundingMainMapper {
 	public int isUserLiked(Map<String, Object> map);
 	public void insertFundingLike(Map<String, Object> map) throws SQLException;
 	public void deleteFundingLike(Map<String, Object> map) throws SQLException;
+
+	public List<Review> listReview(long num);
 }

@@ -181,12 +181,22 @@ public class FundingController {
 	}
 
 	@GetMapping("plan")
-	public String plan() {
+	public String plan(Model model) {
+		try {
+			
+		} catch (Exception e) {
+			log.info("plan : ", e);
+		}
 		return "funding/contentPlan";
 	}
 
 	@GetMapping("review")
-	public String review() {
+	public String review(@RequestParam(name = "num") long number, Model model) {
+		try {
+			// 리뷰 리스트
+		} catch (Exception e) {
+			log.info("review : ", e);
+		}
 		return "funding/contentReview";
 	}
 	

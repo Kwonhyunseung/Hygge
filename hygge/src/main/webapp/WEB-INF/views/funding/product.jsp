@@ -76,13 +76,21 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 }
 
 function loadContent(contentType) {
-    let url = "/funding/";
-    url += contentType === 'plan' ? 'plan' : 'review';
+    let url = '${pageContext.request.contextPath}/funding/';
+    let num = '${project.num}'; // 프젝 번호
+    let params;
+    if (contentType === 'plan') {
+    	url = url + 'plan';
+    	params = null;
+    } else {
+    	url = url + 'review';
+    	params = {num: num};
+    }
     const fn = function(data) {
         $("#content-container").html(data);
     };
 
-    ajaxFun(url, "get", null, "html", fn);
+    ajaxFun(url, "get", params, "html", fn);
 }
 
 $(document).on("click", ".f-select", function() {
