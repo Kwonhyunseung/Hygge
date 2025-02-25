@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DeliveryList {
 	private long dest_num; //번호
-	private long memberxIdx;
+	private long memberIdx;
 	private String addr1;
 	private String addr2;
 	private int postCode;
