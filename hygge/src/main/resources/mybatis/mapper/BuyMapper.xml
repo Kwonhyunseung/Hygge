@@ -28,10 +28,13 @@
 		WHERE p.product_num = #{product_num}
 	</select>
 
-	
+
+
+
 	<!-- 결제창 - 상품선택시 결제를 위한 상품정보 가져오기. 상품정보(썸네일, 상품명, 상품구성, 구매수량, 결제금액) 서포터정보(이름, 이메일, 핸드폰번호) 배송지정보(받는사람=>유저, 주소1,2, 우편번호) -->
-	<select id="buyProductAllInfo" parameterType="Long" resultType="com.sp.app.model.Product">
-		<!-- SELECT p.product_num, p.title, p.detail, p.price,
+	<!-- 
+	<select id="buyProductAllInfo" parameterType="map" resultType="com.sp.app.model.Product">
+		 SELECT p.product_num, p.title, p.detail, p.price,
 			pr.thumbnail,
 			s.amount, s.sum,
 			m.name,
@@ -46,24 +49,38 @@
 	        SELECT * FROM DeliveryList 
 	        WHERE default_dest = 0
 	    ) d ON m.memberIdx = d.memberIdx
-		WHERE p.product_num = #{product_num} -->
-		SELECT p.product_num, p.title, p.detail, p.price,
-	        pr.thumbnail,
-	        m.name,
-	        m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1, m2.addr2, m2.postCode,
-	        COALESCE(d.receiver, m.name) as receiver
-	    FROM Product p
-	    JOIN ProjectRequest pr ON p.num = pr.num
-	    JOIN Member1 m ON #{memberIdx} = m.memberIdx
-	    JOIN Member2 m2 ON m.memberIdx = m2.memberIdx
-	    LEFT JOIN (
-	    	SELECT * FROM DeliveryList
-	        WHERE memberIdx = #{memberIdx} AND default_dest = 0
-	    ) d ON m.memberIdx = d.memberIdx
-	    WHERE p.product_num = #{product_num}
+		WHERE p.product_num = #{product_num}
+		SELECT p.product_num, p.title, p.detail, p.price, pr.thumbnail
+    FROM Product p
+    JOIN ProjectRequest pr ON p.num = pr.num
+    WHERE p.product_num = #{product_num}
+	</select>
+	-->
+	
+	<!-- 결제할 상품 정보 -->
+	<select id="buyProductInfo" parameterType="Long" resultType="com.sp.app.model.Product">
+		<!-- 썸네일, 상품명, 가격, 구매수량, 구매금액, 배송비 -->
+		SELECT p.product_num, p.num, pr.thumbnail, p.title, p.price, s.amount, s.sum, pm.shipping_fee
+		FROM Product p
+		JOIN ProjectRequest pr ON p.num = pr.num
+		JOIN Sales s ON p.product_num = s.product_num
+		JOIN Payment pm ON s.payment_num = pm.payment_num
+		WHERE p.product_num = #{product_num}
 	</select>
 	
 	<!-- 서포터 정보 -->
+	<select id="buyUserInfo" parameterType="Long" resultType="com.sp.app.model.Member">
+		<!-- 이름, 이메일, 핸드폰 번호, 주소1, 주소2, 우편번호 -->
+		SELECT m.memberIdx, name, email1, email2, tel1, tel2, tel3, addr1, addr2, postCode 
+		FROM Member1 m
+		JOIN Member2 m2 ON m.memberIdx = m2.memberIdx
+		WHERE m.memberIdx = #{memberIdx}
+	</select>
+
+
+
+
+
 
 	<!-- 배송지 등록(신규 배송지일 경우) -->
 	<insert id="insertBuyDelivery" parameterType="com.sp.app.model.DeliveryList">

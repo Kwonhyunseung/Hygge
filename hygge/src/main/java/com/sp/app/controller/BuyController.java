@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sp.app.model.Member;
 import com.sp.app.model.Product;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.BuyService;
@@ -74,35 +75,42 @@ public class BuyController {
 	}
 	
 	@PostMapping("/productChoice")
-	public String productChoice(@RequestParam("product_num") long product_num, 
-	                           @RequestParam(value = "quantity", defaultValue = "1") int quantity,
-	                           Model model, HttpSession session) throws Exception {
+	public String productChoice(
+	        @RequestParam("product_num") long product_num,
+	        @RequestParam(value = "quantity", defaultValue = "1") int quantity,
+	        Model model, HttpSession session) throws Exception {
 	    try {
 	        SessionInfo info = (SessionInfo) session.getAttribute("member");
 	        if(info == null) {
 	            return "redirect:/member/login";
 	        }
 	        
-	        Product product = service.buyProductAllInfo(product_num); // 모든 정보 가져오기
+	        // 상품 정보 가져오기
+	        Product product = service.buyProductInfo(product_num);
+	        // 로그인한 유저 정보 가져오기
+	        Member member = service.buyUserInfo(info.getMemberidx());
 	        
-	        
-	        if (product != null) {
-	            // 수량 정보 설정
+	        if (product != null && member != null) {
+	            // 수량 설정
 	            product.setAmount(quantity);
-	            // 총 금액 계산 (가격 * 수량 + 배송비)
-	            product.setSum(product.getPrice() * quantity + product.getShipping_fee());
 	            
+	            // 가격 계산 (상품 가격 * 수량)
+	            product.setSum(product.getPrice() * quantity);
+	            
+	            // 모델에 추가
 	            model.addAttribute("product", product);
+	            model.addAttribute("member", member);
+	            
 	            return "buy/productChoice";
 	        } else {
-	            model.addAttribute("message", "선택한 상품 정보를 찾을 수 없습니다.");
-	            return "redirect:/"; 
+	            model.addAttribute("message", "상품 정보를 불러올 수 없습니다.");
+	            return "redirect:/";
 	        }
 	    } catch (Exception e) {
-	        log.error("Failed to retrieve product information for payment", e);
+	        log.error("productChoice 오류: ", e);
+	        model.addAttribute("message", "처리 중 오류가 발생했습니다.");
+	        return "redirect:/";
 	    }
-	    
-	    return "redirect:/";
 	}
 	
 	

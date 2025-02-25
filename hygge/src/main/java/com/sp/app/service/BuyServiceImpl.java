@@ -1,5 +1,6 @@
 package com.sp.app.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.sp.app.mapper.BuyMapper;
 import com.sp.app.model.Coupon;
 import com.sp.app.model.DeliveryList;
+import com.sp.app.model.Member;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
 
@@ -84,19 +86,42 @@ public class BuyServiceImpl implements BuyService {
 		return dto;
 	}
 
+	/*
 	@Override
-	public Product buyProductAllInfo(long num) {
+	public Product buyProductAllInfo(Map<String, Object> map) {
 		Product dto = null;
 		try {
-			dto = mapper.buyProductAllInfo(num);
+			dto = mapper.buyProductAllInfo(map);
+			log.info("buyProductAllInfo result: {}", dto);
 		} catch (Exception e) {
 			log.info("buyProductAllInfo: ", e);
 		}
 		
 		return dto;
 	}
+	*/
 	
-	
+	@Override
+	public Product buyProductInfo(long num) throws SQLException {
+		Product dto = null;
+		try {
+			dto = mapper.buyProductInfo(num);
+		} catch (Exception e) {
+			log.info("buyProductInfo: ", e);
+		}
+		return dto;
+	}
+
+	@Override
+	public Member buyUserInfo(long memberIdx) throws SQLException {
+		Member dto = null;
+		try {
+			dto = mapper.buyUserInfo(memberIdx);
+		} catch (Exception e) {
+			log.info("buyProductInfo: ", e);
+		}
+		return dto;
+	}
 	
 	@Override
 	public void insertBuyDelivery(DeliveryList dto) throws Exception {
@@ -144,5 +169,7 @@ public class BuyServiceImpl implements BuyService {
 			log.info("", e);
 		}
 	}
+
+	
 
 }

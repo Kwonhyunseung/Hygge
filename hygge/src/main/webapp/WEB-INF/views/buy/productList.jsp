@@ -151,7 +151,6 @@ $(function(){
     });
 });
 
-//개별 상품 구매 함수 추가
 function buyNow(productNum) {
     const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
     let quantity = 1; // 기본값 설정

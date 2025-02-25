@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Buy {
 	
+	private long product_num;
 	private String thumbnail;
 	private String title;
 	private String price;

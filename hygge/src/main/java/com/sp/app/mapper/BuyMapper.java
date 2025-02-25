@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.sp.app.model.Coupon;
 import com.sp.app.model.DeliveryList;
+import com.sp.app.model.Member;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
 
@@ -18,7 +19,9 @@ public interface BuyMapper {
 	public Product findByProductNum(long num);
 	
 	// productChoice
-	public Product buyProductAllInfo(long num);
+		//public Product buyProductAllInfo(Map<String, Object> map);
+	public Product buyProductInfo(long num) throws SQLException;
+	public Member buyUserInfo(long memberIdx) throws SQLException;
 	
 	public void insertBuyDelivery(DeliveryList dto) throws SQLException;
 	public void insertBuyPayment(Payment dto) throws SQLException;
