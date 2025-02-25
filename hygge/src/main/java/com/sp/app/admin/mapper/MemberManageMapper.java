@@ -25,4 +25,5 @@ public interface MemberManageMapper {
     
     public List<Map<String, Object>> debugProjectRequestData() throws SQLException;
     public void approve(long memberIdx) throws SQLException;
+    public void reject(Map<String, Object> map) throws SQLException;
 }

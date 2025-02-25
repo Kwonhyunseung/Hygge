@@ -13,7 +13,7 @@
             JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
             LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
             LEFT OUTER JOIN Report r ON m1.memberIdx = r.memberIdx
-            WHERE ma.Authority = 'USER'
+            WHERE ma.Authority = #{authority}
             <if test="kwd != null and kwd != ''">
                 <choose>
                     <when test="schType == 'name'">
@@ -92,6 +92,7 @@
                 m1.reg_date,
                 pr.title as projectTitle,
                 pr.request_date,
+                pr.accept_return,
                 ma.authority,
                 CASE 
                     WHEN ma.authority = 'USER' THEN '대기중'
@@ -103,7 +104,7 @@
             JOIN member1 m1 ON pr.memberIdx = m1.memberIdx
             JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
             JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
-            WHERE ma.authority = 'USER'
+            WHERE ma.authority = 'USER' AND accept_return = 1
             <if test="kwd != null and kwd != ''">
                 <choose>
                     <when test="schType == 'name'">
@@ -166,5 +167,18 @@
     	UPDATE memberAuthority 
     	SET authority = 'MAKER'
     	WHERE memberIdx = #{memberIdx}
+    </update>
+    
+    <update id="reject" parameterType="map">
+UPDATE ProjectRequest pr
+SET pr.accept_return = 0
+WHERE pr.memberIdx = #{memberIdx} 
+  AND pr.num = #{projectNum} 
+  AND EXISTS (
+    SELECT 1 
+    FROM MemberAuthority ma 
+    WHERE ma.memberIdx = pr.memberIdx 
+    AND ma.authority = 'USER'
+  )
     </update>
 </mapper>

@@ -113,5 +113,11 @@ public class MemberManageServiceImpl implements MemberManageService {
 	}
 
 
+	@Override
+	public void reject(Map<String, Object> map) throws Exception {
+		mapper.reject(map);		
+	}
+
+
 }
 

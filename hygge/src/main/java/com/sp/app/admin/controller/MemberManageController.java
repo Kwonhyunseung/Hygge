@@ -62,6 +62,9 @@ public class MemberManageController {
 			map.put("offset", offset);
 			map.put("size", size);
 			
+			String authority = "USER";
+			map.put("authority", authority);
+			
 			List<MemberManage> member = service.normalMember(map);
 			
 			String cp = req.getContextPath();
@@ -94,6 +97,75 @@ public class MemberManageController {
 		
 		return "admin/member/normal";
 	}
+
+	
+	@GetMapping("maker")
+	public String makerMember(
+			@RequestParam(name = "page", defaultValue = "1") int current_page,
+			@RequestParam(name = "schType", defaultValue = "all") String schType,
+			@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			HttpServletRequest req,
+			Model model
+			) {
+		
+		try {
+			int size = 10;
+			int total_page = 0;
+			int dataCount = 0;
+			
+			kwd = URLDecoder.decode(kwd, "utf-8");
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("schType", schType);
+			map.put("kwd", kwd);
+			map.put("authority", "USER");
+			
+			dataCount = service.dataCount(map);
+			total_page = paginateUtil.pageCount(dataCount, size);
+			
+			current_page = Math.min(current_page, total_page);
+			
+			int offset = (current_page-1) * size;
+			if(offset < 0) offset = 0;
+			
+			map.put("offset", offset);
+			map.put("size", size);
+			
+			String authority = "MAKER";
+			map.put("authority", authority);
+			
+			List<MemberManage> member = service.normalMember(map);
+			
+			String cp = req.getContextPath();
+			String query = "page=" + current_page;
+			String listUrl = cp + "/admin/memberManagement/normal";
+			
+			if(! kwd.isBlank()) {
+				String qs = "schType=" + schType + "&kwd=" +
+						URLEncoder.encode(kwd, "utf-8");
+				listUrl += "?" + qs;
+				query += "&" + qs;
+			}
+			
+			String paging = paginateUtil.paging(current_page, 
+					total_page, listUrl);
+			
+			model.addAttribute("member", member);
+			model.addAttribute("dataCount", dataCount);
+			model.addAttribute("size", size);
+			model.addAttribute("page", current_page);
+			model.addAttribute("total_page", total_page);
+			model.addAttribute("paging", paging);
+			model.addAttribute("schType", schType);
+			model.addAttribute("kwd", kwd);
+			model.addAttribute("query", query);
+			
+		} catch (Exception e) {
+			log.info("makerMember : ", e);
+		}
+		
+		return "admin/member/maker";
+	}
 	
 	@GetMapping("reportOver")
 	public String reportOver(Model model) {
@@ -110,8 +182,8 @@ public class MemberManageController {
 	    return "admin/member/normal";
 	}
 	
-	@GetMapping("maker")
-	public String makerMember(
+	@GetMapping("makerSubmit")
+	public String makerSubmitMember (
 			@RequestParam(name = "page", defaultValue = "1") int current_page,
 			@RequestParam(name = "schType", defaultValue = "all") String schType,
 			@RequestParam(name = "kwd", defaultValue = "") String kwd,
@@ -178,7 +250,7 @@ public class MemberManageController {
 			log.info("makerMember : ", e);
 		}
 		
-		return "admin/member/maker";
+		return "admin/member/makerSubmit";
 		
 	}
 	
@@ -228,6 +300,29 @@ public class MemberManageController {
 		} catch (Exception e) {
 			log.info("approveMaker : ", e);
 			response.put("success", false);
+		}
+		
+		return response;
+	}
+	
+	@ResponseBody
+	@PostMapping("maker/reject")
+	public Map<String, Object> rejectMaker(@RequestParam(name = "memberIdx") long memberIdx,
+			@RequestParam(name = "projectNum") long projectNum) throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("memberIdx", memberIdx);
+			map.put("projectNum", projectNum);
+			service.reject(map);
+			
+			response.put("success", true);
+			
+		} catch (Exception e) {
+			log.info("rejectMaker : ", e);
+			response.put("false", false);
 		}
 		
 		return response;

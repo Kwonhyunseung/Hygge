@@ -20,6 +20,7 @@
             <ul class="sub-menu">
                 <li><a href="${pageContext.request.contextPath}/admin/memberManagement/normal">일반유저 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/memberManagement/maker">메이커 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/memberManagement/makerSubmit">메이커 신청</a></li>
             </ul>
         </li>
         

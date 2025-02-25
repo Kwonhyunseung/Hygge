@@ -8,7 +8,7 @@ import com.sp.app.admin.model.MemberManage;
 public interface MemberManageService {
 	// 일반유저
 	public List<MemberManage> normalMember(Map<String, Object> map) throws Exception;
-	// 일반유저 차단
+	// 유저 차단
 	public void block(String memberIdx) throws Exception;
 	// 차단 해제
 	public void unblock(String memberIdx) throws Exception;
@@ -23,4 +23,5 @@ public interface MemberManageService {
     
     // 메이커 승인
     public void approve(long memberIdx) throws Exception;
+    public void reject(Map<String, Object> map) throws Exception;
 }
