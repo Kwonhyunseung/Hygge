@@ -86,38 +86,63 @@ public class BuyServiceImpl implements BuyService {
 
 	@Override
 	public Product buyProductAllInfo(long num) {
-		// TODO Auto-generated method stub
-		return null;
+		Product dto = null;
+		try {
+			dto = mapper.buyProductAllInfo(num);
+		} catch (Exception e) {
+			log.info("buyProductAllInfo: ", e);
+		}
+		
+		return dto;
 	}
-
+	
+	
+	
 	@Override
 	public void insertBuyDelivery(DeliveryList dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.insertBuyDelivery(dto);
+		} catch (Exception e) {
+			log.info("insertBuyDelivery: ", e);
+		}
 	}
 
 	@Override
 	public void insertBuyPayment(Payment dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.insertBuyPayment(dto);
+		} catch (Exception e) {
+			log.info("insertBuyPayment: ", e);
+		}
 	}
 
 	@Override
 	public List<Coupon> listCoupon(Long memberIdx) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Coupon> list = null;
+		try {
+			list = mapper.listCoupon(memberIdx);
+		} catch (Exception e) {
+			log.info("listCoupon: ", e);
+		}
+		return list;
 	}
 
 	@Override
 	public void updateCoupon(Coupon dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.updateCoupon(dto);
+		} catch (Exception e) {
+			log.info("", e);
+		}
 	}
 
 	@Override
 	public void updateStock(Product dto) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			mapper.updateStock(dto);
+		} catch (Exception e) {
+			log.info("", e);
+		}
 	}
 
 }

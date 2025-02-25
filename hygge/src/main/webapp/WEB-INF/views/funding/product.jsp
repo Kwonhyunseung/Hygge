@@ -16,12 +16,18 @@
 
 <!-- js 파일 빼기! -->
 <script type="text/javascript">
-// 프로젝트 후원하기
-function supportProject(){
-	alert("결제창으로 이동하기");
+//프로젝트 후원하기
+function supportProject() {
+    <c:if test="${empty sessionScope.member}">
+        alert("로그인이 필요한 서비스입니다.");
+        location.href = "${pageContext.request.contextPath}/member/login";
+        return;
+    </c:if>
+    
+    location.href = "${pageContext.request.contextPath}/buy/productList/${project.num}";
 }
 
-//
+
 $(document).ready(function() {
 	loadContent('plan');
 });
@@ -88,6 +94,7 @@ $(document).on("click", ".f-select", function() {
     
     loadContent(contentType);
 });
+
 
 // 좋아요
 $(function(){
@@ -157,7 +164,6 @@ $(function(){
         });
     });
 });
-
 </script>
 
 </head>

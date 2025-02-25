@@ -12,6 +12,26 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/buy/productList.css" type="text/css">
 
+<style type="text/css">
+.buy-now-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buy-now-btn:hover {
+    background-color: #0056b3;
+}
+</style>
+
 <script type="text/javascript">
 function stepOne() {
     const selectedProduct = $(".selected-product-info");
@@ -71,12 +91,12 @@ $(function(){
         // AJAX로 상품 정보 가져오기
         let url = "${pageContext.request.contextPath}/buy/product/" + productNum;
         
-        ajaxFun(url, "get", null, "json", function(res){
+        ajaxFun(url, "get", null, "json", function(pn){
             const productInfo = {
-                price: res.price,
-                shippingFee: res.shipping_fee,
-                stock: res.stock,
-                title: res.title
+                price: pn.price,
+                shippingFee: pn.shipping_fee,
+                stock: pn.stock,
+                title: pn.title
             };
             
             let out = "";
@@ -93,6 +113,7 @@ $(function(){
             out += '        <p class="shipping-fee">배송비: ' + numberComma(productInfo.shippingFee) + '원</p>';
             out += '        <p class="total">총 금액: ' + numberComma(productInfo.price + productInfo.shippingFee) + '원</p>';
             out += '    </div>';
+            out += '    <button type="button" class="buy-now-btn" onclick="buyNow(' + productNum + ')">선택하기</button>';
             out += '</div>';
             
             $quantitySelector.html(out).show();
@@ -129,6 +150,40 @@ $(function(){
         $(this).closest('.quantity-selector').hide();
     });
 });
+
+//개별 상품 구매 함수 추가
+function buyNow(productNum) {
+    const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
+    let quantity = 1; // 기본값 설정
+    
+    // 수량 입력란이 존재하고 유효한 값인 경우에만 해당 값 사용
+    if ($quantityInput.length > 0) {
+        const inputValue = parseInt($quantityInput.val());
+        if (!isNaN(inputValue) && inputValue > 0) {
+            quantity = inputValue;
+        }
+    }
+    
+    // 수량 정보도 함께 전송하기 위한 폼 생성
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '${pageContext.request.contextPath}/buy/productChoice';
+    
+    const productNumInput = document.createElement('input');
+    productNumInput.type = 'hidden';
+    productNumInput.name = 'product_num';
+    productNumInput.value = productNum;
+    
+    const quantityInput = document.createElement('input');
+    quantityInput.type = 'hidden';
+    quantityInput.name = 'quantity';
+    quantityInput.value = quantity;
+    
+    form.appendChild(productNumInput);
+    form.appendChild(quantityInput);
+    document.body.appendChild(form);
+    form.submit();
+}
 
 // 총 금액 계산 함수
 function calculateTotal($input) {
