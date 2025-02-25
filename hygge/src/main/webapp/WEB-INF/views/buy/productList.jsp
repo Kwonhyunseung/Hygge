@@ -72,7 +72,7 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
     $.ajax(url, settings);
 }
 
-// 수량 선택
+//수량 선택
 $(function(){
     $(".select-product").click(function(e){
         const productNum = $(this).data("product-num");
@@ -88,60 +88,58 @@ $(function(){
             return;
         }
         
-        // AJAX로 상품 정보 가져오기
-        let url = "${pageContext.request.contextPath}/buy/product/" + productNum;
+        // 현재 상품 정보를 DOM에서 직접 가져오기
+        const $productInfo = $(this).find('.product-info');
+        const title = $productInfo.find('.title').contents().filter(function() {
+            return this.nodeType === 3; // Text 노드만 필터링
+        }).text().trim();
         
-        ajaxFun(url, "get", null, "json", function(pn){
-            const productInfo = {
-                price: pn.price,
-                shippingFee: pn.shipping_fee,
-                stock: pn.stock,
-                title: pn.title
-            };
+        const price = parseInt($productInfo.find('.price').text().replace(/[^0-9]/g, ''));
+        const deliveryFee = parseInt($productInfo.find('.deliveryFee').text().replace(/[^0-9]/g, ''));
+        const stock = parseInt($productInfo.find('.stock').text().replace(/[^0-9]/g, ''));
+        
+        let out = "";
+        out += '<div class="selected-product-info">';
+        out += '    <span class="close-btn"><i class="bi bi-x-square"></i></span>';
+        out += '    <h4>' + title + '</h4>';
+        out += '    <div class="quantity-control">';
+        out += '        <i class="bi bi-dash-circle minus"></i>';
+        out += '        <input type="text" name="quantity" value="1" readonly data-price="' + price + '" data-delivery-fee="' + deliveryFee + '" data-stock="' + stock + '">';
+        out += '        <i class="bi bi-plus-circle plus"></i>';
+        out += '    </div>';
+        out += '    <div class="price-info">';
+        out += '        <p class="base-price">가격: ' + numberComma(price) + '원</p>';
+        out += '        <p class="delivery-fee">배송비: ' + numberComma(deliveryFee) + '원</p>';
+        out += '        <p class="total">총 금액: ' + numberComma(price + deliveryFee) + '원</p>';
+        out += '    </div>';
+        out += '    <button type="button" class="buy-now-btn" onclick="buyNow(' + productNum + ')">선택하기</button>';
+        out += '</div>';
+        
+        $quantitySelector.html(out).show();
+        
+        // 수량 증가
+        $quantitySelector.find('.bi-plus-circle').click(function(e) {
+            e.stopPropagation();
+            const $input = $(this).siblings('input[name="quantity"]');
+            const currentVal = parseInt($input.val());
+            const maxStock = parseInt($input.data('stock'));
             
-            let out = "";
-            out += '<div class="selected-product-info">';
-            out += '    <span class="close-btn"><i class="bi bi-x-square"></i></span>';
-            out += '    <h4>' + productInfo.title + '</h4>';
-            out += '    <div class="quantity-control">';
-            out += '        <i class="bi bi-dash-circle minus"></i>';
-            out += '        	<input type="text" name="quantity" value="1" readonly data-price="' + productInfo.price + '" data-shipping="' + productInfo.shippingFee + '" data-stock="' + productInfo.stock + '">';
-            out += '        <i class="bi bi-plus-circle plus"></i>';
-            out += '    </div>';
-            out += '    <div class="price-info">';
-            out += '        <p class="base-price">가격: ' + numberComma(productInfo.price) + '원</p>';
-            out += '        <p class="shipping-fee">배송비: ' + numberComma(productInfo.shippingFee) + '원</p>';
-            out += '        <p class="total">총 금액: ' + numberComma(productInfo.price + productInfo.shippingFee) + '원</p>';
-            out += '    </div>';
-            out += '    <button type="button" class="buy-now-btn" onclick="buyNow(' + productNum + ')">선택하기</button>';
-            out += '</div>';
+            if (currentVal < maxStock) {
+                $input.val(currentVal + 1);
+                calculateTotal($input);
+            }
+        });
+        
+        // 수량 감소
+        $quantitySelector.find('.bi-dash-circle').click(function(e) {
+            e.stopPropagation();
+            const $input = $(this).siblings('input[name="quantity"]');
+            const currentVal = parseInt($input.val());
             
-            $quantitySelector.html(out).show();
-            
-            // 수량 증가
-            $quantitySelector.find('.bi-plus-circle').click(function(e) {
-                e.stopPropagation();
-                const $input = $(this).siblings('input[name="quantity"]');
-                const currentVal = parseInt($input.val());
-                const maxStock = parseInt($input.data('stock'));
-                
-                if (currentVal < maxStock) {
-                    $input.val(currentVal + 1);
-                    calculateTotal($input);
-                }
-            });
-            
-            // 수량 감소
-            $quantitySelector.find('.bi-dash-circle').click(function(e) {
-                e.stopPropagation();
-                const $input = $(this).siblings('input[name="quantity"]');
-                const currentVal = parseInt($input.val());
-                
-                if (currentVal > 1) {
-                    $input.val(currentVal - 1);
-                    calculateTotal($input);
-                }
-            });
+            if (currentVal > 1) {
+                $input.val(currentVal - 1);
+                calculateTotal($input);
+            }
         });
     });
 
@@ -151,7 +149,18 @@ $(function(){
     });
 });
 
-function buyNow(productNum) {
+//총 금액 계산 함수
+function calculateTotal($input) {
+    const quantity = parseInt($input.val());
+    const price = parseInt($input.data('price'));
+    const deliveryFee = parseInt($input.data('delivery-fee')); // 수정된 부분
+    const total = (price * quantity) + deliveryFee;
+    
+    const $priceInfo = $input.closest('.selected-product-info').find('.price-info');
+    $priceInfo.find('.total').text('총 금액: ' + numberComma(total) + '원');
+}
+
+/* function buyNow(productNum) {
     const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
     let quantity = 1; // 기본값 설정
     
@@ -182,17 +191,55 @@ function buyNow(productNum) {
     form.appendChild(quantityInput);
     document.body.appendChild(form);
     form.submit();
-}
-
-// 총 금액 계산 함수
-function calculateTotal($input) {
-    const quantity = parseInt($input.val());
-    const price = parseInt($input.data('price'));
-    const shippingFee = parseInt($input.data('shipping'));
-    const total = (price * quantity) + shippingFee;
+} */
+function buyNow(productNum) {
+    console.log("buyNow 함수 호출됨: 상품번호 = " + productNum);
     
-    const $priceInfo = $input.closest('.selected-product-info').find('.price-info');
-    $priceInfo.find('.total').text('총 금액: ' + numberComma(total) + '원');
+    // 수량 입력란 찾기
+    const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
+    console.log("수량 입력란 찾음:", $quantityInput.length > 0 ? "성공" : "실패");
+    
+    let quantity = 1; // 기본값 설정
+    
+    // 수량 입력란이 존재하고 유효한 값인 경우에만 해당 값 사용
+    if ($quantityInput.length > 0) {
+        const inputValue = parseInt($quantityInput.val());
+        console.log("입력된 수량 값:", $quantityInput.val(), "파싱된 값:", inputValue);
+        
+        if (!isNaN(inputValue) && inputValue > 0) {
+            quantity = inputValue;
+        }
+    }
+    
+    console.log("최종 수량:", quantity);
+    
+    // 수량 정보도 함께 전송하기 위한 폼 생성
+    try {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/buy/productChoice';
+        
+        const productNumInput = document.createElement('input');
+        productNumInput.type = 'hidden';
+        productNumInput.name = 'product_num';
+        productNumInput.value = productNum;
+        
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'hidden';
+        quantityInput.name = 'quantity'; // 'quantity'로 이름 유지
+        quantityInput.value = quantity;
+        
+        form.appendChild(productNumInput);
+        form.appendChild(quantityInput);
+        
+        console.log("폼 생성 완료: product_num =", productNum, "quantity =", quantity);
+        
+        document.body.appendChild(form);
+        form.submit();
+    } catch (e) {
+        console.error("폼 생성 및 제출 중 오류 발생:", e);
+        alert("오류가 발생했습니다: " + e.message);
+    }
 }
 
 // 숫자 콤마 포맷팅
@@ -227,7 +274,7 @@ function numberComma(x) {
 		<form id="productForm" method="post" action="${pageContext.request.contextPath}/buy/productChoice">
 		<input type="hidden" name="product_num" id="selectedProductNum">
 		
-		<div class="listProduct">
+		<div class="listProduct" style="margin-bottom: 100px;">
 		    <c:forEach var="product" items="${list}">
 		        <div class="select-product" data-product-num="${product.product_num}">
 		            <div class="product-info">
@@ -249,7 +296,7 @@ function numberComma(x) {
 		                <p class="deliveryDay">배송 일정: ${product.delivery_info}</p>
 		                <p class="deliveryFee">
 		                    <i class="bi bi-truck"></i> 
-		                    배송비 <fmt:formatNumber value="${product.shipping_fee}" pattern="#,###"/>원
+		                    배송비 <fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원
 		                </p>
 		            </div>
 		            <!-- 각 상품마다 수량 선택 - AJAX처리 -->
@@ -258,8 +305,8 @@ function numberComma(x) {
 		        <hr>
 		    </c:forEach>
 		</div>
+		
 
-		<button type="button" class="buyBtn" onclick="stepOne()">다음 단계</button>
 	</form>
 	
 	</div>

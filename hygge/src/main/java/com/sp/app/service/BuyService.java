@@ -8,6 +8,7 @@ import com.sp.app.model.DeliveryList;
 import com.sp.app.model.Member;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
+import com.sp.app.model.Sales;
 
 public interface BuyService {
 	// productList
@@ -20,6 +21,7 @@ public interface BuyService {
 		public Member buyUserInfo(long memberIdx) throws Exception;
 		
 		public void insertBuyDelivery(DeliveryList dto) throws Exception;
+	    public void insertBuySales(Sales dto) throws Exception;
 		public void insertBuyPayment(Payment dto) throws Exception;
 		
 		public List<Coupon> listCoupon(Long memberIdx);

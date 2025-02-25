@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
-import com.sp.app.model.Review;
 
 @Mapper
 public interface FundingProjectMapper {
@@ -25,8 +24,7 @@ public interface FundingProjectMapper {
     public void insertFollowing(Map<String, Object> map);
     public void deleteFollowing(Map<String, Object> map);
 
-    
-    public List<Review> listProductReview(Map<String, Object> map);
+    //public List<Review> listProductReview(Map<String, Object> map);
 	// 후기는 마이페이지에서 내가 산 물품 후기 작성 가능
 	// 펀딩 화면은 후기 리스트만 보이게?
 	

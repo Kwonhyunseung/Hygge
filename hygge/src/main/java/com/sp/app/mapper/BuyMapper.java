@@ -11,6 +11,7 @@ import com.sp.app.model.DeliveryList;
 import com.sp.app.model.Member;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
+import com.sp.app.model.Sales;
 
 @Mapper
 public interface BuyMapper {
@@ -24,6 +25,7 @@ public interface BuyMapper {
 	public Member buyUserInfo(long memberIdx) throws SQLException;
 	
 	public void insertBuyDelivery(DeliveryList dto) throws SQLException;
+    public void insertBuySales(Sales dto) throws SQLException;
 	public void insertBuyPayment(Payment dto) throws SQLException;
 	
 	public List<Coupon> listCoupon(Long memberIdx);

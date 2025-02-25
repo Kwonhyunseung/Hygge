@@ -26,7 +26,9 @@ public class Product {
 	private int amount; //구매개수
 	private int sum; //가격*개수
 	private String delivery_info; //배송정보
-	private int shipping_fee; //배송비
+	private int delivery_fee; //배송비 (ProjectRequest)
+
+	private int shipping_fee; //배송비 (Payment)
 	
 
 	private List<Integer> priceList;

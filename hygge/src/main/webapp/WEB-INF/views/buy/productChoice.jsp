@@ -15,7 +15,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script type="text/javascript">
-function two() {
+function finalBuy() {
     if(!$('#agreeAll').is(':checked')) {
         alert('필수 약관에 동의해주세요.');
         return;
@@ -36,7 +36,7 @@ $(function() {
     });
 });
 
-
+// 신규 배송지
 function newAddr() {
     const $addrBtn = $('#addrBtn');
     const $receiver = $('#receiver');
@@ -46,11 +46,10 @@ function newAddr() {
     const $postFind = $('#postFind');
     
     if($addrBtn.val() === "신규 배송지 입력") {
-        // 입력 필드 초기화 및 편집 가능하게 변경
         $receiver.val('').removeAttr('readonly');
-        $address.val('').removeAttr('readonly');
+        $address.val('');
         $detailAddr.val('').removeAttr('readonly');
-        $postCode.val('').removeAttr('readonly');
+        $postCode.val('');
         $postFind.show(); // 우편번호 찾기 버튼 표시
         
         // 버튼 텍스트 변경
@@ -71,9 +70,10 @@ function newAddr() {
 // 페이지 로드 시 우편번호 찾기 버튼 숨기기
 $(function() {
     $('#postFind').hide();
-    // 나머지 코드는 그대로 유지
+    
 });
 
+// 다음주소 API
 function daumPostcode() {
 	new daum.Postcode({
 		oncomplete : function(data) {
@@ -149,19 +149,60 @@ function daumPostcode() {
 				<div class="col-7 productInfo">
 					<h4>상품 정보</h4>
 					<br>
-					<p class="title">${product.title}
-						<span class="price"><fmt:formatNumber value="${product.price}" pattern="#,###"/>원</span>
-					</p>
-					<c:set var="details" value="${product.detail}" />
-<p class="detail" style="margin-left: 30px;">${details}</p>
-					<p class="stock">
-						구매 수량
-						<span class="stock">${product.amount}개</span>
-					</p>
-					<p class="productPrice">
-						구매 금액
-						<span class="productPrice"><fmt:formatNumber value="${product.sum}" pattern="#,###"/>원</span>
-					</p>
+					<div class="product-title-container">
+			            <div class="product-title">${product.title}</div>
+			            <div class="product-price"><fmt:formatNumber value="${product.price}" pattern="#,###"/>원</div>
+			        </div>
+			        <div class="product-details-container">
+			            <c:forEach var="details" items="${fn:split(product.detail, '💚')}">
+			                <c:if test="${!empty details}">
+			                    <p class="detail-item">💚${details}</p>
+			                </c:if>
+			            </c:forEach>
+			        </div>
+			        <p class="stock">
+			            구매 수량
+			            <span class="stock">${product.amount}개</span>
+			        </p>
+			        <script type="text/javascript">
+			        $(function() {
+			            // 상품 구성의 항목 수 확인
+			            const detailItems = $('.detail-item').length;
+			            const detailsContainer = $('.product-details-container');
+			            const stockInfo = $('.stock');
+			            
+			            // 상품 구성이 3개 이하인 경우 공통 처리
+			            if (detailItems <= 3) {
+			                // 컨테이너 높이 제한 제거
+			                detailsContainer.css({
+			                    'max-height': 'none',
+			                    'overflow-y': 'visible',
+			                    'margin-bottom': '10px'
+			                });
+			                
+			                // 구분선 추가 (공통)
+			                detailsContainer.after('<div class="stock-divider"></div>');
+			                
+			                // 1~3개 모두 동일한 클래스 추가
+			                stockInfo.addClass('stock-below');
+			            }
+			            // 4개 이상인 경우
+			            else {
+			                // 스크롤 적용 (3개 정도 보이는 높이로 설정)
+			                const itemHeight = 45; // 대략적인 각 항목의 높이 (픽셀)
+			                const visibleItems = 3; // 보이는 항목 수
+			                const height = (itemHeight * visibleItems) + 10; // 약간의 여유 추가
+			                
+			                detailsContainer.css({
+			                    'max-height': height + 'px',
+			                    'overflow-y': 'auto'
+			                });
+			                
+			                // 스크롤 가능한 컨테이너에 맞는 스타일 적용
+			                stockInfo.addClass('stock-inline');
+			            }
+			        });
+			        </script>
 				</div>
 			</div>
 			
@@ -184,15 +225,15 @@ function daumPostcode() {
 			<div class="deliveryInfo">
 			<h4>배송 정보</h4>
 			    <!-- 디폴트는 자동으로 정보 기입 -->
-			    <!-- 신규배송지 누를경우, readonly풀리면서 받는사람, 주소 새로 입력하도록 -->
+			    <!-- 신규배송지 누를경우, readonly풀리면서 받는사람, 주소 새로 입력할거임-->
 			    <input type="button" id="addrBtn" value="신규 배송지 입력" onclick="newAddr();">
-			    <input type="text" id="receiver" value="${member.name}" readonly>
+			    <input type="text" id="receiver" value="${member.name}" placeholder="받는 사람" readonly>
 			    <div>
-			        <input type="text" id="address" value="${member.addr1}" readonly>
-			        <input type="text" id="postCode" value="${member.postCode}" readonly>
-			        <input type="button" onclick="daumPostcode();" value="우편번호 찾기" id="postFind" style="display:none;">
+			        <input type="text" id="address" value="${member.addr1}" placeholder="주소" readonly>
+			        <input type="text" id="postCode" value="${member.postCode}" placeholder="우편번호" readonly>
+			        <input type="button" onclick="daumPostcode();" value="우편번호 찾기" id="postFind">
 			    </div>
-			    <input type="text" id="detailAddr" value="${member.addr2}" readonly>
+			    <input type="text" id="detailAddr" value="${member.addr2}" placeholder="상세주소를 입력해주세요" readonly>
 			    <input type="text" id="aInfo" placeholder="주문 요청 사항을 입력해주세요(선택)">
 			</div>
 			
@@ -223,7 +264,7 @@ function daumPostcode() {
 			<h4>결제 금액</h4>
 				<p class="productPrice">
 					리워드 금액
-					<span class="productPrice">1,000,000원</span>
+					<span class="productPrice"><fmt:formatNumber value="${product.sum}" pattern="#,###"/>원</span>
 				</p>
 				<p class="couponPrice">
 					쿠폰 금액
@@ -231,7 +272,7 @@ function daumPostcode() {
 				</p> 
 				<p class="deliveryFee">
 					배송비
-					<span class="deliveryFee">${project.shipping_fee}원</span>	
+					<span class="deliveryFee">${product.delivery_fee}원</span>	
 				</p>
 				<hr>
 				<p class="totalPrice">
@@ -266,7 +307,7 @@ function daumPostcode() {
 			
 		</div>
 		
-		<button type="button" class="buyBtn" onclick="two()">결제하기</button>
+		<button type="button" class="buyBtn" onclick="finalBuy()">결제하기</button>
 
 	</div>
 

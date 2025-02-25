@@ -6,81 +6,38 @@
 	<!-- 결제창 상품리스트 : 가격, 상품명, 상세정보, 원산지, 배송일정, 배송비 -->
 	<select id="productList" parameterType="map" resultType="com.sp.app.model.Product">
 		SELECT DISTINCT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
-		    pr.delivery_info, 
-		    pm.shipping_fee
+		    pr.delivery_info, pr.delivery_fee
 	    FROM product p
 	    JOIN projectRequest pr ON p.num = pr.num
-	    LEFT JOIN sales s ON p.product_num = s.product_num
-	    LEFT JOIN payment pm ON s.payment_num = pm.payment_num
 	    WHERE p.num = #{num}
 	</select>
 	
-	<!-- 결제창 상품선택 -->
-	<select id="findByProductNum" parameterType="Long" resultType="com.sp.app.model.Product">
-		SELECT p.product_num, p.price, p.title, p.detail, p.stock, p.origin, p.num,
-			pr.delivery_info, 
-		    pm.shipping_fee,
-		    s.amount, s.sum
-		FROM product p
-		JOIN projectRequest pr ON p.num = pr.num
-	    LEFT JOIN sales s ON p.product_num = s.product_num
-	    LEFT JOIN payment pm ON s.payment_num = pm.payment_num
-		WHERE p.product_num = #{product_num}
-	</select>
+	<!-- 결제창 상품선택 --> 
+	<!-- <select id="findByProductNum" parameterType="Long" resultType="com.sp.app.model.Product">
+		SELECT p.product_num, p.price, p.title, p.detail, p.stock, p.num,
+			pr.delivery_info, pr.delivery_fee
+FROM product p
+JOIN projectRequest pr ON p.num = pr.num
+WHERE p.product_num = #{product_num}
+	</select> -->
 
-
-
-
-	<!-- 결제창 - 상품선택시 결제를 위한 상품정보 가져오기. 상품정보(썸네일, 상품명, 상품구성, 구매수량, 결제금액) 서포터정보(이름, 이메일, 핸드폰번호) 배송지정보(받는사람=>유저, 주소1,2, 우편번호) -->
-	<!-- 
-	<select id="buyProductAllInfo" parameterType="map" resultType="com.sp.app.model.Product">
-		 SELECT p.product_num, p.title, p.detail, p.price,
-			pr.thumbnail,
-			s.amount, s.sum,
-			m.name,
-			m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1, m2.addr2, m2.postCode,
-			COALESCE(d.receiver, m.name) as receiver
-		FROM Product p
-		JOIN ProjectRequest pr ON p.num = pr.num
-		JOIN Sales s ON p.product_num = s.product_num
-		JOIN Member1 m ON pr.memberIdx = m.memberIdx
-		JOIN Member2 m2 ON m.memberIdx = m2.memberIdx
-		LEFT JOIN (
-	        SELECT * FROM DeliveryList 
-	        WHERE default_dest = 0
-	    ) d ON m.memberIdx = d.memberIdx
-		WHERE p.product_num = #{product_num}
-		SELECT p.product_num, p.title, p.detail, p.price, pr.thumbnail
-    FROM Product p
-    JOIN ProjectRequest pr ON p.num = pr.num
-    WHERE p.product_num = #{product_num}
-	</select>
-	-->
-	
 	<!-- 결제할 상품 정보 -->
 	<select id="buyProductInfo" parameterType="Long" resultType="com.sp.app.model.Product">
-		<!-- 썸네일, 상품명, 가격, 구매수량, 구매금액, 배송비 -->
-		SELECT p.product_num, p.num, pr.thumbnail, p.title, p.price, s.amount, s.sum, pm.shipping_fee
+		<!-- 썸네일, 상품명, 상품구성, 구매수량, 구매금액, 배송비, 가격 -->
+		SELECT p.product_num, p.num, pr.thumbnail, p.title, p.detail, p.price, pr.delivery_fee
 		FROM Product p
 		JOIN ProjectRequest pr ON p.num = pr.num
-		JOIN Sales s ON p.product_num = s.product_num
-		JOIN Payment pm ON s.payment_num = pm.payment_num
 		WHERE p.product_num = #{product_num}
 	</select>
 	
 	<!-- 서포터 정보 -->
 	<select id="buyUserInfo" parameterType="Long" resultType="com.sp.app.model.Member">
-		<!-- 이름, 이메일, 핸드폰 번호, 주소1, 주소2, 우편번호 -->
+		<!-- 이름, 이메일, 번호1,2,3, 주소1,2, 우편번호 -->
 		SELECT m.memberIdx, name, email1, email2, tel1, tel2, tel3, addr1, addr2, postCode 
 		FROM Member1 m
 		JOIN Member2 m2 ON m.memberIdx = m2.memberIdx
 		WHERE m.memberIdx = #{memberIdx}
 	</select>
-
-
-
-
-
 
 	<!-- 배송지 등록(신규 배송지일 경우) -->
 	<insert id="insertBuyDelivery" parameterType="com.sp.app.model.DeliveryList">
@@ -89,7 +46,14 @@
 			VALUES (DELIVERY_SEQ.NEXTVAL, #{memberIdx}, #{addr1}, #{addr2}, #{postCode}, 1, #{request})
 	</insert>
 	
-	<!-- 결제내역 등록 -->
+	<!-- 구매내역 등록 -->
+	<insert id="insertBuySales" parameterType="com.sp.app.model.Sales">
+INSERT INTO Sales (num, product_num, amount, sum, payment_num)
+VALUES (SALES_SEQ.NEXTVAL, #{product_num}, #{amount}, #{sum}, #{payment_num})
+</insert>
+	
+	
+	<!-- 결제내역 등록 --> 
 	<insert id="insertBuyPayment" parameterType="com.sp.app.model.Payment">
 		<!-- pay_way -> 카드:1 -->
 		INSERT INTO Payment (payment_num, memberIdx, total_amount, pay_amount, pay_way, sort, shipping_fee, coupon, payment_date, shipping_state)

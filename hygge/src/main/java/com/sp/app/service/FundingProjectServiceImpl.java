@@ -9,11 +9,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.sp.app.common.MyUtil;
 import com.sp.app.mapper.FundingProjectMapper;
 import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
-import com.sp.app.model.Review;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FundingProjectServiceImpl implements FundingProjectService {
 	private final FundingProjectMapper mapper;
-	private final MyUtil myUtil;
+	//private final MyUtil myUtil;
 
 	@Override
 	public Funding fundingProduct(long num) {
@@ -53,12 +51,11 @@ public class FundingProjectServiceImpl implements FundingProjectService {
             // 결제일 계산
             project.setPayment_date(inputDate.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
         } catch (Exception e) {
-            // 에러시 기본값
             project.setRemained_date("0");
             project.setPayment_date(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
         }
     }
-
+	
 	// 날짜 파싱
     private static LocalDate parseDate(String dateString) {
         try {
@@ -188,28 +185,6 @@ public class FundingProjectServiceImpl implements FundingProjectService {
 			log.info("deleteFollowing: ", e);
 		}
 		
-	}
-	
-
-	
-	
-	@Override
-	public List<Review> listProductReview(Map<String, Object> map) {
-		List<Review> list = null;
-		
-		try {
-			list = mapper.listProductReview(map);
-			
-			for(Review dto : list) {
-				dto.setMemberName(myUtil.nameMasking(dto.getMemberName()));
-				
-				
-			}
-			
-		} catch (Exception e) {
-			log.info("listProductReview: ", e);
-		}
-		return list;
 	}
 	
 	

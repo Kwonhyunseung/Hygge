@@ -5,19 +5,7 @@
 
 	<!-- 프로젝트 상세화면 - 전반적인 메인 정보들 -->
 	<select id="fundingProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
-		<!-- SELECT DISTINCT p.num, c.name, m.block, pr.title, pr.target, pr.term, 
-			pr.thumbnail, pr.delivery_info, m.nickname, TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') 
-			AS start_date, TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date, 
-			NVL(total_amount, 0) AS total_amount, (SELECT COUNT(1) FROM follow f WHERE 
-			f.following = pr.MEMBERIDX) AS followingCount FROM project p JOIN projectRequest 
-			pr ON p.num = pr.num JOIN category c ON pr.category_num = c.category_num 
-			JOIN MEMBERAUTHORITY ma ON ma.MEMBERIDX = pr.MEMBERIDX JOIN member1 m ON 
-			m.memberidx = ma.MEMBERIDX LEFT JOIN ( SELECT pr.num, SUM(DISTINCT pm.total_amount) 
-			AS total_amount FROM projectRequest pr JOIN product pd ON pr.num = pd.num 
-			LEFT JOIN sales s ON pd.product_num = s.product_num LEFT JOIN payment pm 
-			ON s.payment_num = pm.payment_num GROUP BY pr.num ) payment_summary ON p.num 
-			= payment_summary.num WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER' -->
-		SELECT DISTINCT
+		<!-- SELECT DISTINCT
 			p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
 			pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,
 			TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
@@ -38,7 +26,29 @@
 			WHERE pd.num = #{num}
 			GROUP BY pd.num
 		) payment_summary ON p.num = payment_summary.num
-		WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER'
+		WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER' -->
+		SELECT 
+		    p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
+		    pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,
+		    TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
+		    TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date,
+		    NVL(payment_summary.total_amount, 0) AS total_amount,
+		    (SELECT COUNT(1)
+		     FROM follow f
+		     WHERE f.following = pr.MEMBERIDX) AS followingCount
+		FROM project p
+		JOIN projectRequest pr ON p.num = pr.num
+		JOIN category c ON pr.category_num = c.category_num
+		JOIN MEMBERAUTHORITY ma ON ma.MEMBERIDX = pr.MEMBERIDX
+		JOIN member1 m ON m.memberidx = ma.MEMBERIDX
+		LEFT JOIN (
+		    SELECT pd.num, SUM(s.sum) AS total_amount
+		    FROM product pd
+		    LEFT JOIN sales s ON pd.product_num = s.product_num
+		    WHERE pd.num = #{num}
+		    GROUP BY pd.num <!-- 추가 -->
+		) payment_summary ON p.num = payment_summary.num
+		WHERE p.num = #{num}
 	</select>
 
 	<!-- 프로젝트 상세화면 - 상품구성 -->
@@ -84,24 +94,6 @@
 	    SELECT NVL(COUNT(*), 0)
 	    FROM Follow
 	    WHERE following=#{makerIdx} AND follower=#{memberIdx}
-	</select>
-	
-	
-	
-	<!-- 프로젝트 - 후기 -->
-	<select id="productReviews" parameterType="Long"
-		resultType="com.sp.app.model.Funding">
-		<!-- SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
-			mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
-			r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
-			r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
-			WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
-			#{product_num}) SELECT r.review_num, r.content, r.grade, m.nickName AS reviewer_name, 
-			mp.s_FileName AS reviewer_profile, rp.s_FileName AS review_photo FROM Review 
-			r JOIN Member1 m ON r.sales_num = m.memberIdx LEFT JOIN ReviewPhoto rp ON 
-			r.review_num = rp.review_num LEFT JOIN MakerFile mp ON m.memberIdx = mp.mkboard_num 
-			WHERE r.project_num = (SELECT p.num FROM Product p WHERE p.product_num = 
-			#{product_num}) -->
 	</select>
 
 </mapper>

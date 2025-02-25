@@ -44,25 +44,20 @@ public class FundingController {
 			boolean isUserLiked = false;
 			boolean isUserFollow = false;
 
-			// 프로젝트 상세 정보 조회
 			Funding project = detailService.fundingProduct(num);
 			log.info("memberIdx: {}", project.getMemberIdx());
 
-			// 펀딩 정보 계산
 			detailService.calculateProject(project);
 
-			// 제품 목록 조회
 			map.put("num", num);
 			List<Product> productList = detailService.detailProduct(map);
 
-			// 좋아요 수 조회
 			int likeCount = detailService.projectLikeCount(num);
 
 			if (info != null) {
 				map.put("memberIdx", info.getMemberidx());
 				map.put("makerIdx", project.getMemberIdx());
 
-				// 좋아요 및 팔로우 상태 확인
 				isUserLiked = detailService.userFundingLiked(map) > 0;
 				isUserFollow = detailService.userFollowing(map) > 0;
 			}
@@ -83,8 +78,6 @@ public class FundingController {
 		}
 		return "funding/product";
 	}
-	
-	
 
 	// 프로젝트 좋아요
 	@ResponseBody

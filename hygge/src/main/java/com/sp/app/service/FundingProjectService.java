@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
-import com.sp.app.model.Review;
 
 public interface FundingProjectService {
 	
@@ -24,10 +23,6 @@ public interface FundingProjectService {
     public int userFollowing(Map<String, Object> map);
     public void insertFollowing(Map<String, Object> map);
     public void deleteFollowing(Map<String, Object> map);
-	
-    
-    
-	public List<Review> listProductReview(Map<String, Object> map);
 
 }
 

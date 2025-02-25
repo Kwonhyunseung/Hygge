@@ -23,12 +23,10 @@
 	
 // 팔로우
 $(function() {
-    // 팔로우 버튼 클릭 이벤트
     $("#btnFollow").click(function() {
         let makerIdx = $(this).data("makeridx");
         let num = $(this).data("num");
         
-        // AJAX 요청
         $.ajax({
             url: "${pageContext.request.contextPath}/funding/toggleFollow",
             type: "POST",
@@ -39,10 +37,8 @@ $(function() {
             dataType: "json",
             success: function(data) {
                 if(data.state === "true") {
-                    // 팔로워 수 업데이트
 					$(".maker-name p:last-child").text(data.followingCount + "명이 팔로우 중");
                     
-                    // 버튼 UI 업데이트
                     if(data.isFollowing) {
                         $("#btnFollow i").removeClass("bi-suit-heart").addClass("bi-suit-heart-fill");
                         $("#followText").text("팔로잉");

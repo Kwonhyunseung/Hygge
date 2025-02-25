@@ -14,6 +14,7 @@ import com.sp.app.model.DeliveryList;
 import com.sp.app.model.Member;
 import com.sp.app.model.Payment;
 import com.sp.app.model.Product;
+import com.sp.app.model.Sales;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,21 +87,6 @@ public class BuyServiceImpl implements BuyService {
 		return dto;
 	}
 
-	/*
-	@Override
-	public Product buyProductAllInfo(Map<String, Object> map) {
-		Product dto = null;
-		try {
-			dto = mapper.buyProductAllInfo(map);
-			log.info("buyProductAllInfo result: {}", dto);
-		} catch (Exception e) {
-			log.info("buyProductAllInfo: ", e);
-		}
-		
-		return dto;
-	}
-	*/
-	
 	@Override
 	public Product buyProductInfo(long num) throws SQLException {
 		Product dto = null;
@@ -133,6 +119,16 @@ public class BuyServiceImpl implements BuyService {
 	}
 
 	@Override
+	public void insertBuySales(Sales dto) throws Exception {
+		try {
+			mapper.insertBuySales(dto);
+		} catch (Exception e) {
+			log.info("insertBuySales: ", e);
+		}
+		
+	}
+	
+	@Override
 	public void insertBuyPayment(Payment dto) throws Exception {
 		try {
 			mapper.insertBuyPayment(dto);
@@ -157,7 +153,7 @@ public class BuyServiceImpl implements BuyService {
 		try {
 			mapper.updateCoupon(dto);
 		} catch (Exception e) {
-			log.info("", e);
+			log.info("updateCoupon: ", e);
 		}
 	}
 
@@ -166,10 +162,9 @@ public class BuyServiceImpl implements BuyService {
 		try {
 			mapper.updateStock(dto);
 		} catch (Exception e) {
-			log.info("", e);
+			log.info("updateStock: ", e);
 		}
 	}
-
 	
 
 }
