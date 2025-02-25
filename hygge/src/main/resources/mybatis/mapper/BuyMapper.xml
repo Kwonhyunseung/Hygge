@@ -76,7 +76,7 @@
 	<update id="updateCoupon" parameterType="com.sp.app.model.Coupon">
 	    UPDATE Coupon
 	    SET USED_DATE = SYSDATE
-	    WHERE NUM = #{num} AND MEMBERIDX = #{memberIdx} AND USED_DATE IS NULL
+	    WHERE num = #{num} AND memberIdx = #{memberIdx} AND USED_DATE IS NULL
 	</update>
 	
 	<!-- 판매 개수에 따른 재고 감소 -->
