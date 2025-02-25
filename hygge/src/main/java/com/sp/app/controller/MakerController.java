@@ -75,7 +75,7 @@ public class MakerController {
 			if (dto.getThumbnail_File() != null) {
 				dto.setThumbnail(storageService.uploadFileToServer(dto.getThumbnail_File(), uploadPath));
 			}
-			if (dto.getBusiness_File() != null) {
+			if (!dto.getBusiness_File().isEmpty()) {
 				dto.setBusiness(1);
 			} else {
 				dto.setBusiness(0);

@@ -234,7 +234,7 @@ textarea.form-input {
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/nav-item.jsp"/>
 
 
-<form name="submit2" method="post">
+<form name="submit2" method="post" enctype="multipart/form-data">
 <div class="form-container">
 	<div class="form-section">
 		<h2>프로젝트 카테고리</h2>
@@ -280,7 +280,10 @@ textarea.form-input {
 		<h2>배송 일정</h2>
 		<p>프로젝트가 성공적으로 완료된 후, 진행될 배송일정에 대해 간단히 적어주세요.</p>
 		<input type="checkbox" name="isDelivery" id="checkbox1"><label style="margin-left: 5px;" for="checkbox1">배송이 필요한 상품입니다.</label>
-		<input type="text" class="form-input" placeholder="배송일정을 적어주세요" style="display: none;" name="delivery_info">
+		<div class="delivery-container" style="display: none;">
+			<input type="text" class="form-input" placeholder="배송일정을 적어주세요" name="delivery_info">
+			<input type="text" class="form-input" placeholder="배송비를 적어주세요 배송이 필요하지 않다면 0을 입력해주세요" name="delivery_fee">
+		</div>
 	</div>
 	
 	<div class="tip-section">
@@ -336,9 +339,9 @@ $(function() {
 	// 배송일정 작성
 	$('input[name="isDelivery"]').change(function() {
 		if ($(this).is(':checked')) {
-			$('input[name="delivery_info"]').slideDown(200);
+			$('.delivery-container').slideDown(200);
 		} else {
-			$('input[name="delivery_info"]').slideUp(200);
+			$('.delivery-container').slideUp(200);
 		}
 	});
 });
@@ -445,6 +448,13 @@ function check() {
 		if (!str) {
 			f.delivery_info.focus();
 		}
+		str = f.delivery_fee.value.trim();
+		if (!str) {
+			f.delivery_fee.focus();
+		}
+	} else {
+		f.delivery_info.value = '배송이 불필요한 상품입니다.';
+		f.delivery_fee.value = 0;
 	}
 	// 요약 이미지들 확인
 	let files = f.photoFiles.value;

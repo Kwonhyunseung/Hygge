@@ -8,9 +8,7 @@
 <title>HYGGEProduct</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/funding/product.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/funding/product.css" type="text/css">
 
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
@@ -80,10 +78,11 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 function loadContent(contentType) {
     let url = "/funding/";
     url += contentType === 'plan' ? 'plan' : 'review';
-
-    ajaxFun(url, "get", null, "html", function(data) {
+    const fn = function(data) {
         $("#content-container").html(data);
-    });
+    };
+
+    ajaxFun(url, "get", null, "html", fn);
 }
 
 $(document).on("click", ".f-select", function() {

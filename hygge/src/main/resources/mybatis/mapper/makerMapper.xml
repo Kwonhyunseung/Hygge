@@ -13,8 +13,8 @@
 	</select>
 
 	<insert id="insertTempProjectRequest" parameterType="com.sp.app.model.Funding">
-		INSERT INTO ProjectRequest (num, memberIdx, request_date, title, business, content, target, term, thumbnail, category_num, project_info, delivery_info, submit)
-			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{delivery_info}, 0)
+		INSERT INTO ProjectRequest (num, memberIdx, request_date, title, business, content, target, term, thumbnail, category_num, project_info, delivery_info, delivery_fee, submit)
+			VALUES (#{num}, #{memberIdx}, SYSDATE, #{title}, #{business}, #{content}, #{target}, #{term}, #{thumbnail}, #{category_num}, #{project_info}, #{delivery_info}, #{delivery_fee}, 0)
 	</insert>
 
 	<insert id="insertProjectPhoto" parameterType="com.sp.app.model.Funding">
