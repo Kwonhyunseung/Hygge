@@ -9,149 +9,9 @@
 <link rel="stylesheet" href="/dist/css/project/layout/header.css">
 <link rel="stylesheet" href="/dist/css/project/layout/nav-item.css">
 <link rel="stylesheet" href="/dist/css/project/button.css">
+<link rel="stylesheet" href="/dist/css/project/submit3.css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
-
 <style type="text/css">
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.5;
-    color: #333;
-}
-
-.main-content {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px 20px;
-}
-
-/* Project Header */
-.project-header {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 30px;
-    gap: 20px;
-}
-
-.project-title-container {
-    flex-grow: 1;
-}
-
-.badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border: 1px solid #FF5733;
-    color: #FF5733;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-bottom: 8px;
-}
-
-.project-title {
-    font-size: 18px;
-    font-weight: 500;
-}
-
-.project-image {
-    width: 100px;
-    height: 100px;
-    background-color: #f5f5f5;
-}
-
-/* Content Wrapper */
-.content-wrapper {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.gift-form {
-    flex: 1;
-}
-
-/* Form Styles */
-.form-title {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.form-description {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-.form-group {
-    margin-bottom: 24px;
-}
-
-.form-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.form-input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.form-input::placeholder {
-    color: #999;
-}
-
-/* Radio and Checkbox Styles */
-.radio-group {
-    margin-top: 10px;
-}
-
-.radio-label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: #666;
-}
-
-.radio-input {
-    margin-right: 8px;
-}
-
-/* Button Styles */
-.button-group {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.btn {
-    padding: 10px 30px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    background: white;
-}
-
-.btn-cancel {
-    color: #666;
-}
-
 .btn-add {
     border-color: #FF5733;
     color: #FF5733;
@@ -160,63 +20,6 @@ body {
 .btn-add:hover {
     background-color: #FF5733;
     color: white;
-}
-
-/* Gift List Styles */
-.gift-list {
-    flex: 1;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
-.gift-item {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.gift-item:last-child {
-    border-bottom: none;
-}
-
-.gift-price {
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-}
-
-.gift-title {
-    margin-top: 8px;
-    color: #666;
-    font-size: 14px;
-}
-
-.gift-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.action-btn {
-    padding: 6px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: none;
-    cursor: pointer;
-    font-size: 12px;
-    color: #666;
-}
-
-.action-btn:hover {
-    background-color: #f5f5f5;
-}
-
-.origin-info {
-	font-size: 0.7rem;
-	color: gray;
-	margin-left: 10px;
 }
 </style>
 </head>
@@ -229,16 +32,20 @@ body {
     
 <main class="main-content">
 	<div class="content-wrapper">
-		<form name="submit2" style="display: flex; width: 48%;">
+		<form name="submit3" style="display: flex; width: 48%; flex-direction: column;" method="post">
 			<div class="gift-list">
-				<div style="font-style: italic; color: gray; padding: 20px;">상품을 추가해주세요</div>
+				<div style="font-style: italic; color: gray; padding: 20px;">
+					<p>제출하신 순서대로 프로젝트 화면에 노출됩니다</p>
+					<p>상품을 추가해주세요</p>
+				</div>
 			</div>
+			<input type="hidden" name="num" value="${projectNum}">
 		</form>
 		
 		<div class="gift-form">
 			<h2 class="form-title">선물 만들기+</h2>
 			<p class="form-description">선물은 프로젝트에서 서포터에게 가치를 전달하는 수단입니다.<br>
-				이 점을 고려해서 혜택 개별 선물을 만들어주세요. 선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
+				이 점을 고려해서 혜택 개별 선물을 만들어주세요.<br>선물 설정을 완료하면 본격적으로 펀딩을 시작할 수 있습니다.</p>
 			<div class="form-group">
 				<label class="form-label">상품 제목</label>
 				<input type="text" class="form-input" name="title">
@@ -255,7 +62,7 @@ body {
 			</div>
 			
 			<div class="form-group">
-				<label class="form-label">상품 재고 수량</label>
+				<label class="form-label">상품 재고 수량<span class="origin-info">최대 5자리</span></label>
 				<input type="text" class="form-input" name="stock">
 			</div>
 			
@@ -271,7 +78,7 @@ body {
 	</div>
 	<div class="button-container">
 		<button type="button" class="prev-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit2'">이전</button>
-		<button type="button" class="next-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit4'">다음</button>
+		<button type="button" class="next-button" onclick="sendNext();">다음</button>
 	</div>
  </main>
 
@@ -279,34 +86,31 @@ body {
 $(function() {
 	$('.btn-add').click(function() {
 		let url = '${pageContext.request.contextPath}/makerPage/addProduct';
-		let title = $('input[name="title"]').val();
+		let title = $('.gift-form input[name="title"]').val();
 		if (!title) {
-			$('input[name="title"]').focus();
+			$('.gift-form input[name="title"]').focus();
 			return false;
 		}
-		let detail = $('input[name="detail"]').val();
+		let detail = $('.gift-form input[name="detail"]').val();
 		if (!detail) {
-			$('input[name="detail"]').focus();
+			$('.gift-form input[name="detail"]').focus();
 			return false;
 		}
-		let price = $('input[name="price"]').val();
+		let price = $('.gift-form input[name="price"]').val();
 		if (!price) {
-			$('input[name="price"]').focus();
+			$('.gift-form input[name="price"]').focus();
 			return false;
 		}
-		let stock = $('input[name="stock"]').val();
+		let stock = $('.gift-form input[name="stock"]').val();
 		if (!stock) {
-			$('input[name="stock"]').focus();
+			$('.gift-form input[name="stock"]').focus();
 			return false;
 		}
-		let origin = $('input[name="origin"]').val();
+		let origin = $('.gift-form input[name="origin"]').val();
 		if (!origin) {
-			$('input[name="origin"]').focus();
+			$('.gift-form input[name="origin"]').focus();
 			return false;
 		}
-		console.log(stock);
-		console.log(origin);
-		console.log(detail);
 		let out = '';
 		out += '<div class="gift-item">';
 		out += '	<div>';
@@ -314,53 +118,73 @@ $(function() {
 		out += '		<div class="gift-title">' + title + '</div>';
 		out += '	</div>';
 		out += '	<div class="gift-actions">';
-		out += '		<button class="action-btn update-btn">수정</button>';
-		out += '		<button class="action-btn delete-btn">삭제</button>';
+		out += '		<button type="button" class="action-btn update-btn">수정</button>';
+		out += '		<button type="button" class="action-btn delete-btn">삭제</button>';
 		out += '	</div>';
-		out += '	<input type="hidden" name="stock" value="' + stock + '">';
-		out += '	<input type="hidden" name="origin" value="' + origin + '">';
-		out += '	<input type="hidden" name="detail" value="' + detail + '">';
+		out += '	<input type="hidden" name="titleList" id="titleList" value="' + title + '">';
+		out += '	<input type="hidden" name="priceList" value="' + price + '">';
+		out += '	<input type="hidden" name="stockList" value="' + stock + '">';
+		out += '	<input type="hidden" name="originList" value="' + origin + '">';
+		out += '	<input type="hidden" name="detailList" value="' + detail + '">';
 		out += '</div>';
 
 		if ($('.gift-item').length > 0) {
-			$('.gift-list').insertAdjacentHTML('afterbegin', out);
+			$('.gift-list').append(out);
 		} else {
 			$('.gift-list').html(out);
 		}
-		$('input[name="title"]').val('');
-		$('input[name="detail"]').val('');
-		$('input[name="price"]').val('');
-		$('input[name="stock"]').val('');
-		$('input[name="origin"]').val('');
+		$('.gift-form input[name="title"]').val('');
+		$('.gift-form input[name="detail"]').val('');
+		$('.gift-form input[name="price"]').val('');
+		$('.gift-form input[name="stock"]').val('');
+		$('.gift-form input[name="origin"]').val('');
 	});
 
 	// 상품 수정
 	$('.gift-list').on('click', '.update-btn', function() {
 		let $item = $(this).closest('.gift-item');
-		console.log($item.html());
-		/*
-		let price = $item.find('.gift-price').html();
-		let title = $item.find('.gift-title').html();
-		let detail = $item.find('input[name="detail"]').val();
-		let stock = $item.find('input[name="stock"]').val();
-		let origin = $item.find('input[name="origin"]').val();
-		$('input[name="title"]').val(title);
-		$('input[name="detail"]').val(detail);
-		$('input[name="price"]').val(price);
-		$('input[name="stock"]').val(stock);
-		$('input[name="origin"]').val(origin);
+		let price = $item.find('input[name="priceList"]').val();
+		let title = $item.find('input[name="titleList"]').val();
+		let detail = $item.find('input[name="detailList"]').val();
+		let stock = $item.find('input[name="stockList"]').val();
+		let origin = $item.find('input[name="originList"]').val();
+
+		$('.gift-form input[name="title"]').val(title);
+		$('.gift-form input[name="detail"]').val(detail);
+		$('.gift-form input[name="price"]').val(price);
+		$('.gift-form input[name="stock"]').val(stock);
+		$('.gift-form input[name="origin"]').val(origin);
 		$item.remove();
-		*/
+		if ($('.gift-item').length < 1) {
+			$('.gift-list').html('<div style="font-style: italic; color: gray; padding: 20px;">'
+				+ '<p>제출하신 순서대로 프로젝트 화면에 노출됩니다</p>'
+				+ '<p>상품을 추가해주세요</p></div>');
+		}
 	});
+
 	// 상품 삭제
 	$('.gift-list').on('click', '.delete-btn', function() {
 		$(this).closest('.gift-item').remove();
 		if ($('.gift-item').length < 1) {
-			$('.gift-list').html('<div style="font-style: italic; color: gray; padding: 20px;">상품을 추가해주세요</div>');
+			$('.gift-list').html('<div style="font-style: italic; color: gray; padding: 20px;">'
+				+ '<p>제출하신 순서대로 프로젝트 화면에 노출됩니다</p>'
+				+ '<p>상품을 추가해주세요</p></div>');
 		}
 	});
 });
 
+function sendNext() {
+	const f = document.submit3;
+	let url = '${pageContext.request.contextPath}/makerPage/projectSubmit3';
+	f.action = url;
+	if ($('.gift-item').length < 1) {
+		alert('상품은 한 개 이상 등록해야 합니다.');
+		return false;
+	}
+	if (confirm('프로젝트를 등록하시겠습니까? 다음 단계로 넘어가면 수정하기 위해 돌아올 수 없습니다.')) {
+		f.submit();
+	}
+}
 </script>
 
 </body>

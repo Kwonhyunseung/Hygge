@@ -21,4 +21,9 @@
 		INSERT INTO ProjectPhoto(photo_num, s_FileName, photo_order, num2)
 			VALUES (#{project_photo_seq.NEXTVAL}, #{sfileName}, #{photo_order}, #{num})
 	</insert>
+
+	<insert id="insertProduct" parameterType="map">
+		INSERT INTO Product (product_num, price, stock, detail, title, origin, num)
+			VALUES (product_seq.NEXTVAL, #{price}, #{stock}, #{detail}, #{title}, #{origin}, #{num})
+	</insert>
 </mapper>

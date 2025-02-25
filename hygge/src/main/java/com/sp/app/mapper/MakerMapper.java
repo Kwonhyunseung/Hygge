@@ -2,6 +2,7 @@ package com.sp.app.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +15,5 @@ public interface MakerMapper {
 	public List<Category> listCategory(long num);
 	public void insertTempProjectRequest(Funding dto) throws SQLException;
 	public void insertProjectPhoto(Funding dto) throws SQLException;
+	public void insertProduct(Map<String, Object> map) throws SQLException;
 }

@@ -1,6 +1,5 @@
 package com.sp.app.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sp.app.common.StorageService;
 import com.sp.app.model.Category;
@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@SessionAttributes({"funding", "product"})
+@SessionAttributes("funding")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/makerPage/*")
@@ -94,7 +94,7 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit2")
-	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, SessionStatus sessionStatus, HttpSession session) throws Exception {
+	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, HttpSession session, RedirectAttributes rAttr) throws Exception {
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
 			if (info == null) {
@@ -102,9 +102,8 @@ public class MakerController {
 				return "redirect:/makerPage/projectSubmit2";
 			}
 			dto.setMemberIdx(info.getMemberidx());
-			service.insertTempProjectRequest(dto, uploadPath);
-			model.addAttribute("msg", "임시 저장되었습니다.");
-			sessionStatus.setComplete();
+			long num = service.insertTempProjectRequest(dto, uploadPath);
+			rAttr.addAttribute("projectNum", num);
 		} catch (Exception e) {
 			log.info("projectSubmit2 : ", e);
 		}
@@ -121,8 +120,9 @@ public class MakerController {
 	}
 	
 	@PostMapping("projectSubmit3")
-	public String projectSubmit3(Model model) throws Exception {
+	public String projectSubmit3(Product dto) throws Exception {
 		try {
+			service.insertProduct(dto);
 		} catch (Exception e) {
 			log.info("projectSubmit3 : ", e);
 		}
@@ -139,7 +139,7 @@ public class MakerController {
 	}
 	
 	@PostMapping("projectSubmit4")
-	public String projectSubmit4(@ModelAttribute("funding") Funding dto, Model model) throws Exception {
+	public String projectSubmit4(@ModelAttribute("funding") Funding dto) throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit4 : ", e);
@@ -157,7 +157,7 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit5")
-	public String projectSubmit5(Model model) throws Exception {
+	public String projectSubmit5() throws Exception {
 		try {
 		} catch (Exception e) {
 			log.info("projectSubmit5 : ", e);
@@ -173,12 +173,6 @@ public class MakerController {
 	@ModelAttribute("funding")
 	public Funding getFunding() {
 		return new Funding();
-	}
-	
-	@ModelAttribute("product")
-	public List<Product> getProductList() {
-		List<Product> listProduct = new ArrayList<>();
-		return listProduct;
 	}
 
 	@ResponseBody
