@@ -18,5 +18,6 @@ public interface VoteMapper {
 	public int dataCount(Map<String, Object> map) throws SQLException;
 	
 	public VoteManage findVote(long voteNum) throws SQLException;
-	public void voteSubmit(Map<String, Object> map) throws Exception;
+
+	public void voteSubmit(Map<String, Object> map);
 }

@@ -17,6 +17,6 @@ public interface VoteService {
 	public List<VoteManage> voteList(Map<String, Object> map) throws Exception;
 	public int dataCount(Map<String, Object> map) throws Exception;
 	
-	public void voteSubmit(Map<String, Object> map) throws Exception;
-	
+	public void voteSubmit(Map<String, Object> map);
+
 }

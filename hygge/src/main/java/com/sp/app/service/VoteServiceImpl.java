@@ -68,8 +68,13 @@ public class VoteServiceImpl implements VoteService{
 	}
 
 	@Override
-	public void voteSubmit(Map<String, Object> map) throws Exception {
-		 mapper1.voteSubmit(map);
+	public void voteSubmit(Map<String, Object> map) {
+		 try {
+			mapper1.voteSubmit(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

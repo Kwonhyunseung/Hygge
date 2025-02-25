@@ -16,4 +16,11 @@ public interface MemberManageService {
 	public List<MemberManage> reportMembers(String authority) throws Exception;
 	public int dataCount (Map<String, Object> map);
 	
+	// 처음 프로젝트 신청한 일반유저
+    public List<MemberManage> getUserProjectRequests(Map<String, Object> map) throws Exception;
+    public int getUserProjectRequestsCount(Map<String, Object> map) throws Exception;
+    public List<Map<String, Object>> debugProjectRequestData();
+    
+    // 메이커 승인
+    public void approve(long memberIdx) throws Exception;
 }

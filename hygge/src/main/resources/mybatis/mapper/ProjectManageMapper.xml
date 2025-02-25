@@ -46,4 +46,62 @@
     WHERE num = #{num}
 </update>
 
+	<select id="getUserProjectRequests" parameterType="map" resultType="com.sp.app.admin.model.ProjectManage">
+        SELECT 
+            m1.memberIdx, 
+            m1.name, 
+            m2.email1, 
+            m2.email2, 
+            m1.reg_date,
+            pr.num,
+            pr.title,
+            CASE 
+                WHEN ma.authority = 'USER' THEN '대기중'
+                WHEN ma.authority = 'MAKER' THEN '승인'
+                ELSE '기타'
+            END as status
+        FROM member1 m1
+        JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+        JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+        JOIN ProjectRequest pr ON m1.memberIdx = pr.memberIdx
+        WHERE ma.authority = 'USER'
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'name'">
+                    AND INSTR(m1.name, #{kwd}) > 0
+                </when>
+                <when test="schType == 'email'">
+                    AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+                </when>
+                <when test="schType == 'reg_date'">
+                    AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+                </when>
+            </choose>
+        </if>
+        ORDER BY m1.reg_date DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="getUserProjectRequestsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM member1 m1
+        JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+        JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+        JOIN ProjectRequest pr ON m1.memberIdx = pr.memberIdx
+        WHERE ma.authority = 'USER'
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'name'">
+                    AND INSTR(m1.name, #{kwd}) > 0
+                </when>
+                <when test="schType == 'email'">
+                    AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+                </when>
+                <when test="schType == 'reg_date'">
+                    AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+                </when>
+            </choose>
+        </if>
+    </select>
+
 </mapper>

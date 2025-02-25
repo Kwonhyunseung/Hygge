@@ -19,7 +19,6 @@
 
 <div class="admin-container">
    <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
-
    <div class="main-content">
        <div class="content-header">
            <h2>셀러 프로젝트 관리</h2>

@@ -19,4 +19,10 @@ public interface MemberManageMapper {
 	// 신고 3회 이상인 유저
 	public List<MemberManage> reportMembers(String authority) throws SQLException;
 	public int dataCount(Map<String, Object> map) throws SQLException;
+	
+	public List<MemberManage> getUserProjectRequests(Map<String, Object> map) throws SQLException;
+    public int getUserProjectRequestsCount(Map<String, Object> map) throws SQLException;
+    
+    public List<Map<String, Object>> debugProjectRequestData() throws SQLException;
+    public void approve(long memberIdx) throws SQLException;
 }

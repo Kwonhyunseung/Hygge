@@ -48,32 +48,46 @@
                     <th>관리</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>${member[0].memberIdx }</td>
-                    <td>${member[0].name }</td>
-                    <td>${member[0].email1}@${member[0].email2}</td>
-                    <td>2024-02-06</td>
-                    <td>
-                        <button class="action-button view-button" onclick="viewPortfolio(1001)">보기</button>
-                    </td>
-                    <td><span class="status-badge status-pending">대기중</span></td>
-                    <td>
-                        <button class="action-button approve-button" onclick="approveMaker(1001)">승인</button>
-                        <button class="action-button reject-button" onclick="rejectMaker(1001)">거절</button>
-                    </td>
-                </tr>
-            </tbody>
+<tbody>
+    <c:forEach var="maker" items="${makers}">
+        <tr>
+            <td>${maker.memberIdx}</td>
+            <td>${maker.name}</td>
+            <td>${maker.email1}@${maker.email2}</td>
+            <%-- <td><fmt:formatDate value="${maker.request_date}" pattern="yyyy-MM-dd"/></td>--%>
+            <td>${maker.request_date}</td>
+            <td>
+                <button class="action-button view-button" onclick="viewPortfolio(${maker.memberIdx})">보기</button>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${maker.status eq '대기중'}">
+                        <span class="status-badge status-pending">대기중</span>
+                    </c:when>
+                    <c:when test="${maker.status eq '승인완료'}">
+                        <span class="status-badge status-approved">승인완료</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="status-badge status-rejected">승인거절</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:if test="${maker.status eq '대기중'}">
+                    <button class="action-button approve-button" onclick="approveMaker(${maker.memberIdx})">승인</button>
+                    <button class="action-button reject-button" onclick="rejectMaker(${maker.memberIdx})">거절</button>
+                </c:if>
+                <c:if test="${maker.status ne 'MAKER'}">
+                    <button class="action-button detail-button" onclick="viewDetails(${maker.memberIdx})">상세보기</button>
+                </c:if>
+            </td>
+        </tr>
+    </c:forEach>
+</tbody>
         </table>
 
         <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">&raquo;</a>
+        	${paging}
         </div>
     </div>
 </div>
@@ -95,8 +109,7 @@
 
 
 <script type="text/javascript">
-
-function ajaxFun(url, method, formData, dataType, fn, file = false) {
+function Request(url, method, formData, dataType, fn, file = false) {
 	const settings = {
 			type: method, 
 			data: formData,
@@ -121,150 +134,43 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 	$.ajax(url, settings);
 }
 
-// 메이커 목록 로드
-function loadMakers(page = 1) {
-    let url = `${pageContext.request.contextPath}/admin/makers/list`;
-    let query = {
-        page: page,
-        condition: document.querySelector('select.search-input').value,
-        keyword: document.querySelector('input.search-input').value
-    };
-    
-    ajaxFun(url, "get", query, "json", function(data) {
-        updateMakerTable(data);
-    });
-}
-<%--
-// 테이블 업데이트
-function updateMakerTable(data) {
-    const tbody = document.querySelector('.member-table tbody');
-    let html = '';
-    
-    data.makers.forEach(maker => {
-        html += `
-            <tr>
-                <td>${maker.memberNo}</td>
-                <td>${maker.name}</td>
-                <td>${maker.email}</td>
-                <td>${maker.applyDate}</td>
-                <td>
-                    <button class="action-button view-button" onclick="viewPortfolio(${maker.memberNo})">보기</button>
-                </td>
-                <td>
-                    <span class="status-badge ${getStatusClass(maker.status)}">${maker.status}</span>
-                </td>
-                <td>
-                    ${getActionButtons(maker)}
-                </td>
-            </tr>
-        `;
-    });
-    
-    tbody.innerHTML = html;
-    updatePagination(data.pagination);
-}
---%>
-
-// 상태에 따른 클래스 반환
-function getStatusClass(status) {
-    const classMap = {
-        '대기중': 'status-pending',
-        '승인완료': 'status-approved',
-        '승인거절': 'status-rejected'
-    };
-    return classMap[status] || 'status-pending';
-}
-
-// 상태에 따른 액션 버튼 반환
-function getActionButtons(maker) {
-    if (maker.status === '대기중') {
-        return `
-            <button class="action-button approve-button" onclick="approveMaker(${maker.memberNo})">승인</button>
-            <button class="action-button reject-button" onclick="rejectMaker(${maker.memberNo})">거절</button>
-        `;
-    }
-    return `<button class="action-button detail-button" onclick="viewDetails(${maker.memberNo})">상세보기</button>`;
-}
-
-// 메이커 승인
-function approveMaker(memberNo) {
+// 승인
+function approveMaker(memberIdx) {
     if(!confirm('이 회원의 메이커 신청을 승인하시겠습니까?')) {
         return;
     }
     
-    let url = `${pageContext.request.contextPath}/admin/makers/approve`;
-    let query = {memberNo: memberNo};
+    let url = '${pageContext.request.contextPath}/admin/memberManagement/maker/approve';
+    let query = {memberIdx: memberIdx};
     
-    ajaxFun(url, "post", query, "json", function(data) {
+    ajaxRequest(url, "post", query, "json", function(data) {
         if(data.success) {
             alert('메이커 신청이 승인되었습니다.');
-            loadMakers();
+            location.reload(); // 페이지 새로고침
         } else {
             alert('승인 처리 중 오류가 발생했습니다.');
         }
     });
 }
 
-// 메이커 거절
-function rejectMaker(memberNo) {
+function rejectMaker(memberIdx) {
     if(!confirm('이 회원의 메이커 신청을 거절하시겠습니까?')) {
         return;
     }
     
-    let url = `${pageContext.request.contextPath}/admin/makers/reject`;
-    let query = {memberNo: memberNo};
+    let url = '${pageContext.request.contextPath}/admin/maker/reject';
+    let query = {memberIdx: memberIdx};
     
-    ajaxFun(url, "post", query, "json", function(data) {
+    Request(url, "post", query, "json", function(data) {
         if(data.success) {
             alert('메이커 신청이 거절되었습니다.');
-            loadMakers();
+            location.reload(); // 페이지 새로고침
         } else {
             alert('거절 처리 중 오류가 발생했습니다.');
         }
     });
 }
 
-// 포트폴리오 보기
-function viewPortfolio(memberNo) {
-    let url = `${pageContext.request.contextPath}/admin/makers/portfolio/${memberNo}`;
-    
-    ajaxFun(url, "get", null, "json", function(data) {
-        const modalBody = document.querySelector('#portfolioModal .modal-body');
-        modalBody.innerHTML = `
-            <div class="portfolio-content">
-                <h4>포트폴리오 정보</h4>
-                <p><strong>경력:</strong> ${data.career}년</p>
-                <p><strong>전문분야:</strong> ${data.specialization}</p>
-                <div class="portfolio-files">
-                    <h5>첨부파일</h5>
-                    data.files.map(function(file) {
-					    return '<div class="file-item">' +
-					           '<a href="' + file.url + '" target="_blank">' + file.name + '</a>' +
-					           '</div>';
-					}).join('')
-                </div>
-                <div class="portfolio-description">
-                    <h5>자기소개</h5>
-                    <p>${data.description}</p>
-                </div>
-            </div>
-        `;
-        
-        const modal = new bootstrap.Modal(document.getElementById('portfolioModal'));
-        modal.show();
-    });
-}
-
-// 검색 이벤트 처리
-document.querySelector('.search-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    loadMakers(1);
-});
-
-// 페이지 로드 시 초기 데이터 로드
-document.addEventListener('DOMContentLoaded', function() {
-    loadMakers();
-});
 
 </script>
 

@@ -13,7 +13,7 @@
             JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
             LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
             LEFT OUTER JOIN Report r ON m1.memberIdx = r.memberIdx
-            WHERE ma.Authority = #{authority}
+            WHERE ma.Authority = 'USER'
             <if test="kwd != null and kwd != ''">
                 <choose>
                     <when test="schType == 'name'">
@@ -64,7 +64,7 @@
     FROM member1 m1
     JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
     LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
-    WHERE ma.Authority = 'USER'
+    WHERE ma.Authority = #{authority}
     <if test="kwd != null and kwd != ''">
         <choose>
             <when test="schType == 'name'">
@@ -80,4 +80,91 @@
     </if>
 </select>
 
+
+    <select id="getUserProjectRequests" parameterType="map" resultType="com.sp.app.admin.model.MemberManage">
+        SELECT * FROM (
+            SELECT 
+                pr.num as projectNum,
+                m1.memberIdx, 
+                m1.name, 
+                m2.email1, 
+                m2.email2, 
+                m1.reg_date,
+                pr.title as projectTitle,
+                pr.request_date,
+                ma.authority,
+                CASE 
+                    WHEN ma.authority = 'USER' THEN '대기중'
+                    WHEN ma.authority = 'MAKER' THEN '승인'
+                    ELSE '기타'
+                END as status,
+                ROWNUM as rnum
+            FROM ProjectRequest pr
+            JOIN member1 m1 ON pr.memberIdx = m1.memberIdx
+            JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+            JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+            WHERE ma.authority = 'USER'
+            <if test="kwd != null and kwd != ''">
+                <choose>
+                    <when test="schType == 'name'">
+                        AND INSTR(m1.name, #{kwd}) > 0
+                    </when>
+                    <when test="schType == 'email'">
+                        AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+                    </when>
+                    <when test="schType == 'reg_date'">
+                        AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+                    </when>
+                </choose>
+            </if>
+            ORDER BY pr.request_date DESC
+        )
+        WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{size}
+    </select>
+
+    <!-- 메이커 신청한 회원 수 조회 -->
+    <select id="getUserProjectRequestsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM ProjectRequest pr
+        JOIN member1 m1 ON pr.memberIdx = m1.memberIdx
+        JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+        JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+        WHERE 1=1
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'name'">
+                    AND INSTR(m1.name, #{kwd}) > 0
+                </when>
+                <when test="schType == 'email'">
+                    AND (INSTR(m2.email1, #{kwd}) > 0 OR INSTR(m2.email2, #{kwd}) > 0)
+                </when>
+                <when test="schType == 'reg_date'">
+                    AND TO_CHAR(m1.reg_date, 'YYYY-MM-DD') = #{kwd}
+                </when>
+            </choose>
+        </if>
+    </select>
+    
+       <!-- 데이터 디버깅용 쿼리: 전체 데이터 확인 -->
+    <select id="debugProjectRequestData" resultType="map">
+        SELECT 
+            pr.num as projectNum,
+            m1.memberIdx, 
+            m1.name, 
+            m2.email1, 
+            m2.email2, 
+            m1.reg_date,
+            pr.title as projectTitle,
+            ma.authority
+        FROM ProjectRequest pr
+        JOIN member1 m1 ON pr.memberIdx = m1.memberIdx
+        JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+        JOIN memberAuthority ma ON m1.memberIdx = ma.memberIdx
+    </select>
+    
+    <update id="approve" parameterType="Long">
+    	UPDATE memberAuthority 
+    	SET authority = 'MAKER'
+    	WHERE memberIdx = #{memberIdx}
+    </update>
 </mapper>

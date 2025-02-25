@@ -15,35 +15,42 @@
         VALUES (Notice_File_seq.NEXTVAL, #{num}, #{s_FileName})
     </insert>
 
-    <select id="listNotice" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
-        SELECT n.num, n.title, n.reg_date AS regDate,
-            m.name, NVL(fileCount, 0) fileCount
-        FROM notice n
-        JOIN member1 m ON n.memberIdx = m.memberIdx
-        LEFT OUTER JOIN (
-            SELECT notice_num, COUNT(*) fileCount
-            FROM noticeFile
-            GROUP BY notice_num
-        ) f ON n.num = f.notice_num
-        <where>
-            <if test="schType != null and schType != '' and kwd != null and kwd != ''">
-                <choose>
-                    <when test="schType == 'title'">
-                        INSTR(title, #{kwd}) > 0
-                    </when>
-                    <when test="schType == 'content'">
-                        INSTR(content, #{kwd}) > 0
-                    </when>
-                    <otherwise>
-                        INSTR(title, #{kwd}) > 0 OR
-                        INSTR(content, #{kwd}) > 0
-                    </otherwise>
-                </choose>
-            </if>
-        </where>
-        ORDER BY num DESC
-        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
-    </select>
+<select id="listNotice" parameterType="map" resultType="com.sp.app.admin.model.NoticeManage">
+    SELECT n.num, n.title, n.reg_date AS regDate,
+           m.name, NVL(fileCount, 0) fileCount,
+           nf.s_FileName
+    FROM notice n
+    JOIN member1 m ON n.memberIdx = m.memberIdx
+    LEFT OUTER JOIN (
+        SELECT notice_num, COUNT(*) fileCount
+        FROM noticeFile
+        GROUP BY notice_num
+    ) f ON n.num = f.notice_num
+    LEFT OUTER JOIN (
+        SELECT notice_num, MIN(num) AS min_num
+        FROM noticeFile
+        GROUP BY notice_num
+    ) nf_min ON n.num = nf_min.notice_num
+    LEFT OUTER JOIN noticeFile nf ON nf_min.min_num = nf.num
+    <where>
+        <if test="schType != null and schType != '' and kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'title'">
+                    INSTR(title, #{kwd}) > 0
+                </when>
+                <when test="schType == 'content'">
+                    INSTR(content, #{kwd}) > 0
+                </when>
+                <otherwise>
+                    INSTR(title, #{kwd}) > 0 OR
+                    INSTR(content, #{kwd}) > 0
+                </otherwise>
+            </choose>
+        </if>
+    </where>
+    ORDER BY n.num DESC
+    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
 
     <select id="dataCount" parameterType="map" resultType="Integer">
         SELECT NVL(COUNT(*), 0)

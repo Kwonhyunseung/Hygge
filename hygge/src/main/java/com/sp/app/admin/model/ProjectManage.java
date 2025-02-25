@@ -24,5 +24,12 @@ public class ProjectManage {
 	private String thumbnail;
 	private int category_num; // 카테고리 번호
 	
-	// private long project_num; -> num이 project_num 이다.
+	// 유저정보
+	private String name;
+	private String email1;
+	private String email2;
+	private String reg_date;
+	
+	
+	
 }

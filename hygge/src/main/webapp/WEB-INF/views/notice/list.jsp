@@ -5,12 +5,205 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항 - HYGGE</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<style type="text/css">
-</style>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<style type="text/css">
+@charset "UTF-8";
+
+.page-title {
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.page-title:after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 1300px;
+    height: 4px;
+    background-color: #5E8400;
+    border-radius: 2px;
+}
+
+.notice-item {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.25rem 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.notice-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.notice-item-content {
+    position: relative;
+}
+
+.notice-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 4rem;
+    display: block;
+}
+
+.notice-title:hover {
+    color: #5E8400;
+    text-decoration: none;
+}
+
+.notice-date {
+    color: #868e96;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+}
+
+.notice-date i {
+    margin-right: 6px;
+    font-size: 0.9rem;
+}
+
+.notice-image {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 120px;
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+}
+
+.notice-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.notice-image img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.important-notice {
+    position: relative;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+    animation: pulse 1.5s infinite;
+}
+
+.search-container {
+    background-color: #f8f9fa;
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid #e9ecef;
+}
+
+.search-input {
+    border: 1px solid #ced4da;
+    border-radius: 0 4px 4px 0 !important;
+    transition: border-color 0.2s;
+    height: 46px;
+}
+
+.search-select {
+    border: 1px solid #ced4da;
+    border-radius: 4px 0 0 4px !important;
+    background-color: white;
+    height: 46px;
+}
+
+.search-button {
+    background-color: #5E8400;
+    color: white;
+    border: none;
+    transition: all 0.2s;
+    height: 46px;
+    font-weight: 500;
+}
+
+.search-button:hover {
+    background-color: #4c6c00;
+    transform: translateY(-1px);
+}
+
+
+.pagination .active .page-link {
+    background-color: #5E8400;
+    border-color: #5E8400;
+}
+
+.notice-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #868e96;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.notice-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.notice-count span {
+    font-weight: 600;
+    color: #5E8400;
+    margin: 0 5px;
+}
+
+.notice-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e9ecef;
+}
+
+.notice-separator {
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 0;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+a {
+	text-decoration: none;
+}
+
+</style>
 </head>
 <body>
 
@@ -19,100 +212,117 @@
 </header>
 
 <div class="container py-5">
-        <h1 class="mb-4" style="color: #5E8400;">공지사항</h1>
-        
-        <!-- Search Form -->
-        <!-- Search Form -->
-		<div class="row justify-content-end mb-4">
-		    <div class="col-md-6">
-		        <form action="/notice/search" method="GET" class="d-flex">
-		            <div class="input-group">
-		                <select name="searchType" class="form-select" style="max-width: 150px; border-radius: 5px 0 0 5px;">
-		                    <option value="all" ${param.searchType == 'all' ? 'selected' : ''}>제목+내용</option>
-		                    <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
-		                    <option value="content" ${param.searchType == 'content' ? 'selected' : ''}>내용</option>
-		                </select>
-		                <input type="text" name="keyword" class="form-control" 
-		                    placeholder="검색어를 입력해 주세요." 
-		                    value="${param.keyword}">
-		                <button class="btn btn-outline-secondary" type="submit" style="border: 1px solid #ced4da;">
-		                    <i class="bi bi-search"></i>
-		                </button>
-		            </div>
-		        </form>
-		    </div>
-		</div>
-
-        <!-- Notice List -->
-    <div class="border-top border-dark">
-        <!-- 중요 공지 1 -->
-        <div class="notice-item py-3 border-bottom">
-        	<span class="badge bg-danger py-2 px-3 animate__animated animate__pulse animate__infinite">중요
-                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                    <span class="visually-hidden">New alerts</span>
-                </span>
-            </span>
-            <div class="mt-2">
-                <a href="/notice/detail/1" class="text-decoration-none text-dark">
-                    [작접/경력] 개인정보처리방침 개정 안내 [HYGGE]
-                </a>
-                <div class="text-muted mt-1" style="font-size: 0.9rem;">2025.02.02</div>
-            </div>
-        </div>
-
-        <!-- 중요 공지 2 -->
-        <div class="notice-item py-3 border-bottom">
-        <span class="badge bg-danger py-2 px-3 position-relative"></span>
-            <span class="important-notice">중요</span>
-            <div class="mt-2">
-                <a href="/notice/detail/2" class="text-decoration-none text-dark">
-                    [작접/경력] 개인정보처리방침 개정 안내 [HYGGE]
-                </a>
-                <div class="text-muted mt-1" style="font-size: 0.9rem;">2025.02.02</div>
-            </div>
-        </div>
-
-        <!-- 일반 공지 with 이미지 -->
-        <div class="notice-item py-3 border-bottom">
-	            <div class="d-flex justify-content-between">
-                <div class="flex-grow-1 d-flex flex-column justify-content-between" style="min-height: 110px;">
-                    <a href="/notice/detail/3" class="text-decoration-none text-dark">
-                        펫 전담 백화점 기획전 참여 브랜드/입점업체서 공개 모집
-                    </a>
-                    <div class="text-muted" style="font-size: 0.9rem;">2025.02.02</div>
+    <h1 class="page-title">공지사항</h1>
+    
+    <!-- 검색 폼 -->
+    <div class="search-container">
+        <form action="/notice/list" method="GET">
+            <div class="row g-2">
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <select name="schType" class="form-select search-select" style="max-width: 150px;">
+                            <option value="all" ${schType == 'all' ? 'selected' : ''}>제목+내용</option>
+                            <option value="title" ${schType == 'title' ? 'selected' : ''}>제목</option>
+                            <option value="content" ${schType == 'content' ? 'selected' : ''}>내용</option>
+                        </select>
+                        <input type="text" name="kwd" class="form-control search-input" 
+                            placeholder="검색어를 입력해 주세요." 
+                            value="${kwd}">
+                    </div>
                 </div>
-                <div class="ms-3">
-                    <img src="/dist/images/notice/거인.jpg" alt="메이커 모집 이미지" class="img-fluid" style="max-width: 200px;">
+                <div class="col-md-2">
+                    <button class="btn search-button w-100" type="submit">
+                        <i class="bi bi-search me-1"></i> 검색
+                    </button>
                 </div>
-	            </div>
-	        </div>
-	   	</div>
-	</div>
-        
-
-        <%-- 
-        <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-                <c:if test="${pageMaker.prev}">
-                    <li class="page-item">
-                        <a class="page-link" href="/notice?page=${pageMaker.startPage-1}">&lt;</a>
-                    </li>
-                </c:if>
-                
-                <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="pageNum">
-                    <li class="page-item ${pageMaker.cri.page == pageNum ? 'active' : ''}">
-                        <a class="page-link" href="/notice?page=${pageNum}">${pageNum}</a>
-                    </li>
-                </c:forEach>
-
-                <c:if test="${pageMaker.next}">
-                    <li class="page-item">
-                        <a class="page-link" href="/notice?page=${pageMaker.endPage+1}">&gt;</a>
-                    </li>
-                </c:if>
-            </ul>
-        </nav> --%>
+            </div>
+        </form>
     </div>
+    
+    
+    
+    <!-- 리스트 상단 정보 -->
+    <div class="notice-count mb-3">
+        <i class="bi bi-info-circle me-1"></i>
+        전체 <span>${dataCount}</span>건의 공지사항이 있습니다.
+    </div>
+
+    <!-- 공지사항 목록 -->
+    <div class="notice-card">
+        <div class="list-group list-group-flush">
+            <c:if test="${empty list}">
+                <div class="notice-empty">
+                    <i class="bi bi-info-circle me-2"></i> 등록된 공지사항이 없습니다.
+                </div>
+            </c:if>
+            
+            <c:forEach var="notice" items="${list}" varStatus="status">
+                <div class="notice-item">
+                    <c:choose>
+                        <%-- 사진이 있는 경우 --%>
+                        <c:when test="${not empty notice.s_FileName}">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-9">
+                                    <div class="notice-item-content">
+                                        <a href="/notice/article/${notice.num}?${query}" class="notice-title">
+                                            ${notice.title}
+                                            <%--
+                                            <c:if test="${notice.regDate.time >= java.lang.System.currentTimeMillis() - (1000*60*60*24*3)}">
+                                                <span class="important-notice">NEW</span>
+                                            </c:if>
+                                             --%>
+                                        </a>
+                                        <div class="notice-date">
+                                            <i class="bi bi-calendar3"></i>
+                                            <fmt:formatDate value="${notice.regDate}" pattern="yyyy.MM.dd"/>
+                                            <span class="ms-3 text-muted">작성자: ${notice.name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="notice-image">
+                                    
+                                        <img src="/uploads/notice/${notice.s_FileName}" alt="${notice.title}" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        
+                        <%-- 사진이 없는 경우 --%>
+                        <c:otherwise>
+                            <div class="notice-item-content">
+                                <a href="/notice/article/${notice.num}?${query}" class="notice-title">
+                                    ${notice.title}
+                                    <%-- 
+                                    <c:if test="${notice.regDate.time >= java.lang.System.currentTimeMillis() - (1000*60*60*24*3)}">
+                                        <span class="important-notice">NEW</span>
+                                    </c:if>
+                                    --%>
+                                </a>
+                                <div class="notice-date">
+                                    <i class="bi bi-calendar3"></i>
+                                    <fmt:formatDate value="${notice.regDate}" pattern="yyyy.MM.dd"/>
+                                    <span class="ms-3 text-muted">작성자: ${notice.name}</span>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <c:if test="${!status.last}">
+                    <hr class="notice-separator m-0">
+                </c:if>
+            </c:forEach>
+        </div>
+    </div>
+    
+    <!-- 페이징 -->
+    <nav class="mt-4 d-flex justify-content-center">
+    <ul class="pagination">
+        ${paging}
+    </ul>
+</nav>
+        
+</div>
 
 <footer>
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />

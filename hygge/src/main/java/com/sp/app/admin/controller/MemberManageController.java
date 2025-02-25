@@ -40,7 +40,7 @@ public class MemberManageController {
 			) {
 		
 		try {
-			int size = 2;
+			int size = 10;
 			int total_page = 0;
 			int dataCount = 0;
 			
@@ -116,11 +116,10 @@ public class MemberManageController {
 			@RequestParam(name = "schType", defaultValue = "all") String schType,
 			@RequestParam(name = "kwd", defaultValue = "") String kwd,
 			HttpServletRequest req,
-			Model model
-			) {
+			Model model) {
 		
 		try {
-			int size = 2;
+			int size = 5;
 			int total_page = 0;
 			int dataCount = 0;
 			
@@ -129,9 +128,9 @@ public class MemberManageController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("schType", schType);
 			map.put("kwd", kwd);
-			map.put("authority", "MAKER");
+			//map.put("authority", "MAKER");
 			
-			dataCount = service.dataCount(map);
+			dataCount = service.getUserProjectRequestsCount(map);
 			total_page = paginateUtil.pageCount(dataCount, size);
 			
 			current_page = Math.min(current_page, total_page);
@@ -142,11 +141,11 @@ public class MemberManageController {
 			map.put("offset", offset);
 			map.put("size", size);
 			
-			List<MemberManage> member = service.normalMember(map);
+			List<MemberManage> makers = service.getUserProjectRequests(map);
 			
 			String cp = req.getContextPath();
 			String query = "page=" + current_page;
-			String listUrl = cp + "/admin/memberManagement/normal";
+			String listUrl = cp + "/admin/memberManagement/maker";
 			
 			if(! kwd.isBlank()) {
 				String qs = "schType=" + schType + "&kwd=" +
@@ -157,7 +156,15 @@ public class MemberManageController {
 			
 			String paging = paginateUtil.paging(current_page, total_page, listUrl);
 			
-			model.addAttribute("member", member);
+            log.info("데이터 카운트: {}", dataCount);
+            log.info("메이커 리스트 크기: {}", makers.size());
+            if (!makers.isEmpty()) {
+                for (MemberManage m : makers) {
+                    log.info("메이커 데이터: {}", m);
+                }
+            }
+			
+			model.addAttribute("makers", makers);
 			model.addAttribute("dataCount", dataCount);
 			model.addAttribute("size", size);
 			model.addAttribute("page", current_page);
@@ -168,7 +175,7 @@ public class MemberManageController {
 			model.addAttribute("query", query);
 			
 		} catch (Exception e) {
-			log.info("normalMember : ", e);
+			log.info("makerMember : ", e);
 		}
 		
 		return "admin/member/maker";
@@ -207,6 +214,23 @@ public class MemberManageController {
 		}
 		
 		return model;
+	}
+	
+	@ResponseBody
+	@PostMapping("maker/approve")
+	public Map<String, Object> approveMaker(@RequestParam(name = "memberIdx") long memberIdx) throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			service.approve(memberIdx);
+			response.put("success", true);
+			
+		} catch (Exception e) {
+			log.info("approveMaker : ", e);
+			response.put("success", false);
+		}
+		
+		return response;
 	}
 	
 }

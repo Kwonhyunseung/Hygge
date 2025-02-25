@@ -16,6 +16,7 @@ public class MemberManage {
 	private int userLevel;
 	private int block;
 	private String reg_date;
+	private String request_date;
 	
 	private String mod_date;
 	private String last_login;
@@ -37,6 +38,10 @@ public class MemberManage {
 	private String addr2;
 	
 	private int report_count;
+	
+	private long projectNum;
+	private String projectTitle;
+	private String status;
 	
 	// 프로젝트
 	

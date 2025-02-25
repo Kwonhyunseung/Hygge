@@ -65,5 +65,53 @@ public class MemberManageServiceImpl implements MemberManageService {
 	}
 
 
+	@Override
+	public List<MemberManage> getUserProjectRequests(Map<String, Object> map) throws Exception {
+		List<MemberManage> list = null;
+		
+		try {
+			list = mapper.getUserProjectRequests(map);
+		} catch (Exception e) {
+			log.info("getUserProjectRequests : ", e);
+		}
+		
+		return list;
+	}
+
+
+	@Override
+	public int getUserProjectRequestsCount(Map<String, Object> map) throws Exception {
+		int result = 0;
+		
+		try {
+			result = mapper.getUserProjectRequestsCount(map);
+		} catch (Exception e) {
+			log.info("getUserProjectRequestsCount : ", e);
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> debugProjectRequestData() {
+		List<Map<String, Object>> debugList = null;
+		
+		try {
+			debugList = mapper.debugProjectRequestData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return debugList;
+	}
+
+
+	@Override
+	public void approve(long memberIdx) throws Exception {
+		mapper.approve(memberIdx);
+	}
+
+
 }
 
