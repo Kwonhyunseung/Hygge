@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class BuyController {
 	private final BuyService service;
 	
 	// 결제창 - 상품 리스트
-	@GetMapping("/productList/{num}")
+	@GetMapping("productList/{num}")
 	public String productList(@PathVariable("num") long num, Model model, HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
 		try {
@@ -58,55 +59,62 @@ public class BuyController {
 		return "buy/productList";
 	}
 	
-	// 결제창 - 상품 선택
-	
-	@GetMapping("/product/{product_num}")
+	@GetMapping("product/{product_num}")
 	@ResponseBody
 	public Product getProduct(@PathVariable("product_num") long product_num, Model model) {
 	    return service.findByProductNum(product_num);
 	}
 	
+	
+	
 	// 결제창 - 상품 선택
+	@GetMapping("productChoice")
+	public String productSelect(Model model) {
+		return "buy/productChoice";
+	}
+	
 	@PostMapping("/productChoice")
-	public String productChoice(@RequestParam("product_num") long product_num, Model model) {
+	public String productChoice(@RequestParam("product_num") long product_num, 
+	                           @RequestParam(value = "quantity", defaultValue = "1") int quantity,
+	                           Model model, HttpSession session) throws Exception {
 	    try {
-	        Product product = service.findByProductNum(product_num);
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        if(info == null) {
+	            return "redirect:/member/login";
+	        }
+	        
+	        Product product = service.buyProductAllInfo(product_num); // 모든 정보 가져오기
+	        
+	        
 	        if (product != null) {
+	            // 수량 정보 설정
+	            product.setAmount(quantity);
+	            // 총 금액 계산 (가격 * 수량 + 배송비)
+	            product.setSum(product.getPrice() * quantity + product.getShipping_fee());
+	            
 	            model.addAttribute("product", product);
 	            return "buy/productChoice";
 	        } else {
 	            model.addAttribute("message", "선택한 상품 정보를 찾을 수 없습니다.");
-	            return "redirect:/buy/productList/{num}"; // 프로젝트 번호를 포함하여 리다이렉트
+	            return "redirect:/"; 
 	        }
 	    } catch (Exception e) {
 	        log.error("Failed to retrieve product information for payment", e);
-	        model.addAttribute("message", "상품 정보 조회 중 오류가 발생했습니다.");
-	        return "redirect:/buy/productList/{num}"; // 프로젝트 번호를 포함하여 리다이렉트
 	    }
+	    
+	    return "redirect:/";
 	}
 	
 	
 	
-	
-	
-// 테스트용 ->실전은 위에껄로
-@GetMapping("productChoice")
-public String productSelect(Model model) {
-	return "buy/productChoice";
-}
-
 	// 결제창 - 완료
-	/*
-	@GetMapping("/complete/{num}")
-	public String complete(@PathVariable("num") long num, Model model) {
-
+	@GetMapping("complete")
+	public String complete(@ModelAttribute("message") String message) {
+		// F5를 누른 경우
+		if (message == null || message.isBlank()) { 
+			return "redirect:/";
+		}
 		return "buy/complete";
 	}
-	*/
-// 테스트용 ->실전은 위에껄로
-@GetMapping("complete")
-public String complete(Model model) {
-	return "buy/complete";
-}
 
 }
