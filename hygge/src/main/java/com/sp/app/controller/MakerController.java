@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sp.app.common.StorageService;
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Maker;
 import com.sp.app.model.Product;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.MakerService;
@@ -28,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@SessionAttributes("funding")
+@SessionAttributes({"funding", "num"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/makerPage/*")
@@ -37,10 +38,12 @@ public class MakerController {
 	private final MakerService service;
 	private final StorageService storageService;
 	private String uploadPath;
+	private String uploadProfilePath;
 
 	@PostConstruct
 	public void init() {
 		uploadPath = storageService.getRealPath("/uploads/project");
+		uploadProfilePath = storageService.getRealPath("/uploads/profile");
 	}
 
 	@GetMapping("projectSign")
@@ -94,7 +97,9 @@ public class MakerController {
 	}
 
 	@PostMapping("projectSubmit2")
-	public String projectSubmit2(@ModelAttribute("funding") Funding dto, Model model, HttpSession session, RedirectAttributes rAttr) throws Exception {
+	public String projectSubmit2(@ModelAttribute("funding") Funding dto,
+			@ModelAttribute("num") long number,
+			Model model, HttpSession session, RedirectAttributes rAttr) throws Exception {
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
 			if (info == null) {
@@ -103,7 +108,7 @@ public class MakerController {
 			}
 			dto.setMemberIdx(info.getMemberidx());
 			long num = service.insertTempProjectRequest(dto, uploadPath);
-			rAttr.addAttribute("projectNum", num);
+			number = num;
 		} catch (Exception e) {
 			log.info("projectSubmit2 : ", e);
 		}
@@ -130,8 +135,11 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit4")
-	public String projectForm4(Model model) throws Exception {
+	public String projectForm4(Model model, HttpSession session) throws Exception {
 		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			Maker dto = service.isMaker(info.getMemberidx());
+			model.addAttribute("dto", dto);
 		} catch (Exception e) {
 			log.info("projectSubmit4 : ", e);
 		}
@@ -139,8 +147,23 @@ public class MakerController {
 	}
 	
 	@PostMapping("projectSubmit4")
-	public String projectSubmit4(@ModelAttribute("funding") Funding dto) throws Exception {
+	public String projectSubmit4(Maker dto, HttpSession session) throws Exception {
 		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			Maker root = service.isMaker(info.getMemberidx());
+			dto.setMemberIdx(info.getMemberidx());
+			if (root == null) {
+				// insert
+				service.insertMaker(dto, uploadProfilePath);
+			} else {
+				// update
+				if (dto.getProfileImg_File().isEmpty()) { // 사진을 새로 업로드하지 않았다면 기존 이미지 이용
+					dto.setProfile_img(root.getProfile_img());
+				} else { // 사진을 새로 업로드했다면 기존 이미지 서버에서 삭제
+					storageService.deleteFile(uploadProfilePath, root.getProfile_img());
+				}
+				service.updateMaker(dto, uploadProfilePath);
+			}
 		} catch (Exception e) {
 			log.info("projectSubmit4 : ", e);
 		}
@@ -156,23 +179,24 @@ public class MakerController {
 		return "makerPage/submit5";
 	}
 
-	@PostMapping("projectSubmit5")
-	public String projectSubmit5() throws Exception {
-		try {
-		} catch (Exception e) {
-			log.info("projectSubmit5 : ", e);
-		}
-		return "redirect:/makerPage/projectSubmit";
-	}
-
 	@GetMapping("projectSubmit")
-	public String submit() {
-		return "";
+	public String submit(@ModelAttribute("num") long number, SessionStatus sessionStatus) {
+		try {
+			service.insertProjectRequest(number);
+			sessionStatus.setComplete();
+		} catch (Exception e) {
+			log.info("submit : ", e);
+		}
+		return "redirect:/makerPage/projectManager";
 	}
 
 	@ModelAttribute("funding")
 	public Funding getFunding() {
 		return new Funding();
+	}
+	@ModelAttribute("num")
+	public long getNumber() {
+		return 0;
 	}
 
 	@ResponseBody

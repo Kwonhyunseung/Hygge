@@ -146,11 +146,11 @@
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/project/layout/nav-item.jsp"/>
 
 <div class="maker-container">
-	<form name="submit4" action="${pageContext.request.contextPath}/makerPage/projectSubmit4" method="post">
+	<form name="submit4" action="${pageContext.request.contextPath}/makerPage/projectSubmit4" method="post" enctype="multipart/form-data">
 		<div class="maker-section">
 			<div class="section-title">메이커 이름</div>
 			<div class="section-description">메이커 개인이나 팀을 대표할 수 있는 이름을 써주세요.</div>
-			<input type="text" class="form-input" placeholder="이름" name="makerName">
+			<input type="text" class="form-input" placeholder="이름" name="makerName" value="${dto.makerName}">
 		</div>
 		
 		<div class="maker-section">
@@ -159,10 +159,21 @@
 			<div class="profile-image-section">
 				<div class="profile-circle">
 					<label for="profile-upload" class="upload-button">
-						<span class="upload-text">이미지 파일<br>업로드</span>
-						<input type="file" id="profile-upload" accept="image/*" style="display: none;">
+						<span class="upload-text">
+							<c:if test="${empty dto}">
+								이미지 파일<br>업로드
+							</c:if>
+						</span>
+						<input type="file" id="profile-upload" accept="image/*" style="display: none;" name="profileImg_File">
 					</label>
-					<img id="profile-image" src="" alt="프로필 이미지" name="profileImg_File">
+					<c:choose>
+						<c:when test="${not empty dto}">
+							<img id="profile-image" src="${pageContext.request.contextPath}/uploads/profile/${dto.profile_img}" style="display: block;">
+						</c:when>
+						<c:otherwise>
+							<img id="profile-image" src="" alt="프로필 이미지">
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
@@ -170,7 +181,7 @@
 		<div class="maker-section">
 			<div class="section-title">메이커 소개</div>
 			<div class="section-description">2~3문장으로 메이커님의 이력과 간단한 소개를 써주세요.</div>
-			<textarea class="form-input introduction-input" maxlength="300" placeholder="간단한 이력과 소개를 적어주세요." style="resize: none;" name="introduction"></textarea>
+			<textarea class="form-input introduction-input" maxlength="300" placeholder="간단한 이력과 소개를 적어주세요." style="resize: none;" name="introduction">${dto.introduction}</textarea>
 		</div>
 		
 		<div class="maker-section">
@@ -178,7 +189,7 @@
 			<div class="section-description">후원금을 전달받을 계좌를 등록해주세요.</div>
 			<div class="contact-grid">
 				<div class="contact-label">은행명과 계좌번호</div>
-				<input type="text" class="form-input" placeholder="은행명 계좌번호" name="bankAccount">
+				<input type="text" class="form-input" placeholder="은행명 계좌번호" name="bankAccount" value="${dto.bankAccount}">
 			</div>
 		</div>
 		<div class="button-container" style="display: flex; justify-content: flex-end;">
@@ -189,18 +200,18 @@
 
 <script type="text/javascript">
 document.getElementById("profile-upload").addEventListener("change", function (event) {
-const file = event.target.files[0];
-const preview = document.getElementById("profile-image");
-const uploadText = document.querySelector(".upload-text");
-
-if (file) {
-	const reader = new FileReader();
-	reader.onload = function (e) {
-		preview.src = e.target.result;
-		preview.style.display = "block"; // 이미지 표시
-		uploadText.style.display = "none"; // 업로드 텍스트 숨기기
-	};
-	reader.readAsDataURL(file);
+	const file = event.target.files[0];
+	const preview = document.getElementById("profile-image");
+	const uploadText = document.querySelector(".upload-text");
+	
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function (e) {
+			preview.src = e.target.result;
+			preview.style.display = "block"; // 이미지 표시
+			uploadText.style.display = "none"; // 업로드 텍스트 숨기기
+		};
+		reader.readAsDataURL(file);
 	}
 });
 
@@ -211,21 +222,22 @@ function sendNext() {
 		$('input[name="makerName"]').focus();
 		return false;
 	}
-	let value = $('input[name="makerName"]').val();
+	value = $('input[name="profileImg_File"]').val() || '${dto.profile_img}';
 	if (!value) {
-		$('input[name="makerName"]').focus();
+		$('input[name="profileImg_File"]').focus();
 		return false;
 	}
-	let value = $('input[name="makerName"]').val();
+	value = $('textarea[name="introduction"]').val();
 	if (!value) {
-		$('input[name="makerName"]').focus();
+		$('textarea[name="introduction"]').focus();
 		return false;
 	}
-	let value = $('input[name="makerName"]').val();
+	value = $('input[name="bankAccount"]').val();
 	if (!value) {
-		$('input[name="makerName"]').focus();
+		$('input[name="bankAccount"]').focus();
 		return false;
 	}
+	f.submit();
 }
 </script>
 </body>

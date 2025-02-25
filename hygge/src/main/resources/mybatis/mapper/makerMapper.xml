@@ -26,4 +26,28 @@
 		INSERT INTO Product (product_num, price, stock, detail, title, origin, num)
 			VALUES (product_seq.NEXTVAL, #{price}, #{stock}, #{detail}, #{title}, #{origin}, #{num})
 	</insert>
+
+	<select id="isMaker" parameterType="Long" resultType="com.sp.app.model.Maker">
+		SELECT m.memberIdx memberIdx, introduction, bankAccount, makerName, profile_img
+		FROM maker m
+		JOIN member1 m1 ON m.memberIdx = m1.memberIdx
+		WHERE m.memberIdx = #{memberIdx}
+	</select>
+
+	<update id="updateProfile" parameterType="map">
+		UPDATE member1 SET profile_img = #{profile_img} WHERE memberIdx = #{memberIdx}
+	</update>
+
+	<insert id="insertMaker" parameterType="com.sp.app.model.Maker">
+		INSERT INTO Maker (memberIdx, introduction, bankAccount, makerName)
+			VALUES (#{memberIdx}, #{introduction}, #{bankAccount}, #{makerName})
+	</insert>
+
+	<update id="updateMaker" parameterType="com.sp.app.model.Maker">
+		UPDATE Maker SET introduction = #{introduction}, bankAccount = #{bankAccount}, makerName = #{makerName} WHERE memberIdx = #{memberIdx}
+	</update>
+
+	<update id="insertProjectRequest" parameterType="Long">
+		UPDATE ProjectRequest SET submit = 1 WHERE num = #{num}
+	</update>
 </mapper>

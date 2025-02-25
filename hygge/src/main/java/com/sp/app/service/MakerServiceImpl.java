@@ -10,6 +10,7 @@ import com.sp.app.common.StorageService;
 import com.sp.app.mapper.MakerMapper;
 import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
+import com.sp.app.model.Maker;
 import com.sp.app.model.Product;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +82,58 @@ public class MakerServiceImpl implements MakerService {
 			}
 		} catch (Exception e) {
 			log.info("insertProduct : ", e);
+		}
+	}
+
+	@Override
+	public Maker isMaker(long num) {
+		Maker dto = null;
+		try {
+			dto = mapper.isMaker(num);
+		} catch (Exception e) {
+			log.info("isMaker : ", e);
+		}
+		return dto;
+	}
+
+	@Override
+	public void insertMaker(Maker dto, String uploadPath) throws Exception {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			dto.setProfile_img(storageService.uploadFileToServer(dto.getProfileImg_File(), uploadPath));
+			map.put("profile_img", dto.getProfile_img());
+			map.put("memberIdx", dto.getMemberIdx());
+			mapper.updateProfile(map);
+
+			mapper.insertMaker(dto);
+		} catch (Exception e) {
+			log.info("insertMaker : ", e);
+		}
+	}
+
+	@Override
+	public void updateMaker(Maker dto, String uploadPath) throws Exception {
+		try {
+			if (!dto.getProfileImg_File().isEmpty()) {
+				dto.setProfile_img(storageService.uploadFileToServer(dto.getProfileImg_File(), uploadPath));
+			}
+			Map<String, Object> map = new HashMap<>();
+			map.put("profile_img", dto.getProfile_img());
+			map.put("memberIdx", dto.getMemberIdx());
+			mapper.updateProfile(map);
+
+			mapper.updateMaker(dto);
+		} catch (Exception e) {
+			log.info("updateMaker : ", e);
+		}
+	}
+
+	@Override
+	public void insertProjectRequest(long num) {
+		try {
+			mapper.insertProjectRequest(num);
+		} catch (Exception e) {
+			log.info("insertProjectRequest : ", e);
 		}
 	}
 

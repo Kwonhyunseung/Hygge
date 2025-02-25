@@ -224,14 +224,24 @@
 			</div>
         </div>
 		<div class="checkbox-label">
-			<input type="checkbox" id="policy-check">
+			<input type="checkbox" id="policy-check" name="policy-check">
 			<label for="policy-check">환불정책을 모두 읽고 정책에 대해 숙지하셨습니까?<span style="color: #FF5733; margin-left: 2px;">*</span></label>
 		</div>
 
         <div class="button-container">
-            <button type="button" class="prev-button">이전</button>
+            <button type="button" class="prev-button" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSubmit4'">이전</button>
 			<button type="button" class="next-button" onclick="sendNext();">다음</button>
         </div>
     </div>
+<script type="text/javascript">
+function sendNext() {
+	if ($('.checkbox-label input[name="policy-check"]').is(':checked')) {
+		alert('프로젝트가 성공적으로 신청되었습니다! 심사 완료시 개인 연락처로 연락드립니다.');
+		location.href = '${pageContext.request.contextPath}/makerPage/projectSubmit';
+	} else {
+		alert('환불정책과 휘게 정책에 대해 숙지하고 체크박스를 확인해주십시오.');
+	}
+}
+</script>
 </body>
 </html>
