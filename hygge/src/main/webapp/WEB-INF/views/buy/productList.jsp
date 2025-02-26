@@ -149,71 +149,33 @@ $(function(){
     });
 });
 
-//총 금액 계산 함수
-function calculateTotal($input) {
-    const quantity = parseInt($input.val());
-    const price = parseInt($input.data('price'));
-    const deliveryFee = parseInt($input.data('delivery-fee')); // 수정된 부분
-    const total = (price * quantity) + deliveryFee;
-    
-    const $priceInfo = $input.closest('.selected-product-info').find('.price-info');
-    $priceInfo.find('.total').text('총 금액: ' + numberComma(total) + '원');
-}
 
-/* function buyNow(productNum) {
-    const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
-    let quantity = 1; // 기본값 설정
-    
-    // 수량 입력란이 존재하고 유효한 값인 경우에만 해당 값 사용
-    if ($quantityInput.length > 0) {
-        const inputValue = parseInt($quantityInput.val());
-        if (!isNaN(inputValue) && inputValue > 0) {
-            quantity = inputValue;
-        }
-    }
-    
-    // 수량 정보도 함께 전송하기 위한 폼 생성
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '${pageContext.request.contextPath}/buy/productChoice';
-    
-    const productNumInput = document.createElement('input');
-    productNumInput.type = 'hidden';
-    productNumInput.name = 'product_num';
-    productNumInput.value = productNum;
-    
-    const quantityInput = document.createElement('input');
-    quantityInput.type = 'hidden';
-    quantityInput.name = 'quantity';
-    quantityInput.value = quantity;
-    
-    form.appendChild(productNumInput);
-    form.appendChild(quantityInput);
-    document.body.appendChild(form);
-    form.submit();
-} */
+// 상품 선택하기
 function buyNow(productNum) {
     console.log("buyNow 함수 호출됨: 상품번호 = " + productNum);
     
-    // 수량 입력란 찾기
-    const $quantityInput = $(`.select-product[data-product-num="${productNum}"]`).find('input[name="quantity"]');
-    console.log("수량 입력란 찾음:", $quantityInput.length > 0 ? "성공" : "실패");
+    const $visibleSelector = $('.quantity-selector:visible');
+    console.log("보이는 수량 선택기:", $visibleSelector.length > 0 ? "찾음" : "없음");
     
-    let quantity = 1; // 기본값 설정
+    let quantity = 1;
     
-    // 수량 입력란이 존재하고 유효한 값인 경우에만 해당 값 사용
-    if ($quantityInput.length > 0) {
-        const inputValue = parseInt($quantityInput.val());
-        console.log("입력된 수량 값:", $quantityInput.val(), "파싱된 값:", inputValue);
+    if ($visibleSelector.length > 0) {
+        const $quantityInput = $visibleSelector.find('input[name="quantity"]');
+        console.log("수량 입력란 찾음:", $quantityInput.length > 0 ? "성공" : "실패");
         
-        if (!isNaN(inputValue) && inputValue > 0) {
-            quantity = inputValue;
+        if ($quantityInput.length > 0) {
+            const inputValue = parseInt($quantityInput.val());
+            console.log("입력된 수량 값:", $quantityInput.val(), "파싱된 값:", inputValue);
+            
+            if (!isNaN(inputValue) && inputValue > 0) {
+                quantity = inputValue;
+            }
         }
     }
     
     console.log("최종 수량:", quantity);
     
-    // 수량 정보도 함께 전송하기 위한 폼 생성
+    // 폼 생성 및 제출
     try {
         const form = document.createElement('form');
         form.method = 'POST';
@@ -226,7 +188,7 @@ function buyNow(productNum) {
         
         const quantityInput = document.createElement('input');
         quantityInput.type = 'hidden';
-        quantityInput.name = 'quantity'; // 'quantity'로 이름 유지
+        quantityInput.name = 'quantity';
         quantityInput.value = quantity;
         
         form.appendChild(productNumInput);
@@ -245,6 +207,18 @@ function buyNow(productNum) {
 // 숫자 콤마 포맷팅
 function numberComma(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+//총 금액 계산 함수
+function calculateTotal($input) {
+    const quantity = parseInt($input.val());
+    const price = parseInt($input.data('price'));
+    const deliveryFee = parseInt($input.data('delivery-fee')); // 수정된 부분
+    const total = (price * quantity) + deliveryFee;
+    
+    const $priceInfo = $input.closest('.selected-product-info').find('.price-info');
+    $priceInfo.find('.total').text('총 금액: ' + numberComma(total) + '원');
 }
 </script>
 
@@ -272,42 +246,40 @@ function numberComma(x) {
 		</h3>
 		
 		<form id="productForm" method="post" action="${pageContext.request.contextPath}/buy/productChoice">
-		<input type="hidden" name="product_num" id="selectedProductNum">
-		
-		<div class="listProduct" style="margin-bottom: 100px;">
-		    <c:forEach var="product" items="${list}">
-		        <div class="select-product" data-product-num="${product.product_num}">
-		            <div class="product-info">
-		                <p class="price">
-		                    <fmt:formatNumber value="${product.price}" pattern="#,###"/>원
-		                </p>
-		                <p class="title">
-		                    ${product.title}
-		                    <span class="stock">${product.stock}개 남음</span>
-		                    <span class="origin">원산지 : ${product.origin}</span>
-		                </p>
-		                <p class="content">
-		                    <c:forEach var="details" items="${fn:split(product.detail, '💚')}">
-		                        <c:if test="${!empty details}">
-		                            <p>💚${details}</p>
-		                        </c:if>
-		                    </c:forEach>
-		                </p>
-		                <p class="deliveryDay">배송 일정: ${product.delivery_info}</p>
-		                <p class="deliveryFee">
-		                    <i class="bi bi-truck"></i> 
-		                    배송비 <fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원
-		                </p>
-		            </div>
-		            <!-- 각 상품마다 수량 선택 - AJAX처리 -->
-		            <div class="quantity-selector"></div>
-		        </div>
-		        <hr>
-		    </c:forEach>
-		</div>
-		
-
-	</form>
+			<input type="hidden" name="product_num" id="selectedProductNum">
+			
+			<div class="listProduct" style="margin-bottom: 100px;">
+			    <c:forEach var="product" items="${list}">
+			        <div class="select-product" data-product-num="${product.product_num}">
+			            <div class="product-info">
+			                <p class="price">
+			                    <fmt:formatNumber value="${product.price}" pattern="#,###"/>원
+			                </p>
+			                <p class="title">
+			                    ${product.title}
+			                    <span class="stock">${product.stock}개 남음</span>
+			                    <span class="origin">원산지 : ${product.origin}</span>
+			                </p>
+			                <p class="content">
+			                    <c:forEach var="details" items="${fn:split(product.detail, '💚')}">
+			                        <c:if test="${!empty details}">
+			                            <p>💚${details}</p>
+			                        </c:if>
+			                    </c:forEach>
+			                </p>
+			                <p class="deliveryDay">배송 일정: ${product.delivery_info}</p>
+			                <p class="deliveryFee">
+			                    <i class="bi bi-truck"></i> 
+			                    배송비 <fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원
+			                </p>
+			            </div>
+			            <!-- 각 상품마다 수량 선택 - AJAX처리 -->
+			            <div class="quantity-selector"></div>
+			        </div>
+			        <hr>
+			    </c:forEach>
+			</div>
+		</form>
 	
 	</div>
 

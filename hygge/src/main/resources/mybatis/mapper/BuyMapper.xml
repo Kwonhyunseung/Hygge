@@ -40,30 +40,35 @@ WHERE p.product_num = #{product_num}
 	</select>
 
 	<!-- 배송지 등록(신규 배송지일 경우) -->
-	<insert id="insertBuyDelivery" parameterType="com.sp.app.model.DeliveryList">
-		<!-- default_dest -> 기본:0, 나머지(신규, 등):1 -->
-		INSERT INTO DeliveryList (dest_num, memberIdx, addr1, addr2, postCode, receiver, default_dest, request)
-			VALUES (DELIVERY_SEQ.NEXTVAL, #{memberIdx}, #{addr1}, #{addr2}, #{postCode}, 1, #{request})
-	</insert>
-	
-	<!-- 구매내역 등록 -->
-	<insert id="insertBuySales" parameterType="com.sp.app.model.Sales">
-INSERT INTO Sales (num, product_num, amount, sum, payment_num)
-VALUES (SALES_SEQ.NEXTVAL, #{product_num}, #{amount}, #{sum}, #{payment_num})
+<insert id="insertBuyDelivery" parameterType="com.sp.app.model.DeliveryList">
+    <!-- default_dest -> 기본:0, 나머지(신규, 등):1 -->
+    INSERT INTO DeliveryList (dest_num, memberIdx, addr1, addr2, postCode, receiver, default_dest, request)
+    VALUES (DELIVERY_SEQ.NEXTVAL, #{memberIdx}, #{addr1}, #{addr2}, #{postCode}, #{receiver}, #{default_dest}, #{request})
 </insert>
 	
 	
-	<!-- 결제내역 등록 --> 
-	<insert id="insertBuyPayment" parameterType="com.sp.app.model.Payment">
-		<!-- pay_way -> 카드:1 -->
-		INSERT INTO Payment (payment_num, memberIdx, total_amount, pay_amount, pay_way, sort, shipping_fee, coupon, payment_date, shipping_state)
-			VALUES (PAYMENT_SEQ.NEXTVAL, #{memberIdx}, #{total_amount}, #{pay_amount}, #{pay_way}, #{sort}, #{shipping_fee}, #{coupon}, SYSDATE, #{shipping_state})
+	<!-- 구매내역 등록 -->
+	<insert id="insertBuySales" parameterType="com.sp.app.model.Sales">
+	INSERT INTO Sales (num, product_num, amount, sum, payment_num)
+		VALUES (SALES_SEQ.NEXTVAL, #{product_num}, #{amount}, #{sum}, #{payment_num})
 	</insert>
+	
+	
+	<!-- 결제내역 등록 --> 
+	<!-- 결제내역 등록 -->
+<insert id="insertBuyPayment" parameterType="com.sp.app.model.Payment" useGeneratedKeys="true" keyProperty="payment_num">
+<!-- pay_way -> 카드:1 -->
+INSERT INTO Payment (payment_num, memberIdx, total_amount, pay_amount, pay_way, sort, shipping_fee, coupon, payment_date, shipping_state)
+VALUES (PAYMENT_SEQ.NEXTVAL, #{memberIdx}, #{total_amount}, #{pay_amount}, #{pay_way}, #{sort}, #{shipping_fee}, #{coupon}, SYSDATE, #{shipping_state})
+<selectKey keyProperty="payment_num" resultType="long" order="AFTER">
+    SELECT PAYMENT_SEQ.CURRVAL FROM DUAL
+</selectKey>
+</insert>
 	
 	<!-- 사용 가능한 쿠폰 리스트 -->
 	<select id="listCoupon" parameterType="Long" resultType="com.sp.app.model.Coupon">
 		<!-- 쿠폰명, 만기일, 할인율, 할인최대금액 -->
-		SELECT c.num, memberIdx, discount_rate, discount, title, exp_date
+		SELECT c.num, memberIdx, discount_Rate, discount, title, exp_date
 		FROM Coupon c
 		JOIN Event e ON c.num = e.num
 		WHERE memberIdx = #{memberIdx} AND used_date IS NULL

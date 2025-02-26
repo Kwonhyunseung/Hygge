@@ -20,7 +20,6 @@ public interface BuyMapper {
 	public Product findByProductNum(long num);
 	
 	// productChoice
-		//public Product buyProductAllInfo(Map<String, Object> map);
 	public Product buyProductInfo(long num) throws SQLException;
 	public Member buyUserInfo(long memberIdx) throws SQLException;
 	

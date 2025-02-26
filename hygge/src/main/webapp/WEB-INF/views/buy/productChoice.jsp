@@ -115,6 +115,135 @@ function daumPostcode() {
 		}
 	}).open();
 }
+
+
+$(function() {
+    // 상품 금액과 배송비
+    const productSum = ${product.sum};
+    const deliveryFee = ${product.delivery_fee};
+    
+    // 쿠폰 선택 시 이벤트
+    $('#couponSelect').change(function() {
+        calculateTotalWithCoupon();
+    });
+    
+    // 쿠폰 적용하여 총 금액 계산
+    function calculateTotalWithCoupon() {
+        const $selectedOption = $('#couponSelect option:selected');
+        const couponNum = $selectedOption.val();
+        const discountRate = parseFloat($selectedOption.data('rate'));
+        const maxDiscount = parseInt($selectedOption.data('discount'));
+        
+        let discountAmount = 0;
+        
+        // 할인율이 있는 경우
+        if (discountRate > 0) {
+            discountAmount = Math.floor(productSum * (discountRate / 100));
+            // 최대 할인 금액 제한이 있는 경우
+            if (maxDiscount > 0 && discountAmount > maxDiscount) {
+                discountAmount = maxDiscount;
+            }
+        } 
+        // 정액 할인인 경우
+        else if (maxDiscount > 0) {
+            discountAmount = maxDiscount;
+        }
+        
+        // 할인 금액이 상품 금액보다 클 수 없음
+        if (discountAmount > productSum) {
+            discountAmount = productSum;
+        }
+        
+        // 최종 결제 금액 계산 (상품 금액 - 할인 금액 + 배송비)
+        const finalAmount = productSum - discountAmount + deliveryFee;
+        
+        // 화면에 표시
+        $('#couponDiscount').text(numberWithCommas(discountAmount) + '원');
+        $('#totalPrice').text(numberWithCommas(finalAmount) + '원');
+        
+        // hidden 필드에 값 설정
+        $('#selectedCouponNum').val(couponNum);
+        $('#discountAmount').val(discountAmount);
+        $('#finalPaymentAmount').val(finalAmount);
+    }
+    
+    // 숫자 포맷팅 함수
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+});
+
+
+function finalBuy() {
+    if(!$('#agreeAll').is(':checked')) {
+        alert('필수 약관에 동의해주세요.');
+        return;
+    }
+    
+    // 선택된 쿠폰 및 결제 정보
+    const couponNum = $('#selectedCouponNum').val();
+    const discountAmount = $('#discountAmount').val();
+    const finalAmount = $('#finalPaymentAmount').val();
+    
+    // 결제 정보
+    const receiverName = $('#receiver').val();
+    const address = $('#address').val();
+    const detailAddr = $('#detailAddr').val();
+    const postCode = $('#postCode').val();
+    const deliveryMessage = $('#aInfo').val();
+    const payWay = $('input[name="payMethod"]:checked').val() || '1';
+    
+    console.log("결제 정보:", {
+        product_num: ${product.product_num},
+        amount: ${product.amount},
+        sum: ${product.sum},
+        couponNum: couponNum,
+        discountAmount: discountAmount,
+        finalAmount: finalAmount,
+        deliveryFee: ${product.delivery_fee},
+        receiver: receiverName,
+        addr1: address,
+        addr2: detailAddr,
+        postCode: postCode,
+        request: deliveryMessage,
+        pay_way: payWay
+    });
+    
+    // AJAX로 결제 정보 전송
+     $.ajax({
+        url: "${pageContext.request.contextPath}/buy/processPayment",
+        type: "POST",
+        data: {
+            product_num: ${product.product_num},
+            amount: ${product.amount},
+            sum: ${product.sum},
+            couponNum: couponNum,
+            discountAmount: discountAmount,
+            finalAmount: finalAmount,
+            deliveryFee: ${product.delivery_fee},
+            receiver: receiverName,
+            addr1: address,
+            addr2: detailAddr,
+            postCode: postCode,
+            request: deliveryMessage,
+            pay_way: payWay
+        },
+        success: function(response) {
+            console.log("서버 응답:", response);
+            if(response.success) {
+                alert('결제가 완료되었습니다.');
+                // 서버에서 제공하는 리다이렉션 URL로 이동
+                location.href = "${pageContext.request.contextPath}" + response.redirectUrl;
+            } else {
+                alert(response.message || '결제 처리 중 오류가 발생했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 오류:", xhr.responseText);
+            alert('결제 처리 중 오류가 발생했습니다.');
+        }
+    });
+}
 </script>
 
 </head>
@@ -231,7 +360,7 @@ function daumPostcode() {
 			    <div>
 			        <input type="text" id="address" value="${member.addr1}" placeholder="주소" readonly>
 			        <input type="text" id="postCode" value="${member.postCode}" placeholder="우편번호" readonly>
-			        <input type="button" onclick="daumPostcode();" value="우편번호 찾기" id="postFind">
+			        <input type="button" onclick="daumPostcode();" value="주소 찾기" id="postFind">
 			    </div>
 			    <input type="text" id="detailAddr" value="${member.addr2}" placeholder="상세주소를 입력해주세요" readonly>
 			    <input type="text" id="aInfo" placeholder="주문 요청 사항을 입력해주세요(선택)">
@@ -239,14 +368,36 @@ function daumPostcode() {
 			
 			
 			<div class="coupon">
-				<h4>쿠폰</h4>
-				<select class="couponSelect">  
-				    <option value="c1">쿠폰을 선택해주세요</option>  
-				    <option value="c2">첫 구매 배송비 할인</option>  
-				    <option value="c3">50,000원 할인</option>
-				    <option value="c4">쿠폰 선택 안함</option>
-				</select>
-			</div>
+    <h4>쿠폰</h4>
+    <c:choose>
+        <c:when test="${empty coupons}">
+            <p>사용 가능한 쿠폰이 없습니다.</p>
+        </c:when>
+        <c:otherwise>
+            <select id="couponSelect" class="couponSelect">  
+                <option value="0" data-discount="0" data-rate="0">쿠폰을 선택해주세요</option>
+                <c:forEach var="coupon" items="${coupons}">
+                    <option value="${coupon.num}" 
+                            data-discount="${coupon.discount}" 
+                            data-rate="${coupon.discount_Rate}">
+                        ${coupon.title} 
+                        <c:if test="${coupon.discount_Rate > 0}">
+                            (${coupon.discount_Rate}% 할인
+                            <c:if test="${coupon.discount > 0}">
+                                , 최대 <fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원
+                            </c:if>)
+                        </c:if>
+                        <c:if test="${coupon.discount_Rate == 0 && coupon.discount > 0}">
+                            (<fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원 정액 할인)
+                        </c:if>
+                        - ~<fmt:formatDate value="${coupon.exp_date}" pattern="yyyy-MM-dd"/>
+                    </option>
+                </c:forEach>
+                <option value="0" data-discount="0" data-rate="0">쿠폰 선택 안함</option>
+            </select>
+        </c:otherwise>
+    </c:choose>
+</div>
 			
 			<div class="col paymentMethod">
 				<h4>결제 수단</h4>
@@ -268,17 +419,21 @@ function daumPostcode() {
 				</p>
 				<p class="couponPrice">
 					쿠폰 금액
-					<span class="couponPrice">50,000원</span>
+					<span class="couponPrice" id="couponDiscount">0원</span>
 				</p> 
 				<p class="deliveryFee">
 					배송비
-					<span class="deliveryFee">${product.delivery_fee}원</span>	
+					<span class="deliveryFee"><fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원</span>  
 				</p>
 				<hr>
 				<p class="totalPrice">
-					총 결제 금액
-					<span class="totalPrice">949,000원</span>
-				</p>
+			        총 결제 금액
+			        <span class="totalPrice" id="totalPrice"><fmt:formatNumber value="${product.sum + product.delivery_fee}" pattern="#,###"/>원</span>
+			    </p>
+			    <!-- 실제 form 제출 시 사용할 hidden 필드 -->
+			    <input type="hidden" id="selectedCouponNum" name="couponNum" value="0">
+			    <input type="hidden" id="discountAmount" name="discountAmount" value="0">
+			    <input type="hidden" id="finalPaymentAmount" name="finalPaymentAmount" value="${product.sum + product.delivery_fee}">
 			</div>
 			
 			<div class="payNote">
