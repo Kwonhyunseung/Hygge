@@ -40,7 +40,7 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0 30px;
-	border: 2px solid #eee;
+	border: 2px solid #f9f9f9;
 }
 
 .circle p {
@@ -187,10 +187,6 @@ h4 {
 }
 
 
-
-
-
-
 /* 배송 정보 */
 #addr1, #addr2, #postCode, #aInfo { font-size: 22px; }
 input[type="text"] {
@@ -269,6 +265,21 @@ input[type="text"] {
 .couponSelect:focus {
     border-color: #709B04;
     outline: none;
+}
+
+/* 쿠폰 없을 경우 */
+.no-coupon-message {
+    color: #4d4d4d;
+    text-align: left;
+    padding: 7px;
+    font-style: italic;
+    font-size: 23px;
+}
+
+/* 필수 체크 표시 */
+.required-mark {
+    color: #ff0000;
+    margin-left: 5px;
 }
 
 /* 결제 수단 */
@@ -398,4 +409,6 @@ input[type="text"] {
 
 .buyBtn:hover {
 	background-color: #5B7D05;
+	transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

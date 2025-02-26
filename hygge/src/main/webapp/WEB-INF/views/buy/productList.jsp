@@ -12,64 +12,10 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/buy/productList.css" type="text/css">
 
-<style type="text/css">
-.buy-now-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.buy-now-btn:hover {
-    background-color: #0056b3;
-}
-</style>
-
 <script type="text/javascript">
-function stepOne() {
-    const selectedProduct = $(".selected-product-info");
-    if (selectedProduct.length === 0) {
-        alert("상품을 선택해주세요.");
-        return;
-    }
-    
-    const productNum = selectedProduct.closest(".select-product").data("product-num");
-    $("#selectedProductNum").val(productNum);
-    $("#productForm").submit();
-}
-
-
-// AJAX 정의
-function ajaxFun(url, method, formData, dataType, fn, file = false) {
-    const settings = {
-        type: method,
-        data: formData,
-        dataType: dataType,
-        success: function(data) {
-            fn(data);
-        },
-        beforeSend: function(jqXHR) {
-        },
-        complete: function() {
-        },
-        error: function(jqXHR) {
-            console.log(jqXHR.responseText);
-        }
-    };
-
-    if(file) {
-        settings.processData = false;
-        settings.contentType = false;
-    }
-
-    $.ajax(url, settings);
+//숫자 콤마 포맷팅
+function numberComma(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 //수량 선택
@@ -204,12 +150,6 @@ function buyNow(productNum) {
     }
 }
 
-// 숫자 콤마 포맷팅
-function numberComma(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
 //총 금액 계산 함수
 function calculateTotal($input) {
     const quantity = parseInt($input.val());
@@ -273,7 +213,6 @@ function calculateTotal($input) {
 			                    배송비 <fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원
 			                </p>
 			            </div>
-			            <!-- 각 상품마다 수량 선택 - AJAX처리 -->
 			            <div class="quantity-selector"></div>
 			        </div>
 			        <hr>

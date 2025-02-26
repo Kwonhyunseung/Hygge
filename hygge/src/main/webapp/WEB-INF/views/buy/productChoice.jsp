@@ -15,16 +15,16 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script type="text/javascript">
-function finalBuy() {
-    if(!$('#agreeAll').is(':checked')) {
-        alert('필수 약관에 동의해주세요.');
-        return;
-    }
-    alert('결제가 완료되었습니다.');
-    location.href = "${pageContext.request.contextPath}/buy/complete";
+//숫자 포맷팅 함수
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 $(function() {
+    // 페이지 로드 시 라디오 버튼 기본 선택
+    $('#card').prop('checked', true);
+    
+    // 약관 동의 체크박스 연동
     $('#agreeAll').change(function() {
         const isChecked = $(this).is(':checked');
         $('#agree1, #agree2').prop('checked', isChecked);
@@ -34,6 +34,91 @@ $(function() {
         const allChecked = $('#agree1').is(':checked') && $('#agree2').is(':checked');
         $('#agreeAll').prop('checked', allChecked);
     });
+    
+    // 페이지 로드 시 우편번호 찾기 버튼 숨기기
+    $('#postFind').hide();
+    
+    // 상품 금액과 배송비
+    const productSum = ${product.sum};
+    const deliveryFee = ${product.delivery_fee};
+    
+    // 쿠폰 선택 시 이벤트
+    $('#couponSelect').change(function() {
+        calculateTotalWithCoupon();
+    });
+    
+    // 쿠폰 적용하여 총 금액 계산
+    function calculateTotalWithCoupon() {
+        const $selectedOption = $('#couponSelect option:selected');
+        const couponNum = $selectedOption.val();
+        const discountRate = parseFloat($selectedOption.data('rate') || 0);
+        const maxDiscount = parseInt($selectedOption.data('discount') || 0);
+        
+        let discountAmount = 0;
+        
+        // 할인율이 있는 경우
+        if (discountRate > 0) {
+            discountAmount = Math.floor(productSum * (discountRate / 100));
+            // 최대 할인 금액 제한이 있는 경우
+            if (maxDiscount > 0 && discountAmount > maxDiscount) {
+                discountAmount = maxDiscount;
+            }
+        } 
+        // 정액 할인인 경우
+        else if (maxDiscount > 0) {
+            discountAmount = maxDiscount;
+        }
+        
+        // 할인 금액이 상품 금액보다 클 수 없음
+        if (discountAmount > productSum) {
+            discountAmount = productSum;
+        }
+        
+        // 최종 결제 금액 계산 (상품 금액 - 할인 금액 + 배송비)
+        const finalAmount = productSum - discountAmount + deliveryFee;
+        
+        // 화면에 표시
+        $('#couponDiscount').text(numberWithCommas(discountAmount) + '원');
+        $('#totalPrice').text(numberWithCommas(finalAmount) + '원');
+        
+        // hidden 필드에 값 설정
+        $('#selectedCouponNum').val(couponNum);
+        $('#discountAmount').val(discountAmount);
+        $('#finalPaymentAmount').val(finalAmount);
+    }
+    
+    // 상품 구성 레이아웃 조정
+    const detailItems = $('.detail-item').length;
+    const detailsContainer = $('.product-details-container');
+    const stockInfo = $('.stock');
+    
+    // 상품 구성이 3개 이하인 경우 처리
+    if (detailItems <= 3) {
+        detailsContainer.css({
+            'max-height': 'none',
+            'overflow-y': 'visible',
+            'margin-bottom': '10px'
+        });
+        
+        // 구분선 추가
+        detailsContainer.after('<div class="stock-divider"></div>');
+        
+        // 클래스 추가
+        stockInfo.addClass('stock-below');
+    }
+    // 4개 이상인 경우 스크롤 적용
+    else {
+        const itemHeight = 45; // 각 항목의 높이 (픽셀)
+        const visibleItems = 3; // 보이는 항목 수
+        const height = (itemHeight * visibleItems) + 10; // 여유 추가
+        
+        detailsContainer.css({
+            'max-height': height + 'px',
+            'overflow-y': 'auto'
+        });
+        
+        stockInfo.addClass('stock-inline');
+    }
 });
 
 // 신규 배송지
@@ -66,12 +151,6 @@ function newAddr() {
         $addrBtn.val("신규 배송지 입력");
     }
 }
-
-// 페이지 로드 시 우편번호 찾기 버튼 숨기기
-$(function() {
-    $('#postFind').hide();
-    
-});
 
 // 다음주소 API
 function daumPostcode() {
@@ -116,120 +195,58 @@ function daumPostcode() {
 	}).open();
 }
 
-
-$(function() {
-    // 상품 금액과 배송비
-    const productSum = ${product.sum};
-    const deliveryFee = ${product.delivery_fee};
-    
-    // 쿠폰 선택 시 이벤트
-    $('#couponSelect').change(function() {
-        calculateTotalWithCoupon();
-    });
-    
-    // 쿠폰 적용하여 총 금액 계산
-    function calculateTotalWithCoupon() {
-        const $selectedOption = $('#couponSelect option:selected');
-        const couponNum = $selectedOption.val();
-        const discountRate = parseFloat($selectedOption.data('rate'));
-        const maxDiscount = parseInt($selectedOption.data('discount'));
-        
-        let discountAmount = 0;
-        
-        // 할인율이 있는 경우
-        if (discountRate > 0) {
-            discountAmount = Math.floor(productSum * (discountRate / 100));
-            // 최대 할인 금액 제한이 있는 경우
-            if (maxDiscount > 0 && discountAmount > maxDiscount) {
-                discountAmount = maxDiscount;
-            }
-        } 
-        // 정액 할인인 경우
-        else if (maxDiscount > 0) {
-            discountAmount = maxDiscount;
-        }
-        
-        // 할인 금액이 상품 금액보다 클 수 없음
-        if (discountAmount > productSum) {
-            discountAmount = productSum;
-        }
-        
-        // 최종 결제 금액 계산 (상품 금액 - 할인 금액 + 배송비)
-        const finalAmount = productSum - discountAmount + deliveryFee;
-        
-        // 화면에 표시
-        $('#couponDiscount').text(numberWithCommas(discountAmount) + '원');
-        $('#totalPrice').text(numberWithCommas(finalAmount) + '원');
-        
-        // hidden 필드에 값 설정
-        $('#selectedCouponNum').val(couponNum);
-        $('#discountAmount').val(discountAmount);
-        $('#finalPaymentAmount').val(finalAmount);
-    }
-    
-    // 숫자 포맷팅 함수
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-});
-
-
+// 결제 처리
 function finalBuy() {
+    // 1. 약관 동의 확인
     if(!$('#agreeAll').is(':checked')) {
         alert('필수 약관에 동의해주세요.');
         return;
     }
     
-    // 선택된 쿠폰 및 결제 정보
-    const couponNum = $('#selectedCouponNum').val();
-    const discountAmount = $('#discountAmount').val();
-    const finalAmount = $('#finalPaymentAmount').val();
+    // 2. 결제 수단 선택 확인
+    if(!$('input[name="payMethod"]:checked').val()) {
+        alert('결제 수단을 선택해주세요.');
+        return;
+    }
     
-    // 결제 정보
-    const receiverName = $('#receiver').val();
-    const address = $('#address').val();
-    const detailAddr = $('#detailAddr').val();
-    const postCode = $('#postCode').val();
-    const deliveryMessage = $('#aInfo').val();
-    const payWay = $('input[name="payMethod"]:checked').val() || '1';
+    // 3. 배송지 정보 확인
+    if(!$('#receiver').val().trim()) {
+        alert('받는 사람 이름을 입력해주세요.');
+        $('#receiver').focus();
+        return;
+    }
     
-    console.log("결제 정보:", {
+    if(!$('#address').val().trim() || !$('#postCode').val().trim()) {
+        alert('주소를 입력해주세요.');
+        if($('#postFind').is(':visible')) {
+            $('#postFind').focus();
+        }
+        return;
+    }
+    
+    // 4. 폼 데이터 수집
+    const paymentData = {
         product_num: ${product.product_num},
         amount: ${product.amount},
         sum: ${product.sum},
-        couponNum: couponNum,
-        discountAmount: discountAmount,
-        finalAmount: finalAmount,
+        couponNum: $('#selectedCouponNum').val(),
+        discountAmount: $('#discountAmount').val(),
+        finalAmount: $('#finalPaymentAmount').val(),
         deliveryFee: ${product.delivery_fee},
-        receiver: receiverName,
-        addr1: address,
-        addr2: detailAddr,
-        postCode: postCode,
-        request: deliveryMessage,
-        pay_way: payWay
-    });
+        receiver: $('#receiver').val().trim(),
+        addr1: $('#address').val().trim(),
+        addr2: $('#detailAddr').val().trim(),
+        postCode: $('#postCode').val().trim(),
+        request: $('#aInfo').val().trim(),
+        pay_way: $('input[name="payMethod"]:checked').val() || '1'
+    };
     
-    // AJAX로 결제 정보 전송
-     $.ajax({
+    // 5. AJAX 요청 실행
+    $.ajax({
         url: "${pageContext.request.contextPath}/buy/processPayment",
         type: "POST",
-        data: {
-            product_num: ${product.product_num},
-            amount: ${product.amount},
-            sum: ${product.sum},
-            couponNum: couponNum,
-            discountAmount: discountAmount,
-            finalAmount: finalAmount,
-            deliveryFee: ${product.delivery_fee},
-            receiver: receiverName,
-            addr1: address,
-            addr2: detailAddr,
-            postCode: postCode,
-            request: deliveryMessage,
-            pay_way: payWay
-        },
+        data: paymentData,
         success: function(response) {
-            console.log("서버 응답:", response);
             if(response.success) {
                 alert('결제가 완료되었습니다.');
                 // 서버에서 제공하는 리다이렉션 URL로 이동
@@ -239,7 +256,7 @@ function finalBuy() {
             }
         },
         error: function(xhr, status, error) {
-            console.error("AJAX 오류:", xhr.responseText);
+            console.error("결제 처리 오류:", error);
             alert('결제 처리 중 오류가 발생했습니다.');
         }
     });
@@ -293,45 +310,6 @@ function finalBuy() {
 			            구매 수량
 			            <span class="stock">${product.amount}개</span>
 			        </p>
-			        <script type="text/javascript">
-			        $(function() {
-			            // 상품 구성의 항목 수 확인
-			            const detailItems = $('.detail-item').length;
-			            const detailsContainer = $('.product-details-container');
-			            const stockInfo = $('.stock');
-			            
-			            // 상품 구성이 3개 이하인 경우 공통 처리
-			            if (detailItems <= 3) {
-			                // 컨테이너 높이 제한 제거
-			                detailsContainer.css({
-			                    'max-height': 'none',
-			                    'overflow-y': 'visible',
-			                    'margin-bottom': '10px'
-			                });
-			                
-			                // 구분선 추가 (공통)
-			                detailsContainer.after('<div class="stock-divider"></div>');
-			                
-			                // 1~3개 모두 동일한 클래스 추가
-			                stockInfo.addClass('stock-below');
-			            }
-			            // 4개 이상인 경우
-			            else {
-			                // 스크롤 적용 (3개 정도 보이는 높이로 설정)
-			                const itemHeight = 45; // 대략적인 각 항목의 높이 (픽셀)
-			                const visibleItems = 3; // 보이는 항목 수
-			                const height = (itemHeight * visibleItems) + 10; // 약간의 여유 추가
-			                
-			                detailsContainer.css({
-			                    'max-height': height + 'px',
-			                    'overflow-y': 'auto'
-			                });
-			                
-			                // 스크롤 가능한 컨테이너에 맞는 스타일 적용
-			                stockInfo.addClass('stock-inline');
-			            }
-			        });
-			        </script>
 				</div>
 			</div>
 			
@@ -368,47 +346,52 @@ function finalBuy() {
 			
 			
 			<div class="coupon">
-    <h4>쿠폰</h4>
-    <c:choose>
-        <c:when test="${empty coupons}">
-            <p>사용 가능한 쿠폰이 없습니다.</p>
-        </c:when>
-        <c:otherwise>
-            <select id="couponSelect" class="couponSelect">  
-                <option value="0" data-discount="0" data-rate="0">쿠폰을 선택해주세요</option>
-                <c:forEach var="coupon" items="${coupons}">
-                    <option value="${coupon.num}" 
-                            data-discount="${coupon.discount}" 
-                            data-rate="${coupon.discount_Rate}">
-                        ${coupon.title} 
-                        <c:if test="${coupon.discount_Rate > 0}">
-                            (${coupon.discount_Rate}% 할인
-                            <c:if test="${coupon.discount > 0}">
-                                , 최대 <fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원
-                            </c:if>)
-                        </c:if>
-                        <c:if test="${coupon.discount_Rate == 0 && coupon.discount > 0}">
-                            (<fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원 정액 할인)
-                        </c:if>
-                        - ~<fmt:formatDate value="${coupon.exp_date}" pattern="yyyy-MM-dd"/>
-                    </option>
-                </c:forEach>
-                <option value="0" data-discount="0" data-rate="0">쿠폰 선택 안함</option>
-            </select>
-        </c:otherwise>
-    </c:choose>
-</div>
+			<h4>쿠폰</h4>
+		        <c:choose>
+		            <c:when test="${empty coupons}">
+		                <div class="no-coupon-message">
+		                    <i class="bi bi-ticket-perforated"></i> 사용 가능한 쿠폰이 없습니다.
+		                </div>
+		            </c:when>
+		            <c:otherwise>
+		                <select id="couponSelect" class="couponSelect">  
+		                    <option value="0" data-discount="0" data-rate="0">쿠폰을 선택해주세요</option>
+		                    <c:forEach var="coupon" items="${coupons}">
+		                        <option value="${coupon.num}" 
+		                         	data-discount="${coupon.discount}" 
+	                                data-rate="${coupon.discount_Rate}">
+		                            ${coupon.title} 
+		                            <c:if test="${coupon.discount_Rate > 0}">
+		                                (${coupon.discount_Rate}% 할인
+		                                <c:if test="${coupon.discount > 0}">
+		                                    , 최대 <fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원
+		                                </c:if>)
+		                            </c:if>
+		                            <c:if test="${coupon.discount_Rate == 0 && coupon.discount > 0}">
+		                                (<fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원 정액 할인)
+		                            </c:if>
+		                            - ~<fmt:formatDate value="${coupon.exp_date}" pattern="yyyy-MM-dd"/>
+		                        </option>
+		                    </c:forEach>
+		                    <option value="0" data-discount="0" data-rate="0">쿠폰 선택 안함</option>
+		                </select>
+	            	</c:otherwise>
+	        	</c:choose>
+			</div>
 			
 			<div class="col paymentMethod">
-				<h4>결제 수단</h4>
-				<div>
-				    <input id="card" name="payMethod" type="radio" id="card" value="1">
-				    <label for="card">카드</label>
-				</div>
-				<!-- <div>
-				    <input id="cash" name="payMethod" type="radio" value="cash">
-				    <label for="cash">계좌이체</label>
-				</div> -->
+			    <h4>결제 수단 <span class="required-mark">*</span></h4>
+			    <div class="payment-methods">
+			        <div class="payment-method-item">
+			            <input id="card" name="payMethod" type="radio" value="1" checked>
+			            <label for="card">신용카드 / 체크카드</label>
+			        </div>
+			        <!-- 다른 결제 수단? -->
+			        <!-- <div class="payment-method-item">
+			            <input id="cash" name="payMethod" type="radio" value="2">
+			            <label for="cash">계좌이체</label>
+			        </div> -->
+			    </div>
 			</div>
 			
 			<div class="finalPayment">
@@ -444,7 +427,7 @@ function finalBuy() {
 			</div>
 			
 			<div class="payAgree">
-			    <h4>약관 동의</h4>
+			    <h4>약관 동의 <span class="required-mark">*</span></h4>
 			    <div class="agreeAll">
 			        <input type="checkbox" id="agreeAll" required>
 			        <label for="agreeAll">결제 진행 필수 동의</label>

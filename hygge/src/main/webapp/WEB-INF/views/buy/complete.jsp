@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/buy/complete.css" type="text/css">
 
 <script type="text/javascript">
-	function three() {
-		alert('결제완료~~~');
-	}
+function paymentComplete() {
+    location.href = "${pageContext.request.contextPath}/";
+}
 </script>
 
 </head>
@@ -53,7 +53,7 @@
     </c:if>
 </div>
 
-		<button type="button" class="buyBtn" onclick="three()">메인으로</button>
+		<button type="button" class="buyBtn" onclick="paymentComplete()">메인으로</button>
 
 	</div>
 
