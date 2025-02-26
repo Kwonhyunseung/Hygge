@@ -47,26 +47,30 @@
         
             <div class="content-header">
                 <h2>중고게시판 관리</h2>
-                <span class="total-count">총 150개의 게시글</span>
+                <span class="total-count">총 ${dataCount}개의 게시글</span>
 	            <div class="tab-buttons">
-	                <button class="tab-button" data-tab="reported">신고 누적</button>
-	            </div>            
+			    <button class="tab-button" data-tab="reported">신고 누적</button>
+			    <button class="tab-button" data-tab="trade-status">거래 현황</button>
+			    <button class="tab-button" onclick="${pageContext.request.contextPath}/admin">게시글</button>
+			</div>        
             </div>
             
             <div class="content-body">
-                <div class="search-bar">
-                    <select name="searchType">
-                        <option value="title">제목</option>
-                        <option value="writer">작성자</option>
-                        <option value="content">내용</option>
-                    </select>
-                    <div class="search-wrapper">
-                        <input type="text" placeholder="검색어를 입력하세요">
-                        <button type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+			<form name="searchForm" method="get" action="${pageContext.request.contextPath}/admin/usedBoard/list">
+			    <div class="search-bar">
+			        <select name="schType">
+			            <option value="title" ${schType == 'title' ? 'selected' : ''}>제목</option>
+			            <option value="writer" ${schType == 'writer' ? 'selected' : ''}>작성자</option>
+			            <option value="content" ${schType == 'content' ? 'selected' : ''}>내용</option>
+			        </select>
+			        <div class="search-wrapper">
+			            <input type="text" name="kwd" value="${kwd}" placeholder="검색어를 입력하세요">
+			            <button type="submit">
+			                <i class="fas fa-search"></i>
+			            </button>
+			        </div>
+			    </div>
+			</form>
 
 			<div class="board-container">
 			    <table>
@@ -76,174 +80,241 @@
 			                <th>번호</th>
 			                <th>제목</th>
 			                <th>작성자</th>
+			                <th>분류</th>
 			                <th>상태</th>
 			                <th>등록일</th>
 			                <th>조회수</th>
 			                <th>관리</th>
 			            </tr>
 			        </thead>
-			        <tbody>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="1"></td>
-			                <td>15</td>
-			                <td>아이폰 14 Pro 팝니다 (상태 A급)</td>
-			                <td>애플매니아</td>
-			                <td><span class="status-badge status-selling">판매중</span></td>
-			                <td>2024-02-07</td>
-			                <td>245</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="2"></td>
-			                <td>14</td>
-			                <td>갤럭시 S23 Ultra 판매합니다 (풀박)</td>
-			                <td>폰마스터</td>
-			                <td><span class="status-badge status-reserved">예약중</span></td>
-			                <td>2024-02-07</td>
-			                <td>188</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="3"></td>
-			                <td>13</td>
-			                <td>맥북 프로 M2 팝니다 (애케플 포함)</td>
-			                <td>맥러버</td>
-			                <td><span class="status-badge status-completed">판매완료</span></td>
-			                <td>2024-02-06</td>
-			                <td>324</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="4"></td>
-			                <td>12</td>
-			                <td>아이패드 프로 5세대 (M2) + 매직키보드</td>
-			                <td>태블릿매니아</td>
-			                <td><span class="status-badge status-selling">판매중</span></td>
-			                <td>2024-02-06</td>
-			                <td>156</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="5"></td>
-			                <td>11</td>
-			                <td>에어팟 프로 2세대 (미개봉)</td>
-			                <td>사운드러버</td>
-			                <td><span class="status-badge status-reserved">예약중</span></td>
-			                <td>2024-02-06</td>
-			                <td>142</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="6"></td>
-			                <td>10</td>
-			                <td>갤럭시 워치 6 클래식 (실버)</td>
-			                <td>시계매니아</td>
-			                <td><span class="status-badge status-completed">판매완료</span></td>
-			                <td>2024-02-05</td>
-			                <td>98</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="7"></td>
-			                <td>9</td>
-			                <td>레노버 게이밍 노트북 (RTX 4060)</td>
-			                <td>게이머킹</td>
-			                <td><span class="status-badge status-selling">판매중</span></td>
-			                <td>2024-02-05</td>
-			                <td>267</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="8"></td>
-			                <td>8</td>
-			                <td>삼성 게이밍 모니터 오디세이 G7</td>
-			                <td>모니터장인</td>
-			                <td><span class="status-badge status-selling">판매중</span></td>
-			                <td>2024-02-05</td>
-			                <td>178</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="9"></td>
-			                <td>7</td>
-			                <td>LG 그램 2024년형 신제품</td>
-			                <td>노트북매니아</td>
-			                <td><span class="status-badge status-completed">판매완료</span></td>
-			                <td>2024-02-04</td>
-			                <td>412</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			            <tr>
-			                <td><input type="checkbox" name="selectedItems" value="10"></td>
-			                <td>6</td>
-			                <td>소니 WH-1000XM5 헤드폰</td>
-			                <td>음질장인</td>
-			                <td><span class="status-badge status-selling">판매중</span></td>
-			                <td>2024-02-04</td>
-			                <td>167</td>
-			                <td class="action-buttons">
-			                    <button type="button"><i class="fas fa-eye"></i></button>
-			                    <button type="button"><i class="fas fa-edit"></i></button>
-			                    <button type="button"><i class="fas fa-trash"></i></button>
-			                </td>
-			            </tr>
-			        </tbody>
+					<tbody>
+					    <c:forEach var="board" items="${dto}" varStatus="status">
+					        <tr>
+					            <td><input type="checkbox" name="selectedItems" value="${board.board_num}"></td>
+					            <td>${board.board_num}</td>
+					            <td>
+								    <a href="${pageContext.request.contextPath}/usedBoard/article?page=${page}&num=${board.board_num}">${board.title}</a>
+								</td>
+					            <td>${board.nickName}</td>
+					            <c:choose>
+					                <c:when test="${board.category == 0}">
+					                    <td><span class="status-badge status-selling">판매</span></td>
+					                </c:when>
+					                <c:when test="${board.category == 1}">
+					                    <td><span class="status-badge status-selling">구매</span></td>
+					                </c:when>
+					            </c:choose>					            
+					            <c:choose>
+					                <c:when test="${board.deal == 0}">
+					                    <td><span class="status-badge status-selling">미거래</span></td>
+					                </c:when>
+					                <c:when test="${board.deal == 1}">
+					                    <td><span class="status-badge status-selling">대기중</span></td>
+					                </c:when>
+					                <c:when test="${board.deal == -1}">
+					                    <td><span class="status-badge status-selling">거래완료</span></td>
+					                </c:when>
+					            </c:choose>
+					            <td>${board.reg_date}</td>
+					            <td>${board.hitCount}</td>
+					            <td class="action-buttons">
+					                <button type="button"><i class="fas fa-eye"></i></button>
+					                <button type="button"><i class="fas fa-edit"></i></button>
+					                <button type="button"><i class="fas fa-trash"></i></button>
+					            </td>
+					        </tr>
+					    </c:forEach>
+					</tbody>
 			    </table>
 			</div>
 
 				<div class="content-footer">
 				    <div class="button-group">
-				        <button type="button">선택 삭제</button>
+				        <button class="deleteBtn" type="button">선택 삭제</button>
 				        <button type="button">선택 숨김</button>
 				    </div>
 				    <div class="pagination">
-				        <a href="#" class="prev">&lt;</a>
-				        <a href="#" class="active">1</a>
-				        <a href="#">2</a>
-				        <a href="#">3</a>
-				        <a href="#">4</a>
-				        <a href="#">5</a>
-				        <a href="#" class="next">&gt;</a>
+				    	${paging}
 				    </div>
 				</div>
             </div>
         </div>
     </div>
 </body>
+
+<script type="text/javascript">
+$(function(){
+    // 전체 선택 체크박스
+    $("#checkAll").on("click", function(){
+        $("input[name=selectedItems]").prop("checked", $(this).prop("checked"));
+    });
+    
+    // 개별 체크박스가 모두 선택되었는지 확인
+    $(document).on("click", "input[name=selectedItems]", function(){
+        let total = $("input[name=selectedItems]").length;
+        let checked = $("input[name=selectedItems]:checked").length;
+        
+        $("#checkAll").prop("checked", total === checked);
+    });
+    
+    // 선택 삭제 버튼 클릭 이벤트
+    $(document).on("click", ".deleteBtn", function(){
+        let items = [];
+        
+        // 선택된 항목의 board_num 값을 배열에 추가
+        $("input[name=selectedItems]:checked").each(function(){
+            items.push($(this).val());
+        });
+        
+        if(items.length === 0) {
+            alert("삭제할 항목을 선택해주세요.");
+            return;
+        }
+        
+        if(!confirm("선택한 " + items.length + "개의 게시글을 삭제하시겠습니까?")) {
+            return;
+        }
+        
+        // 선택된 항목을 서버로 전송
+        let url = "${pageContext.request.contextPath}/admin/usedBoard/deleteBoards";
+        let query = {
+        	board_num : items
+        };
+        
+        const fn = function(data) {
+            if(data.status === "success") {
+                alert("선택한 게시글이 삭제되었습니다.");
+                // 삭제 성공 시 해당 행 제거
+                $("input[name=selectedItems]:checked").each(function(){
+                    $(this).closest("tr").fadeOut(300, function(){
+                        $(this).remove();
+                        
+                        updateTotalCount();
+                    });
+                });
+            } else {
+                alert("게시글 삭제 중 오류가 발생했습니다.");
+            }
+        };
+        
+        ajaxRequest(url, 'post', query, 'json', fn);
+    });
+    
+    // 총 게시글 수 업데이트 함수
+    function updateTotalCount() {
+        let currentCount = $("tbody tr").length;
+        $(".total-count").text("총 " + currentCount + "개의 게시글");
+    }
+});
+
+
+// 선택적: 신고된 게시물 로드 함수
+function loadReportedPosts() {
+    let url = "${pageContext.request.contextPath}/admin/usedBoard/reportedPosts";
+    
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "json",
+        success: function(data) {
+            renderReportedPostsTable(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("신고된 게시물 로드 중 오류 발생:", error);
+            alert("신고된 게시물을 불러오는 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+$(function(){
+    // 탭 버튼 클릭 이벤트 추가
+    $(".tab-buttons").on("click", ".tab-button", function() {
+        $(".tab-button").removeClass("active");
+        $(this).addClass("active");
+        
+        let tab = $(this).data("tab");
+        
+        if(tab === "trade-status") {
+            loadPurchaseStatus();
+        }
+        
+    });
+});
+
+function loadPurchaseStatus() {
+    let url = "${pageContext.request.contextPath}/admin/usedBoard/purchaseStatus";
+    
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "json",
+        success: function(data) {
+            renderPurchaseStatusTable(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("거래 현황 로드 중 오류 발생:", error);
+            alert("거래 현황을 불러오는 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+function renderPurchaseStatusTable(data) {
+    let tableHead = $(".board-container table thead");
+    let tbody = $(".board-container table tbody");
+    
+    // 테이블 헤더 업데이트
+    tableHead.html(`
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th>번호</th>
+            <th>글 제목</th>
+            <th>상품 명</th>
+            <th>판매자</th>
+            <th>구매자</th>
+            <th>가격</th>
+            <th>거래 상태</th>
+        </tr>
+    `);
+    
+    // 기존 체크박스 전체 선택 이벤트 재설정
+    $("#checkAll").on("click", function(){
+        $("input[name=selectedItems]").prop("checked", $(this).prop("checked"));
+    });
+    
+    // 테이블 바디 업데이트
+    tbody.empty();
+    
+    data.forEach(function(item) {
+        let progressText = item.deal === 0 ? '미거래' : 
+                           item.deal === 1 ? '대기중' : '거래완료';
+        
+        let row = 
+            '<tr>' +
+                '<td><input type="checkbox" name="selectedItems" value="' + item.board_num + '"></td>' +
+                '<td>' + item.board_num + '</td>' +
+                '<td>' + item.title + '</td>' +
+                '<td>' + (item.product || '미지정') + '</td>' +
+                '<td>' + item.nickName + '</td>' +
+                '<td>' + (item.buyerNickName || '없음') + '</td>' +
+                '<td>' + (item.price ? item.price.toLocaleString() + '원' : '가격 미정') + '</td>' +
+                '<td>' +
+                    '<span class="status-badge status-' + 
+                        (progressText === '미거래' ? 'waiting' : 
+                         progressText === '대기중' ? 'progress' : 
+                         'completed') + 
+                    '">' + 
+                        progressText + 
+                    '</span>' +
+                '</td>' +
+            '</tr>';
+        
+        tbody.append(row);
+    });
+    
+    // 총 게시글 수 업데이트
+    $(".total-count").text("총 " + data.length + "개의 거래");
+}
+
+
+</script>
 </html>

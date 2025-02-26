@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.UsedBoardManageMapper">
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT COUNT(*) FROM usedBoard ub
+    JOIN member1 m1 ON m1.memberIdx = ub.memberIdx
+    <where>
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'title'">
+                    AND INSTR(ub.title, #{kwd}) > 0
+                </when>
+                <when test="schType == 'writer'">
+                    AND INSTR(m1.nickName, #{kwd}) > 0
+                </when>
+                <when test="schType == 'content'">
+                    AND INSTR(ub.content, #{kwd}) > 0
+                </when>
+            </choose>
+        </if>
+    </where>	
+</select>
+
+<select id="UsedBoardList" parameterType="map" resultType="com.sp.app.admin.model.UsedBoardManage">
+SELECT ub.board_num, ub.memberIdx, ub.title, ub.content, ub.reg_date, ub.block, ub.hitCount, ub.category, ub.deal, ub.price, ub.product, m1.nickName
+FROM usedBoard ub
+JOIN member1 m1 ON m1.memberIdx = ub.memberIdx
+		<where>
+			<if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'title'">
+                    AND INSTR(ub.title, #{kwd}) > 0
+                </when>
+                <when test="schType == 'writer'">
+                    AND INSTR(m1.nickName, #{kwd}) > 0
+                </when>
+                <when test="schType == 'content'">
+                    AND INSTR(ub.content, #{kwd}) > 0
+                </when>
+            </choose>
+			</if>
+		</where>
+		ORDER BY ub.board_num DESC
+    	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+    <delete id="deleteUsedBoards" parameterType="list">
+        DELETE FROM usedboard
+        WHERE board_num IN
+        <foreach collection="list" item="borad_num" open="(" separator="," close=")">
+            #{borad_num}
+        </foreach>
+    </delete>
+    
+<select id="getPurchaseStatusList" resultType="com.sp.app.admin.model.UsedBoardManage">
+SELECT
+    ub.board_num,
+    ub.title,
+    ur.price,
+    ub.product,
+    seller.nickName as nickName,
+    buyer.nickName as buyerNickName,
+    ub.deal as deal,
+    ur.writer,
+    ur.customer,
+    ub.deal as progress
+FROM
+    UsedRequest ur
+JOIN
+    UsedBoard ub ON ur.board_num = ub.board_num
+JOIN
+    member1 seller ON ur.writer = seller.memberIdx
+JOIN
+    member1 buyer ON ur.customer = buyer.memberIdx
+WHERE
+    ub.deal IN (0, 1)
+ORDER BY
+    ub.reg_date DESC
+</select>
+</mapper>

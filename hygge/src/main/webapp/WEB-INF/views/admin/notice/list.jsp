@@ -75,7 +75,7 @@
 					                        <a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
 					                    </td>
 					                    <td>${dto.name}</td>
-					                    <td>${dto.regDate}</td>
+					                   		 <td><fmt:formatDate value="${dto.regDate}" pattern="yyyy-MM-dd"/></td>
 					                    <td>-</td>
 					                    <td class="action-buttons">
 					                        <button type="button" title="수정" onclick="location.href='${pageContext.request.contextPath}/admin/notice/update?num=${dto.num}&page=${page}';">
