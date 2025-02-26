@@ -63,6 +63,7 @@ SELECT
     seller.nickName as nickName,
     buyer.nickName as buyerNickName,
     ub.deal as deal,
+    ur.progress,
     ur.writer,
     ur.customer,
     ub.deal as progress

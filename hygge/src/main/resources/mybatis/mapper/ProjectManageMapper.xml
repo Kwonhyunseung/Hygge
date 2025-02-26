@@ -103,5 +103,10 @@
             </choose>
         </if>
     </select>
+    
+    <insert id="insertProject" parameterType="Long">
+    	INESRT INTO project (num, start_date, end_date, block)
+    	VALUES (#{num}, sysdate, sysdate+30 )
+    </insert>
 
 </mapper>

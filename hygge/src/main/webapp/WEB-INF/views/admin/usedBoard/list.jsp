@@ -28,6 +28,8 @@
 .tab-button:hover {
     background-color: #2ecc71;
 }
+
+
 </style>
 <meta charset="UTF-8">
 <title>중고게시판 관리</title>
@@ -273,6 +275,7 @@ function renderPurchaseStatusTable(data) {
             <th>구매자</th>
             <th>가격</th>
             <th>거래 상태</th>
+            <th>관리</th>
         </tr>
     `);
     
@@ -285,8 +288,8 @@ function renderPurchaseStatusTable(data) {
     tbody.empty();
     
     data.forEach(function(item) {
-        let progressText = item.deal === 0 ? '미거래' : 
-                           item.deal === 1 ? '대기중' : '거래완료';
+        let progressText = item.progress === 0 ? '대기중' : 
+                           item.progress === 9 ? '거래완료' :
         
         let row = 
             '<tr>' +
@@ -299,12 +302,17 @@ function renderPurchaseStatusTable(data) {
                 '<td>' + (item.price ? item.price.toLocaleString() + '원' : '가격 미정') + '</td>' +
                 '<td>' +
                     '<span class="status-badge status-' + 
-                        (progressText === '미거래' ? 'waiting' : 
                          progressText === '대기중' ? 'progress' : 
                          'completed') + 
                     '">' + 
                         progressText + 
                     '</span>' +
+                '</td>' +
+                '<td class="action-buttons">' +
+                    (progressText === '대기중' ? 
+                        '<button type="button" class="approve-btn" data-board-num="' + item.board_num + '">승인</button>' +
+                        '<button type="button" class="reject-btn" data-board-num="' + item.board_num + '">거절</button>' : 
+                        '') +
                 '</td>' +
             '</tr>';
         
@@ -313,8 +321,40 @@ function renderPurchaseStatusTable(data) {
     
     // 총 게시글 수 업데이트
     $(".total-count").text("총 " + data.length + "개의 거래");
+
+    // 승인 버튼 클릭 이벤트
+    $(".approve-btn").on("click", function() {
+        let boardNum = $(this).data("board-num");
+        handleTradeStatus(boardNum, 'approve');
+    });
+
+    // 거절 버튼 클릭 이벤트
+    $(".reject-btn").on("click", function() {
+        let boardNum = $(this).data("board-num");
+        handleTradeStatus(boardNum, 'reject');
+    });
 }
 
+// 거래 상태 처리 함수
+function handleTradeStatus(boardNum, action) {
+    let url = "${pageContext.request.contextPath}/admin/usedBoard/updateTradeStatus";
+    let query = {
+        board_num: boardNum,
+        action: action
+    };
+
+    const fn = function(data) {
+        if(data.status === "success") {
+            alert(action === 'approve' ? "거래가 승인되었습니다." : "거래가 거절되었습니다.");
+            // 거래 현황 새로고침
+            loadPurchaseStatus();
+        } else {
+            alert("거래 상태 업데이트 중 오류가 발생했습니다.");
+        }
+    };
+
+    ajaxRequest(url, 'post', query, 'json', fn);
+}
 
 </script>
 </html>

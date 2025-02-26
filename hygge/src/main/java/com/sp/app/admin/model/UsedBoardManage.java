@@ -24,6 +24,6 @@ public class UsedBoardManage {
 	private long writer; // 글쓴이
 	private long customer; // 구매자
 	private String buyerNickName; // 구매자
-	private int progress; // 구매 진행 상황 0:진행중, 1:승인  :9 거래완료
+	private int progress; // 구매 진행 상황 0:대기중 :9 거래완료
 	
 }

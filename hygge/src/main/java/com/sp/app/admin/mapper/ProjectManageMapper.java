@@ -16,4 +16,5 @@ public interface ProjectManageMapper {
 	
     public void approveProject(long num) throws SQLException;
     public void rejectProject(@Param("num") long num, @Param("reason") String reason) throws SQLException;
+    public void insertProject(long num) throws SQLException;
 }

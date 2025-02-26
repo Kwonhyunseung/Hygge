@@ -10,4 +10,7 @@ public interface ProjectManageService {
 	public int dataCount (Map<String, Object> map);
     public void approveProject(long num) throws Exception;
     public void rejectProject(long num, String reason) throws Exception;
+    
+    // 프로젝트 테이블에 인서트
+    public void insertProject(long num) throws Exception;
 }

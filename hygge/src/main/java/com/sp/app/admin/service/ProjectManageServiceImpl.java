@@ -65,6 +65,12 @@ public class ProjectManageServiceImpl implements ProjectManageService {
 			log.info("approveProject : ", e);
 		}
 	}
+
+	@Override
+	public void insertProject(long num) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,13 +102,18 @@ public class ProjectManagementController {
 		return "admin/project/list";
 	}
 	
+	@Transactional
 	@PostMapping("approve")
 	@ResponseBody
-	public Map<String, Object> approveProject(@RequestParam (name = "num") long num){
+	public Map<String, Object> approveProject(
+			@RequestParam(name = "accept_date") String accept_date,
+			@RequestParam (name = "num") long num){
+		
 		Map<String, Object> model = new HashMap<>();
 		
 		try {
 			service.approveProject(num);
+			service.insertProject(num);
 			model.put("state", "success");
 		} catch (Exception e) {
 			model.put("state", "failure");
