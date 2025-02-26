@@ -11,11 +11,11 @@
 <title>구매 내역</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
-.content-wrapper {
+.bcontent-wrapper {
     padding: 20px;
 }
 
-.container {
+.bcontainer {
     max-width: 800px;
     margin: 50px auto 100px auto;
     background: white;
@@ -62,8 +62,8 @@ h2 {
 </header>
 
 <main>
-    <div class="content-wrapper">
-        <div class="container">
+    <div class="bcontent-wrapper">
+        <div class="bcontainer">
             <h2 style="margin-bottom: 1rem;">구매 내역</h2>
             <table class="table table-bordered">
                 <thead>

@@ -16,9 +16,16 @@ public interface ProjectManagerService {
 	public int b_dataCount(Map<String, Object> map);
 	
 	public void insertBoard(ProjectManager dto,String uploadPath) throws SQLException;
-	public void updateBoard(ProjectManager dto,String uploadPath) throws SQLException;
-	public void deleteBoard(ProjectManager dto) throws SQLException;
+	public void updateBoard(ProjectManager dto,String uploadPath) throws Exception;
+	public void deleteBoard(String uploadPath,long mkboard_Num) throws Exception;
 	public void insertFile(ProjectManager dto,String uploadPath) throws SQLException;
 	
 	
+	public List<ProjectManager> listFile(long mkboard_Num);
+	public ProjectManager findByFileId(long fileNum);
+	public void deleteFile(Map<String, Object> map) throws Exception;
+	
+	public boolean deleteUploadFile(String uploadPath, String filename);
+	public void updateFile(ProjectManager dto,String uploadPath);
+	public ProjectManager findById(long mkboard_Num);
 }

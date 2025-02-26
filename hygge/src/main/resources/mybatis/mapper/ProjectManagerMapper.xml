@@ -7,7 +7,7 @@
 		SELECT pr.num, pr.memberIdx, pr.request_date, pr.accept_date, pr.title,
 		pr.business, pr.content, pr.target, pr.term, pr.thumbnail,
 		pr.category_num, pr.accept_return, pr.return_reason,
-		m.name -- member1 테이블에서 name 추가
+		m.name
 		FROM projectRequest pr
 		INNER JOIN member1 m ON pr.memberIdx = m.memberIdx
 		WHERE pr.memberIdx = #{memberIdx}
@@ -84,6 +84,12 @@
 SELECT maker_board_seq.NEXTVAL FROM dual
 </select>
 
+<select id="listFile" parameterType="Long" resultType="com.sp.app.model.ProjectManager">
+SELECT  file_Num, mkBoard_num, s_filename
+FROM makerFile
+WHERE mkBoard_num = #{mkboard_Num}
+</select>
+
 <insert id="insertBoard" parameterType="com.sp.app.model.ProjectManager">
     INSERT INTO MakerBoard (mkboard_Num, TITLE, CONTENT, CATEGORY, MAKERIDX)
     VALUES (#{mkboard_Num}, #{title}, #{content}, #{category,jdbcType=VARCHAR}, #{makerIdx})
@@ -93,4 +99,30 @@ SELECT maker_board_seq.NEXTVAL FROM dual
     INSERT INTO makerFile (FILE_NUM,S_FILENAME, MKBOARD_NUM)
     VALUES (maker_file_seq.NEXTVAL, #{sfileName}, #{mkboard_Num})
 </insert>
+
+<delete id="deleteFile" parameterType="Long">
+		DELETE FROM makerFile WHERE mkboard_Num = #{mkboard_Num}
+	</delete>
+<delete id="deleteBoard" parameterType="Long">
+		DELETE FROM makerBoard WHERE mkboard_Num = #{mkboard_Num}
+</delete>
+
+<update id="updateBoard" parameterType="com.sp.app.model.ProjectManager">
+    UPDATE MakerBoard
+    SET TITLE = #{title},
+        CONTENT = #{content},
+        CATEGORY = #{category}
+    WHERE mkboard_Num = #{mkboard_Num}
+</update>
+
+<update id="updateFile" parameterType="com.sp.app.model.ProjectManager">
+    UPDATE makerFile
+    SET S_FILENAME = #{sfileName}
+    WHERE mkBoard_num = #{mkboard_Num}
+</update>
+<select id="findById" parameterType="long" resultType="com.sp.app.model.ProjectManager">
+    SELECT *
+    FROM MakerBoard
+    WHERE mkboard_Num = #{mkboard_Num}
+</select>
 </mapper>

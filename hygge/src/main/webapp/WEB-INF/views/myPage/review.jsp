@@ -11,7 +11,7 @@
 <title>상품 후기</title>
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
-.container {
+.rcontainer {
     max-width: 800px;
     margin-top: 50px;
     background: white;
@@ -20,6 +20,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 1px solid black;
     margin-bottom: 50px;
+    margin-left: 263px;
 }
 h2 {
     text-align: center;
@@ -54,7 +55,7 @@ h2 {
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
 <body>
-    <div class="container">
+    <div class="rcontainer">
         <h2 style="margin-bottom: 1.5rem;">상품 후기</h2>
 
         <c:forEach var="review" items="${reviewList}">

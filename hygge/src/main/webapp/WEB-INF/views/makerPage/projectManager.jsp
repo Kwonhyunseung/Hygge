@@ -242,6 +242,24 @@
         background: #FF5733;
         transform: scale(1.1);
     }
+    
+        .btn-edit {
+        background: #FF7F50;
+        color: white;
+    }
+
+    .btn-delete {
+        background: #FF0000;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #FF5733;
+    }
+
+    .btn-delete:hover {
+        background: #CC0000;
+    }
 </style>
 </head>
 <body class="main-container">
@@ -256,13 +274,13 @@
 
         <!-- 탭 영역 -->
         <div class="tabs">
-            <div class="tab active" data-tab="projects">프로젝트 관리</div>
-            <div class="tab" data-tab="board">게시판 관리</div>
-            <div class="tab" data-tab="inquiry">문의내역 관리</div>
+            <div class="tab ${tab==1?'active':''}" data-tab="projects">프로젝트 관리</div>
+            <div class="tab ${tab==2?'active':''}" data-tab="board">게시판 관리</div>
+            <div class="tab ${tab==3?'active':''}" data-tab="inquiry">문의내역 관리</div>
         </div>
 
         <!-- 프로젝트 관리 탭 -->
-        <div class="tab-content active" id="projects">
+        <div class="tab-content ${tab==1?'active':''}" id="projects">
             <div class="filter-buttons">
                 <button class="active" data-filter="all">전체</button>
                 <button data-filter="심사중">심사중</button>
@@ -324,7 +342,7 @@
         </div>
 
         <!-- 게시판 관리 탭 -->
-        <div class="tab-content" id="board">
+        <div class="tab-content ${tab==2?'active':''}" id="board">
             <div class="filter-buttons" id="board-filter-buttons">
                 <button class="active" data-filter="all">전체</button>
                 <button data-filter="패션">패션</button>
@@ -352,7 +370,9 @@
                             <p class="status">${board.category}</p>
                         </div>
                         <div class="bottom-section">
-                            <button onclick="location.href='#'" class="btn-edit">게시글 수정</button>
+                                                    <button onclick="location.href='${pageContext.request.contextPath}/makerPage/medit?mkboard_Num=${board.mkboard_Num}'" 
+                                class="btn-edit">수정</button>
+                            <button class="btn-delete" data-num="${board.mkboard_Num}">삭제</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -371,7 +391,7 @@
         </div>
 
         <!-- 1:1 문의 탭 -->
-        <div class="tab-content" id="inquiry">
+        <div class="tab-content ${tab==3?'active':''}" id="inquiry">
             <h3>1:1 문의</h3>
             <div class="filter-buttons" id="inquiry-filter-buttons">
                 <button class="active" data-filter="all">전체</button>
@@ -420,7 +440,7 @@
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const targetTab = this.getAttribute('data-tab');
-
+                    
                     // 모든 탭과 탭 콘텐츠에서 active 클래스 제거
                     tabs.forEach(t => t.classList.remove('active'));
                     tabContents.forEach(content => content.classList.remove('active'));
@@ -476,6 +496,41 @@
                             }
                         });
                     }
+                });
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const boardNum = this.getAttribute('data-num');
+                    if (!confirm("게시글을 삭제하시겠습니까?")) {
+                        return;
+                    }
+                    let url = '${pageContext.request.contextPath}/makerPage/delete?mkboard_Num=' + boardNum;
+                    location.href = url;
+
+                    /*
+                    fetch('${pageContext.request.contextPath}/makerPage/delete', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'mkboard_Num=' + boardNum
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("게시글이 삭제되었습니다.");
+                            location.reload();
+                        } else {
+                            alert("삭제 실패: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert("서버 오류로 인해 삭제할 수 없습니다.");
+                    });
+                    */
                 });
             });
         });

@@ -21,7 +21,7 @@ body {
     align-items: center;
     background-color: #f9f9f9;
 }
-.container {
+.chat-container {
     display: flex;
     max-width: 1000px;
     width: 100%;
@@ -149,7 +149,7 @@ body {
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 </header>
 <body>
-    <div class="container" style="max-width: 1000px;">
+    <div class="chat-container" style="max-width: 1000px;">
         <div class="chat-list">
             <h5 style="margin-bottom: 50px;">판매자 목록</h5>
             <ul>

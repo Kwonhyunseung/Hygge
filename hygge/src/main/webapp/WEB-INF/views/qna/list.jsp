@@ -13,12 +13,13 @@
         background-color: #f9f9f9;
         padding: 20px;
     }
-    .container {
+    .qcontainer {
         max-width: 1000px;
         background: #fff;
-        padding: 20px;
+        padding: 35px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-left: 113px;
     }
     .table th {
         background-color: #82B10C !important;
@@ -39,7 +40,7 @@
         background-color: #6a9009 !important;
         border-color: #6a9009 !important;
     }
-    .content-wrapper {
+    .qcontent-wrapper {
         padding: 20px;
     }
     .category-filter {
@@ -69,8 +70,8 @@ function filterCategory() {
     <header>
         <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
     </header>
-    <div class="content-wrapper">
-        <div class="container">
+    <div class="qcontent-wrapper">
+        <div class="qcontainer">
             <h2 class="text-center mb-4">1:1 문의 게시판</h2>
             
             <!-- 카테고리 필터 -->
@@ -128,7 +129,7 @@ function filterCategory() {
 
             <!-- 문의 작성 버튼 -->
             <div class="text-end">
-                <a href="${pageContext.request.contextPath}/qna/write" class="btn btn-primary" style="height: 39px;">문의 작성</a>
+                <a href="${pageContext.request.contextPath}/qna/write" class="btn btn-primary" style="height: 35px;">문의 작성</a>
             </div>
         </div>
     </div>

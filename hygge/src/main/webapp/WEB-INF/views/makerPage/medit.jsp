@@ -8,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-        .wcontent-wrapper {
+        .mcontent-wrapper {
             padding: 20px;
             background-color: #f9f9f9;
         }
 
-        .wcontainer {
+        .mcontainer {
             max-width: 700px;
             margin: 50px auto;
             background: white;
@@ -33,14 +33,14 @@
         }
 
         .btn-primary {
-            background-color: #FF7F50 !important;D
+            background-color: #FF7F50 !important;
             border-color: #FF7F50 !important;
             color: white !important;
         }
 
         .btn-primary:hover {
-            background-color: #FF7F50 !important; 
-            border-color: #FF7F50 !important; 
+            background-color: #FF7F50 !important;
+            border-color: #FF7F50 !important;
         }
 
         .btn-custom {
@@ -49,20 +49,6 @@
 
         label {
             margin-bottom: 20px;
-        }
-
-        .preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .preview img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-right: 10px;
-            margin-bottom: 10px;
         }
 
         .select-wrapper {
@@ -81,47 +67,22 @@
             padding-right: 10px;
         }
     </style>
-    <script>
-        function previewFiles() {
-            const fileInput = document.getElementById('file');
-            const previewContainer = document.getElementById('file-preview');
-            const files = fileInput.files;
-
-            // 이전 미리보기 제거
-            previewContainer.innerHTML = ''; 
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    previewContainer.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // 파일 입력 필드의 값 초기화 (파일 선택 후)
-        function resetFileInput() {
-            document.getElementById('file').value = '';
-        }
-    </script>
 </head>
 <body>
     <header>
         <jsp:include page="/WEB-INF/views/layout/header.jsp" />
     </header>
 
-    <div class="wcontent-wrapper">
-        <div class="wcontainer">
+    <div class="mcontent-wrapper">
+        <div class="mcontainer">
             <h2>게시판 작성</h2>
-            <form action="${pageContext.request.contextPath}/makerPage/mwrite" method="post" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath}/makerPage/medit" method="post" enctype="multipart/form-data">
                 <!-- 유저 정보 표시 (작성자명 자동 입력) -->
-                <c:if test="${not empty board}">
-                    <input type="hidden" name="memberIdx" value="${board.memberIdx}" />
+                <c:if test="${not empty dto}">
+                    <input type="hidden" name="memberIdx" value="${dto.memberIdx}" />
                     <div class="form-group">
-                        <label for="userName">${board.userId}</label>
-                        <input type="text" class="form-control" id="userName" name="userName" value="${board.userId}" readonly />
+                        <label for="userName">${dto.userId}</label>
+                        <input type="text" class="form-control" id="userName" name="userName" value="${dto.userId}" readonly />
                     </div>
                 </c:if>
 
@@ -158,11 +119,8 @@
                 <!-- 파일 업로드 -->
                 <div class="form-group">
                     <label for="file">파일 업로드</label>
-                    <input type="file" class="form-control" id="file" name="selectFile" multiple="multiple" onchange="previewFiles()">
+                    <input type="file" class="form-control" id="file" name="selectFile" multiple="multiple">
                 </div>
-
-                <!-- 파일 미리보기 -->
-                <div class="preview" id="file-preview"></div>
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary btn-custom" style="height: 40px; border-radius: 7px;">등록</button>

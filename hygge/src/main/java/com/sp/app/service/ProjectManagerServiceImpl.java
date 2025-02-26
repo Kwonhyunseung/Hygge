@@ -107,22 +107,49 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     }
 
     @Override
-    public void updateBoard(ProjectManager dto,String uploadPath) throws SQLException {
+    public void updateBoard(ProjectManager dto,String uploadPath) throws Exception {
         // 게시글 수정 로직 구현
         try {
-            mapper.updateBoard(dto); // 업데이트 메서드 호출
+        	if(dto.getSelectFile() != null && ! dto.getSelectFile().isEmpty()) {
+        		if(! dto.getSfileName().isBlank()) {
+        			deleteUploadFile(uploadPath, dto.getSfileName());
+        		}
+        		
+        		String SfileName = storageService.uploadFileToServer((MultipartFile) dto.getSelectFile(),
+        				uploadPath);
+        		dto.setSfileName(SfileName);
+        		
+        		
+            }
+        	mapper.updateBoard(dto);
+        	
         } catch (Exception e) {
             log.error("updateBoard 실패: ", e);
+            
+            throw e;
         }
     }
 
     @Override
-    public void deleteBoard(ProjectManager dto) throws SQLException {
-        // 게시글 삭제 로직 구현
+    public void deleteBoard(String uploadPath, long mkboard_Num) throws Exception {
+        
         try {
-            mapper.deleteBoard(dto); // 삭제 메서드 호출
+        	List<ProjectManager> listFile = listFile(mkboard_Num);
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("mkboard_Num", mkboard_Num);
+        	if(listFile.size() == 0) {
+        		for(ProjectManager dto : listFile) {
+        			deleteUploadFile(uploadPath, dto.getSfileName());
+        		}
+        		mapper.deleteFile(map);
+        	}
+        	
+        	//파일 테이블 내용 시우기 
+        	mapper.deleteBoard(mkboard_Num);
         } catch (Exception e) {
             log.error("deleteBoard 실패: ", e);
+            
+            throw e;
         }
     }
 
@@ -130,5 +157,66 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	public void insertFile(ProjectManager dto,String uploadPath) throws SQLException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<ProjectManager> listFile(long mkboard_Num) {
+		List<ProjectManager> listFile = null;
+		
+		try {
+			listFile = mapper.listFile(mkboard_Num);
+		} catch (Exception e) {
+			log.info("listFile : ", e);
+		}
+		
+		return listFile;
+	}
+
+	@Override
+	public ProjectManager findByFileId(long fileNum) {
+		ProjectManager dto = null;
+		try {
+			dto = mapper.findByFileId(fileNum);
+		} catch (Exception e) {
+			log.info("findByFileId : ", e);
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public void deleteFile(Map<String, Object> map) throws Exception {
+		try {
+			mapper.deleteFile(map);
+		} catch (Exception e) {
+			log.info("deleteFile : ", e);
+			
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public boolean deleteUploadFile(String uploadPath, String filename) {
+		return storageService.deleteFile(uploadPath, filename);
+	}
+
+	@Override
+	public void updateFile(ProjectManager dto, String uploadPath) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ProjectManager findById(long mkboard_Num) {
+		ProjectManager dto = null;
+		
+		try {
+			dto = mapper.findById(mkboard_Num);
+		} catch (Exception e) {
+			log.info("findById : ", e);
+		}
+		
+		return dto;
 	}
 }

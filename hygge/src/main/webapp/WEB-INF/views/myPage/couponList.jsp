@@ -11,11 +11,11 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
 
-.content-wrapper {
+.ccontent-wrapper {
     padding: 20px;
 }
 
-.container {
+.ccontainer {
     max-width: 800px;
     margin: 50px auto;
     background: white;
@@ -50,8 +50,8 @@ h2 {
     </header>
 <body>
 
-    <div class="content-wrapper">
-        <div class="container">
+    <div class="ccontent-wrapper">
+        <div class="ccontainer">
             <h2>보유 쿠폰</h2>
             <table class="table table-bordered">
                 <thead>
