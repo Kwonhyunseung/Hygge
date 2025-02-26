@@ -88,11 +88,40 @@ public class FundingServiceImpl implements FundingService {
 	public List<Review> listReview(long num) {
 		List<Review> list = null;
 		try {
-			
+			list = mapper.listReview(num);
+			for (Review dto : list) {
+				dto.setSfileName(mapper.listReviewPhoto(dto.getReview_num()));
+			}
 		} catch (Exception e) {
 			log.info("listReview : ", e);
 		}
 		return list;
+	}
+
+	@Override
+	public String fundingContent(long num) {
+		String content = null;
+		try {
+			content = mapper.fundingContent(num);
+		} catch (Exception e) {
+			log.info("fundingContent : ", e);
+		}
+		return content;
+	}
+
+	@Override
+	public double gradeAvg(List<Review> reviews) {
+		double result = 0;
+		try {
+			int sum = 0;
+			for (Review dto : reviews) {
+				sum += dto.getGrade();
+			}
+			result = sum / (double)reviews.size();
+		} catch (Exception e) {
+			log.info("gradeAvg : ", e);
+		}
+		return result;
 	}
 
 }

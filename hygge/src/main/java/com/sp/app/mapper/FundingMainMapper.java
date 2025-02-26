@@ -19,5 +19,8 @@ public interface FundingMainMapper {
 	public void insertFundingLike(Map<String, Object> map) throws SQLException;
 	public void deleteFundingLike(Map<String, Object> map) throws SQLException;
 
+	public String fundingContent(long num);
+
 	public List<Review> listReview(long num);
+	public List<String> listReviewPhoto(long num);
 }

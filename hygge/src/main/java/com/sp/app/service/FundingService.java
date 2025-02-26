@@ -14,5 +14,8 @@ public interface FundingService {
 	public void insertFundingLike(Map<String, Object> map) throws Exception;
 	public void deleteFundingLike(Map<String, Object> map) throws Exception;
 
+	public String fundingContent(long num);
+
 	public List<Review> listReview(long num);
+	public double gradeAvg(List<Review> reviews);
 }

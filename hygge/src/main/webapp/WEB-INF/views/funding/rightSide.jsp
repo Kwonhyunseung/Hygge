@@ -74,7 +74,12 @@ $(function() {
 			<h5>메이커 소개</h5>
 			<div class="row">
 				<div class="col-2 maker-profile">
-					<img src="${pageContext.request.contextPath}${profile_img}">
+					<c:if test="${not empty project.profile_img}">
+						<img src="${pageContext.request.contextPath}/uploads/profile/${project.profile_img}">
+					</c:if>
+					<c:if test="${empty project.profile_img}">
+						<img src="${pageContext.request.contextPath}/dist/images/person.png">
+					</c:if>
 				</div>
 				<div class="col maker-name">
 					<p style="margin-top: 10px; font-size: 19px;">

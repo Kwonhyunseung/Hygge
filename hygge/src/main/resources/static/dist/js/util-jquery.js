@@ -20,6 +20,7 @@ const ajaxRequest = function(url, method, requestParams, responseType, callback,
 			error: function(jqXHR) {
 				if(jqXHR.status === 401) {
 					alert('로그인이 필요 합니다.');
+					location.href = '/member/login';
 					return false;
 				} else if(jqXHR.status === 403) {
 					alert('권한이 필요 합니다.');

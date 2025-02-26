@@ -230,7 +230,7 @@ function addNewContent(data) {
 
 		htmlText = '<div class="funding">'
 		htmlText +=	'	<div class="funding-thumbnail">'
-		htmlText +=	'		<a href="#">'
+		htmlText +=	'		<a href="${pageContext.request.contextPath}/funding/product/' + num + '">'
 		htmlText +=	'			<img src="${pageContext.request.contextPath}/uploads/project/' + thumbnail + '">';
 		htmlText += '		</a>';
 		htmlText += '		<div class="like-btn" data-num="' + num + '">';

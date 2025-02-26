@@ -14,17 +14,12 @@ h4 {
 	margin-bottom: 60px;
 }
 
-img {
+.content img {
 	width: 100%;
 }
 </style>
 
 <h4>| 프로젝트 스토리</h4>
 <div class="content">
-	<img src="/dist/images/funding/main/plan/perfume1.jpg">
-	<div class="first-info">
-	
-	</div>
-	
-	
+	${content}
 </div>

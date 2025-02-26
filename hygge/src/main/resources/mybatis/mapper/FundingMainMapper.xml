@@ -74,8 +74,24 @@
 	</delete>
 
 	<select id="listReview" parameterType="Long" resultType="com.sp.app.model.Review">
-		SELECT review_num, r.content content, r.grade
-		FROM review
+		SELECT review_num, r.content content, r.grade, m1.nickName, TO_CHAR(r.reg_date, 'YYYY-MM-DD') reg_date, m1.profile_img, m1.memberIdx
+		FROM review r
+		JOIN sales s ON r.sales_num = s.num
+		JOIN payment p ON s.payment_num = p.payment_num
+		JOIN member1 m1 ON m1.memberIdx = p.memberIdx
 		WHERE project_num = #{num}
+		ORDER BY reg_date DESC
+	</select>
+
+	<select id="fundingContent" parameterType="Long" resultType="String">
+		SELECT content
+		FROM projectRequest
+		WHERE num = #{num}
+	</select>
+
+	<select id="listReviewPhoto" parameterType="Long" resultType="String">
+		SELECT s_FileName
+		FROM reviewPhoto
+		WHERE review_num = #{num}
 	</select>
 </mapper>

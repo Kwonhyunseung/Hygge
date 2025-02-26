@@ -16,6 +16,7 @@ public class Review {
 	private Long review_num;
 	private String content;
 	private int grade; // 5점 만점
+	private String reg_date;
 	
 	private Long project_num;
 	private Long sales_num;
@@ -27,6 +28,9 @@ public class Review {
 	private String memberId;
 	private String memberName;
 	private String title;
+
+	private String nickName;
+	private String profile_img;
 
 	private long reviewphoto_num;
 	private List<String> sfileName;

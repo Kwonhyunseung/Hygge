@@ -3,6 +3,12 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <style type="text/css">
+h4 {
+	font-size: 27px;
+	font-weight: bold;
+	margin-bottom: 60px;
+}
+
 .content {
 	max-width: 650px;
 	font-size: 22px;
@@ -22,19 +28,19 @@ h6 {
 	font-weight: bold;
 	margin-bottom: 15px;
 }
-.bi-star-fill {
+.rating .bi-star-fill {
 	color: #FCCB38;
 	font-size: 33px;
 }
 .avg { font-size: 25px; }
 .starAvg { font-size: 40px; }
 
-.user-profile { padding: 12px 0; }
-.user-profile > img {
-	width: 55px;
-	height: 55px;
+.user-profile { padding: 12px 0; display: flex; flex-direction: row; justify-content: space-between; }
+.user-profile img {
+	width: 45px;
+	height: 45px;
 	border-radius: 50%;
-	border: 1px solid #878787;
+	border: 1px solid #E3E3E3;
 }
 .uProfile {
 	font-size: 20px;
@@ -44,7 +50,6 @@ h6 {
 
 .picture {
     border-radius: 5px;
-    margin-top: 20px;
 }
 .picture img {
     width: 220px;
@@ -55,14 +60,21 @@ h6 {
 .review-content {
 	border: 1px solid #C8C8C8;
 	border-radius: 7px;
-	padding: 20px;
-	margin-top: 30px;
-	font-size: 19px;
+	padding: 10px;
+	font-size: 16px;
 }
 
 .regDate-like {
-	font-size: 19px;
+	font-size: 15px;
 	padding: 10px 15px;
+}
+
+.user-rating {
+	margin: 15px 0px;
+}
+
+.user-rating .bi {
+	color: #FCCB38;
 }
 
 /* 후기 좋아요 아이콘
@@ -85,73 +97,75 @@ h6 {
 <h4></h4>
 
 <div class="content">
+	<c:if test="${not empty list}">
 	<div class="rating">
 		<h6>상품 만족도</h6>
 		<p>
 			<i class="bi bi-star-fill"></i>
-			<span class="avg"><strong class="starAvg">4.7</strong> / 5.0</span>
+			<span class="avg"><strong class="starAvg">${gradeAvg}</strong> / 5.0</span>
 		</p>
 	</div>
 	
 	<hr style="margin: 80px 0;">
-	
-	<div class="userReview">
-		<div class="user-profile">
-			<img src="/dist/images/funding/main/review/profile.png">
-			<span class="uProfile">난쟁이 선웅씨</span>
-		</div>	
-		<div class="row picture">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
+	<c:forEach var="dto" items="${list}">
+		<div class="userReview" data-num="${dto.review_num}">
+			<div class="user-profile">
+				<div>
+					<c:choose>
+						<c:when test="${not empty dto.profile_img}">
+							<img src="${pageContext.request.contextPath}/uploads/profile/${dto.profile_img}">
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/dist/images/person.png">
+						</c:otherwise>
+					</c:choose>
+					<span class="uProfile">${dto.nickName}</span>
+				</div>
+				<div>
+					<div class="regDate-like">
+						<p>
+							작성일 | ${dto.reg_date}
+							<!-- <span><i class="bi bi-hearts"></i>50</span> -->
+						</p>
+					</div>
+				</div>
+			</div>	
+			<div class="row picture">
+				<c:forEach var="img" items="${dto.sfileName}">
+					<img class="col-4" src="${pageContext.request.contextPath}/uploads/review/${img}">
+				</c:forEach>
+			</div>
+			<div class="user-rating">
+				<c:choose>
+					<c:when test="${dto.grade == 5}">
+						<i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+					</c:when>
+					<c:when test="${dto.grade == 4}">
+						<i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+					</c:when>
+					<c:when test="${dto.grade == 3}">
+						<i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+					</c:when>
+					<c:when test="${dto.grade == 2}">
+						<i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+					</c:when>
+					<c:otherwise>
+						<i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div class="review-content">
+				<p>${dto.content}</p>
+			</div>
 		</div>
-		<div class="review-content">
-			<p>냄새가 너무 좋아요!</p>
+		<hr>
+	</c:forEach>
+
+	</c:if>
+	<c:if test="${empty list}">
+		<div>
+			아직 등록된 후기가 없습니다.
 		</div>
-		<div class="regDate-like">
-			<p>
-				2025.02.10
-				<!-- <span><i class="bi bi-hearts"></i>50</span> -->
-			</p>
-		</div>
-	</div>
-	<hr style="margin: 60px 0;">
-	<div class="userReview">
-		<div class="user-profile">
-			<img src="/dist/images/funding/main/review/profile.png">
-			<span class="uProfile">꼼화 아가씨</span>
-		</div>	
-		<div class="row picture">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
-			<img class="col-4" src="/dist/images/funding/main/review/review1.jpg">
-		</div>
-		<div class="review-content">
-			<p>냄새가 너무 좋아요!</p>
-		</div>
-		<div class="regDate-like">
-			<p>
-				2025.02.10
-			</p>
-		</div>
-	</div>
-	<hr style="margin: 60px 0;">
-	<div class="userReview">
-		<div class="user-profile">
-			<img src="/dist/images/funding/main/review/profile.png">
-			<span class="uProfile">닭찌 아저씨</span>
-		</div>	
-		<div class="review-content">
-			<p>냄새가 너무 좋아요!</p>
-		</div>
-		<div class="regDate-like">
-			<p>
-				2025.02.10
-			</p>
-		</div>
-	</div>
-	
-	<div class="paging" style="border: 1px solid #000; text-align: center;">
-		<p>페이징 처리하시유</p>
-	</div>
+	</c:if>
 	
 </div>

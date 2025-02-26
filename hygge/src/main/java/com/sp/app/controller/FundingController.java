@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sp.app.common.PaginateUtil;
 import com.sp.app.model.Funding;
 import com.sp.app.model.Product;
+import com.sp.app.model.Review;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.FundingProjectService;
 import com.sp.app.service.FundingService;
@@ -45,7 +46,6 @@ public class FundingController {
 			boolean isUserFollow = false;
 
 			Funding project = detailService.fundingProduct(num);
-			log.info("memberIdx: {}", project.getMemberIdx());
 
 			detailService.calculateProject(project);
 
@@ -174,9 +174,10 @@ public class FundingController {
 	}
 
 	@GetMapping("plan")
-	public String plan(Model model) {
+	public String plan(@RequestParam(name = "num") long number, Model model) {
 		try {
-			
+			String content = service.fundingContent(number);
+			model.addAttribute("content", content);
 		} catch (Exception e) {
 			log.info("plan : ", e);
 		}
@@ -187,6 +188,10 @@ public class FundingController {
 	public String review(@RequestParam(name = "num") long number, Model model) {
 		try {
 			// 리뷰 리스트
+			List<Review> list = service.listReview(number);
+			double gradeAvg = service.gradeAvg(list);
+			model.addAttribute("list", list);
+			model.addAttribute("gradeAvg", gradeAvg);
 		} catch (Exception e) {
 			log.info("review : ", e);
 		}

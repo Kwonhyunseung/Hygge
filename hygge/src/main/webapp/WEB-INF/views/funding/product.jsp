@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HYGGEProduct</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/funding/product.css" type="text/css">
@@ -78,13 +77,11 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 function loadContent(contentType) {
     let url = '${pageContext.request.contextPath}/funding/';
     let num = '${project.num}'; // 프젝 번호
-    let params;
+    let params = {num: num};
     if (contentType === 'plan') {
     	url = url + 'plan';
-    	params = null;
     } else {
     	url = url + 'review';
-    	params = {num: num};
     }
     const fn = function(data) {
         $("#content-container").html(data);
@@ -112,16 +109,6 @@ $(function(){
         const $i = $btn.find('i');
         const num = $btn.data('num');
         let msg;
-        
-        if($btn.hasClass('active')) {
-            msg = '좋아요를 취소하시겠습니까?';
-        } else {
-            msg = '이 프로젝트를 좋아요 하시겠습니까?';
-        }
-
-        if(!confirm(msg)) {
-            return false;
-        }
 
         let url = '/funding/userFundingLiked';
         let params = {
@@ -227,7 +214,7 @@ $(function(){
 									목표금액 달성시 <br> <span style="margin-left: 113px;">${project.payment_date}</span>
 								</p>
 								<p class="d">
-									<fmt:parseDate value="${project.delivery_info}" pattern="yyyyMMdd" var="deliveryDate" />
+									${project.delivery_info}
 									<fmt:formatDate value="${deliveryDate}" pattern="yyyy.MM.dd" />
 								</p>
 							</div>
