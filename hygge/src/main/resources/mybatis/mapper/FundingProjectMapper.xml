@@ -35,7 +35,8 @@
 		    NVL(payment_summary.total_amount, 0) AS total_amount,
 		    (SELECT COUNT(1)
 		     FROM follow f
-		     WHERE f.following = pr.MEMBERIDX) AS followingCount
+		     WHERE f.following = pr.MEMBERIDX) AS followingCount,
+		     maker.makerName
 		FROM project p
 		JOIN projectRequest pr ON p.num = pr.num
 		JOIN category c ON pr.category_num = c.category_num
@@ -48,6 +49,7 @@
 		    WHERE pd.num = #{num}
 		    GROUP BY pd.num <!-- 추가 -->
 		) payment_summary ON p.num = payment_summary.num
+		LEFT OUTER JOIN maker ON pr.memberIdx = maker.memberIdx
 		WHERE p.num = #{num}
 	</select>
 

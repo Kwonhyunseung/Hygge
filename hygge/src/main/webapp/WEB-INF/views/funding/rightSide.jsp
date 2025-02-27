@@ -6,7 +6,11 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/funding/rightSide.css" type="text/css">
-
+<style type="text/css">
+.maker-page-link {
+	cursor: pointer;
+}
+</style>
 <!-- js 파일 빼기! -->
 <script type="text/javascript">
 	function makerInquiry() {
@@ -64,6 +68,11 @@ $(function() {
             }
         });
     });
+
+    $('.maker-page-link').click(function() {
+    	let makerIdx = '${project.memberIdx}';
+    	location.href = '${pageContext.request.contextPath}/makerPage/makerBoard?makerIdx=' + makerIdx;
+    });
 });
 </script>
 </head>
@@ -75,15 +84,15 @@ $(function() {
 			<div class="row">
 				<div class="col-2 maker-profile">
 					<c:if test="${not empty project.profile_img}">
-						<img src="${pageContext.request.contextPath}/uploads/profile/${project.profile_img}">
+						<img src="${pageContext.request.contextPath}/uploads/profile/${project.profile_img}" class="maker-page-link">
 					</c:if>
 					<c:if test="${empty project.profile_img}">
-						<img src="${pageContext.request.contextPath}/dist/images/person.png">
+						<img src="${pageContext.request.contextPath}/dist/images/person.png" class="maker-page-link">
 					</c:if>
 				</div>
 				<div class="col maker-name">
 					<p style="margin-top: 10px; font-size: 19px;">
-						<strong>${project.nickname}</strong>
+						<strong class="maker-page-link">${project.makerName}</strong>
 					</p>
 					<p style="font-size: 17px;">${project.followingCount}명이 팔로우 중</p>
 				</div>

@@ -41,6 +41,7 @@ public class Funding {
 	private String name; //카테고리명 추가
 	
 	private String profile_img; //프로필 이미지
+	private String makerName;
 
 	private MultipartFile thumbnail_File;
 	private MultipartFile business_File;

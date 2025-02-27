@@ -130,10 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		</div>
 
 		<div class="categories">
-			<div>
-				<img src="/dist/images/main/category/a.png">
-				<p>가전</p>
-			</div>
+			<c:forEach var="category" items="${parentCategories}">
+				<div data-categoryNum="${category.category_num}">
+					<img src="/dist/images/main/category/${category.category_num}.png">
+					<p>${category.name}</p>
+				</div>
+			</c:forEach>
+			<!-- 
 			<div>
 				<img src="/dist/images/main/category/b.png">
 				<p>패션</p>
@@ -166,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				<img src="/dist/images/main/category/i.png">
 				<p>반려동물</p>
 			</div>
+			 -->
 		</div>
 
 		<hr class="hr">

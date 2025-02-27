@@ -7,20 +7,27 @@
 		<if test="menu == 'category'">
 			(pr.category_num = #{flag} OR c.parent_num = #{flag})
 		</if>
-		<if test="menu == 'hotContent'"></if>
-		<if test="menu == 'new'"></if>
-		<if test="menu == 'deadline'"></if>
-		<if test="menu == 'comingsoon'"></if>
+		<if test="menu == 'hotContent'">
+			pl.likeCount >= 10
+		</if>
+		<if test="menu == 'new'">
+			(SYSDATE - p.start_date &gt;= 0 AND SYSDATE - p.start_date &lt;= 7)
+		</if>
+		<if test="menu == 'deadline'">
+		</if>
+		<if test="menu == 'comingsoon'">
+			(p.start_date - SYSDATE &gt;= 0 AND p.start_date - SYSDATE &lt;= 7)
+		</if>
 	</sql>
 	<sql id="order-list">
 		<if test="order == 'latest'">
-			p.num DESC
+			p.start_date DESC, p.num DESC
 		</if>
 		<if test="order == 'popular'">
 			total_amount DESC
 		</if>
 		<if test="order == 'deadline'">
-			end_date ASC, total_amount DESC
+			total_amount DESC, end_date ASC
 		</if>
 	</sql>
 
@@ -36,6 +43,7 @@
     		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
     		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
     		GROUP BY project.num) sub ON sub.num = p.num
+    	LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
 		<where>
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>
@@ -51,6 +59,7 @@
 		FROM project p
 		LEFT OUTER JOIN projectRequest pr ON p.num = pr.num
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
 		<where>
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>

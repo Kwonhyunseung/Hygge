@@ -285,13 +285,13 @@
             <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/funding/hotContent">인기</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">신규</a>
+            <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/funding/new">신규</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">공개예정</a>
+            <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/funding/comingsoon">공개예정</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">마감임박</a>
+            <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/funding/deadline">마감임박</a>
           </li>
           <li class="nav-item">
     		<a class="nav-link" id="moreMenuBtn" href="#">더보기</a>
