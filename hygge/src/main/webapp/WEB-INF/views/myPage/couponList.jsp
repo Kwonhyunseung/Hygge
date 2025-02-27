@@ -59,7 +59,7 @@ h2 {
                         <th>쿠폰명</th>
                         <th>할인율</th>
                         <th>발급날짜</th>
-                        <th>사용 가능 여부</th>
+                        <th>사용일자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,7 +68,7 @@ h2 {
                             <td>${coupon.coupon_Name}</td>
                             <td>${coupon.discount_Rate.intValue()}%</td> 
                             <td>${coupon.issue_Date}</td>
-                            <td>${coupon.used_Date != null ? '사용 완료' : '사용 가능'}</td>
+                            <td>${coupon.used_Date != null ? coupon.used_Date : '미사용'}</td>
                         </tr>
                     </c:forEach>
                 </tbody>
