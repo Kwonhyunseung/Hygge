@@ -12,7 +12,7 @@
 <select id="listCoupon" parameterType="map" resultType="com.sp.app.model.Coupon">
     SELECT 
         c.NUM, c.MEMBERIDX, c.ISSUE_DATE, c.DISCOUNT_RATE, 
-        c.DISCOUNT, c.USED_DATE, e.TITLE AS COUPON_NAME
+        c.DISCOUNT, c.USED_DATE, e.TITLE AS COUPON_NAME, e.exp_date
     FROM coupon c
     JOIN event e ON c.NUM = e.NUM
     WHERE c.MEMBERIDX = #{memberIdx}

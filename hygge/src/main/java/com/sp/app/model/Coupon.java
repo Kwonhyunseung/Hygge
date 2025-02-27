@@ -12,11 +12,10 @@ import lombok.Setter;
 public class Coupon {
 	private long num; //이벤트번호
 	private long memberIdx;
-	private Date issue_Date; //발급날짜. 쿠폰 발급받은 순간의 시간!
+	private Date issue_Date; //발급날짜.
 	private double discount_Rate; // 할인율
 	private double discount; // 할인 최대 금액
 	private Date used_Date; // 사용 날짜. NULL허용
-	
     private String coupon_Name; // 쿠폰 이름
     
     

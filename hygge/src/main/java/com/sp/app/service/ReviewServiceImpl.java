@@ -20,7 +20,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void insertReview(Review dto) throws SQLException {
-        // 리뷰 추가 로직은 추후 작성
+        try {
+			mapper.insertReview(dto);
+		} catch (Exception e) {
+	log.info("insertReview : ", e);
+			
+			throw e;
+		}
     }
 
     @Override

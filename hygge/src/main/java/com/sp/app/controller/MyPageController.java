@@ -318,6 +318,53 @@ public class MyPageController {
 		}
 		return "myPage/chat";
 	}
+	
+	@GetMapping("rwrite")
+	public String rwriteForm(@RequestParam(name="title") String title, Model model,
+			@RequestParam(name="sales_num") String sales_num) {
+		log.info("리뷰 작성 페이지 요청");
+		try {
+			
+			model.addAttribute("sales_num",sales_num);
+			model.addAttribute("title",title);
+		} catch (Exception e) {
+			log.error("rwriteForm 오류", e);
+			
+			throw e;
+		}
+		
+		return "myPage/rwrite";
+	}
+	
+	@PostMapping("rwrite")
+	public String rWriteSubmit(Review dto,HttpSession session, 
+			RedirectAttributes redirectAttributes) throws Exception{
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		  if (info == null) {
+	            // 세션에 정보가 없으면 로그인 페이지로 리다이렉트
+	            return "redirect:/login";
+	        }
+		  
+		  try {
+			log.info("리뷰 작성 페이지 요청");
+			
+			dto.setMemberIdx(info.getMemberidx());
+			
+			reviewService.insertReview(dto);
+			
+			redirectAttributes.addFlashAttribute("message", "리뷰가 성공적으로 작성되었습니다.");
+			
+			
+		} catch (Exception e) {
+			 log.error("리뷰 작성 오류", e);
+			 
+			 return "redirect:/myPage/rwrite";
+		}
+		  return "redirect:/myPage/rwrite";
+	}
+	
 
 	@GetMapping("deleteReview")
 	public String deleteReview(@RequestParam(name = "num") long number) {

@@ -7,15 +7,20 @@
 <select id="paymentList" parameterType="map" resultType="com.sp.app.model.Payment">
   SELECT 
         pay.payment_date,        
-        p.title,                 
-        pay.pay_amount,          
-        pay.shipping_state       
+        p.title,              
+         p.price,       
+        s.amount,
+        sh.num AS shipping_state,
+        p.product_num
+        s.sales_num
     FROM 
         payment pay
     JOIN 
         sales s ON pay.payment_num = s.payment_num  
     JOIN 
         product p ON s.product_num = p.product_num  
+    JOIN 
+    	Shipping sh ON sh.num = pay.shipping_state
     WHERE 
         pay.memberIdx = #{memberIdx}  
 </select>

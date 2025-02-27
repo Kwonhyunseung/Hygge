@@ -73,6 +73,7 @@ h2 {
                         <th>가격</th>
                         <th>상태</th>
                         <th>상세 보기</th>
+                        <th>후기 작성</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +81,7 @@ h2 {
                         <tr>
                             <td><fmt:formatDate value="${payment.payment_date}" pattern="yyyy-MM-dd" /></td>
                             <td>${payment.title}</td>
-                            <td><fmt:formatNumber value="${payment.pay_amount}" pattern="#,###원" /></td>
+                            <td><fmt:formatNumber value="${payment.price}" pattern="#,###원" /></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${payment.shipping_state == 1}">상품준비</c:when>
@@ -92,6 +93,7 @@ h2 {
                                 </c:choose>
                             </td>
                             <td><a href="#" class="btn btn-details">보기</a></td>
+                            <td><a href="${pageContext.request.contextPath}/myPage/rwrite?title=${payment.title}&sales_num=${payment.sales_num}" class="btn btn-details">작성</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>

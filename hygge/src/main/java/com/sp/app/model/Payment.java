@@ -11,6 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Payment {
     private long payment_num; //결제번호
+    private int amount;
+    private int sum;
+    private int price;
 	private int total_amount; //총금액(상품*개수*가격 토탈)==모인금액
 	private int pay_amount; //결제금액. 내가 최종적으로 구매하는 상품에 대한 금액+쿠폰+배송비 등의 적용금액
 	private int pay_way; //결제수단. 0:카드결제
@@ -18,6 +21,8 @@ public class Payment {
 	private int shipping_fee; //배송비
 	private int coupon; //쿠폰. 기본: 0
 	private Date payment_date; //결제일자. SYSDATE
+	
+	private int sales_num;
 	
 	private long memberIdx;
 	private int shipping_state; //int로 변경

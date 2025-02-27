@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+
 <style>
     .custom-body {
         font-family: Arial, sans-serif;
@@ -120,11 +121,12 @@
         });
     });
 </script>
+
 </head>
-<body class="custom-body">
-<header>
+<header style="width: 100%;">
     <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </header>
+<body class="custom-body">
 <main>
    <div class="custom-board-container">
     <c:if test="${not empty listBoard}">
@@ -157,9 +159,11 @@
     </div>
 </div>
 </main>
-<footer>
+
+
+</body>
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+<footer style="width: 100%;">
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 </footer>
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
-</body>
 </html>

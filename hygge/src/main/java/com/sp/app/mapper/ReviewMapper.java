@@ -14,5 +14,6 @@ public interface ReviewMapper {
     List<Review> reviewList(Map<String, Object> map);
 	Review findById(long num);
 	public int dataCount(Map<String, Object> map);
+	public void insertReview(Review dto) throws SQLException;
 	public void deleteReview(long num) throws SQLException;
 }
