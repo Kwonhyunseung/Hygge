@@ -17,13 +17,13 @@
     </header>
 
     <div class="form-container">
-        <!-- 제목 -->
-        <h1 class="main-title">22기 체험단을 모집합니다!</h1>
+    	<!-- 제목 -->
+        <h1 class="main-title">${testBoard.title}</h1>
 
         <!-- 이미지 슬라이더 -->
         <div class="slider-container">
             <div class="slider-wrapper">
-                <img src="/dist/images/logo.jpg" alt="제품 이미지 1" class="slider-image">
+            	<img src="${pageContext.request.contextPath}/uploads/project/${product.thumbnail}" class="slider-image">
             </div>
             <button class="slider-button prev"><i class="bi bi-chevron-left"></i></button>
             <button class="slider-button next"><i class="bi bi-chevron-right"></i></button>
@@ -65,17 +65,19 @@
                     <label>성별</label>
                     <div class="radio-group">
                         <label>
-                            <input type="radio" name="gender" value="남"> 남
+                            <input type="radio" name="gender" value="1"> 남
                         </label>
                         <label>
-                            <input type="radio" name="gender" value="여"> 여
+                            <input type="radio" name="gender" value="2"> 여
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="address">주소</label>
-                    <input type="text" id="address" name="address" class="form-input" required>
+                    	<input type="text" id="address" name="address" class="form-input" required>
+                    <label for="address">주소</label>
+                    	<input type="text" id="address" name="address" class="form-input" required>
                 </div>
 
                 <!-- 개인정보 동의 -->

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.TesterMapper">
+	
+	<!-- 체험단 상세 정보 -->
+	<select id="testerInfo" parameterType="Long" resultType="com.sp.app.model.TestBoard">
+		<!-- 제목, 사진, 내용 / 닉네임, 나이, 성별, 번호123, 주소12, 우편번호 -->
+		SELECT t.tester_num, t.num, title, thumbnail, content, nickName, age, gender, tel1, tel2, tel3, addr1, addr2, postCode
+		FROM TestBoard t
+		LEFT OUTER JOIN project p ON t.num = p.num
+		LEFT OUTER JOIN sponsor s ON t.tester_num = s.num
+		LEFT OUTER JOIN member1 m1 ON t.memberIdx = m1.memberIdx
+		JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
+		WHERE t.tester_num = #{tester_num}
+	</select>
+
+	<!-- 체험단 신청 -->
+	<insert id="insertTesterForm" parameterType="com.sp.app.model.Tester">
+		INSERT INTO tester (memberIdx, num, request_date, accept_date, review_num, block)
+			VALUES (#{memberIdx}, #{num}, SYSDATE, #{accept_date}, #{review_num}, 0)
+	</insert>
+	
+	
+</mapper>
