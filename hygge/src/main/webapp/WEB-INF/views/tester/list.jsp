@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>체험단</title>
     <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/test.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/tester/test.css" type="text/css">
 </head>
 <body>
     <header>

@@ -24,5 +24,6 @@ public interface MemberService {
 	public void updateRefreshToken(Member dto) throws Exception;
 	public Member findByToken(String email);
 	
-	public boolean isPasswordCheck(String id, String pwd);	
+	public boolean isPasswordCheck(String id, String pwd);
+
 }

@@ -20,5 +20,5 @@ public class TestBoard {
 	private Date start_date;
 	private Date end_date;
 	private Date request_date; //신청일. null 허용
-	
+	private long num;	
 }

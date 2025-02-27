@@ -214,6 +214,4 @@ public class MemberServiceImpl implements MemberService {
 		return authority;
 	}
 
-	
-	
 }
