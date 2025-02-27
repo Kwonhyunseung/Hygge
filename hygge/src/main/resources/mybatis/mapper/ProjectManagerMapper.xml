@@ -97,7 +97,7 @@ WHERE mkBoard_num = #{mkboard_Num}
 
 <insert id="insertFile" parameterType="com.sp.app.model.ProjectManager">
     INSERT INTO makerFile (FILE_NUM,S_FILENAME, MKBOARD_NUM)
-    VALUES (maker_file_seq.NEXTVAL, #{sfileName}, #{mkboard_Num})
+    VALUES (maker_file_seq.NEXTVAL, #{sfileName}, #{mkboard_Num,jdbcType=NUMERIC})
 </insert>
 
 <delete id="deleteFile" parameterType="Long">
@@ -115,11 +115,9 @@ WHERE mkBoard_num = #{mkboard_Num}
     WHERE mkboard_Num = #{mkboard_Num}
 </update>
 
-<update id="updateFile" parameterType="com.sp.app.model.ProjectManager">
-    UPDATE makerFile
-    SET S_FILENAME = #{sfileName}
-    WHERE mkBoard_num = #{mkboard_Num}
-</update>
+
+
+
 <select id="findById" parameterType="long" resultType="com.sp.app.model.ProjectManager">
     SELECT *
     FROM MakerBoard

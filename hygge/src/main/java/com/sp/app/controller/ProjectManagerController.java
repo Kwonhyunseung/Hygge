@@ -180,7 +180,6 @@ public class ProjectManagerController {
 	
 		String query = "tab=2&page=" + page;
 		try {
-			System.out.println("서버왔다");
 			service.deleteBoard(uploadPath, mkboard_Num);
 			
 		} catch (Exception e) {
@@ -230,16 +229,21 @@ public class ProjectManagerController {
 
 	    try {
 	        // 게시글 정보 조회
-	        ProjectManager dto = service.findById(mkboard_Num); // 게시글 정보를 가져오는 메서드 필요
+	        ProjectManager dto = service.findById(mkboard_Num);
+	        
 	        if (dto == null) {
-	            return "redirect:/makerPage/projectManager?" + query; // 게시글이 없으면 목록으로 리다이렉트
+	        	System.out.println("dto null 임");
+	            return "redirect:/makerPage/projectManager?" + query;
 	        }
 	        
-	        model.addAttribute("projectManager", dto); // 수정할 게시글 정보를 모델에 추가
+	       
+	        
+	        model.addAttribute("dto", dto);
+	        model.addAttribute("mkboard_Num", mkboard_Num);
 	        model.addAttribute("page", page);
 	        model.addAttribute("mode", "update");
 
-	        return "makerPage/medit"; // 수정 폼으로 이동
+	        return "makerPage/medit"; 
 
 	    } catch (NullPointerException e) {
 	        log.info("updateForm : ", e);
@@ -252,7 +256,7 @@ public class ProjectManagerController {
 
 
 	
-	@PostMapping("update")
+	@PostMapping("medit")
 	public String updateSubmit(ProjectManager dto,
 	        @RequestParam(name = "page", required = false, defaultValue = "1") String page,
 	        RedirectAttributes redirectAttributes) {
@@ -260,13 +264,13 @@ public class ProjectManagerController {
 
 	    try {
 	        // 게시글 업데이트 처리
-	        service.updateBoard(dto, uploadPath); // dto에 수정된 데이터가 들어있음
-	        redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다."); // 성공 메시지 추가
+	        service.updateBoard(dto, uploadPath); 
+	        redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 수정되었습니다."); 
 	    } catch (Exception e) {
 	        log.info("updateSubmit : ", e);
-	        redirectAttributes.addFlashAttribute("message", "게시글 수정 중 오류가 발생했습니다."); // 오류 메시지 추가
+	        redirectAttributes.addFlashAttribute("message", "게시글 수정 중 오류가 발생했습니다.");
 	    }
-
+	    	
 	    return "redirect:/makerPage/projectManager?" + query; // 목록 페이지로 리다이렉트
 	}
 	

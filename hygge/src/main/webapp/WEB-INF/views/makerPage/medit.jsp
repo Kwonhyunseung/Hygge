@@ -79,17 +79,16 @@
             <form action="${pageContext.request.contextPath}/makerPage/medit" method="post" enctype="multipart/form-data">
                 <!-- 유저 정보 표시 (작성자명 자동 입력) -->
                 <c:if test="${not empty dto}">
-                    <input type="hidden" name="memberIdx" value="${dto.memberIdx}" />
+                    <input type="hidden" name="mkboard_Num" value="${dto.mkboard_Num}" />
                     <div class="form-group">
-                        <label for="userName">${dto.userId}</label>
-                        <input type="text" class="form-control" id="userName" name="userName" value="${dto.userId}" readonly />
+                        <label for="userName">${dto.name}</label>
                     </div>
                 </c:if>
 
                 <!-- 제목 입력 -->
                 <div class="form-group">
                     <label for="title">제목</label>
-                    <input type="text" class="form-control" id="title" name="Title" required />
+                    <input type="text" class="form-control" id="title" name="Title" value="${dto.title}"required>
                 </div>
 
                 <!-- 카테고리 선택 -->
@@ -97,23 +96,23 @@
                     <label for="category">카테고리</label>
                     <select class="form-control" id="category" name="category" required>
                         <option value="" disabled selected>카테고리를 선택하세요</option>
-                        <option value="가전">가전</option>
-                        <option value="패션">패션</option>
-                        <option value="뷰티">뷰티</option>
-                        <option value="홈▪리빙">홈▪리빙</option>
-                        <option value="푸드">푸드</option>
-                        <option value="도서">도서</option>
-                        <option value="캐릭터▪굿즈">캐릭터▪굿즈</option>
-                        <option value="문화">문화</option>
-                        <option value="반려동물">반려동물</option>
-                        <option value="기타">기타</option>
+                        <option value="가전" ${dto.category == '가전'? 'selected' : ''}>가전</option>
+                        <option value="패션" ${dto.category == '패션'? 'selected' : ''}>패션</option>
+                        <option value="뷰티" ${dto.category == '뷰티'? 'selected' : ''}>뷰티</option>
+                        <option value="홈▪리빙" ${dto.category == '홈▪리빙'? 'selected' : ''}>홈▪리빙</option>
+                        <option value="푸드" ${dto.category == '푸드'? 'selected' : ''}>푸드</option>
+                        <option value="도서" ${dto.category == '도서'? 'selected' : ''}>도서</option>
+                        <option value="캐릭터▪굿즈" ${dto.category == '캐릭터▪굿즈'? 'selected' : ''}>캐릭터▪굿즈</option>
+                        <option value="문화" ${dto.category == '문화'? 'selected' : ''}>문화</option>
+                        <option value="반려동물" ${dto.category == '반려동물'? 'selected' : ''}>반려동물</option>
+                        <option value="기타" ${dto.category == '기타'? 'selected' : ''}>기타</option>
                     </select>
                 </div>
 
                 <!-- 내용 입력 -->
                 <div class="form-group">
                     <label for="content">내용</label>
-                    <textarea class="form-control" id="Content" name="Content" rows="5" required></textarea>
+                    <textarea class="form-control" id="Content" name="Content" rows="5" required>${dto.content}</textarea>
                 </div>
 
                 <!-- 파일 업로드 -->

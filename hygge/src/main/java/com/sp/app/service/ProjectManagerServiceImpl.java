@@ -107,27 +107,39 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     }
 
     @Override
-    public void updateBoard(ProjectManager dto,String uploadPath) throws Exception {
-        // 게시글 수정 로직 구현
-        try {
-        	if(dto.getSelectFile() != null && ! dto.getSelectFile().isEmpty()) {
-        		if(! dto.getSfileName().isBlank()) {
-        			deleteUploadFile(uploadPath, dto.getSfileName());
-        		}
-        		
-        		String SfileName = storageService.uploadFileToServer((MultipartFile) dto.getSelectFile(),
-        				uploadPath);
-        		dto.setSfileName(SfileName);
-        		
-        		
-            }
-        	mapper.updateBoard(dto);
-        	
-        } catch (Exception e) {
-            log.error("updateBoard 실패: ", e);
-            
-            throw e;
-        }
+    public void updateBoard(ProjectManager dto, String uploadPath) throws Exception {
+    		
+    	try {
+    		if(dto.getSelectFile() != null && ! dto.getSelectFile().isEmpty()) {
+    			if(! dto.getSelectFile().isEmpty()) {
+					deleteUploadFile(uploadPath, dto.getSfileName());
+					
+				}
+    			for(MultipartFile selectFile : dto.getSelectFile()) {
+    			String saveFilename = storageService.uploadFileToServer(
+    					selectFile, uploadPath);
+				dto.setSfileName(saveFilename);
+				
+				// 박재민 병신아 map을 비워놓으면 안돼 
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("mkboard_Num", dto.getMkboard_Num());
+				map.put("sfileName", dto.getSfileName());
+				
+				
+				mapper.insertFile(map);
+				
+    			}
+    		}
+    		mapper.updateBoard(dto);
+    		
+		} catch (Exception e) {
+			log.info("updateBoard : ", e);
+			
+			throw e;
+		}
+		
+   
+    
     }
 
     @Override
