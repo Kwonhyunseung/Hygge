@@ -9,12 +9,12 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
-.content-wrapper {
+.wcontent-wrapper {
 	padding: 20px;
 	background-color: #f9f9f9;
 }
 
-.container {
+.wcontainer {
 	max-width: 700px;
 	margin: 50px auto;
 	background: white;
@@ -76,8 +76,8 @@ label {
 		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
 	</header>
 
-	<div class="content-wrapper">
-		<div class="container">
+	<div class="wcontent-wrapper">
+		<div class="wcontainer">
 			<h2>문의 작성</h2>
 			<form action="${pageContext.request.contextPath}/qna/write"
 				method="post">

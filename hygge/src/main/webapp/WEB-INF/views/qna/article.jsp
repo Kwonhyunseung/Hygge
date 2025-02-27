@@ -9,13 +9,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
 /* 전체 스타일 */
-.content-wrapper {
+.acontent-wrapper {
     padding: 20px;
     background-color: #f9f9f9;
 }
 
 /* 컨테이너 스타일 */
-.container {
+.acontainer {
     max-width: 800px;
     margin: 50px auto;
     background: white;
@@ -86,8 +86,8 @@ h2 {
 </header>
 
 <!-- 본문 내용 -->
-<div class="content-wrapper">
-    <div class="container">
+<div class="acontent-wrapper">
+    <div class="acontainer">
         <h2>문의 상세보기</h2>
 
         <!-- 카테고리 정보 -->
