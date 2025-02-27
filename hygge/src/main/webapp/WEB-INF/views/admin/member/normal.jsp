@@ -45,9 +45,9 @@
 </head>
 <body>
 
-    <header>
-        <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
-    </header>
+<header>
+	<jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
+</header>
 <%-- 모달 --%>
  <jsp:include page="/WEB-INF/views/admin/member/normalModal.jsp"/>
  
@@ -57,6 +57,7 @@
        <div class="main-content">
 			<div class="content-header">
 			    <h2>일반 회원</h2>
+			    <h2>성별:${member[1].gender}</h2>
 			    <div class="tab-buttons">
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
 			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">
@@ -95,7 +96,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                <%--이 부분을 forEach로 돌리기 --%>
                 <c:forEach var="item" items="${member}">
                 	<tr data-birth="${fn:substring(item.birth, 0, 10)}"  
                 		data-tel1="${item.tel1}" 
@@ -105,7 +105,8 @@
                 		data-addr2="${item.addr2}" 
                 		data-regdate="${fn:substring(item.reg_date, 0, 10)}"
                 		data-mod_date="${fn:substring(item.mod_date, 0, 10)}"
-                		data-last_login="${fn:substring(item.last_login, 0 ,10)}">
+                		data-last_login="${fn:substring(item.last_login, 0 ,10)}"
+                		data-gender="${item.gender== 1 ? '남자' : '여자'}">
                 		
 	                    <td>${item.memberIdx}</td>
 	                    <td>${item.name}</td>
@@ -188,7 +189,7 @@ $(function(){
 		const fullTel = tel1 + '-' + tel2;
 		
 		const nickName = $(this).data('nickname');
-		// const gender = $(this).data('gender');
+		const gender = $(this).data('gender');
 		
 		const addr1 = $(this).data('addr1');
 		const addr2 = $(this).data('addr2');
@@ -197,6 +198,7 @@ $(function(){
 		
 		
 		
+		$('#modalGender').text(gender);
 		$('#modalMemberIdx').text(memberIdx);
 		$('#modalBirth').text(birth);
 		$('#modalName').text(name);

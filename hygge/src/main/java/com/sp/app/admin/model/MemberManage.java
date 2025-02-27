@@ -18,6 +18,7 @@ public class MemberManage {
 	private String reg_date;
 	private String request_date;
 	private String accept_return;
+	private String gender;
 	
 	private String mod_date;
 	private String last_login;

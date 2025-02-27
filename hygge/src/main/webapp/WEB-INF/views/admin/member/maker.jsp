@@ -48,7 +48,6 @@
     <header>
         <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
     </header>
-<%-- 모달 --%>
  <jsp:include page="/WEB-INF/views/admin/member/normalModal.jsp"/>
  
     <div class="admin-container">
@@ -105,7 +104,8 @@
                 		data-addr2="${item.addr2}" 
                 		data-regdate="${fn:substring(item.reg_date, 0, 10)}"
                 		data-mod_date="${fn:substring(item.mod_date, 0, 10)}"
-                		data-last_login="${fn:substring(item.last_login, 0 ,10)}">
+                		data-last_login="${fn:substring(item.last_login, 0 ,10)}"
+                		data-gender="${item.gender== 1 ? '남자' : '여자'}">
                 		
 	                    <td>${item.memberIdx}</td>
 	                    <td>${item.name}</td>
@@ -188,7 +188,7 @@ $(function(){
 		const fullTel = tel1 + '-' + tel2;
 		
 		const nickName = $(this).data('nickname');
-		// const gender = $(this).data('gender');
+		const gender = $(this).data('gender');
 		
 		const addr1 = $(this).data('addr1');
 		const addr2 = $(this).data('addr2');
@@ -196,7 +196,7 @@ $(function(){
 		const modDate = $(this).data('mod_date');
 		
 		
-		
+		$('#modalGender').text(gender);
 		$('#modalMemberIdx').text(memberIdx);
 		$('#modalBirth').text(birth);
 		$('#modalName').text(name);

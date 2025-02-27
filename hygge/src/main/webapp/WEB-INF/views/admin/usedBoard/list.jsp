@@ -5,32 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-.tab-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.tab-button {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    background: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.tab-button.active {
-    background: #34495e;
-    color: white;
-    border-color: #34495e;
-}
-
-.tab-button:hover {
-    background-color: #2ecc71;
-}
-
-
-</style>
 <meta charset="UTF-8">
 <title>중고게시판 관리</title>
 <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
@@ -53,7 +27,7 @@
 	            <div class="tab-buttons">
 			    <button class="tab-button" data-tab="reported">신고 누적</button>
 			    <button class="tab-button" data-tab="trade-status">거래 현황</button>
-			    <button class="tab-button" onclick="${pageContext.request.contextPath}/admin">게시글</button>
+			    <button class="tab-button" onclick="location.href='${pageContext.request.contextPath}/admin/usedBoard/list'">게시글</button>
 			</div>        
             </div>
             
@@ -85,7 +59,6 @@
 			                <th>분류</th>
 			                <th>상태</th>
 			                <th>등록일</th>
-			                <th>조회수</th>
 			                <th>관리</th>
 			            </tr>
 			        </thead>
@@ -108,17 +81,16 @@
 					            </c:choose>					            
 					            <c:choose>
 					                <c:when test="${board.deal == 0}">
-					                    <td><span class="status-badge status-selling">미거래</span></td>
+					                    <td><span class="status-badge status-reserved">미거래</span></td>
 					                </c:when>
 					                <c:when test="${board.deal == 1}">
-					                    <td><span class="status-badge status-selling">대기중</span></td>
+					                    <td><span class="status-badge status-reserved">대기중</span></td>
 					                </c:when>
 					                <c:when test="${board.deal == -1}">
-					                    <td><span class="status-badge status-selling">거래완료</span></td>
+					                    <td><span class="status-badge status-completed">거래완료</span></td>
 					                </c:when>
 					            </c:choose>
 					            <td>${board.reg_date}</td>
-					            <td>${board.hitCount}</td>
 					            <td class="action-buttons">
 					                <button type="button"><i class="fas fa-eye"></i></button>
 					                <button type="button"><i class="fas fa-edit"></i></button>
@@ -288,8 +260,9 @@ function renderPurchaseStatusTable(data) {
     tbody.empty();
     
     data.forEach(function(item) {
-        let progressText = item.progress === 0 ? '대기중' : 
-                           item.progress === 9 ? '거래완료' :
+        let progressText = item.progress === 0 ? '대기중' : '거래완료';
+        
+        let statusClass = progressText === '대기중' ? 'progress' : 'completed';
         
         let row = 
             '<tr>' +
@@ -301,13 +274,10 @@ function renderPurchaseStatusTable(data) {
                 '<td>' + (item.buyerNickName || '없음') + '</td>' +
                 '<td>' + (item.price ? item.price.toLocaleString() + '원' : '가격 미정') + '</td>' +
                 '<td>' +
-                    '<span class="status-badge status-' + 
-                         progressText === '대기중' ? 'progress' : 
-                         'completed') + 
-                    '">' + 
-                        progressText + 
-                    '</span>' +
-                '</td>' +
+                '<span class="status-badge status-' + statusClass + '">' + 
+                    progressText + 
+                '</span>' +
+            '</td>' +
                 '<td class="action-buttons">' +
                     (progressText === '대기중' ? 
                         '<button type="button" class="approve-btn" data-board-num="' + item.board_num + '">승인</button>' +
@@ -324,8 +294,13 @@ function renderPurchaseStatusTable(data) {
 
     // 승인 버튼 클릭 이벤트
     $(".approve-btn").on("click", function() {
-        let boardNum = $(this).data("board-num");
-        handleTradeStatus(boardNum, 'approve');
+    	
+    	if(! confirm('해당 거래를 승인하시겠습니까?')) {
+    		return;
+    	}
+    	
+        let board_num = $(this).data("board-num");
+        handleTradeStatus(board_num, 'approve');
     });
 
     // 거절 버튼 클릭 이벤트
@@ -336,11 +311,11 @@ function renderPurchaseStatusTable(data) {
 }
 
 // 거래 상태 처리 함수
-function handleTradeStatus(boardNum, action) {
-    let url = "${pageContext.request.contextPath}/admin/usedBoard/updateTradeStatus";
+function handleTradeStatus(board_num, action) {
+    let url = "${pageContext.request.contextPath}/admin/usedBoard/updateTrade";
     let query = {
-        board_num: boardNum,
-        action: action
+        board_num: board_num,
+        action: action // action은 approve 아니면 reject
     };
 
     const fn = function(data) {

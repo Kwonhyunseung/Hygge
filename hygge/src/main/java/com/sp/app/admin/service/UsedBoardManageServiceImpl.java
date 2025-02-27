@@ -68,7 +68,20 @@ public class UsedBoardManageServiceImpl implements UsedBoardManageService {
 		
 		return list;
 	}
-	
 
+	@Override
+	public void approveTrade(long board_num) throws Exception {
+		UsedMapper.approveTrade(board_num);
+	}
 
+	@Override
+	public void rejectTrade(long board_num) throws Exception {
+		UsedMapper.rejectTrade(board_num);
+	}
+
+	// usedBoard의 deal 컬럼 변경
+	@Override
+	public void approveTrade1(long board_num) throws Exception {
+		UsedMapper.approveTrade1(board_num);
+	}
 }

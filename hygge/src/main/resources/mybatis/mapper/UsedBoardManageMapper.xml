@@ -75,9 +75,26 @@ JOIN
     member1 seller ON ur.writer = seller.memberIdx
 JOIN
     member1 buyer ON ur.customer = buyer.memberIdx
-WHERE
-    ub.deal IN (0, 1)
 ORDER BY
     ub.reg_date DESC
 </select>
+
+<update id="approveTrade" parameterType="Long">
+UPDATE usedRequest
+SET progress = 9
+WHERE board_num = #{board_num}
+</update>
+
+<update id="approveTrade1" parameterType="Long">
+UPDATE usedBoard
+SET deal = -1
+WHERE board_num = #{board_num}
+</update>
+
+<update id="rejectTrade" parameterType="Long">
+UPDATE usedRequest
+SET progress = -1
+WHERE board_num = #{board_num}
+</update>
+
 </mapper>

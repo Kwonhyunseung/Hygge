@@ -40,7 +40,7 @@
             <span class="menu-title">글 관리</span>
             <ul class="sub-menu">
                 <li><a href="${pageContext.request.contextPath}/admin/usedBoard/list">중고 게시글</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/tester/list">후기 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/review/list">후기 관리</a></li>
             </ul>
         </li>
         

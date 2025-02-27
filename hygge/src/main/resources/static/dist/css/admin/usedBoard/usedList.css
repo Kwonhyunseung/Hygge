@@ -174,3 +174,90 @@ tbody tr:hover {
     border-color: #3498db;
 }
 
+/* 탭 상태 */
+.status-progress { background: #e3f2fd; color: #1565c0; }
+.status-completed { background: #f5f5f5; color: #616161; }
+.status-inprogress { background: #e8f5e9; color: #2e7d32; }
+
+
+/* 테두리가 있는 거래 관리 버튼 */
+.approve-btn, .reject-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.approve-btn {
+    background: #2ecc71;
+    color: white;
+    border: 5px solid #27ae60;
+}
+
+.approve-btn:hover {
+    background: #27ae60;
+    border-color: #219653;
+}
+
+.approve-btn, .reject-btn {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.approve-btn:hover, .reject-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.reject-btn {
+    background: #e74c3c;
+    color: white;
+    margin-left: 5px;
+    border: 2px solid #c0392b;
+}
+
+.reject-btn:hover {
+    background: #c0392b;
+    border-color: #a93226;
+}
+
+/* 액티브 탭 버튼 스타일 개선 */
+.tab-button.active {
+    background: #34495e;
+    color: white;
+    border-color: #34495e;
+    font-weight: 500;
+}
+
+/* 일반 버튼 스타일 개선 */
+button {
+    transition: all 0.2s ease;
+}
+
+/* 테이블 내 관리 아이콘 컬럼 너비 조정 */
+.action-buttons {
+    min-width: 100px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tab-button.active {
+    background: #34495e;
+    color: white;
+    border-color: #34495e;
+}
+
+.tab-button:hover {
+    background-color: #2ecc71;
+}

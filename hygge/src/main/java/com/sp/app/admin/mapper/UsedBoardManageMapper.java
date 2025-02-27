@@ -16,4 +16,8 @@ public interface UsedBoardManageMapper {
 	public int deleteUsedBoards(List<Long> boardNumList) throws SQLException;
 	
 	public List<UsedBoardManage> getPurchaseStatusList() throws SQLException;
+	
+	public void approveTrade(long board_num) throws SQLException;
+	public void approveTrade1(long board_num) throws Exception;
+	public void rejectTrade(long board_num) throws SQLException;
 }

@@ -13,4 +13,9 @@ public interface UsedBoardManageService {
 	public int deleteUsedBoards(List<Long> boardNumList) throws SQLException;
 	
 	public List<UsedBoardManage> getPurchaseStatusList();
+	
+	public void approveTrade(long board_num) throws Exception;
+	public void approveTrade1(long board_num) throws Exception;
+	
+	public void rejectTrade(long board_num) throws Exception;
 }

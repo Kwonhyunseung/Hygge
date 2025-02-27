@@ -135,4 +135,40 @@ public class UsedBoardManagementController {
 	public List<UsedBoardManage> getPurchaseStatus() {
 	    return service.getPurchaseStatusList();
 	}
+	
+	@ResponseBody
+	@PostMapping("updateTrade")
+	public Map<String, Object> handleTradeStatus(
+			@RequestParam(name = "action") String action,
+			@RequestParam(name = "board_num") long board_num
+			) throws Exception{
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			
+			if("approve".equals(action)) {
+				service.approveTrade(board_num);
+				service.approveTrade1(board_num);
+				
+				map.put("status", "success");
+			} else if ("reject".equals(action)) {
+				service.rejectTrade(board_num);
+				map.put("status", "false");
+			} else {
+				System.out.print("서버 전송 오류");
+			}
+			
+		} catch (Exception e) {
+			log.info("updateTrade : ", e);
+		}
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
 }
