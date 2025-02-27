@@ -152,3 +152,7 @@ label {
 	margin-left: 10px; /* 체크박스와 텍스트 간의 간격 */
 	font-weight: normal; /* 텍스트 굵기 제거 */
 }
+
+.btn:disabled {
+	background-color: #b2cc85;
+}

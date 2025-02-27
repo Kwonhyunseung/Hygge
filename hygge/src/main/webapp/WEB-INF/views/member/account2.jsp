@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원가입 - 2</title>
+<title>회원가입</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -56,6 +56,7 @@ function memberOk() {
         f.pwd.focus();
         return;
     }
+    console.log(str);
 
     const genderChecked = document.querySelector('input[name="gender"]:checked');
     if (!genderChecked) {
@@ -73,7 +74,7 @@ function memberOk() {
     }
 
     f.action = '${pageContext.request.contextPath}/member/account2';
-    f.submit();
+    // f.submit();
 }
 
 // 아이디 중복 검사
@@ -342,17 +343,17 @@ document.addEventListener("DOMContentLoaded", function () {
 					</label>
 				</div>
 				<div>
-					<input type="checkbox" id="marketing"> <label
-						for="marketing"> 무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
-						<button type="button" class="btn btn-link p-0"
-							data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
-					</label>
-				</div>
-				<div>
 					<input type="checkbox" id="age" required> <label for="age">
 						본인은 만 14세 이상입니다.(필수)
 						<button type="button" class="btn btn-link p-0"
 							data-bs-toggle="modal" data-bs-target="#modalAge">보기</button>
+					</label>
+				</div>
+				<div>
+					<input type="checkbox" id="marketing"> <label
+						for="marketing"> 무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
+						<button type="button" class="btn btn-link p-0"
+							data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
 					</label>
 				</div>
 			</div>
@@ -434,13 +435,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				</div>
 			</div>
 
-			<div class="mb-3">
-				<button type="button" id="accountBtn" class="btn btn-primary"
-					onclick="memberOk();">가입하기</button>
-			</div>
-			<div>
-				<button type="button" class="btn btn-secondary"
-					onclick="location.href='${pageContext.request.contextPath}/';">등록취소</button>
+			<div class="mb-3" style="display: flex; flex-direction: row;">
+				<button type="button" id="accountBtn" class="btn btn-primary" onclick="memberOk();">가입하기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/';">등록취소</button>
 			</div>
 		</form>
 	</div>

@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 필수 항목 체크 여부 확인하여 가입 버튼 활성화
     function updateAcountBtn() {
         const requiredChecked = [...requiredCheckboxes].every(cb => cb.checked);  // 필수 항목 체크 확인
-        joinButton.disabled = !requiredChecked;  // 필수 항목만 체크해도 가입 버튼 활성화
+        accountBtn.disabled = !requiredChecked;  // 필수 항목만 체크해도 가입 버튼 활성화
     }
 
     updateAcountBtn();  // 초기 상태 확인

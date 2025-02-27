@@ -58,6 +58,7 @@ public class MemberController {
 	@PostMapping("account2")
 	public String accountSubmit(Member dto, final RedirectAttributes reAttr, Model model, HttpServletRequest req) {
 	    try {
+	    	
 	    	service.insertMember(dto);
 	        
 	        StringBuilder sb = new StringBuilder();
@@ -72,23 +73,6 @@ public class MemberController {
 			
 		} catch (Exception e) {
 			log.info("accountSubmit: ", e);
-			log.info("아이디: " + dto.getId());
-			log.info("이름: " + dto.getName());
-			log.info("닉네임: " + dto.getNickName());
-			log.info("비밀번호: " + dto.getPwd());
-			log.info("생년월일: " + dto.getBirth());
-			log.info("전화번호: " + dto.getTel1());
-			log.info("전화번호: " + dto.getTel2());
-			log.info("전화번호: " + dto.getTel3());
-			log.info("이메일: " + dto.getEmail1());
-			log.info("이메일: " + dto.getEmail2());
-			log.info("주소: " + dto.getAddr1());
-			log.info("주소: " + dto.getAddr2());
-			log.info("우편번호: " + dto.getPostCode());
-			log.info("카테고리: " + dto.getCategory1());
-			log.info("카테고리: " + dto.getCategory2());
-			log.info("카테고리: " + dto.getCategory3());
-			log.info("성별: " + dto.getGender());
 		}
 
 		return "member/account2";
