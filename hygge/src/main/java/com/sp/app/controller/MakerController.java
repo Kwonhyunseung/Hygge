@@ -187,7 +187,7 @@ public class MakerController {
 		} catch (Exception e) {
 			log.info("submit : ", e);
 		}
-		return "redirect:/makerPage/projectManager";
+		return "redirect:/makerPage/projectSign";
 	}
 
 	@ModelAttribute("funding")

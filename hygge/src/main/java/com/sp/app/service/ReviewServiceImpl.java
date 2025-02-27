@@ -60,4 +60,13 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public void deleteReview(long num) throws Exception {
+		try {
+			mapper.deleteReview(num);
+		} catch (Exception e) {
+			log.info("deleteReview : ", e);
+		}
+	}
 }

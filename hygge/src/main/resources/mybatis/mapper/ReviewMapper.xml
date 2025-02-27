@@ -12,24 +12,28 @@
     WHERE m.memberIdx = #{memberIdx}
   </select>
 
-  <!-- 후기 내용 조회 쿼리 -->
-<select id="reviewList" parameterType="map" resultType="com.sp.app.model.Review">
-    SELECT 
-        r.review_num, 
-        r.content, 
-        r.grade, 
-        p.title, 
-        pay.payment_date, 
-        pay.pay_amount 
-    FROM 
-        review r
-    JOIN 
-        sales s ON r.sales_num = s.num
-    JOIN 
-        product p ON s.product_num = p.product_num
-    JOIN 
-        payment pay ON s.payment_num = pay.payment_num
-    WHERE 
-        pay.memberIdx = #{memberIdx}
-</select>
+	<!-- 후기 내용 조회 쿼리 -->
+	<select id="reviewList" parameterType="map" resultType="com.sp.app.model.Review">
+	    SELECT 
+	        r.review_num, 
+	        r.content, 
+	        r.grade, 
+	        p.title, 
+	        r.reg_date, 
+	        pay.pay_amount 
+	    FROM 
+	        review r
+	    JOIN 
+	        sales s ON r.sales_num = s.num
+	    JOIN 
+	        product p ON s.product_num = p.product_num
+	    JOIN 
+	        payment pay ON s.payment_num = pay.payment_num
+	    WHERE 
+	        pay.memberIdx = #{memberIdx}
+	</select>
+
+	<delete id="deleteReview" parameterType="Long">
+		DELETE FROM review WHERE review_num = #{num}
+	</delete>
 </mapper>

@@ -16,5 +16,5 @@ public interface ReviewService {
 	public Review findById(long num);
 	public int dataCount(Map<String, Object> map);
 
-	
+	public void deleteReview(long num) throws Exception;
 }

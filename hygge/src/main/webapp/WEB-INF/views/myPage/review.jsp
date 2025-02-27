@@ -12,15 +12,14 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style>
 .rcontainer {
-    max-width: 800px;
-    margin-top: 50px;
     background: white;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 1px solid black;
-    margin-bottom: 50px;
-    margin-left: 263px;
+    margin: 40px auto;
+    width: 800px;
+    min-height: 500px;
 }
 h2 {
     text-align: center;
@@ -49,38 +48,69 @@ h2 {
     font-size: 1.2em;
     margin-bottom: 5px;
 }
+
+.delete-review:hover {
+	color: #82B10C;
+}
 </style>
 </head>
-<header>
-<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
 <body>
+<header>
+	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+</header>
+<main style="width: 1200px; margin: auto;">
     <div class="rcontainer">
         <h2 style="margin-bottom: 1.5rem;">상품 후기</h2>
-
+        <c:if test="${not empty reviewList}">
         <c:forEach var="review" items="${reviewList}">
-            <div class="review-box">
+            <div class="review-box" data-num="${review.review_num}">
                 <h5>${Review.title}</h5>
-                <div class="stars">
-                    <c:forEach begin="1" end="${review.grade}" varStatus="status">
-                        ★
-                    </c:forEach>
-                    <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
-                        ☆
-                    </c:forEach>
+                <div style="display: flex; flex-direction: row; justify-content: space-between;">
+	                <div class="stars">
+	                    <c:forEach begin="1" end="${review.grade}" varStatus="status">
+	                        ★
+	                    </c:forEach>
+	                    <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
+	                        ☆
+	                    </c:forEach>
+	                </div>
+	                <div>
+	                	<span class="delete-review" style="margin-right: 5px; cursor: pointer;">삭제</span>
+	                </div>
                 </div>
                 <p>${review.content}</p>
-                <p class="review-date"><fmt:formatDate value="${review.payment_date}" pattern="yyyy-MM-dd" /></p>
+                <p class="review-date">${review.reg_date}</p>
             </div>
         </c:forEach>
+        </c:if>
+        <c:if test="${empty reviewList}">
+        	<div class="content-container">
+        		작성한 후기가 존재하지 않습니다.
+        	</div>
+        </c:if>
 
         <div class="text-center mt-3">
             <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">마이페이지로 돌아가기</a>
         </div>
     </div>
-</body>
+</main>
 <footer>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </footer>
+
+<script type="text/javascript">
+$(function() {
+	$('.delete-review').click(function() {
+		if(!confirm('리뷰를 삭제하시겠습니까?')) {
+			return false;
+		}
+		let num = $(this).closest('.review-box').attr('data-num');
+		
+		let url = '${pageContext.request.contextPath}/myPage/deleteReview?num=' + num;
+		location.href = url;
+	});
+});
+</script>
+</body>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </html>

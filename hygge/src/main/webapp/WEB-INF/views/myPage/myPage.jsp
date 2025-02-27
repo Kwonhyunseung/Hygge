@@ -21,9 +21,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f9f9f9;
+    background-color: #fff;
 }
-.container {
+.bcontent-wrapper {
     display: flex;
     max-width: 1200px;
     width: 100%;
@@ -215,11 +215,12 @@ body {
 </style>
 
 </head>
-<header>
-<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
-</header>
 <body>
-    <div class="container">
+<header style="width: 100%">
+	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+</header>
+<main style="width: 1200px;">
+    <div class="bcontent-wrapper">
         <div class="sidebar">
             <div class="top-section">
                 <div class="profile-icon-wrapper">
@@ -290,10 +291,11 @@ body {
             </div>
         </div>
     </div>
+</main>
 
-    <footer>
-    <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    </footer>
-    <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
+<footer style="width: 100%">
+	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+</footer>
+<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
 </html>
