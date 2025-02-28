@@ -16,11 +16,20 @@
   background-color: #E6E026;
 }
 
+.tImg {
+	width: 760px;
+	height: 500px;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
 /* 제품 설명 스타일 */
 .detail-box {
   border: 1px solid #ddd;
   padding: 20px;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 80px;
   line-height: 1.6;
 }
 
@@ -58,18 +67,23 @@
 
 /* 전화번호 입력 스타일 */
 .tel-group {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .tel {
-  flex: 1;
-  max-width: 100px;
+    width: 32%;
+    flex: none;
+    text-align: center;
 }
 
 .tel-dash {
-  margin: 0 8px;
-  font-weight: bold;
+    font-weight: bold;
+    flex: none;
+    width: 2%;
+    text-align: center;
 }
 
 /* 주소 그룹 스타일 */
