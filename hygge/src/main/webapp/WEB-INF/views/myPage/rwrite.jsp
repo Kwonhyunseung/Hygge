@@ -37,6 +37,38 @@ h2 {
 .star.selected {
     color: #82B10C;
 }
+.thumbnail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+.thumbnail {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(255,0,0,0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    cursor: pointer;
+}
 </style>
 </head>
 <header>
@@ -47,11 +79,10 @@ h2 {
 <main style="width: 1200px; margin: auto;">
     <div class="rcontainer">
         <h2>상품 후기 작성</h2>
-       <input type="hidden" name="sales_num" value="${sales_num}" />
-        <form action="${pageContext.request.contextPath}/myPage/rwrite" method="post">
+        <form action="${pageContext.request.contextPath}/myPage/rwrite" method="post" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="title" class="form-label">제목</label>
-                <input type="text" id="title" name="title" class="form-control" value="${title}"required>
+                <label class="form-label">상품명</label>
+                <input type="text" class="form-control" value="${title}" readonly>
             </div>
             <div class="stars mb-3">
                 <span class="star" data-value="1">★</span>
@@ -61,11 +92,22 @@ h2 {
                 <span class="star" data-value="5">★</span>
             </div>
             <input type="hidden" name="grade" id="grade" value="5">
+            
+            <div class="preview" id="file-preview"></div>
+            
+            <div class="mb-3">
+                <label for="files" class="form-label">파일 첨부</label>
+                <input type="file" class="form-control" id="file" name="selectFile" multiple accept="image/*">
+                <div class="thumbnail-container" id="preview-container"></div>
+            </div>
+            
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
                 <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
             </div>
-            <div class="text-center">
+            <div class="text-center">          
+       			<input type="hidden" name="project_num" value="${project_num}" />
+       			<input type="hidden" name="sales_num" value="${sales_num}" />
                 <button type="submit" class="btn btn-primary">등록</button>
                 <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">취소</a>
             </div>
@@ -73,9 +115,9 @@ h2 {
     </div>
 </main>
 
-
 <script type="text/javascript">
 $(function() {
+    // 별점 기능
     $('.star').click(function() {
         let value = $(this).data('value');
         $('#grade').val(value);
@@ -83,6 +125,33 @@ $(function() {
         $(this).prevAll().addBack().addClass('selected');
     });
 });
+</script>
+
+<script type="text/javascript">
+function previewFiles() {
+    const fileInput = document.getElementById('file');
+    const previewContainer = document.getElementById('file-preview');
+    const files = fileInput.files;
+
+    // 이전 미리보기 제거
+    previewContainer.innerHTML = ''; 
+
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            previewContainer.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+    });
+}
+
+// 파일 입력 필드의 값 초기화 (파일 선택 후)
+function resetFileInput() {
+    document.getElementById('file').value = '';
+}
+
 </script>
 </body>
 <footer>

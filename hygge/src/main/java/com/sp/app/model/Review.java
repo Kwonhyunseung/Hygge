@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Review {
-	private Long review_num;
+	private long review_num;
 	private String content;
 	private int grade; // 5점 만점
 	private String reg_date;
 	
-	private Long project_num;
-	private Long sales_num;
+	private long project_num;
+	private long sales_num;
 	
 	private int pay_amount;
 	private Date payment_date;
@@ -34,6 +34,8 @@ public class Review {
 
 	private long reviewphoto_num;
 	private List<String> sfileName;
-	private List<MultipartFile> reviewFiles;
+	private List<MultipartFile> selectFile;
+	private String review_img;
+	
 	
 }

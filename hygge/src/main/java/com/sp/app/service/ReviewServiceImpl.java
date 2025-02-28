@@ -1,11 +1,14 @@
 package com.sp.app.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sp.app.common.StorageService;
 import com.sp.app.mapper.ReviewMapper;
 import com.sp.app.model.Review;
 
@@ -17,11 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper mapper;
-
+    private final StorageService storageService;
+    
+    
     @Override
-    public void insertReview(Review dto) throws SQLException {
+    public void insertReview(Review dto,String uploadPath) throws SQLException {
         try {
-			mapper.insertReview(dto);
+        	long seq = mapper.reviewSeq();
+        	dto.setReview_num(seq);
+        	mapper.insertReview(dto);
+        	if(! dto.getSelectFile().isEmpty()) {
+        	for(MultipartFile selectFile : dto.getSelectFile()) {
+        		String saveFilename = storageService.uploadFileToServer(selectFile, uploadPath);
+        		Map<String, Object> map = new HashMap<String, Object>();
+        		map.put("review_num", seq);
+        		map.put("sfileName", saveFilename);
+        		mapper.insertFile(map);
+        	}
+        	}
+			
 		} catch (Exception e) {
 	log.info("insertReview : ", e);
 			
@@ -74,5 +91,24 @@ public class ReviewServiceImpl implements ReviewService {
 		} catch (Exception e) {
 			log.info("deleteReview : ", e);
 		}
+	}
+
+	@Override
+	public void insertFile(Review dto, String uploadPath) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Review> listFile(long num) {
+			List<Review> listFile = null;
+		
+		try {
+			listFile = mapper.listFile(num);
+		} catch (Exception e) {
+			log.info("listFile : ", e);
+		}
+		
+		return listFile;
 	}
 }

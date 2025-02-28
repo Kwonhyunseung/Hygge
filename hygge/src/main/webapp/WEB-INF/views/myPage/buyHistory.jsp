@@ -93,7 +93,7 @@ h2 {
                                 </c:choose>
                             </td>
                             <td><a href="#" class="btn btn-details">보기</a></td>
-                            <td><a href="${pageContext.request.contextPath}/myPage/rwrite?title=${payment.title}&sales_num=${payment.sales_num}" class="btn btn-details">작성</a></td>
+                            <td><a href="${pageContext.request.contextPath}/myPage/rwrite?title=${payment.title}&sales_num=${payment.sales_num}&project_num=${payment.project_num}" class="btn btn-details">작성</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>

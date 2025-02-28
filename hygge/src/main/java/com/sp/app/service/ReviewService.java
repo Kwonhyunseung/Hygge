@@ -8,7 +8,7 @@ import com.sp.app.model.Review;
 
 public interface ReviewService {
 	
-	void insertReview(Review dto) throws SQLException;
+	void insertReview(Review dto,String uploadPath) throws SQLException;
 	
 	int reviewCount(long memberIdx);
 	
@@ -17,4 +17,7 @@ public interface ReviewService {
 	public int dataCount(Map<String, Object> map);
 
 	public void deleteReview(long num) throws Exception;
+	public void insertFile(Review dto,String uploadPath) throws SQLException;
+	
+	public List<Review> listFile(long num);
 }
