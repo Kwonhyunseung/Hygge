@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,22 +40,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/myPage/*")
 public class MyPageController {
 
-	@Autowired
 	private final MyPageService myPageService;
 	
-	@Autowired
 	private final ReviewService reviewService;  // ReviewService 주입
 	
-	@Autowired
 	private final UsedBoardService usedBoardService; //UsedBoardService 주입
 	
-	@Autowired
 	private final CouponService couponService; // CouponService 주입
 	
-	@Autowired
 	private final PaymentService paymentService; //PaymentService 주입
 	
-	@Autowired
 	private final PaginateUtil paginateUtil;
 	
 	private final StorageService storageService;

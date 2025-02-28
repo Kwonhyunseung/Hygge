@@ -96,8 +96,13 @@ h2 {
             </div>
             
             <div class="flex-grow-1">
-                <h5>${review.title}</h5>
-                <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            	<div style="display: flex; flex-direction: row; justify-content: space-between;">
+	                <h5>${review.title}</h5>
+	                <div>
+	                    <span class="delete-review" style="margin-right: 5px; cursor: pointer;">삭제</span>
+	                </div>
+            	</div>
+                <div>
                     <div class="stars">
                         <c:forEach begin="1" end="${review.grade}" varStatus="status">
                             ★
@@ -105,9 +110,6 @@ h2 {
                         <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
                             ☆
                         </c:forEach>
-                    </div>
-                    <div>
-                        <span class="delete-review" style="margin-right: 5px; cursor: pointer;">삭제</span>
                     </div>
                 </div>
                 <p>${review.content}</p>
