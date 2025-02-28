@@ -1,20 +1,20 @@
 package com.sp.app.admin.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.app.admin.mapper.EventManageMapper;
 import com.sp.app.admin.model.EventManage;
-import com.sp.app.common.FileManager;
-import com.sp.app.common.MyUtil;
 import com.sp.app.common.StorageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import java.util.Base64;
-import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -39,13 +39,25 @@ public class EventManageServiceImpl implements EventManageService {
     @Override
     public void insertEvent(EventManage dto, String pathname) throws Exception {
         try {
-            // 게시글 저장
-            mapper.insertEvent(dto);
-            
-            if(! dto.getPhotoFiles().isEmpty()) {
-            	
+            if(dto.getPhotoFiles() != null && !dto.getPhotoFiles().isEmpty()) {
+            	MultipartFile file = dto.getPhotoFiles().get(0);
+            	if(!file.isEmpty()) {
+            		String originalFilename = file.getOriginalFilename();
+            		String fileExt = originalFilename.substring(originalFilename.lastIndexOf("."));
+            		String saveFilename = UUID.randomUUID().toString() + fileExt;
+            		
+            		File dir = new File(pathname);
+            		if(!dir.exists()) {
+            			dir.mkdirs();
+            		}
+            		
+            		file.transferTo(new File(pathname, saveFilename));
+            		
+            		dto.setPhoto(saveFilename);
+            	}
             }
             
+            mapper.insertEvent(dto);
         } catch (Exception e) {
             log.error("insertEvent : ", e);
             throw e;
@@ -63,40 +75,35 @@ public class EventManageServiceImpl implements EventManageService {
         }
         return dto;
 	}
-
+	
+	@Transactional
 	@Override
 	public void updateEvent(EventManage dto, String pathname) throws Exception {
-		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void deleteEvent(long num, String pathname) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
-	@Override
-	public void updateEvent(EventManage dto, String pathname) throws Exception {
 		try {
-			String filename = null;
-			MultipartFile mf = dto.getPhotoFiles();
-			if(mf != null && !mf.isEmpty()) {
-				EventManage oldDto = readEvent(dto.getNum());
-				
-				if(oldDto.getPhoto() != null) {
-					storageService.deleteFile(pathname, oldDto.getPhoto());
+			if(dto.getPhotoFiles() != null && !dto.getPhotoFiles().isEmpty()) {
+				MultipartFile file = dto.getPhotoFiles().get(0);
+				if(!file.isEmpty()) {
+					
+					EventManage OldDto = readEvent(dto.getNum());
+					if(OldDto.getPhoto() != null) {
+						storageService.deleteFile(pathname, OldDto.getPhoto());
+					}
+					
+					String saveFilename = storageService.uploadFileToServer(file, pathname);
+					dto.setPhoto(saveFilename);
 				}
-				
-				filename = storageService.uploadFileToServer(mf, filename);
-				dto.setPhoto(filename);
 			}
+			
 			mapper.updateEvent(dto);
 		} catch (Exception e) {
 			log.info("updateEvent : ", e);
+			throw e;
 		}
 	}
 	
+
+	@Transactional
 	@Override
 	public void deleteEvent(long num, String pathname) throws Exception {
 		try {
@@ -110,7 +117,12 @@ public class EventManageServiceImpl implements EventManageService {
 			log.info("deleteEvent : ", e );
 		}
 	}
-	*/
+
+	@Override
+	public void deleteCoupon(long num) throws Exception {
+		// TODO Auto-generated method stub
+	}
+	
 	
 	
 }

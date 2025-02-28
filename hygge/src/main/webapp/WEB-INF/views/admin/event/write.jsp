@@ -21,15 +21,18 @@
         <div class="main-content">
             <div class="content-header">
                 <div class="content-title">
-                    <h2>이벤트 등록</h2>
-                </div>
+				    <h2>${mode=='update' ? '이벤트 수정' : '이벤트 등록'}</h2>
+				</div>
             </div>
 
             <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return sendOk();">
+                <c:if test="${mode=='update'}">
+			        <input type="hidden" name="num" value="${dto.num}">
+			    </c:if>
                 <div class="write-container">
                     <div class="form-group">
                         <label for="event-title">이벤트 제목</label>
-                        <input type="text" id="event-title" name="title" placeholder="이벤트 제목을 입력하세요" required>
+                        <input type="text" id="event-title" name="title" placeholder="${mode=='update' ? dto.title : ''}" required>
                     </div>
 
                     <div class="form-group">
@@ -39,19 +42,23 @@
                             <i class="fas fa-cloud-upload-alt"></i>
                             <p>이미지를 업로드하려면 클릭하세요</p>
                         </div>
-                        <div class="image-preview">
-                            <img id="preview" src="#" alt="이미지 미리보기">
-                        </div>
+                        <div class="image-preview" style="${mode=='update' && not empty dto.photo ? 'display:block' : 'display:none'}">
+						    <img id="preview" src="${mode=='update' && not empty dto.photo ? '/uploads/event/'.concat(dto.photo) : '#'}" alt="이미지 미리보기">
+						</div>
                     </div>
 
-                    <div class="form-group">
-                        <label>이벤트 기간</label>
-                        <div class="date-container">
-                            <input type="date" name="evt_date" required>
-                            <span>~</span>
-                            <input type="date" name="exp_date" required>
-                        </div>
-                    </div>
+					<div class="form-group">
+					    <label>이벤트 기간</label>
+					    <div class="date-container">
+					        <c:if test="${mode=='update'}">
+					            <fmt:formatDate var="formattedEvtDate" value="${dto.evt_date}" pattern="yyyy-MM-dd"/>
+					            <fmt:formatDate var="formattedExpDate" value="${dto.exp_date}" pattern="yyyy-MM-dd"/>
+					        </c:if>
+					        <input type="date" name="evt_date" value="${mode=='update' ? formattedEvtDate : ''}" required>
+					        <span>~</span>
+					        <input type="date" name="exp_date" value="${mode=='update' ? formattedExpDate : ''}" required>
+					    </div>
+					</div>
 					
 					<%-- 
                     <div class="form-group">
@@ -72,7 +79,7 @@
 
                     <div class="button-group">
                         <button type="button" class="btn btn-cancel" onclick="location.href='${pageContext.request.contextPath}/admin/event/list';">취소</button>
-                        <button type="submit" class="btn btn-primary">등록하기</button>
+                        <button type="submit" class="btn btn-primary">${mode== 'update' ? '수정' : '등록'}</button>
                     </div>
                 </div>
             </form>
@@ -81,7 +88,7 @@
 
     <script>
         // 이미지 미리보기 함수
-        document.getElementById('imageFile').addEventListener('change', function(e) {
+        document.getElementById('photoFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('preview');
             const previewContainer = document.querySelector('.image-preview');
             const file = e.target.files[0];
@@ -113,17 +120,22 @@ function sendOk() {
     
     if(!f.evt_date.value) {
         alert("시작일을 선택하세요.");
-        f.startDate.focus();
+        f.evt_date.focus();
         return false;
     }
     
     if(!f.exp_date.value) {
         alert("종료일을 선택하세요.");
-        f.endDate.focus();
+        f.exp_date.focus();
         return false;
     }
     
-    f.action = "${pageContext.request.contextPath}/admin/event/write";
+    if('${mode}' === 'update') {
+        f.action = "${pageContext.request.contextPath}/admin/event/update";
+    } else {
+        f.action = "${pageContext.request.contextPath}/admin/event/write";
+    }
+    
     f.submit();
 }
     </script>

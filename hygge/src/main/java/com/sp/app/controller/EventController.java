@@ -1,4 +1,4 @@
-package com.sp.app.admin.controller;
+package com.sp.app.controller;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -9,54 +9,40 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sp.app.admin.model.EventManage;
 import com.sp.app.admin.service.EventManageService;
 import com.sp.app.common.PaginateUtil;
-import com.sp.app.common.StorageService;
 import com.sp.app.model.SessionInfo;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/admin/event/")
-
-public class EventManageController {
+@Controller
+@RequestMapping("/event/")
+public class EventController {
 	private final EventManageService service;
-    private final PaginateUtil paginateUtil;
-    private final StorageService storageService;
-    
-    private String uploadPath;
-    
-    @PostConstruct
-    public void init() {
-    	uploadPath = this.storageService.getRealPath("/uploads/event");
-    }
-    
+	private final PaginateUtil paginateUtil;
+	
     @GetMapping("list")
     public String eventList(
             @RequestParam(name = "page", defaultValue = "1") int current_page,
             @RequestParam(name = "schType", defaultValue = "all") String schType,
             @RequestParam(name = "kwd", defaultValue = "") String kwd,
             HttpServletRequest req,
-            HttpSession session,
             Model model) throws Exception {
         
         try {
-            int size = 10;
+            int size = 6;
             int total_page = 0;
             int dataCount = 0;
-            
-            SessionInfo info = (SessionInfo)session.getAttribute("member");
             
             kwd = URLDecoder.decode(kwd , "UTF-8");
             
@@ -79,8 +65,8 @@ public class EventManageController {
             
             String cp = req.getContextPath();
             String query = "";
-            String listUrl = cp + "/admin/event/list";
-            String articleUrl = cp + "/admin/event/article?page=" + current_page;
+            String listUrl = cp + "/event/list";
+            String articleUrl = cp + "/event/article?page=" + current_page;
             
             if (! kwd.isBlank()) {
                 query = "schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "utf-8");
@@ -105,71 +91,31 @@ public class EventManageController {
             log.error("eventList : ", e);
         }
         
-        return "admin/event/list";
+        return "event/list";
     }
-    
-    @GetMapping("write")
-    public String writeForm(Model model) throws Exception {
-    	model.addAttribute("mode", "write");
-    	return "admin/event/write";
-    }
-    
-    @PostMapping("write")
-    public String writeSubmit(EventManage dto) throws Exception {
-        try {
-            service.insertEvent(dto, uploadPath);
-            
-        } catch (Exception e) {
-        	log.info("writeSubmit : ", e);
-        }
-        
-        return "redirect:/admin/event/list";
-    }
-    
-    @GetMapping("delete")
-    public String delete(@RequestParam(name = "num") long num,
-    		Model model) throws Exception {
-    	
-    	try {
+	
+	
+	@GetMapping("article/{num}")
+	public String article(
+			@PathVariable(name = "num") long num,
+			@RequestParam(name = "page", defaultValue = "1") String page,
+			@RequestParam(name = "schType", defaultValue = "all") String schType,
+			@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			Model model,
+			HttpSession session) throws Exception {
+		try {
+			EventManage dto = service.readEvent(num);
 			
-    		service.deleteEvent(num, uploadPath);
-    		
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			
+			model.addAttribute("dto", dto);
+	        model.addAttribute("page", page);
+	        model.addAttribute("schType", schType);
+	        model.addAttribute("kwd", kwd);
 		} catch (Exception e) {
-			log.info("delete : ", e);
+			log.info("article : ", e);
 		}
-    	
-    	return "redirect:/event/list";
-    }
-    
-    @GetMapping("update")
-    public String update(@RequestParam(name = "num") long num,
-    		Model model) throws Exception {
-    	
-    	try {
-    		EventManage dto = service.readEvent(num);
-    		
-    		
-    		model.addAttribute("dto", dto);
-    		model.addAttribute("mode", "update");
-    		
-		} catch (Exception e) {
-			log.info("update : ", e);
-		}
-    	
-    	return "admin/event/write";
-    }
-    
-    @PostMapping("update")
-    public String updateSubmit(EventManage dto) throws Exception {
-    	
-    	try {
-    		service.updateEvent(dto, uploadPath);
-    		
-		} catch (Exception e) {
-			log.info("update : ", e);
-		}
-    	
-    	return "redirect:/admin/event/list";
-    }
-    
+		
+		return "event/article";
+	}
 }

@@ -45,7 +45,7 @@
 	        #{content}, 
 	        #{evt_date,jdbcType=DATE}, 
 	        #{exp_date,jdbcType=DATE}, 
-	        #{photo,jdbcType=CLOB}
+	        #{photo,jdbcType=VARCHAR}
 	    )
 	</insert>
 	
@@ -55,13 +55,13 @@
 	
 	
 	<select id="readEvent" parameterType="Long" resultType="com.sp.app.admin.model.EventManage">
-        SELECT num, title, evt_date, exp_date, photo
+        SELECT num, title, evt_date, exp_date, photo, content
         FROM Event
         WHERE num = #{num}
     </select>
     
      <update id="updateEvent" parameterType="com.sp.app.admin.model.EventManage">
-        UPDATE Event SET title=#{title}, evt_date=#{evt_date}, 
+        UPDATE Event SET title=#{title}, evt_date=#{evt_date}, content=#{content},
             exp_date=#{exp_date}
             <if test="photo != null and photo != ''">
                 , photo=#{photo}

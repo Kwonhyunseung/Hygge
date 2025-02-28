@@ -56,10 +56,15 @@
 				        <div class="event-card">
 				            <img src="${pageContext.request.contextPath}/uploads/event/${dto.photo}" alt="이벤트 이미지" class="event-image">
 				            <div class="event-info">
-				                <div class="event-title">${dto.title}</div>
+				                <div class="event-title">
+				                	<a href="${pageContext.request.contextPath}/event/article/${dto.num}">${dto.title}</a>
+				                </div>
 				                <div class="event-date">
 				                    <i class="far fa-calendar-alt"></i>
-				                    ${dto.evt_date} - ${dto.exp_date}
+				                    <div class="event-date">
+								    <fmt:formatDate value="${dto.evt_date}" pattern="yyyy-MM-dd"/> - 
+								    <fmt:formatDate value="${dto.exp_date}" pattern="yyyy-MM-dd"/>
+								</div>
 				                </div>
 				                <div class="event-status">
 				                    <span class="status-badge status-active">진행중</span>
