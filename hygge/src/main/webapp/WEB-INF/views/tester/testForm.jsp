@@ -119,39 +119,45 @@ function submitTesterForm() {
 		document.getElementById('agreement').focus();
 		return;
 	}
+	
+	if (confirm("체험단에 신청하시겠습니까?")) {
+        document.getElementById("submitSuccessModal").style.display = "flex";
+        setTimeout(function() {
+            document.testerForm.submit();
+        }, 1000);
+    }
 
 }
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
+    
+    if (modalId === 'submitSuccessModal') {
+        window.location.href = '/';
+    }
 }
 
 // 모달창
 document.addEventListener("DOMContentLoaded", function() {
-    // 중복 신청 에러 확인
+	// 중복 신청 에러 확인
     <c:if test="${duplicateError == true}">
         document.getElementById("duplicateErrorModal").style.display = "flex";
         setTimeout(function() {
             document.getElementById("duplicateErrorModal").style.display = "none";
-        }, 5000);
-    </c:if>
-    
-    // 시스템 오류 확인
-    <c:if test="${systemError == true}">
-        document.getElementById("systemErrorModal").style.display = "flex";
-        setTimeout(function() {
-            document.getElementById("duplicateErrorModal").style.display = "none";
-        }, 5000);
-    </c:if>
-    
- // 신청 완료 모달
-    <c:if test="${param.success == 'true'}">
-        document.getElementById("modalOverlay").style.display = "flex";
-        setTimeout(function() {
-            document.getElementById("modalOverlay").style.display = "none";
         }, 3000);
     </c:if>
+    
+    // 신청 성공 확인
+    <c:if test="${submitSuccess == true}">
+        document.getElementById("submitSuccessModal").style.display = "flex";
+        
+        // 타임아웃 제거하고 확인 버튼을 통해 리다이렉트하도록 수정
+    </c:if>
 });
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
 </script>
 </head>
 
@@ -243,12 +249,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	</div>
 
 	<!-- 신청 완료 모달 -->
-	<div id="modalOverlay" class="modal-overlay">
-		<div class="modal-content">
-			<div class="modal-icon">✓</div>
-			<h3>신청이 완료되었습니다!</h3>
-			<p>체험단 심사 후 결과를 알려드립니다.</p>
-		</div>
+	<div id="submitSuccessModal" class="modal-overlay">
+	    <div class="modal-content">
+	        <div class="modal-icon">✓</div>
+	        <h3>신청이 완료되었습니다!</h3>
+	        <p>체험단 심사 후 결과를 알려드립니다.</p>
+	        <button type="button" class="close-modal-btn" onclick="closeModal('submitSuccessModal')">확인</button>
+	    </div>
 	</div>
 	
 	<!-- 중복 신청 오류 모달 -->
@@ -256,18 +263,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	    <div class="modal-content">
 	        <div class="modal-icon" style="background-color: #ffe6e6; color: #ff6666;">!</div>
 	        <h3>중복 신청 불가</h3>
-	        <p>중복신청은 불가능합니다.</p>
+	        <p>이미 신청하신 체험단입니다.</p>
 	        <button type="button" class="close-modal-btn" onclick="closeModal('duplicateErrorModal')">확인</button>
-	    </div>
-	</div>
-	
-	<!-- 시스템 오류 모달 -->
-	<div id="systemErrorModal" class="modal-overlay">
-	    <div class="modal-content">
-	        <div class="modal-icon" style="background-color: #ffe6e6; color: #ff6666;">!</div>
-	        <h3>시스템 오류</h3>
-	        <p>죄송합니다. 잠시후 다시 시도 해보시기 바랍니다.</p>
-	        <button type="button" class="close-modal-btn" onclick="closeModal('systemErrorModal')">확인</button>
 	    </div>
 	</div>
 

@@ -27,8 +27,12 @@
 	<select id="checkTesterApplication" parameterType="map" resultType="integer">
 	    SELECT COUNT(*)
 	    FROM Sponsor
-	    WHERE memberIdx = #{memberIdx} AND
-	    	num = (SELECT tester_num FROM TestBoard WHERE num = #{num})
+	    WHERE memberIdx = #{memberIdx}
+	    AND num = (
+	        SELECT tester_num 
+	        FROM TestBoard 
+	        WHERE num = #{num}
+	    )
 	</select>
     
 </mapper>

@@ -33,26 +33,23 @@ public class TesterServiceImpl implements TesterService {
 	@Override
 	@Transactional
 	public void insertTesterForm(Tester dto) throws Exception {
-	    try {
-	        mapper.insertTesterForm(dto);
-	    } catch (Exception e) {
-	        log.error("insertTesterForm 오류", e);
-	        throw e;
-	    }
+		log.info("Inserting Tester Form: {}", dto);
+		try {
+			mapper.insertTesterForm(dto);
+		} catch (Exception e) {
+			log.error("insertTesterForm 오류", e);
+		}
 	}
 
 	@Override
 	public boolean checkDuplicateApplication(long memberIdx, long num) {
-	    try {
-	        Map<String, Object> map = new HashMap<>();
-	        map.put("memberIdx", memberIdx);
-	        map.put("num", num);
-	        
-	        int count = mapper.checkTesterApplication(map);
-	        return count > 0;
-	    } catch (Exception e) {
-	        log.error("checkDuplicateApplication 오류", e);
-	        return false;
-	    }
+		log.info("Checking duplicate - memberIdx: {}, num: {}", memberIdx, num);
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberIdx", memberIdx);
+		map.put("num", num);
+
+		int count = mapper.checkTesterApplication(map);
+		return count > 0;
 	}
+
 }

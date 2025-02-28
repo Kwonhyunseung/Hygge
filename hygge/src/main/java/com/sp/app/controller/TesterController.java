@@ -59,24 +59,23 @@ public class TesterController {
 	}
 
 	@PostMapping("/testForm")
-	public String testSubmit(@ModelAttribute Tester dto, Model model, RedirectAttributes ra) {
+	public String testSubmit(@ModelAttribute Tester dto, RedirectAttributes ra) {
 	    try {
 	        // 중복 신청 체크
 	        boolean isDuplicate = service.checkDuplicateApplication(dto.getMemberIdx(), dto.getNum());
-	        
+
 	        if (isDuplicate) {
 	            ra.addFlashAttribute("duplicateError", true);
 	            return "redirect:/tester/testForm/" + dto.getNum();
 	        }
-	        
+
 	        service.insertTesterForm(dto);
-	        ra.addFlashAttribute("message", "신청이 완료되었습니다.");
-	        return "redirect:/";
-	        
+	        ra.addFlashAttribute("submitSuccess", true);
+	        return "redirect:/tester/testForm/" + dto.getNum();
+
 	    } catch (Exception e) {
 	        log.error("testSubmit error: ", e);
-	        ra.addFlashAttribute("systemError", true);
-	        return "redirect:/tester/testForm/" + dto.getNum();
+	        return "redirect:/tester/list";
 	    }
 	}
 
