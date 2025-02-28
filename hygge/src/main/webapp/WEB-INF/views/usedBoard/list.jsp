@@ -21,30 +21,32 @@
 	<div class="body-title">
 		<div class="title">중고게시판</div>
 	</div>
-	<div class="search-container">
-		<div class="schType-container">
-			<select name="schType" class="schType-select">
-				<option value="all">제목+내용</option>
-				<option value="userName">제품명</option>
-				<option value="sell">판매글</option>
-				<option value="buy">구매글</option>
-				<option value="title">제목</option>
-				<option value="content">내용</option>
-			</select>
+	<form class="row" name="searchForm">
+		<div class="search-container">
+			<div class="schType-container">
+				<select name="schType" class="schType-select">
+					<option value="all" ${schType = "all" ? "selected" : ""}>제목+내용</option>
+					<option value="userName" ${schType = "userName" ? "selected" : ""}>제품명</option>
+					<option value="sell" ${schType = "sell" ? "selected" : ""}>판매글</option>
+					<option value="buy" ${schType = "buy" ? "selected" : ""}>구매글</option>
+					<option value="title" ${schType = "title" ? "selected" : ""}>제목</option>
+					<option value="content" ${schType = "content" ? "selected" : ""}>내용</option>
+				</select>
+			</div>
+			<div class="kwd-container">
+				<input type="text" name="kwd" placeholder="검색어를 입력하세요." style="width: 300px;" class="kwd-text" value="${kwd}">
+			</div>
+			<div class="search-btn">
+				<button type="button" class="btn" title="검색" onclick="searchList();"><i class="bi bi-search"></i></button>
+			</div>
+			<div class="refresh-btn">
+				<button type="button" class="btn" title="새로고침" onclick="location.href='${pageContext.request.contextPath}/usedBoard/list'"><i class="bi bi-arrow-clockwise"></i></button>
+			</div>
 		</div>
-		<div class="kwd-container">
-			<input type="text" name="kwd" placeholder="검색어를 입력하세요." style="width: 300px;" class="kwd-text">
-		</div>
-		<div class="search-btn">
-			<button type="button" class="btn" title="검색"><i class="bi bi-search"></i></button>
-		</div>
-		<div class="refresh-btn">
-			<button type="button" class="btn" title="새로고침" onclick="location.href='${pageContext.request.contextPath}/usedBoard/list'"><i class="bi bi-arrow-clockwise"></i></button>
-		</div>
-	</div>
+	</form>
 	<div class="body-container">
 		<div class="filter-container all-products">
-			<button type="button" class="btn">거래가능한 제품만</button>
+			<button type="button" class="btn all-products">거래가능한 제품만</button>
 			<!-- 중고거래게시판 테이블에 deal 이라는 거래여부 컬럼이 있습니다.
 			미거래(0, default), 거래중(1, 거래신청 완료 관리자 승인 대기 중), 거래완료(-1) 각각 괄호 안의 값을 가지도록 참고해주세요
 			거래가능한 제품은 미거래, 거래중 상품 필터링으로 하면 좋을것 같습니다.
@@ -107,5 +109,28 @@ function writeForm() {
 	}
 	location.href = '${pageContext.request.contextPath}/usedBoard/write';
 }
+
+function searchList() {
+	const f = document.searchForm;
+	if (!f.kwd.value.trim()) {
+		return;
+	}
+	const formData = new FormData(f);
+	let requestParams = new URLSearchParams(formData).toString();
+
+	let url = '${pageContext.request.contextPath}/usedBoard/list';
+	location.href = url + '?' + requestParams;
+}
+
+$(function() {
+	$('.all-products').click(function() {
+		$(this).removeClass('all-products');
+		$(this).addClass('filter-products');
+	});
+	$('.filter-products').click(function() {
+		$(this).removeClass('filter-products');
+		$(this).addClass('all-products');
+	});
+});
 </script>
 </html>

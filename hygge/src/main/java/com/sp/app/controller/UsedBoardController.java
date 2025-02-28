@@ -145,7 +145,19 @@ public class UsedBoardController {
 
 			service.updateHitCount(number);
 
+			Map<String, Object> map = new HashMap<>();
+			map.put("schType", searchType);
+			map.put("kwd", keyword);
+			map.put("num", number);
+
+			UsedBoard nextDTO = service.findByNext(map);
+			UsedBoard prevDTO = service.findByPrev(map);
+
+			System.out.println(nextDTO);
+			System.out.println(prevDTO);
 			model.addAttribute("dto", dto);
+			model.addAttribute("nextDTO", nextDTO);
+			model.addAttribute("prevDTO", prevDTO);
 			model.addAttribute("query", query);
 			model.addAttribute("page", pageNo);
 		} catch (Exception e) {
@@ -173,13 +185,16 @@ public class UsedBoardController {
 			@RequestParam(name = "reported") long reportedmemberIdx, HttpSession session) {
 		try {
 			Report dto = new Report();
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			SessionInfo info = Objects.requireNonNull((SessionInfo)session.getAttribute("member"));
 			dto.setReportedNumber(number);
 			dto.setMemberIdx(info.getMemberidx());
 			dto.setMemberIdx2(reportedmemberIdx);
 			dto.setTablename("usedBoard");
 
 			service.reportUsedBoard(dto);
+		} catch (NullPointerException e) {
+			log.info("비로그인 상태: ", e);
+			return "redirect:/member/login";
 		} catch (Exception e) {
 			log.info("reportArticle : ", e);
 		}
@@ -194,11 +209,14 @@ public class UsedBoardController {
 	public Map<String, Object> insertReply(Reply dto, HttpServletResponse resp, HttpSession session) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			SessionInfo info = Objects.requireNonNull((SessionInfo)session.getAttribute("member"));
 			dto.setMemberIdx(info.getMemberidx());
 			service.insertReply(dto);
 
 			map.put("state", "true");
+		} catch (NullPointerException e) {
+			log.info("비로그인 상태 : ", e);
+			resp.sendError(401);
 		} catch (Exception e) {
 			log.info("insertReply : ", e);
 			map.put("state", "false");
@@ -294,14 +312,17 @@ public class UsedBoardController {
 
 	@ResponseBody
 	@PostMapping("reportReply")
-	public Map<String, Object> reportReply(Report dto, HttpSession session) throws Exception {
+	public Map<String, Object> reportReply(Report dto, HttpSession session, HttpServletResponse resp) throws Exception {
 		Map<String, Object> model = new HashMap<>();
 		try {
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			SessionInfo info = Objects.requireNonNull((SessionInfo)session.getAttribute("member"));
 			dto.setMemberIdx(info.getMemberidx());
 			dto.setTablename("usedBoardReply");
 			service.reportUsedBoard(dto);
 			model.put("state", "true");
+		} catch (NullPointerException e) {
+			log.info("비로그인 상태: ", e);
+			resp.sendError(401);
 		} catch (Exception e) {
 			log.info("reportReply : ", e);
 			model.put("state", "false");

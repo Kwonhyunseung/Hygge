@@ -73,6 +73,34 @@
 		WHERE board_num = #{num}
 	</select>
 
+	<select id="findByPrev" parameterType="map" resultType="com.sp.app.model.UsedBoard">
+		SELECT board_num  num, title
+		FROM usedBoard u
+		<where>
+			<if test="kwd != null and kwd != ''">
+				<include refid="where-list"/>
+			</if>
+			AND (board_num &lt; #{num})
+			AND u.block = 0
+		</where>
+		ORDER BY board_num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="findByNext" parameterType="map" resultType="com.sp.app.model.UsedBoard">
+		SELECT board_num  num, title
+		FROM usedBoard u
+		<where>
+			<if test="kwd != null and kwd != ''">
+				<include refid="where-list"/>
+			</if>
+			AND (board_num &gt; #{num})
+			AND u.block = 0
+		</where>
+		ORDER BY board_num ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
 	<delete id="deleteBoard" parameterType="Long">
 		DELETE FROM usedBoard WHERE board_num = #{num}
 	</delete>

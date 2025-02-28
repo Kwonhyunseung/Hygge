@@ -22,16 +22,17 @@
 	<div class="body-main">
 		<div class="body-content">
 			<div class="img-container">
-				<div id="carouselExampleIndicators" class="carousel slide">
+				<div id="carouselExampleIndicators" class="carousel slide" style="width: 100%; height: 100%;">
 					<div class="carousel-indicators">
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+						<c:forEach var="dto" items="${dto.s_Filename}" begin="1" end="${empty dto.s_Filename ? 0 : dto.s_Filename.size()}" varStatus="status">
+							<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${status.index}" aria-label="Slide ${status.index + 1}"></button>
+						</c:forEach>
 					</div>
-					<div class="carousel-inner">
+					<div class="carousel-inner" style="width: 100%; height: 100%;">
 						<c:forEach var="dto" items="${dto.s_Filename}">
-							<div class="carousel-item active">
-								<img src="${pageContext.request.contextPath}/uploads/usedBoard/${dto}" class="d-block w-100">
+							<div class="carousel-item active" style="width: 500px; height: 400px;">
+								<img src="${pageContext.request.contextPath}/uploads/usedBoard/${dto}" class="d-block w-100" style="height: 100%; width: 100%; object-fit: contain;">
 							</div>
 						</c:forEach>
 					</div>
@@ -70,14 +71,17 @@
 				<div class="article-content">${dto.content}</div>
 			</div>
 		</div>
+		<div style="display: flex; flex-direction: row; justify-content: flex-end; width: 100%; margin-top: 10px;">
+			<button class="btn" type="button" onclick="location.href='${pageContext.request.contextPath}/usedBoard/list?${query}'" style="background-color: #ebf1db;">리스트</button>
+		</div>
 		<table class="body-footer">
 			<tr style="width: 100%; border-bottom: 1px solid #E1E1E1;">
 				<td style="width: 20%">다음 글 </td>
-				<td><a href="#">한 번 쓴 물티슈 팔아요</a></td>
+				<td><a href="${pageContext.request.contextPath}/usedBoard/article/${nextDTO.num}">${nextDTO.title}</a></td>
 			</tr>
 			<tr>
 				<td>이전 글 </td>
-				<td><a href="#">세 번보다 적게 쓴 물티슈 팔아요</a></td>
+				<td><a href="${pageContext.request.contextPath}/usedBoard/article/${prevDTO.num}">${prevDTO.title}</a></td>
 			</tr>
 		</table>
 		<div class="reply" style="width: 100%; margin-top: 20px;">
