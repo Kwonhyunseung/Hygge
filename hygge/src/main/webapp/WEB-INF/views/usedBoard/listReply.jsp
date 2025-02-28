@@ -2,6 +2,13 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+<style type="text/css">
+.page-navigation ul {
+	display: flex;
+	align-items: flex-end;
+}
+</style>
+
 <div class="reply-info">
 	<span class="reply-count">댓글 ${replyCount}개</span>
 	<span>[목록, ${pageNo}/${total_page} 페이지]</span>

@@ -8,6 +8,7 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/usedBoard/article.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
+
 </head>
 <body>
 <header>
@@ -77,11 +78,11 @@
 		<table class="body-footer">
 			<tr style="width: 100%; border-bottom: 1px solid #E1E1E1;">
 				<td style="width: 20%">다음 글 </td>
-				<td><a href="${pageContext.request.contextPath}/usedBoard/article/${nextDTO.num}">${nextDTO.title}</a></td>
+				<td><a href="${pageContext.request.contextPath}/usedBoard/article?num=${nextDTO.num}&${query}">${nextDTO.title}</a></td>
 			</tr>
 			<tr>
 				<td>이전 글 </td>
-				<td><a href="${pageContext.request.contextPath}/usedBoard/article/${prevDTO.num}">${prevDTO.title}</a></td>
+				<td><a href="${pageContext.request.contextPath}/usedBoard/article?num=${prevDTO.num}&${query}">${prevDTO.title}</a></td>
 			</tr>
 		</table>
 		<div class="reply" style="width: 100%; margin-top: 20px;">

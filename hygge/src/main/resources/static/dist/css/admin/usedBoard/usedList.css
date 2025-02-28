@@ -169,9 +169,9 @@ tbody tr:hover {
 }
 
 .pagination a.active {
-    background: #3498db;
+    background: #B7DA5E;
     color: #fff;
-    border-color: #3498db;
+    border-color: #B7DA5E;
 }
 
 /* 탭 상태 */
