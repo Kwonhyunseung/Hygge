@@ -23,6 +23,8 @@ public class Payment {
 	private Date payment_date; //결제일자. SYSDATE
 	
 	private int sales_num;
+	private Long project_num;
+	
 	
 	private long memberIdx;
 	private int shipping_state; //int로 변경

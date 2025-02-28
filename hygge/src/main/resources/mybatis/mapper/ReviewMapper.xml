@@ -20,7 +20,8 @@
 	        r.grade, 
 	        p.title, 
 	        r.reg_date, 
-	        pay.pay_amount 
+	        pay.pay_amount,
+	        rp.s_filename AS review_img
 	    FROM 
 	        review r
 	    JOIN 
@@ -29,6 +30,13 @@
 	        product p ON s.product_num = p.product_num
 	    JOIN 
 	        payment pay ON s.payment_num = pay.payment_num
+		LEFT OUTER JOIN (
+			SELECT review_num, s_filename FROM (
+				SELECT review_num, s_filename, 
+					ROW_NUMBER() OVER(PARTITION BY review_num ORDER BY reviewphoto_num ASC) rank
+				 FROM reviewphoto
+			) WHERE rank = 1
+		) rp ON r.review_num = rp.review_num	    	
 	    WHERE 
 	        pay.memberIdx = #{memberIdx}
 	</select>
@@ -37,9 +45,34 @@
 		DELETE FROM review WHERE review_num = #{num}
 	</delete>
 	
-	<insert id="insertReview" parameterType="com.sp.app.model.Review">
-        INSERT INTO review (content, grade, sales_num, reg_date)
-        VALUES (#{content}, #{grade}, #{sales_num}, NOW())
-    </insert>
-	
+<insert id="insertReview" parameterType="com.sp.app.model.Review">
+    INSERT INTO review (
+        REVIEW_NUM, 
+        CONTENT, 
+        GRADE, 
+        PROJECT_NUM, 
+        SALES_NUM, 
+        REG_DATE
+    ) VALUES (
+        #{review_num},
+        #{content}, 
+        #{grade}, 
+        #{project_num}, 
+        #{sales_num}, 
+        SYSDATE
+    )
+</insert>
+	<insert id="insertFile" parameterType="map">
+    INSERT INTO ReviewPhoto (reviewphoto_num,s_FileName, review_num)
+    VALUES (REVIEW_PHOTO_SEQ.NEXTVAL, #{sfileName}, #{review_num,jdbcType=NUMERIC})
+</insert>
+
+<select id="listFile" parameterType="Long" resultType="com.sp.app.model.Review">
+SELECT  reviewphoto_num, review_num, s_FileName
+FROM ReviewPhoto
+WHERE review_num = #{review_num}
+</select>
+<select id="reviewSeq" resultType="Long">
+SELECT review_seq.NEXTVAL FROM dual
+</select>
 </mapper>

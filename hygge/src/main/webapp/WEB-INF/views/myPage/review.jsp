@@ -52,6 +52,20 @@ h2 {
 .delete-review:hover {
 	color: #82B10C;
 }
+.image-container {
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.image-container:hover {
+    transform: scale(1.03);
+}
+
+.image-container img {
+    border-radius: 3px;
+}
 </style>
 </head>
 <body>
@@ -63,25 +77,47 @@ h2 {
         <h2 style="margin-bottom: 1.5rem;">상품 후기</h2>
         <c:if test="${not empty reviewList}">
         <c:forEach var="review" items="${reviewList}">
-            <div class="review-box" data-num="${review.review_num}">
-                <h5>${Review.title}</h5>
-                <div style="display: flex; flex-direction: row; justify-content: space-between;">
-	                <div class="stars">
-	                    <c:forEach begin="1" end="${review.grade}" varStatus="status">
-	                        ★
-	                    </c:forEach>
-	                    <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
-	                        ☆
-	                    </c:forEach>
-	                </div>
+    <div class="review-box" data-num="${review.review_num}">
+        <div class="d-flex">
+            <div class="image-container me-3" style="width: 150px; height: 150px; border: 1px solid #ddd; padding: 5px;">
+                <c:choose>
+                    <c:when test="${empty review.review_img}">
+                        <div class="d-flex align-items-center justify-content-center h-100" 
+                             style="background-color: #f8f9fa; color: #666;">
+                            이미지 없음
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/uploads/review/${review.review_img}" 
+                             alt="리뷰 이미지" 
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            
+            <div class="flex-grow-1">
+            	<div style="display: flex; flex-direction: row; justify-content: space-between;">
+	                <h5>${review.title}</h5>
 	                <div>
-	                	<span class="delete-review" style="margin-right: 5px; cursor: pointer;">삭제</span>
+	                    <span class="delete-review" style="margin-right: 5px; cursor: pointer;">삭제</span>
 	                </div>
+            	</div>
+                <div>
+                    <div class="stars">
+                        <c:forEach begin="1" end="${review.grade}" varStatus="status">
+                            ★
+                        </c:forEach>
+                        <c:forEach begin="${review.grade+1}" end="5" varStatus="status">
+                            ☆
+                        </c:forEach>
+                    </div>
                 </div>
                 <p>${review.content}</p>
                 <p class="review-date">${review.reg_date}</p>
             </div>
-        </c:forEach>
+        </div>
+    </div>
+</c:forEach>
         </c:if>
         <c:if test="${empty reviewList}">
         	<div class="content-container">

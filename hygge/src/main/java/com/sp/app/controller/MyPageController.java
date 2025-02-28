@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sp.app.common.PaginateUtil;
+import com.sp.app.common.StorageService;
 import com.sp.app.model.Coupon;
 import com.sp.app.model.MyPage;
 import com.sp.app.model.Payment;
@@ -28,6 +28,7 @@ import com.sp.app.service.PaymentService;
 import com.sp.app.service.ReviewService; // ReviewService 추가
 import com.sp.app.service.UsedBoardService;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -39,24 +40,28 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/myPage/*")
 public class MyPageController {
 
-	@Autowired
 	private final MyPageService myPageService;
 	
-	@Autowired
 	private final ReviewService reviewService;  // ReviewService 주입
 	
-	@Autowired
 	private final UsedBoardService usedBoardService; //UsedBoardService 주입
 	
-	@Autowired
 	private final CouponService couponService; // CouponService 주입
 	
-	@Autowired
 	private final PaymentService paymentService; //PaymentService 주입
 	
-	@Autowired
 	private final PaginateUtil paginateUtil;
-
+	
+	private final StorageService storageService;
+	
+	private String uploadPath;
+	
+	@PostConstruct
+	public void init() {
+		uploadPath = this.storageService.getRealPath("/uploads/review");
+		
+	}		
+	
 	@GetMapping("myPage")
 	public String myPage(Model model, HttpSession session) {
 		try {
@@ -320,13 +325,17 @@ public class MyPageController {
 	}
 	
 	@GetMapping("rwrite")
-	public String rwriteForm(@RequestParam(name="title") String title, Model model,
-			@RequestParam(name="sales_num") String sales_num) {
+	public String rwriteForm(@RequestParam(name="title",required = false) String title,
+			@RequestParam(name="sales_num") long sales_num,
+			@RequestParam(name="project_num") long project_num,
+			 Model model
+			) {
 		log.info("리뷰 작성 페이지 요청");
 		try {
 			
-			model.addAttribute("sales_num",sales_num);
-			model.addAttribute("title",title);
+			model.addAttribute("project_num", project_num);
+			model.addAttribute("sales_num", sales_num);
+			model.addAttribute("title", title);
 		} catch (Exception e) {
 			log.error("rwriteForm 오류", e);
 			
@@ -352,7 +361,7 @@ public class MyPageController {
 			
 			dto.setMemberIdx(info.getMemberidx());
 			
-			reviewService.insertReview(dto);
+			reviewService.insertReview(dto,uploadPath);
 			
 			redirectAttributes.addFlashAttribute("message", "리뷰가 성공적으로 작성되었습니다.");
 			
@@ -360,9 +369,9 @@ public class MyPageController {
 		} catch (Exception e) {
 			 log.error("리뷰 작성 오류", e);
 			 
-			 return "redirect:/myPage/rwrite";
+			 return "redirect:/myPage/review";
 		}
-		  return "redirect:/myPage/rwrite";
+		  return "redirect:/myPage/review";
 	}
 	
 

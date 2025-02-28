@@ -13,6 +13,6 @@ public interface EventManageService {
 	public EventManage readEvent(long num) throws Exception;
 	public void updateEvent (EventManage dto, String pathname) throws Exception;
 	public void deleteEvent (long num, String pathname) throws Exception;
-	
+	public void deleteCoupon (long num) throws Exception;
 
 }

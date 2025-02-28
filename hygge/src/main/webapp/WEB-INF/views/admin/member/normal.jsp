@@ -57,7 +57,6 @@
        <div class="main-content">
 			<div class="content-header">
 			    <h2>일반 회원</h2>
-			    <h2>성별:${member[1].gender}</h2>
 			    <div class="tab-buttons">
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
 			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">
