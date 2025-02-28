@@ -92,14 +92,24 @@ public class UsedBoardServiceImpl implements UsedBoardService {
 
 	@Override
 	public UsedBoard findByPrev(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		UsedBoard dto = null;
+		try {
+			dto = mapper.findByPrev(map);
+		} catch (Exception e) {
+			log.info("findByPrev : ", e);
+		}
+		return dto;
 	}
 
 	@Override
 	public UsedBoard findByNext(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		UsedBoard dto = null;
+		try {
+			dto = mapper.findByNext(map);
+		} catch (Exception e) {
+			log.info("findByNext : ", e);
+		}
+		return dto;
 	}
 
 	@Override

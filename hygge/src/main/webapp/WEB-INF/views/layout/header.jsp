@@ -313,12 +313,12 @@
                     <span>공지사항</span>
                   </div>
                 </a>
-                <a href="${pageContext.request.contextPath}/experience" class="hygge-menu-item">
+                <a href="${pageContext.request.contextPath}/tester/list" class="hygge-menu-item">
                   <div class="hygge-circle-menu">
                     <span>체험단</span>
                   </div>
                 </a>
-                <a href="${pageContext.request.contextPath}/market" class="hygge-menu-item">
+                <a href="${pageContext.request.contextPath}/usedBoard/list" class="hygge-menu-item">
                   <div class="hygge-circle-menu">
                     <span>중고게시판</span>
                   </div>
