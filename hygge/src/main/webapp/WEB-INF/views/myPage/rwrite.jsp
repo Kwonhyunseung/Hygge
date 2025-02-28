@@ -96,7 +96,7 @@ h2 {
             <div class="preview" id="file-preview"></div>
             
             <div class="mb-3">
-                <label for="files" class="form-label">파일 첨부</label>
+                <label for="files" class="form-label">사진</label>
                 <input type="file" class="form-control" id="file" name="selectFile" multiple accept="image/*">
                 <div class="thumbnail-container" id="preview-container"></div>
             </div>
@@ -108,8 +108,10 @@ h2 {
             <div class="text-center">          
        			<input type="hidden" name="project_num" value="${project_num}" />
        			<input type="hidden" name="sales_num" value="${sales_num}" />
-                <button type="submit" class="btn btn-primary">등록</button>
-                <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary">취소</a>
+                <button type="submit" class="btn btn-primary" style="background-color:#82B10C; height: 41px;
+    border-radius: 8px; ">등록</button>
+                <a href="${pageContext.request.contextPath}/myPage/myPage" class="btn btn-secondary" style="height: 41px;
+    border-radius: 8px;">취소</a>
             </div>
         </form>
     </div>
