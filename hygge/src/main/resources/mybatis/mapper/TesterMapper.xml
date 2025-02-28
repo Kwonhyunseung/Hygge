@@ -3,69 +3,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.TesterMapper">
 
-	<!-- 체험단 목록 -->
-	<select id="listTestBoard" parameterType="map"
-		resultType="com.sp.app.model.TestBoard">
-		SELECT tester_num, title, thumbnail, content, start_date, end_date
-		FROM TestBoard
-		<where>
-			<if test="keyword != null and keyword != ''">
-				<choose>
-					<when test="condition == 'all'">
-						INSTR(title, #{keyword}) &gt; 0 OR INSTR(content,
-						#{keyword}) &gt; 0
-					</when>
-					<when test="condition == 'title'">
-						INSTR(title, #{keyword}) &gt; 0
-					</when>
-					<when test="condition == 'content'">
-						INSTR(content, #{keyword}) &gt; 0
-					</when>
-				</choose>
-			</if>
-			<if test="status != null">
-				AND accept_return = #{status}
-			</if>
-			AND SYSDATE BETWEEN start_date AND end_date
-		</where>
-		ORDER BY tester_num DESC
-		<if test="offset != null and rows != null">
-			OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
-		</if>
-	</select>
-
 	<!-- 체험단 상세 정보 -->
 	<select id="testerInfo" parameterType="Long"
 		resultType="com.sp.app.model.TestBoard">
 		<!-- 제목, 사진, 내용 -->
 		SELECT t.tester_num, title, thumbnail, content, t.start_date, t.end_date, t.num
 		FROM TestBoard t
-		LEFT OUTER JOIN Project p ON t.num = p.num
+		INNER JOIN Project p ON t.num = p.num
 		WHERE t.num = #{num}
 	</select>
 
 	<!-- 체험단 신청 -->
-	<insert id="insertTesterForm"
-		parameterType="com.sp.app.model.Tester">
-		INSERT INTO Sponsor (memberIdx, num, request_date, accept_date, review_num, block)
-			VALUES (#{memberIdx}, #{num}, SYSDATE, #{accept_date}, #{review_num}, 0)
+	<insert id="insertTesterForm" parameterType="com.sp.app.model.Tester">
+    INSERT INTO SPONSOR (memberIdx, num, request_date, block)
+   	VALUES (
+   		#{memberIdx},
+   		(SELECT tester_num FROM TestBoard WHERE num = #{num}), 
+       	SYSDATE, 0
+   	)
 	</insert>
 	
-	<!-- 체험단 신청 - 추가 필드 포함 -->
-	<!-- <insert id="insertTesterForm"
-		parameterType="com.sp.app.model.Tester">
-		INSERT INTO Sponsor (
-			memberIdx, num, request_date, accept_date, review_num, block,
-			nickName, age, tel1, tel2, tel3, gender, addr1, addr2, postCode )
-		VALUES (#{memberIdx}, #{num}, SYSDATE, #{accept_date}, #{review_num}, 0,
-			#{nickName}, #{age}, #{tel1}, #{tel2}, #{tel3}, #{gender}, #{addr1}, #{addr2}, #{postCode} )
-	</insert> -->
-
-	<!-- 체험단 신청 중복 확인 -->
-	<select id="checkTesterApplication" resultType="integer">
-		SELECT COUNT(*)
-		FROM Sponsor
-		WHERE memberIdx = #{memberIdx} AND num = #{num}
+	<!-- 중복 신청 체크 -->
+	<select id="checkTesterApplication" parameterType="map" resultType="integer">
+	    SELECT COUNT(*)
+	    FROM Sponsor
+	    WHERE memberIdx = #{memberIdx} AND
+	    	num = (SELECT tester_num FROM TestBoard WHERE num = #{num})
 	</select>
-
+    
 </mapper>
