@@ -48,7 +48,7 @@
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>
 			</if>
-			AND p.end_date > SYSDATE AND p.block = 1
+			AND p.end_date > SYSDATE AND p.block = 0
 		</where>
 		ORDER BY <include refid="order-list"/>
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
@@ -64,7 +64,7 @@
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>
 			</if>
-			AND p.end_date > SYSDATE AND p.block = 1
+			AND p.end_date > SYSDATE AND p.block = 0
 		</where>
 	</select>
 

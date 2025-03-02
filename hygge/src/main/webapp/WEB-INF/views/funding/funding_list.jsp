@@ -127,42 +127,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	</div>
 
 	<div class="categories">
-		<div>
-			<img src="/dist/images/main/category/a.png">
-			<p>가전</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/b.png">
-			<p>패션</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/c.png">
-			<p>뷰티</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/d.png">
-			<p>홈▪리빙</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/e.png">
-			<p>푸드</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/f.png">
-			<p>도서</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/g.png">
-			<p>캐릭터▪굿즈</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/h.png">
-			<p>문화</p>
-		</div>
-		<div>
-			<img src="/dist/images/main/category/i.png">
-			<p>반려동물</p>
-		</div>
+		<c:forEach var="category" items="${parentCategories}">
+			<div data-categoryNum="${category.category_num}">
+				<img src="/dist/images/main/category/${category.category_num}.png">
+				<p>${category.name}</p>
+			</div>
+		</c:forEach>
 	</div>
 
 	<hr class="hr">
