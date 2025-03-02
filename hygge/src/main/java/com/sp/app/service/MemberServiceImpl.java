@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
 			if (date.compareTo(dto.getBirth().substring(5)) < 0) { // 현재시점보다 생일이 사전적으로 더 크
 				age -= 1;
 			}
-			dto.setBirth(age);
+			dto.setAge(age);
 				
 			// 회원정보 저장
 			mapper.insertMember(dto);
