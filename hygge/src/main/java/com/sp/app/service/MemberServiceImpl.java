@@ -36,7 +36,6 @@ public class MemberServiceImpl implements MemberService {
 		        String encPassword = bcryptEncoder.encode(dto.getPwd());
 		        dto.setPwd(encPassword);
 
-			/*
 			// 나이 계산
 			LocalDate todayDate = LocalDate.now();
 			String today = todayDate.toString();
@@ -50,7 +49,6 @@ public class MemberServiceImpl implements MemberService {
 				age -= 1;
 			}
 			dto.setBirth(age);
-   			*/
 				
 			// 회원정보 저장
 			mapper.insertMember(dto);
