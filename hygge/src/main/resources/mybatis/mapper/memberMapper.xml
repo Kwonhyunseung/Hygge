@@ -7,7 +7,7 @@
     INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3)
         VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1, jdbcType=INTEGER}, #{category2, jdbcType=INTEGER}, #{category3, jdbcType=INTEGER})
     INTO member2(memberIdx, birth, email1, email2, addr1, addr2, postCode, tel1, tel2, tel3, age, gender)
-        VALUES (member1_seq.CURRVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age, jdbcType=INTEGER}, #{gender})
+        VALUES (member1_seq.CURRVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age}, #{gender})
     SELECT * FROM dual
 </update>
 
