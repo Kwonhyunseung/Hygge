@@ -105,8 +105,8 @@
     </select>
     
     <insert id="insertProject" parameterType="Long">
-    	INESRT INTO project (num, start_date, end_date, block)
-    	VALUES (#{num}, sysdate, sysdate+30 )
+    INSERT INTO project (num, start_date, end_date, block)
+    VALUES (#{num}, SYSDATE+7, SYSDATE + 7 + #{term}, 0)
     </insert>
 
 </mapper>

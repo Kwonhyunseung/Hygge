@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sp.app.admin.mapper.ProjectManageMapper;
 import com.sp.app.admin.model.ProjectManage;
@@ -43,12 +44,15 @@ public class ProjectManageServiceImpl implements ProjectManageService {
 		return result;
 	}
 
+	@Transactional
 	@Override
-	public void approveProject(long num) throws Exception {
+	public void approveProject(Map<String, Object> map) throws Exception {
 		try {
-			mapper.approveProject(num);
+			mapper.approveProject((Long)map.get("num"));
+			insertProject(map);
 		} catch (Exception e) {
 			log.info("approveProject : ", e);
+			throw e;
 		}
 		
 	}
@@ -67,9 +71,8 @@ public class ProjectManageServiceImpl implements ProjectManageService {
 	}
 
 	@Override
-	public void insertProject(long num) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void insertProject(Map<String, Object> map) throws Exception {
+		mapper.insertProject(map);
 	}
 	
 	

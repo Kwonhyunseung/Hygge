@@ -14,7 +14,7 @@ public interface ProjectManageMapper {
 	public List<ProjectManage> projectList(Map<String, Object> map) throws SQLException;
 	public int dataCount (Map<String, Object> map) throws SQLException;
 	
-    public void approveProject(long num) throws SQLException;
+    public void approveProject(Long num);
     public void rejectProject(@Param("num") long num, @Param("reason") String reason) throws SQLException;
-    public void insertProject(long num) throws SQLException;
+    public void insertProject(Map<String, Object> map) throws SQLException;
 }

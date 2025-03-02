@@ -102,18 +102,22 @@ public class ProjectManagementController {
 		return "admin/project/list";
 	}
 	
-	@Transactional
 	@PostMapping("approve")
 	@ResponseBody
 	public Map<String, Object> approveProject(
-			@RequestParam(name = "accept_date") String accept_date,
+			@RequestParam(name = "term") String termStr,
 			@RequestParam (name = "num") long num){
 		
 		Map<String, Object> model = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		
 		try {
-			service.approveProject(num);
-			service.insertProject(num);
+			Long term = Long.parseLong(termStr);
+			
+			map.put("term", term);
+			map.put("num", num);
+			
+			service.approveProject(map);
 			model.put("state", "success");
 		} catch (Exception e) {
 			model.put("state", "failure");

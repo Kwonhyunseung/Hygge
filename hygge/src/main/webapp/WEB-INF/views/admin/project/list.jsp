@@ -97,25 +97,25 @@
                                <td>${dto.term}일</td>
                                <td>
                                <td>
-    <c:choose>
-        <c:when test="${empty dto.accept_return}">
-            <button type="button" class="btn btn-sm btn-success me-1" 
-                    onclick="approveProject(${dto.num})">
-                수락
-            </button>
-            <button type="button" class="btn btn-sm btn-danger" 
-                    onclick="rejectProject(${dto.num})">
-                반려
-            </button>
-        </c:when>
-        <c:otherwise>
-            <button type="button" class="btn btn-sm btn-primary" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/projectManagement/update/${dto.num}'">
-                관리
-            </button>
-        </c:otherwise>
-    </c:choose>
-</td>
+							    <c:choose>
+							        <c:when test="${empty dto.accept_return}">
+							            <button type="button" class="btn btn-sm btn-success me-1" 
+							                    onclick="approveProject(${dto.num}, ${dto.term})">
+							                수락
+							            </button>
+							            <button type="button" class="btn btn-sm btn-danger" 
+							                    onclick="rejectProject(${dto.num})">
+							                반려
+							            </button>
+							        </c:when>
+							        <c:otherwise>
+							            <button type="button" class="btn btn-sm btn-primary" 
+							                    onclick="location.href='${pageContext.request.contextPath}/admin/projectManagement/update/${dto.num}'">
+							                관리
+							            </button>
+							        </c:otherwise>
+							    </c:choose>
+							</td>
                                </td>
                            </tr>
                        </c:forEach>
@@ -199,13 +199,14 @@ function blockProject(projectId) {
    // 프로젝트 중단 로직
 }
 
-function approveProject(num) {
+function approveProject(num, term) {
+	
 	if(!confirm("프로젝트를 승인하시겠습니까?")) {
 		return;
 	}
 	
 	const url = "${pageContext.request.contextPath}/admin/projectManagement/approve";
-	const query = "num=" + num;
+	const query = "num=" + num + "&term=" + term;
 	
 	const fn = function(data) {
 		if(data.state === "success"){
