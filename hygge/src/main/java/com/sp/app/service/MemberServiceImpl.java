@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.time.LocalDate;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,17 +28,32 @@ public class MemberServiceImpl implements MemberService {
 	public void insertMember(Member dto) throws Exception {
 		try {
 			// 비밀번호가 null이 아니고, 비어 있지 않은지 확인
-	        if (dto.getPwd() == null || dto.getPwd().isEmpty()) {
-	            throw new IllegalArgumentException("Password cannot be null or empty");
-	        }
-	        
-	        // 패스워드 암호화
-	        String encPassword = bcryptEncoder.encode(dto.getPwd());
-	        dto.setPwd(encPassword);
-			
+		        if (dto.getPwd() == null || dto.getPwd().isEmpty()) {
+		            throw new IllegalArgumentException("Password cannot be null or empty");
+		        }
+		        
+		        // 패스워드 암호화
+		        String encPassword = bcryptEncoder.encode(dto.getPwd());
+		        dto.setPwd(encPassword);
+
+			/*
+			// 나이 계산
+			LocalDate todayDate = LocalDate.now();
+			String today = todayDate.toString();
+			String year = today.substring(0, 4); // 년도 추출
+			String date = today.substring(5); // 월월-일일 추출
+
+			// 생일이 지났으면 현재년도 - 태어난년도. 안지났으면 현재년도 - 태어난년도 - 1
+			// 생일이 지났으면:: 생일 < 현재 시간(사전적으로)
+			int age = Integer.parseInt(year) - Integer.parseInt(dto.getBirth().substring(0, 4)); // 현재 년도 - 태어난 년도
+			if (date.compareTo(dto.getBirth().substring(5)) < 0) { // 현재시점보다 생일이 사전적으로 더 크
+				age -= 1;
+			}
+			dto.setBirth(age);
+   			*/
+				
 			// 회원정보 저장
 			mapper.insertMember(dto);
-
 			// 권한저장
 			/*
 			dto.setAuthority("USER");
@@ -46,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
 			
 		} catch (Exception e) {
 			log.info("insertMember", e);
-	        throw e;
+			throw e;
 		}
 	}
 	
