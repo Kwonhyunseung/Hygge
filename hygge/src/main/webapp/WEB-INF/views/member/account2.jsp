@@ -238,11 +238,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			<div class="mb-3">
 				<label for="tel">전화번호 <span style="color: red;">*</span></label>
 				<div class="d-flex">
-					<input type="tel" class="form-control me-2" name="tel1" id="tel"
+					<input type="text" class="form-control me-2" name="tel1" id="tel"
 						maxlength="3" placeholder="xxx" required> <input
-						type="tel" class="form-control me-2" name="tel2" id="tel"
+						type="text" class="form-control me-2" name="tel2" id="tel"
 						maxlength="4" placeholder="xxxx" required> <input
-						type="tel" class="form-control me-2" name="tel3" id="tel"
+						type="text" class="form-control me-2" name="tel3" id="tel"
 						maxlength="4" placeholder="xxxx" required>
 				</div>
 			</div>
