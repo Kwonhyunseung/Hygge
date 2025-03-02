@@ -17,7 +17,6 @@
     .main-container {
         font-family: Arial, sans-serif;
         background: white;
-        padding: 20px;
     }
 
     .container {
