@@ -16,31 +16,36 @@
 
     <div class="experience-container">
         <h1 class="page-title">체험단</h1>
-        
-        <!-- 체험단 그리드 -->
+
         <div class="experience-grid">
-            <!-- 첫 번째 줄 -->
-            <div class="experience-item">
-                <div class="date-range">2025.01.21 ~ 2025.02.03</div>
-                <div class="image-container">
-                    <img src="/dist/images/logo.jpg" alt="컬러펀 도자기">
-                    <div class="image-text">컬러펀 도자기</div>
+            <c:forEach var="item" items="${list}">
+                <div class="experience-item">
+                    <div class="date-range">
+                        <!-- 날짜 형식 변경 -->
+                        <fmt:formatDate value="${item.start_date}" pattern="yyyy-MM-dd" /> ~
+                        <fmt:formatDate value="${item.end_date}" pattern="yyyy-MM-dd" />
+                    </div>
+                    <a href="${pageContext.request.contextPath}/tester/testForm/${item.num}">
+                        <div class="image-container">
+                            <c:choose>
+                                <c:when test="${item.thumbnail.endsWith('.jpg') || item.thumbnail.endsWith('.png') || item.thumbnail.endsWith('.jpeg')}">
+                                    <img src="/uploads/project/${item.thumbnail}" alt="${item.title}">
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="/uploads/project/${item.thumbnail}.jpg" alt="${item.title}">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <h3 class="item-title">${item.title}</h3>
+                    </a>
                 </div>
-                <h3 class="item-title">22기 체험단 모집합니다!</h3>
-            </div>
-
-
+            </c:forEach>
         </div>
+    </div>
 
-        <!-- 페이지네이션 -->
-        <div class="pagination">
-            <a href="#" class="page-link">&lt;</a>
-            <a href="#" class="page-link active">1</a>
-            <a href="#" class="page-link">2</a>
-            <a href="#" class="page-link">3</a>
-            <a href="#" class="page-link">4</a>
-            <a href="#" class="page-link">&gt;</a>
-        </div>
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        ${paging}
     </div>
 
     <footer>

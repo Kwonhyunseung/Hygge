@@ -34,4 +34,16 @@
 	    )
 	</select>
     
+    <select id="testBoardList" parameterType="map" resultType="com.sp.app.model.TestBoard">
+    	SELECT tester_num, title, content, thumbnail, accept_date, accept_return, return_reason,
+    		start_date, end_date, request_date, num
+    	FROM testBoard
+        WHERE accept_return = 1
+    </select>
+    
+    <select id="dataCount" parameterType="map" resultType="Integer">
+    SELECT COUNT(*)
+	FROM testBoard
+	WHERE accept_return = 1;
+    </select>
 </mapper>

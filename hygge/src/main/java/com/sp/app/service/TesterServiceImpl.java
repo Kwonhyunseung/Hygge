@@ -1,6 +1,7 @@
 package com.sp.app.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -50,6 +51,30 @@ public class TesterServiceImpl implements TesterService {
 
 		int count = mapper.checkTesterApplication(map);
 		return count > 0;
+	}
+
+	@Override
+	public List<TestBoard> testBoardList(Map<String, Object> map) throws Exception {
+		List<TestBoard> list = null;
+		try {
+			list = mapper.testBoardList(map);
+		} catch (Exception e) {
+			log.info("testBoardList : ", e);
+		}
+		return list;
+	}
+
+	@Override
+	public int dataCount(Map<String, Object> map) throws Exception {
+		int result = 0;
+		
+		try {
+			result = mapper.dataCount(map);
+		} catch (Exception e) {
+			log.info("dataCount : ", e);
+		}
+		
+		return result;
 	}
 
 }
