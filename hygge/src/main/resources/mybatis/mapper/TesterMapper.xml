@@ -4,8 +4,7 @@
 <mapper namespace="com.sp.app.mapper.TesterMapper">
 
 	<!-- 체험단 상세 정보 -->
-	<select id="testerInfo" parameterType="Long"
-		resultType="com.sp.app.model.TestBoard">
+	<select id="testerInfo" parameterType="Long" resultType="com.sp.app.model.TestBoard">
 		<!-- 제목, 사진, 내용 -->
 		SELECT t.tester_num, title, thumbnail, content, t.start_date, t.end_date, t.num
 		FROM TestBoard t

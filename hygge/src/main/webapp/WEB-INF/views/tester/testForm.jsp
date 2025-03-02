@@ -121,43 +121,42 @@ function submitTesterForm() {
 	}
 	
 	if (confirm("체험단에 신청하시겠습니까?")) {
-        document.getElementById("submitSuccessModal").style.display = "flex";
-        setTimeout(function() {
-            document.testerForm.submit();
-        }, 1000);
+        // 모달 표시 없이 바로 폼 제출
+        document.testerForm.submit();
     }
 
 }
 
+//모달 관련 함수
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
     
+    // 성공 모달 닫기 시 홈페이지로 이동
     if (modalId === 'submitSuccessModal') {
         window.location.href = '/';
+    } else if (modalId === 'duplicateErrorModal') {
+        // 중복 신청 모달 닫기 시 목록 페이지로 이동
+        window.location.href = '/tester/list';
     }
 }
 
-// 모달창
+//페이지 로드 시 모달 표시 설정
 document.addEventListener("DOMContentLoaded", function() {
-	// 중복 신청 에러 확인
+    // 중복 신청 에러가 있는 경우
     <c:if test="${duplicateError == true}">
         document.getElementById("duplicateErrorModal").style.display = "flex";
+        // 3초 후에 자동으로 닫고 목록 페이지로 이동
         setTimeout(function() {
             document.getElementById("duplicateErrorModal").style.display = "none";
+            window.location.href = '/tester/list';
         }, 3000);
     </c:if>
     
-    // 신청 성공 확인
-    <c:if test="${submitSuccess == true}">
+    // 신청 성공한 경우 (중복 에러가 없을 때만)
+    <c:if test="${submitSuccess == true && duplicateError != true}">
         document.getElementById("submitSuccessModal").style.display = "flex";
-        
-        // 타임아웃 제거하고 확인 버튼을 통해 리다이렉트하도록 수정
     </c:if>
 });
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = "none";
-}
 </script>
 </head>
 
