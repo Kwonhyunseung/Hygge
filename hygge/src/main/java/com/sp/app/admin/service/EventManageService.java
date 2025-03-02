@@ -15,4 +15,7 @@ public interface EventManageService {
 	public void deleteEvent (long num, String pathname) throws Exception;
 	public void deleteCoupon (long num) throws Exception;
 
+	public void applyEvent(Map<String, Object> map) throws Exception;
+	// 이벤트에 해당하는 신청자 목록
+	public List<EventManage> getEventMembers(Long num) throws Exception;
 }

@@ -2,6 +2,7 @@ package com.sp.app.admin.controller;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,11 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.admin.model.EventManage;
 import com.sp.app.admin.service.EventManageService;
@@ -89,6 +92,7 @@ public class EventManageController {
             }
             
             String paging = paginateUtil.paging(current_page, total_page, listUrl);
+            
             
             model.addAttribute("list", list);
             model.addAttribute("page", current_page);
@@ -172,4 +176,24 @@ public class EventManageController {
     	return "redirect:/admin/event/list";
     }
     
+    @GetMapping("{eventId}/members")
+    @ResponseBody
+    public List<EventManage> getEventMembers(@PathVariable("eventId") Long num) {
+        try {
+            // 이벤트 번호로 해당 이벤트에 참여한 회원 목록 조회
+            List<EventManage> list = service.getEventMembers(num);
+            
+            log.info("조회된 회원 수: {}", list.size());
+            for (EventManage em : list) {
+                log.info("회원 정보: memberIdx={}, name={}", em.getMemberIdx(), em.getName());
+            }
+            
+            return list;
+        } catch (Exception e) {
+            log.error("getEventMembers : ", e);
+            return Collections.emptyList();
+        }
+    }
+    
+
 }

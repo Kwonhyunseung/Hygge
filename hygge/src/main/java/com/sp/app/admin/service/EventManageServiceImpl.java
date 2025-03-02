@@ -122,7 +122,19 @@ public class EventManageServiceImpl implements EventManageService {
 	public void deleteCoupon(long num) throws Exception {
 		// TODO Auto-generated method stub
 	}
-	
+
+	@Override
+	public void applyEvent(Map<String, Object> map) throws Exception {
+		mapper.applyEvent(map);
+	}
+
+	public List<EventManage> getEventMembers(Long num) throws Exception {
+	    log.info("getEventMembers 서비스 호출: num={}", num);
+	    List<EventManage> list = mapper.getEventMembers(num);
+	    log.info("조회된 회원 수: {}", list != null ? list.size() : "null");
+	    return list;
+	}
+
 	
 	
 }

@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/event/article.css" type="text/css">
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
 <style type="text/css">
 /* 기존 CSS를 확장한 article 페이지 스타일 */
@@ -101,6 +100,29 @@
     color: #333;
     border-color: #ccc;
 }
+
+
+.article-status {
+    display: flex;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-active {
+    background-color: #82B10C;
+    color: white;
+}
+
+.status-expired {
+    background-color: #888;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -135,6 +157,12 @@
             ${dto.content}
         </div>
         
+                <c:if test="${dto.exp_date >= now}">
+            <button type="button" class="btn btn-apply" onclick="applyEvent(${dto.num});">
+                <i class="fas fa-check-circle"></i> 이벤트 신청하기
+            </button>
+        </c:if>
+        
         <div class="button-container">
             <button type="button" class="btn btn-list" onclick="location.href='${pageContext.request.contextPath}/event/list';">목록</button>
             
@@ -153,11 +181,68 @@
 </footer>
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 <script>
+const memberidx = "${sessionScope.member.memberidx}";
+
 // 이벤트 삭제 함수
 function deleteEvent(num) {
     if(confirm("이벤트를 삭제하시겠습니까?")) {
         location.href="${pageContext.request.contextPath}/admin/event/delete?num="+num;
     }
+}
+
+function applyEvent(num) {
+    // 로그인 확인
+    if(!memberidx) {
+        if(confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")) {
+            location.href = "${pageContext.request.contextPath}/member/login";
+        }
+        return;
+    }
+    
+    if(!confirm("이벤트를 신청하시겠습니까?")) {
+        return;
+    }
+    
+    const url = "${pageContext.request.contextPath}/event/apply";
+    const requestParams = {
+        num: num,
+        memberidx: memberidx
+    };
+    
+    // 버튼 상태 변경
+    const applyButton = document.querySelector('.btn-apply');
+    if(applyButton) {
+        applyButton.disabled = true;
+        applyButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 처리 중...';
+    }
+    
+    const fn = function(data) {
+        if(data.status === "success") {
+            alert("이벤트 신청이 완료되었습니다.");
+            // 성공 시 버튼 상태 업데이트
+            if(applyButton) {
+                applyButton.innerHTML = '<i class="fas fa-check"></i> 신청 완료';
+                applyButton.classList.add('applied');
+            }
+        } else if(data.status === "duplicated") {
+            alert("이미 신청한 이벤트입니다.");
+            // 중복 신청 시 버튼 상태 업데이트
+            if(applyButton) {
+                applyButton.innerHTML = '<i class="fas fa-check"></i> 이미 신청 완료';
+                applyButton.classList.add('applied');
+            }
+        } else {
+            alert("신청 처리 중 오류가 발생했습니다.");
+            // 실패 시 버튼 상태 복원
+            if(applyButton) {
+                applyButton.disabled = false;
+                applyButton.innerHTML = '<i class="fas fa-check-circle"></i> 이벤트 신청하기';
+            }
+        }
+    };
+    
+    // ajaxRequest 호출 (이미 정의된 함수 사용)
+    ajaxRequest(url, 'post', requestParams, 'json', fn);
 }
 
 </script>

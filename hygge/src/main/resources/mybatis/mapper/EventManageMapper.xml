@@ -72,4 +72,16 @@
      <delete id="deleteEvent" parameterType="Long">
         DELETE FROM Event WHERE num=#{num}
     </delete>
+    
+    <insert id="applyEvent" parameterType="Long">
+    INSERT INTO EVENT_REQUEST (er_num, num, memberIdx, reg_date)
+    VALUES (EVENTREQUEST_SEQ.NEXTVAL, #{num}, #{memberidx}, sysdate)
+    </insert>
+
+	<select id="getEventMembers" parameterType="Long" resultType="com.sp.app.admin.model.EventManage">
+	SELECT m1.name, m1.memberIdx
+	FROM EVENT_REQUEST er
+	JOIN member1 m1 ON m1.memberIdx = er.memberIdx
+	WHERE er.num = #{num}
+	</select>
 </mapper>

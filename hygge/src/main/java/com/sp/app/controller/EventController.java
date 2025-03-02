@@ -2,6 +2,7 @@ package com.sp.app.controller;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.admin.model.EventManage;
 import com.sp.app.admin.service.EventManageService;
@@ -107,6 +110,7 @@ public class EventController {
 			EventManage dto = service.readEvent(num);
 			
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			model.addAttribute("now", new Date());
 			
 			model.addAttribute("dto", dto);
 	        model.addAttribute("page", page);
@@ -118,4 +122,28 @@ public class EventController {
 		
 		return "event/article";
 	}
+	
+	@ResponseBody
+	@PostMapping("apply")
+	public Map<String, Object> applyEvent(
+			@RequestParam(name = "num") long num,
+			@RequestParam(name = "memberidx") long memberidx,
+			Model model) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+				
+		try {
+			map.put("memberidx", memberidx);
+			map.put("num", num);
+			
+			service.applyEvent(map);
+			
+			map.put("status", "success");
+			
+		} catch (Exception e) {
+			log.info("applyEvent : ", e);
+		}
+		
+		return map;
+	}
+
 }

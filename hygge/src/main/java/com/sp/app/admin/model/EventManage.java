@@ -25,4 +25,7 @@ public class EventManage {
     
     private String photo;      // DB에서 가져온 파일명 리스트
     private List<MultipartFile> photoFiles; // 업로드할 파일들
+    
+    private String name;
+    private long memberIdx;
 }
