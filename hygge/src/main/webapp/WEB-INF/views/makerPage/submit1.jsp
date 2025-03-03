@@ -82,13 +82,14 @@
                 <h2 class="section-title">사업자 등록증</h2>
                 <p class="info-text">사업자가 등록되어 있을 경우 사업자 등록증을 첨부해주세요.</p>
                 <div style="padding: 5px 0px; display: flex; flex-direction: row;">
-	                <input type="checkbox" name="isBusiness" style="padding: 5px;" ${funding.business == 1 ? 'checked' : ''}><span style="margin-left: 5px; margin-bottom: 0px;" class="section-title">사업자 등록이 되어있으신가요?</span>
+	                <input type="checkbox" name="isBusiness" id="isBusiness" style="padding: 5px;" ${funding.business == 1 ? 'checked' : ''}><label for="isBusiness"><span style="margin-left: 5px; margin-bottom: 0px;" class="section-title">사업자 등록이 되어있으신가요?</span></label>
                 </div>
 	            <input type="file" name="business_File" class="input-field" value="${funding.business_File}" style="display: none;">
                 <div class="button-container">
                     <button type="button" class="submit-button" onclick="sendNext();">다음</button>
                 </div>
             </div>
+            <input type="hidden" value="${funding.business}" name="business">
             <input type="hidden" value="${funding.thumbnail}">
         </form>
     </main>
@@ -112,6 +113,11 @@ function sendNext() {
 		return false;
 	}
 	*/
+	if ($('input[name="isBusiness"]').is(':checked')) {
+		f.business.value = 1;
+	} else {
+		f.business.value = 0;
+	}
 	f.action = '${pageContext.request.contextPath}/makerPage/projectSubmit1';
 	f.submit();
 }

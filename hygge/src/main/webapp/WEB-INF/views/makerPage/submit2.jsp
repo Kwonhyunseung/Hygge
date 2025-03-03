@@ -422,7 +422,7 @@ function check() {
 		return false;
 	}
 	value = '${funding.business}';
-	if (!value || value == 0) {
+	if (!value) {
 		$('.alert-msg').html(alertmsg);
 		$('.alert-container').css('display', 'flex');
 		console.log('목표비지니스');

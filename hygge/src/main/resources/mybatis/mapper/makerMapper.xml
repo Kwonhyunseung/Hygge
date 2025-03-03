@@ -19,7 +19,7 @@
 
 	<insert id="insertProjectPhoto" parameterType="com.sp.app.model.Funding">
 		INSERT INTO ProjectPhoto(photo_num, s_FileName, photo_order, num2)
-			VALUES (#{project_photo_seq.NEXTVAL}, #{sfileName}, #{photo_order}, #{num})
+			VALUES (project_photo_seq.NEXTVAL, #{sfileName}, #{photo_order}, #{num})
 	</insert>
 
 	<insert id="insertProduct" parameterType="map">

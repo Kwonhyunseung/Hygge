@@ -116,8 +116,9 @@ public class MakerController {
 	}
 
 	@GetMapping("projectSubmit3")
-	public String projectForm3(Model model) throws Exception {
+	public String projectForm3(@ModelAttribute("num") long number, Model model) throws Exception {
 		try {
+			model.addAttribute("projectNum", number);
 		} catch (Exception e) {
 			log.info("projectForm3 : ", e);
 		}
