@@ -1,15 +1,16 @@
 package com.sp.app.service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.time.LocalDate;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sp.app.common.StorageService;
 import com.sp.app.mapper.MemberMapper;
 import com.sp.app.model.Member;
 
@@ -21,20 +22,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 	private final MemberMapper mapper;
+	private final StorageService storageService;
 	private final PasswordEncoder bcryptEncoder;
 	
 	@Transactional(rollbackFor = {Exception.class})
 	@Override
-	public void insertMember(Member dto) throws Exception {
+	public void insertMember(Member dto, String uploadPath) throws Exception {
 		try {
 			// 비밀번호가 null이 아니고, 비어 있지 않은지 확인
 		        if (dto.getPwd() == null || dto.getPwd().isEmpty()) {
 		            throw new IllegalArgumentException("Password cannot be null or empty");
 		        }
 		        
-		        // 패스워드 암호화
-		        String encPassword = bcryptEncoder.encode(dto.getPwd());
-		        dto.setPwd(encPassword);
+	        // 패스워드 암호화
+	        String encPassword = bcryptEncoder.encode(dto.getPwd());
+	        dto.setPwd(encPassword);
 
 			// 나이 계산
 			LocalDate todayDate = LocalDate.now();
@@ -49,14 +51,21 @@ public class MemberServiceImpl implements MemberService {
 				age -= 1;
 			}
 			dto.setAge(age);
-				
+
+			dto.setMemberIdx(mapper.memberSeq());
+
+			if (!dto.getProfile_img_file().isEmpty()) {
+				dto.setProfile_img(storageService.uploadFileToServer(dto.getProfile_img_file(), uploadPath));
+			}
+
 			// 회원정보 저장
 			mapper.insertMember(dto);
 			// 권한저장
-			/*
-			dto.setAuthority("USER");
 			mapper.insertAuthority(dto);
-			*/
+
+			if (dto.getAuthority().equalsIgnoreCase("Maker")) {
+				mapper.insertMaker(dto);
+			}
 			
 		} catch (Exception e) {
 			log.info("insertMember", e);

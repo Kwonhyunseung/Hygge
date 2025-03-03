@@ -4,12 +4,24 @@
 
 <!-- 회원 가입 -->
 <update id="insertMember" parameterType="com.sp.app.model.Member">
-    INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3)
-        VALUES (member1_seq.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1, jdbcType=INTEGER}, #{category2, jdbcType=INTEGER}, #{category3, jdbcType=INTEGER})
+    INSERT ALL INTO member1(memberIdx, id, pwd, name, nickName, block, reg_date, mod_date, last_login, login_failure, category1, category2, category3, profile_img)
+        VALUES (#{memberIdx}, #{id}, #{pwd}, #{name}, #{nickName}, 0, SYSDATE, SYSDATE, SYSDATE, 0, #{category1, jdbcType=INTEGER}, #{category2, jdbcType=INTEGER}, #{category3, jdbcType=INTEGER}, #{profile_img, jdbcType=VARCHAR})
     INTO member2(memberIdx, birth, email1, email2, addr1, addr2, postCode, tel1, tel2, tel3, age, gender)
-        VALUES (member1_seq.CURRVAL, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age}, #{gender})
+        VALUES (#{memberIdx}, #{birth}, #{email1}, #{email2}, #{addr1}, #{addr2}, #{postCode}, #{tel1}, #{tel2}, #{tel3}, #{age}, #{gender})
     SELECT * FROM dual
 </update>
+
+<insert id="insertAuthority">
+	INSERT INTO memberAuthority (memberIdx, authority) VALUES (#{memberIdx}, #{authority})
+</insert>
+
+<insert id="insertMaker">
+	INSERT INTO Maker (memberIdx, introduction, bankAccount, makerName) VALUES (#{memberIdx}, #{introduction}, #{bankAccount}, #{makerName})
+</insert>
+
+<select id="memberSeq" resultType="Long">
+	SELECT member1_seq.NEXTVAL from dual
+</select>
 
 
 <!-- 우리 코드 맞게 재작성 필요함 -->

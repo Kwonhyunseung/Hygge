@@ -1,5 +1,7 @@
 package com.sp.app.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +34,7 @@ public class Member {
 	private int tel3;
 	private int age;
 	private int gender;
+	private String profile_img;
 	
 	
 	private String authority;
@@ -43,4 +46,10 @@ public class Member {
 	private int state; //변경상태
 	private String memo;
 	private long adminIdx;
+
+	// 메이커 전용
+	private String makerName;
+	private String bankAccount;
+	private MultipartFile profile_img_file;
+	private String introduction;
 }

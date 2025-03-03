@@ -5,7 +5,7 @@ import java.util.List;
 import com.sp.app.model.Member;
 
 public interface MemberService {
-	public void insertMember(Member dto) throws Exception;
+	public void insertMember(Member dto, String uploadPath) throws Exception;
 	
 	public void updateLastLogin(String email) throws Exception;
 	public void updateMember(Member dto) throws Exception;
