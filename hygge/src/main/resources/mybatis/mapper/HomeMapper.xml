@@ -2,10 +2,135 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.HomeMapper">
+
+	<!-- 카테고리 -->
 	<select id="subListCategory" parameterType="long" resultType="com.sp.app.model.Category">
         SELECT category_num, parent_num, name
         FROM category
         WHERE parent_num = #{parent_num}
         ORDER BY category_num ASC
     </select>
+
+	<!-- 신규 (승인일+7부터 일주일동안) -->
+	<select id="listNewProjects" parameterType="map" resultType="com.sp.app.model.Funding">
+		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, p.end_date,
+	        1 AS isNew,
+	        (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS mainLike,
+	        <choose>
+	            <when test="memberIdx != null">
+	                (CASE WHEN EXISTS (
+	                    SELECT 1 FROM ProjectLike
+	                    WHERE num = p.num AND memberIdx = #{memberIdx}
+	                ) THEN 1 ELSE 0 END)
+	            </when>
+	            <otherwise>
+	                0
+	            </otherwise>
+	        </choose> AS userLiked
+	    FROM Project p
+	    JOIN ProjectRequest pr ON p.num = pr.num
+	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND SYSDATE BETWEEN pr.accept_date + 7 AND pr.accept_date + 14
+	    	AND p.end_date > SYSDATE
+	    ORDER BY pr.accept_date DESC
+	    FETCH FIRST 6 ROWS ONLY
+	</select>
+	
+	<!-- 인기 (팔린 금액 순) -->
+	<select id="listPopularProjects" parameterType="map" resultType="com.sp.app.model.Funding">
+		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, pr.target, p.end_date,
+	      	NVL(total_sales.total_amount, 0) AS total_amount,
+	        ROUND(NVL(total_sales.total_amount, 0) / pr.target * 100, 2) AS funding_goal,
+	        1 AS isPopular,
+	      	(SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS mainLike,
+	      	<choose>
+		    	<when test="memberIdx != null">
+		        (CASE WHEN EXISTS (
+		            SELECT 1 FROM ProjectLike
+		            WHERE num = p.num AND memberIdx = #{memberIdx}
+		        ) THEN 1 ELSE 0 END)
+		        </when>
+		        <otherwise>
+		            0
+		        </otherwise>
+		    </choose> AS userLiked
+	   	FROM Project p
+	    JOIN ProjectRequest pr ON p.num = pr.num
+	    JOIN (
+	        SELECT pd.num, SUM(s.sum) AS total_amount
+	        FROM product pd
+	        LEFT JOIN sales s ON pd.product_num = s.product_num
+	        GROUP BY pd.num
+	    ) total_sales ON p.num = total_sales.num
+	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND p.end_date > SYSDATE
+	    	AND SYSDATE >= pr.accept_date + 7
+	    ORDER BY total_sales.total_amount DESC
+	    FETCH FIRST 4 ROWS ONLY
+	</select>
+	
+	<!-- 공개 예정 (승인일부터 일주일까지) -->
+	<select id="listComingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
+		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date,
+		    1 AS isComing,
+		    CEIL(pr.accept_date + 7 - SYSDATE) AS remained_date
+	    FROM Project p
+	    JOIN ProjectRequest pr ON p.num = pr.num
+	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 7
+	    ORDER BY pr.accept_date ASC
+	    FETCH FIRST 4 ROWS ONLY
+	</select>
+	
+	<!-- 마감 임박 프로젝트 (마감일 3일전 또는 펀딩률 85% 이상) -->
+	<select id="listDeadlineProjects" parameterType="map" resultType="com.sp.app.model.Funding">
+	    SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, TO_CHAR(p.end_date, 'YYYY.MM.DD') AS end_date, pr.target,
+    		NVL(total_sales.total_amount, 0) AS total_amount,
+    		ROUND(NVL(total_sales.total_amount, 0) / pr.target * 100, 2) AS funding_goal,
+    		1 AS isDeadline,
+    		(SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS mainLike,
+    		<choose>
+	        	<when test="memberIdx != null">
+	            (CASE WHEN EXISTS (
+	                SELECT 1 FROM ProjectLike
+	                WHERE num = p.num AND memberIdx = #{memberIdx}
+	            ) THEN 1 ELSE 0 END)
+	            </when>
+	            <otherwise>
+	                0
+	            </otherwise>
+	        </choose> AS userLiked
+		FROM Project p
+	    JOIN ProjectRequest pr ON p.num = pr.num
+	    LEFT JOIN (
+	        SELECT pd.num, SUM(s.sum) AS total_amount
+	        FROM product pd
+	        LEFT JOIN sales s ON pd.product_num = s.product_num
+	        GROUP BY pd.num
+	    ) total_sales ON p.num = total_sales.num
+	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND p.end_date > SYSDATE
+	    	AND SYSDATE >= pr.accept_date + 7
+	    	AND (
+	        	(p.end_date - SYSDATE &lt;= 3)
+	        	OR 
+	        	(NVL(total_sales.total_amount, 0) / pr.target * 100 > 85)
+	    	)
+	    ORDER BY p.end_date ASC
+	    FETCH FIRST 4 ROWS ONLY
+	</select>
+
+	<!-- 실시간 랭킹 (좋아요 순) -->
+	<select id="listRankingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
+	    SELECT p.num, p.block, pr.thumbnail, pr.title,
+	        1 AS isRanking
+		FROM Project p
+	    JOIN ProjectRequest pr ON p.num = pr.num
+	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND p.end_date > SYSDATE
+	    	AND SYSDATE >= pr.accept_date + 7
+	    ORDER BY (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) DESC
+	    FETCH FIRST 7 ROWS ONLY
+	</select>
+	
 </mapper>

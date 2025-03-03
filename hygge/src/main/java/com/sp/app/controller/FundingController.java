@@ -41,45 +41,40 @@ public class FundingController {
 
 	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
-		Map<String, Object> map = new HashMap<>();
-		
-		try {
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			boolean isUserLiked = false;
-			boolean isUserFollow = false;
-
-			Funding project = detailService.fundingProduct(num);
-
-			detailService.calculateProject(project);
-
-			map.put("num", num);
-			List<Product> productList = detailService.detailProduct(map);
-
-			int likeCount = detailService.projectLikeCount(num);
-
-			if (info != null) {
-				map.put("memberIdx", info.getMemberidx());
-				map.put("makerIdx", project.getMemberIdx());
-
-				isUserLiked = detailService.userFundingLiked(map) > 0;
-				isUserFollow = detailService.userFollowing(map) > 0;
-			}
-
-			if (project != null) {
-				model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
-				model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
-				model.addAttribute("project", project);
-				model.addAttribute("likeCount", likeCount);
-				model.addAttribute("isUserLiked", isUserLiked);
-				model.addAttribute("isUserFollow", isUserFollow);
-				model.addAttribute("product", productList);
-			}
-
-		} catch (Exception e) {
-			log.error("Error fetching project details", e);
-			model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
-		}
-		return "funding/product";
+	    Map<String, Object> map = new HashMap<>();
+	    
+	    try {
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        Funding project = detailService.fundingProduct(num);
+	        detailService.calculateProject(project);
+	        boolean isUserLiked = false;
+	        boolean isUserFollow = false;
+	        
+	        map.put("num", num);
+	        List<Product> productList = detailService.detailProduct(map);
+	        
+	        int likeCount = detailService.projectLikeCount(num);
+	        if (info != null) {
+	            map.put("memberIdx", info.getMemberidx());
+	            map.put("makerIdx", project.getMemberIdx());
+	            isUserLiked = detailService.userFundingLiked(map) > 0;
+	            isUserFollow = detailService.userFollowing(map) > 0;
+	        }
+	        
+	        if (project != null) {
+	            model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
+	            model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
+	            model.addAttribute("project", project);
+	            model.addAttribute("likeCount", likeCount);
+	            model.addAttribute("isUserLiked", isUserLiked);
+	            model.addAttribute("isUserFollow", isUserFollow);
+	            model.addAttribute("product", productList);
+	        }
+	    } catch (Exception e) {
+	        log.error("Error fetching project details", e);
+	        model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
+	    }
+	    return "funding/product";
 	}
 
 	// 프로젝트 좋아요

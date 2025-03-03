@@ -9,8 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sp.app.model.Category;
+import com.sp.app.model.Funding;
+import com.sp.app.model.SessionInfo;
 import com.sp.app.service.HomeService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,11 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HomeController {
 	/* private final MakerService makerService; */
-	private final HomeService homeService;
-
+	private final HomeService service;
 
 	@GetMapping("/")
-	public String handleHome(Model model) {
+	public String handleHome(HttpSession session, Model model) {
 		try {
 			/*
 			List<Category> parentCategories = makerService.listCategory(0);
@@ -49,22 +51,50 @@ public class HomeController {
 			model.addAttribute("childCategories09", childCategories09);
 			*/
 			
-			List<Category> parentCategories = homeService.subListCategory(0);
+			List<Category> parentCategories = service.subListCategory(0);
             model.addAttribute("parentCategories", parentCategories);
 
             Map<String, List<Category>> subCategoriesMap = new HashMap<>();
             
             for (Category parent : parentCategories) {
                 long categoryNum = parent.getCategory_num();
-                List<Category> subCategories = homeService.subListCategory(categoryNum);
-                
+                List<Category> subCategories = service.subListCategory(categoryNum);
                 subCategoriesMap.put(parent.getName(), subCategories);
             }
             
             model.addAttribute("subCategoriesMap", subCategoriesMap);
             
+            
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			// 프로젝트 조회
+	        Map<String, Object> map = new HashMap<>();
+	        
+	        if (info != null) {
+	            map.put("memberIdx", info.getMemberidx());
+	        }
+            
+            List<Funding> newProjects = service.listNewProjects(map);
+            model.addAttribute("newProjects", newProjects);
+            
+            List<Funding> popularProjects = service.listPopularProjects(map);
+            model.addAttribute("popularProjects", popularProjects);
+            
+            List<Funding> deadlineProjects = service.listDeadlineProjects(map);
+            model.addAttribute("deadlineProjects", deadlineProjects);
+            
+            List<Funding> comingProjects = service.listComingProjects(map);
+            model.addAttribute("comingProjects", comingProjects);
+            
+            List<Funding> rankingProjects = service.listRankingProjects(map);
+            model.addAttribute("rankingProjects", rankingProjects);
+            
+            model.addAttribute("isLoggedIn", info != null);
+            
 		} catch (Exception e) {
 		}
+		
 		return "main/home";
 	}
+	
 }

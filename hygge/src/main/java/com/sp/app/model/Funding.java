@@ -36,6 +36,7 @@ public class Funding {
 
 	private int progress;
 	private int total_amount;
+	private int pay_amount;
 	private boolean userLiked;
 	
 	private String name; //카테고리명 추가
@@ -62,10 +63,9 @@ public class Funding {
 	private List<Product> product;
 	
 	// 메인 리스트 출력
-	// 프로젝트명(title), 프로젝트 소개(project_info), 펀딩률(funding_goal)
-	// 좋아요
+	private int mainLike; // 좋아요
 	private boolean isNew; // 신규 프로젝트 여부
     private boolean isPopular; // 인기 프로젝트 여부
     private boolean isDeadline; // 마감 임박 여부
-    private boolean isUpcoming; // 공개 예정 여부
+    private boolean isComing; // 공개 예정 여부
 }

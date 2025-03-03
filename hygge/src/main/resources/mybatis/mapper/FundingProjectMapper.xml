@@ -25,7 +25,7 @@
 		    FROM product pd
 		    LEFT JOIN sales s ON pd.product_num = s.product_num
 		    WHERE pd.num = #{num}
-		    GROUP BY pd.num <!-- 추가 -->
+		    GROUP BY pd.num
 		) payment_summary ON p.num = payment_summary.num
 		LEFT OUTER JOIN maker ON pr.memberIdx = maker.memberIdx
 		WHERE p.num = #{num}

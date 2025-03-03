@@ -21,24 +21,24 @@ document.addEventListener("DOMContentLoaded", function () {
     subCategoryContainer.classList.add("sub-categories");
 
     // 서브 카테고리 컨테이너 스타일
-	subCategoryContainer.style.display = "none";
-	subCategoryContainer.style.position = "absolute";
-	subCategoryContainer.style.width = "100%";
-	subCategoryContainer.style.maxWidth = "1300px";
-	subCategoryContainer.style.backgroundColor = "#f7f7f7";
-	subCategoryContainer.style.padding = "22px";
-	subCategoryContainer.style.zIndex = "10";
-	subCategoryContainer.style.minHeight = "150px";
-	subCategoryContainer.style.left = "50%";
-	subCategoryContainer.style.transform = "translateX(-50%)";
-	
-	subCategoryContainer.style.borderRadius = "5px";
-	subCategoryContainer.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px";
-	subCategoryContainer.style.borderTop = "1px solid rgba(255, 255, 255, 0.5)";
-	subCategoryContainer.style.borderLeft = "1px solid rgba(255, 255, 255, 0.5)";
-	subCategoryContainer.style.backdropFilter = "blur(5px)";
-	subCategoryContainer.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-	subCategoryContainer.style.opacity = "0";
+    subCategoryContainer.style.display = "none";
+    subCategoryContainer.style.position = "absolute";
+    subCategoryContainer.style.width = "100%";
+    subCategoryContainer.style.maxWidth = "1300px";
+    subCategoryContainer.style.backgroundColor = "#f7f7f7";
+    subCategoryContainer.style.padding = "22px";
+    subCategoryContainer.style.zIndex = "10";
+    subCategoryContainer.style.minHeight = "150px";
+    subCategoryContainer.style.left = "50%";
+    subCategoryContainer.style.transform = "translateX(-50%)";
+    
+    subCategoryContainer.style.borderRadius = "5px";
+    subCategoryContainer.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px";
+    subCategoryContainer.style.borderTop = "1px solid rgba(255, 255, 255, 0.5)";
+    subCategoryContainer.style.borderLeft = "1px solid rgba(255, 255, 255, 0.5)";
+    subCategoryContainer.style.backdropFilter = "blur(5px)";
+    subCategoryContainer.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    subCategoryContainer.style.opacity = "0";
 
     // hr 아래에 추가
     const hrElement = document.querySelector(".hr");
@@ -165,6 +165,176 @@ document.addEventListener("DOMContentLoaded", function () {
         isOverSubCategory = false;
         scheduleHideSubCategory();
     });
+    
+    // 프로젝트 카드 클릭 이벤트 - 상세 페이지 이동
+    setupProjectNavigation();
+});
+
+//프로젝트 카드 클릭 시 상세 페이지로 이동하는 함수
+function setupProjectNavigation() {
+    // 모든 프로젝트 컨테이너 선택
+    const projectItems = document.querySelectorAll(".newP, .popularP, .deadlineP, .releaseP");
+    
+    projectItems.forEach(function(item) {
+        // 이미지와 제목에 클릭 이벤트 추가
+        const img = item.querySelector(".image-container img");
+        const title = item.querySelector("p:last-child");  // 제목은 보통 마지막 p 태그
+        const likeBtn = item.querySelector(".project-like-btn");
+        
+        // 프로젝트 번호 가져오기 (좋아요 버튼 또는 컨테이너의 data-num 속성에서)
+        let projectNum = null;
+        if (likeBtn) {
+            projectNum = likeBtn.getAttribute("data-num");
+        } else if (item.hasAttribute("data-num")) {
+            projectNum = item.getAttribute("data-num");
+        }
+        
+        // 프로젝트 번호가 있는 경우에만 클릭 이벤트 추가
+        if (projectNum) {
+            // 이미지에 클릭 이벤트 추가
+            if (img) {
+                img.style.cursor = "pointer";
+                img.addEventListener("click", function(e) {
+                    // 좋아요 버튼이 클릭된 경우는 무시
+                    if (!e.target.closest(".project-like-btn")) {
+                        window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                    }
+                });
+            }
+            
+            // 제목에 클릭 이벤트 추가
+            if (title) {
+                title.style.cursor = "pointer";
+                title.addEventListener("click", function() {
+                    window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                });
+            }
+            
+            // 전체 항목에 클릭 이벤트 추가 (좋아요 버튼 제외)
+            item.style.cursor = "pointer";
+            item.addEventListener("click", function(e) {
+                // 좋아요 버튼이나 이미 처리된 요소가 아닌 경우만 이동
+                if ((!likeBtn || !e.target.closest(".project-like-btn")) && 
+                    e.target !== img && 
+                    e.target !== title) {
+                    window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                }
+            });
+        }
+    });
+    
+    // 랭킹 프로젝트에도 클릭 이벤트 추가
+    const rankingRows = document.querySelectorAll(".lanking-bar .row");
+    rankingRows.forEach(function(row) {
+        const titleElement = row.querySelector(".col-6 p");
+        const imgElement = row.querySelector(".lankImg img");
+        const likeBtn = row.querySelector(".project-like-btn");
+        
+        // 프로젝트 번호 가져오기 - 좋아요 버튼이나 데이터 속성에서
+        let projectNum = null;
+        if (likeBtn) {
+            projectNum = likeBtn.getAttribute("data-num");
+        } else if (row.hasAttribute("data-num")) {
+            projectNum = row.getAttribute("data-num");
+        }
+        
+        if (projectNum) {
+            // 이미지와 제목에 클릭 이벤트 추가
+            if (imgElement) {
+                imgElement.style.cursor = "pointer";
+                imgElement.addEventListener("click", function(e) {
+                    if (!likeBtn || !e.target.closest(".project-like-btn")) {
+                        window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                    }
+                });
+            }
+            
+            if (titleElement) {
+                titleElement.style.cursor = "pointer";
+                titleElement.addEventListener("click", function() {
+                    window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                });
+            }
+            
+            // 행 전체에 클릭 이벤트 추가
+            row.style.cursor = "pointer";
+            row.addEventListener("click", function(e) {
+                if ((!likeBtn || !e.target.closest(".project-like-btn")) && 
+                    e.target !== imgElement && 
+                    e.target !== titleElement) {
+                    window.location.href = "${pageContext.request.contextPath}/funding/product/" + projectNum;
+                }
+            });
+        }
+    });
+}
+
+// 좋아요 기능
+$(function() {
+    // 페이지 로드 시 서버에서 받은 좋아요 상태 초기화
+    function initializeLikeStatus() {
+        // 각 프로젝트 좋아요 버튼 상태 설정
+        $(".project-like-btn").each(function() {
+            const projectNum = $(this).data("num");
+            
+            // 서버에서 설정한 초기 상태
+            const serverLiked = $(this).hasClass("bi-heart-fill");
+            
+            // 실제 표시될 상태 결정 (서버 상태 사용)
+            if (serverLiked) {
+                $(this).removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+            } else {
+                $(this).removeClass("bi-heart-fill text-danger").addClass("bi-heart");
+            }
+        });
+    }
+
+    // 페이지 로드 시 좋아요 상태 초기화
+    initializeLikeStatus();
+
+    // 좋아요 버튼 클릭 이벤트
+    $(".project-like-btn").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();  // 중요: 이벤트 전파 중지
+        
+        const $btn = $(this);
+        const num = $btn.data("num");
+        const isLiked = $btn.hasClass("bi-heart-fill");
+        
+        $.ajax({
+            url: "${pageContext.request.contextPath}/funding/userFundingLiked",
+            type: "POST",
+            data: { 
+                num: num,
+                userLiked: isLiked
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.state === "true") {
+                    // 좋아요 수 업데이트
+                    $(".like-count-" + num).text(data.likeCount);
+                    
+                    // 클릭한 버튼만 업데이트
+                    if (data.isLiked) {
+                        $btn.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+                    } else {
+                        $btn.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
+                    }
+                } else {
+                    alert(data.message || "좋아요 처리 중 오류가 발생했습니다.");
+                }
+            },
+            error: function(xhr) {
+                if (xhr.status === 401) {
+                    if (confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")) {
+                        location.href = "${pageContext.request.contextPath}/member/login";
+                    }
+                } else {
+                    alert("서버 오류가 발생했습니다.");
+                }
+            }
+        });
+    });
 });
 </script>
 </head>
@@ -218,138 +388,63 @@ document.addEventListener("DOMContentLoaded", function () {
 					</div>
 					<br> <br> <br>
 					<div class="row new-project">
-						<h3>신규 프로젝트</h3>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p class="reserve">예약구매</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p class="reserve">예약구매</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-4 newP">
-							<div class="image-newP">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p class="reserve">예약구매</p>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
+					    <h3>신규 프로젝트</h3>
+					    <c:choose>
+					        <c:when test="${not empty newProjects}">
+					            <c:forEach var="project" items="${newProjects}" varStatus="status">
+					                <div class="col-4 newP">
+					                    <div class="image-container">
+										    <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
+										    <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" 
+										       data-num="${project.num}"></i>
+										</div>
+										<p>${project.title}</p>
+					                </div>
+					            </c:forEach>
+					        </c:when>
+					        <c:otherwise>
+					            <div class="col-12 text-center">
+					                <p>현재 신규 프로젝트가 없습니다.</p>
+					            </div>
+					        </c:otherwise>
+					    </c:choose>
 					</div>
 				</div>
 
 				<div class="col-4">
 					<div class="lanking-bar">
-						<h3>실시간 랭킹</h3>
-						<div class="col">
-							<div class="row">
-								<div class="col-1">
-									<strong>1</strong>
-								</div>
-								<div class="col-6">
-									<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-								</div>
-								<div class="col lankImg">
-									<img src="/dist/images/main/p.jpg">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-1">
-									<strong>2</strong>
-								</div>
-								<div class="col-6">
-									<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-								</div>
-								<div class="col lankImg">
-									<img src="/dist/images/main/p.jpg">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-1">
-									<strong>3</strong>
-								</div>
-								<div class="col-6">
-									<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-								</div>
-								<div class="col lankImg">
-									<img src="/dist/images/main/p.jpg">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-1">
-									<strong>4</strong>
-								</div>
-								<div class="col-6">
-									<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-								</div>
-								<div class="col lankImg">
-									<img src="/dist/images/main/p.jpg">
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-1">
-									<strong>5</strong>
-								</div>
-								<div class="col-6">
-									<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-								</div>
-								<div class="col lankImg">
-									<img src="/dist/images/main/p.jpg">
-								</div>
-							</div>
-						</div>
+					    <h3>실시간 랭킹</h3>
+					    <div class="col">
+					        <c:choose>
+					            <c:when test="${not empty rankingProjects}">
+					                <c:forEach var="project" items="${rankingProjects}" varStatus="status">
+					                    <div class="row" data-num="${project.num}">
+					                        <div class="col-1">
+					                            <strong>${status.count}</strong>
+					                        </div>
+					                        <div class="col-6">
+					                            <p>${project.title}</p>
+					                        </div>
+					                        <div class="col lankImg">
+					                            <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
+					                            <!-- 좋아요 버튼 추가 (선택사항) -->
+					                            <%-- <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" data-num="${project.num}"></i> --%>
+					                        </div>
+					                    </div>
+					                    <br>
+					                </c:forEach>
+					            </c:when>
+					            <c:otherwise>
+					                <div class="text-center">
+					                    <p>실시간 랭킹 프로젝트가 없습니다.</p>
+					                </div>
+					            </c:otherwise>
+					        </c:choose>
+					    </div>
 					</div>
 
 					<div class="special">
-						<img src="/dist/images/main/s1.png">
+						<img src="/dist/images/main/special.png">
 						<div id="carouselExampleFade" class="carousel slide carousel-fade"
 							data-bs-ride="carousel">
 							<div class="carousel-inner">
@@ -362,10 +457,6 @@ document.addEventListener("DOMContentLoaded", function () {
 							</div>
 						</div>
 					</div>
-
-
-
-
 				</div>
 			</div>
 
@@ -375,34 +466,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					<div class="row">
 						<div class="col-3 localP">
 							<div class="image-container">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-								<div class="goal">
-									<p>30,012% 달성
-								</div>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-3 localP">
-							<div class="image-container">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
-							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-								<div class="goal">
-									<p>30,012% 달성
-								</div>
-							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-						</div>
-						<div class="col-3 localP">
-							<div class="image-container">
-								<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-									class="bi bi-suit-heart"></i>
+								<img src="/dist/images/main/p.jpg">
+								<i class="bi bi-suit-heart"></i>
 							</div>
 							<div class="pundingBtn">
 								<p>펀딩</p>
@@ -417,181 +482,87 @@ document.addEventListener("DOMContentLoaded", function () {
 			</div>
 
 			<div class="popular-project">
-				<h3>인기 프로젝트</h3>
-				<div class="row">
-					<div class="col-3 popularP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 popularP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 popularP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 popularP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-				</div>
+			    <h3>인기 프로젝트</h3>
+			    <div class="row">
+			        <c:forEach var="project" items="${popularProjects}">
+			            <div class="col-3 popularP">
+			                <div class="image-container">
+			                    <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
+			                    <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" data-num="${project.num}"></i>
+			                </div>
+			                <div class="pundingBtn">
+			                    <p>인기</p>
+			                    <div class="goal">
+			                        <p>${project.funding_goal}% 달성</p>
+			                    </div>
+			                </div>
+			                <p>${project.title}</p>
+			            </div>
+			        </c:forEach>
+			    </div>
 			</div>
 
-
 			<div class="deadline-project">
-				<h3>마감임박! 마지막 기회</h3>
-				<h5 style="font-size: 22px;">
-					<strong style="color: #ED2323;">06:15:16 </strong>남았어요
-				</h5>
-				<div class="row">
-					<div class="col-3 deadlineP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 deadlineP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 deadlineP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 deadlineP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-				</div>
+			    <h3>마감임박! 마지막 기회</h3>
+			    <h5 style="font-size: 22px;">
+			        <strong style="color: #ED2323;">06:15:16 </strong>남았어요
+			    </h5>
+			    <div class="row">
+			        <c:choose>
+			            <c:when test="${not empty deadlineProjects}">
+			                <c:forEach var="project" items="${deadlineProjects}">
+			                    <div class="col-3 deadlineP">
+			                        <div class="image-container">
+			                            <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
+			                            <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" 
+			                                data-num="${project.num}"></i>
+			                        </div>
+			                        <div class="pundingBtn">
+			                            <p>마감일 ${project.end_date}</p>
+			                            <div class="goal">
+			                                <p>${project.funding_goal}% 달성</p>
+			                            </div>
+			                        </div>
+			                        <p>${project.title}</p>
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:otherwise>
+			                <div class="col-12 text-center">
+			                    <p>현재 마감임박 프로젝트가 없습니다.</p>
+			                </div>
+			            </c:otherwise>
+			        </c:choose>
+			    </div>
 			</div>
 
 			<div class="release-project">
-				<h3>공개예정 프로젝트</h3>
-				<div class="row">
-					<div class="col-3 releaseP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 releaseP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 releaseP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-					<div class="col-3 releaseP">
-						<div class="image-container">
-							<img src="/dist/images/main/p.jpg" alt="이미지"> <i
-								class="bi bi-suit-heart"></i>
-						</div>
-						<div class="pundingBtn">
-							<p>펀딩</p>
-							<div class="goal">
-								<p>30,012% 달성
-							</div>
-						</div>
-						<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
-					</div>
-				</div>
+			    <h3>공개예정 프로젝트</h3>
+			    <div class="row">
+			        <c:choose>
+			            <c:when test="${not empty comingProjects}">
+			                <c:forEach var="project" items="${comingProjects}">
+			                    <div class="col-3 releaseP" data-num="${project.num}">
+			                        <div class="image-container">
+			                            <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
+			                        </div>
+			                        <div class="pundingBtn">
+			                            <p>공개예정</p>
+			                            <div class="goal">
+			                                <p>개시까지 ${project.remained_date}일 남음</p>
+			                            </div>
+			                        </div>
+			                        <p>${project.title}</p>
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:otherwise>
+			                <div class="col-12 text-center">
+			                    <p>현재 공개 예정인 프로젝트가 없습니다.</p>
+			                </div>
+			            </c:otherwise>
+			        </c:choose>
+			    </div>
 			</div>
 
 			<div class="pundingImg">
