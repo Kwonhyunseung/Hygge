@@ -107,13 +107,7 @@
                         <button type="button">선택 차단</button>
                     </div>
                     <div class="pagination">
-                        <a href="#" class="prev">&lt;</a>
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#" class="next">&gt;</a>
+                    	${paging}
                     </div>
                 </div>
             </div>
