@@ -14,6 +14,7 @@
 			(SYSDATE - p.start_date &gt;= 0 AND SYSDATE - p.start_date &lt;= 7)
 		</if>
 		<if test="menu == 'deadline'">
+			(sub.total_amount / target * 100 &gt;= 85 OR p.end_date - SYSDATE &lt;= 5) 
 		</if>
 		<if test="menu == 'comingsoon'">
 			(p.start_date - SYSDATE &gt;= 0 AND p.start_date - SYSDATE &lt;= 7)
@@ -60,6 +61,13 @@
 		LEFT OUTER JOIN projectRequest pr ON p.num = pr.num
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
 		LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
+		LEFT OUTER JOIN
+			(SELECT NVL(SUM(total_amount), 0) total_amount, project.num num
+    		FROM PROJECT
+    		LEFT OUTER JOIN product ON project.num = product.num
+    		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
+    		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
+    		GROUP BY project.num) sub ON sub.num = p.num
 		<where>
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>

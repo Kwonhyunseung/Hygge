@@ -2,15 +2,43 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
-
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+/* 페이징 스타일 */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pagination-wrapper .pagination {
+    margin: 0;
+}
+
+.pagination .page-item .page-link {
+    color: #333;
+    border-radius: 4px;
+    margin: 0 2px;
+    transition: all 0.2s;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #f8f9fa;
+    border-color: #3498db;
+    color: #3498db;
+}
+</style>
     <meta charset="UTF-8">
     <title>공지사항 관리</title>
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
     <link rel="stylesheet" href="/dist/css/admin/notice/list.css">
-    <link rel="stylesheet" href="/dist/css/admin/usedBoard/usedList.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -60,7 +88,6 @@
 					                <th>제목</th>
 					                <th>작성자</th>
 					                <th>작성일</th>
-					                <th>조회수</th>
 					                <th>상단고정</th>
 					                <th>관리</th>
 					            </tr>
@@ -98,9 +125,10 @@
 					    <div class="button-group">
 					        <button type="button" class="delete-btn" onclick="deleteList();">선택 삭제</button>
 					    </div>
-					    <div class="page-navigation">
-					        ${paging}
-					    </div>
+					    
+<div class="pagination-wrapper">
+        ${paging}
+    </div>						    
 					</div>
             </div>
         </div>

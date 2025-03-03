@@ -11,12 +11,15 @@ import com.sp.app.model.Member;
 @Mapper
 public interface MemberMapper {
 	public void insertMember(Member dto) throws SQLException;
+	public void insertMaker(Member dto) throws SQLException;
 	public void updateMember(Member dto) throws SQLException;
 	public void updateMember2(Member dto) throws SQLException;
 	public void deleteMember(String email) throws SQLException;
 	public void deleteMember2(String email) throws SQLException;
 	public void updateLastLogin(String email) throws SQLException;
-	
+
+	public long memberSeq();
+
 	public Member findById(String id);
 	public String findAuthority(Map<String, Object> map);
 	

@@ -4,17 +4,30 @@
 <mapper namespace="com.sp.app.admin.mapper.TesterManageMapper">
 
 <select id="testerList" parameterType="map" resultType="com.sp.app.admin.model.TesterManage">
-    SELECT s.*, m.nickname, pr.title
-    FROM Sponsor s
-    JOIN member1 m ON s.memberIdx = m.memberIdx
-    JOIN Project p ON s.num = p.num
-    JOIN ProjectRequest pr ON p.num = pr.num
-    WHERE 1=1
-    <if test="kwd != null and kwd != ''">
-        <include refid="where-list"/>
-    </if>
-    ORDER BY s.request_date DESC
-    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+SELECT s.*, m.nickname, pr.title
+FROM Sponsor s
+JOIN member1 m ON s.memberIdx = m.memberIdx
+JOIN Project p ON s.num = p.num
+JOIN ProjectRequest pr ON p.num = pr.num
+WHERE 1=1
+<if test="kwd != null and kwd != ''">
+<include refid="where-list"/>
+</if>
+<if test="applicationStatus != null and applicationStatus != ''">
+<choose>
+    <when test="applicationStatus == 'pending'">
+    AND s.block = 0
+    </when>
+    <when test="applicationStatus == 'approved'">
+    AND s.block = 1
+    </when>
+    <when test="applicationStatus == 'rejected'">
+    AND s.block = 2
+    </when>
+</choose>
+</if>
+ORDER BY s.request_date DESC
+OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
 
 <sql id="where-list">
@@ -32,15 +45,28 @@
 </sql>
 
 <select id="dataCount" parameterType="map" resultType="Integer">
-    SELECT COUNT(*) 
-    FROM Sponsor s
-    JOIN member1 m ON s.memberIdx = m.memberIdx
-    JOIN Project p ON s.num = p.num
-    JOIN ProjectRequest pr ON p.num = pr.num
-    WHERE 1=1
-    <if test="kwd != null and kwd != ''">
-        <include refid="where-list"/>
-    </if>
+SELECT COUNT(*)
+FROM Sponsor s
+JOIN member1 m ON s.memberIdx = m.memberIdx
+JOIN Project p ON s.num = p.num
+JOIN ProjectRequest pr ON p.num = pr.num
+WHERE 1=1
+<if test="kwd != null and kwd != ''">
+<include refid="where-list"/>
+</if>
+<if test="applicationStatus != null and applicationStatus != ''">
+<choose>
+    <when test="applicationStatus == 'pending'">
+    AND s.block = 0
+    </when>
+    <when test="applicationStatus == 'approved'">
+    AND s.block = 1
+    </when>
+    <when test="applicationStatus == 'rejected'">
+    AND s.block = 2
+    </when>
+</choose>
+</if>
 </select>
 
 <select id="getStatusCount" resultType="map">

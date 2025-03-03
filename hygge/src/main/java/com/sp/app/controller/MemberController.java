@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sp.app.common.StorageService;
 import com.sp.app.model.Member;
 import com.sp.app.service.MemberService;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/member/*")
 public class MemberController {
 	private final MemberService service;
+	private final StorageService storageService;
+	private String uploadPath;
+
+	@PostConstruct
+	private void init() {
+		uploadPath = storageService.getRealPath("/uploads/profile");
+	}
 
 	// ss
 	@RequestMapping(value = "login", method = {RequestMethod.GET, RequestMethod.POST})
@@ -50,8 +59,23 @@ public class MemberController {
 		return "member/account";
 	}
 	
-	@GetMapping("account2")
-	public String accountForm(Model model) {
+	@GetMapping("accountUser")
+	public String accountUser(Model model) {
+		try {
+			model.addAttribute("mode", "User");
+		} catch (Exception e) {
+			log.info("accountUser : ", e);
+		}
+		return "member/account2";
+	}
+	
+	@GetMapping("accountMaker")
+	public String accountMaker(Model model) {
+		try {
+			model.addAttribute("mode", "Maker");
+		} catch (Exception e) {
+			log.info("accountMaker : ", e);
+		}
 		return "member/account2";
 	}
 
@@ -59,7 +83,7 @@ public class MemberController {
 	public String accountSubmit(Member dto, final RedirectAttributes reAttr, Model model, HttpServletRequest req) {
 	    try {
 	    	
-	    	service.insertMember(dto);
+	    	service.insertMember(dto, uploadPath);
 	        
 	        StringBuilder sb = new StringBuilder();
 			sb.append(dto.getName() + "님의 회원 가입이 정상적으로 처리되었습니다.<br>");

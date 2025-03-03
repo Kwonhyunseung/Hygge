@@ -29,7 +29,7 @@
                     </span>
                     <div class="event-img-div">
                         <a href="${pageContext.request.contextPath}/vote/article/${item.vote_num}?page=${page}" class="event-img">
-                            <img src="${pageContext.request.contextPath}/dist/images/sample.jpg">
+                            <img src="${pageContext.request.contextPath}/uploads/project/${item.thumbnail}">
                         </a>
                     </div>
                     <a href="${pageContext.request.contextPath}/vote/article/${item.vote_num}?page=${page}">${item.title}</a>

@@ -44,6 +44,6 @@
     <select id="dataCount" parameterType="map" resultType="Integer">
     SELECT COUNT(*)
 	FROM testBoard
-	WHERE accept_return = 1;
+	WHERE accept_return = 1
     </select>
 </mapper>

@@ -56,7 +56,6 @@ function memberOk() {
         f.pwd.focus();
         return;
     }
-    console.log(str);
 
     const genderChecked = document.querySelector('input[name="gender"]:checked');
     if (!genderChecked) {
@@ -74,7 +73,7 @@ function memberOk() {
     }
 
     f.action = '${pageContext.request.contextPath}/member/account2';
-    // f.submit();
+    f.submit();
 }
 
 // 아이디 중복 검사
@@ -226,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			<div class="mb-3">
 				<label for="pwdCheck">비밀번호 확인 <span style="color: red;">*</span></label>
-				<input type="password" class="form-control" id="pwdCheck"
+				<input type="password" class="form-control" id="pwdCheck" name="pwdCheck"
 					placeholder="비밀번호 확인" required>
 			</div>
 
@@ -318,7 +317,34 @@ document.addEventListener("DOMContentLoaded", function () {
 						name="gender" id="female" value="2"> <label for="female"
 						class="gender-label">여자</label>
 				</div>
-				<div class="gender-divider"></div>
+			</div>
+			<c:if test="${mode == 'Maker'}">
+				<div class="mb-3">
+					<label>메이커 이름(샵 이름)</label>
+					<div>
+						<input type="text" name="makerName" placeholder="메이커 간판으로 사용할 이름을 적어주세요" class="form-control" required>
+					</div>
+				</div>
+				<div class="mb-3">
+					<label>계좌</label>
+					<div>
+						<input type="text" name="bankAccount" placeholder="은행명 계좌번호" class="form-control" required>
+					</div>
+				</div>
+				<div class="mb-3">
+					<label>프로필 이미지</label>
+					<div>
+						<input type="file" name="profile_img_file" class="form-control">
+					</div>
+				</div>
+				<div class="mb-3">
+					<label>메이커 소개</label>
+					<textarea style="resize: none; height: 80px;" name="introduction" class="form-control" required></textarea>
+				</div>
+			</c:if>
+
+			<div>
+				<hr>
 			</div>
 
 			<div class="mb-3 terms">
@@ -439,6 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				<button type="button" id="accountBtn" class="btn btn-primary" onclick="memberOk();">가입하기</button>
 				<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/';">등록취소</button>
 			</div>
+			<input type="hidden" name="authority" value="${mode}">
 		</form>
 	</div>
 </body>
