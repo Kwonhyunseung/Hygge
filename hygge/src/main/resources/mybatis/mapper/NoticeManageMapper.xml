@@ -121,4 +121,12 @@
 <delete id="deleteAllNoticeFiles" parameterType="Long">
     DELETE FROM noticeFile WHERE notice_num = #{num}
 </delete>
+
+<delete id="deleteNotices" parameterType="list">
+    DELETE FROM notice 
+    WHERE num IN 
+    <foreach item="num" collection="list" open="(" separator="," close=")">
+        #{num}
+    </foreach>
+</delete>
 </mapper>

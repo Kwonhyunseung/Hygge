@@ -24,4 +24,6 @@ public interface NoticeManageMapper {
     public void deleteNoticeFile(long num) throws SQLException;
     public void deleteNotice(long num) throws SQLException;
     public void deleteAllNoticeFiles(long num) throws SQLException;
+    
+    public void deleteNotices(List<Long> nums) throws SQLException;
 }

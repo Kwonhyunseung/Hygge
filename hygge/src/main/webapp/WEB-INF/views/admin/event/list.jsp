@@ -162,17 +162,17 @@
                                 <fmt:formatDate value="${dto.exp_date}" pattern="yyyy-MM-dd"/>
                             </div>
                             </div>
-                            <div class="event-status">
-                                <span class="status-badge status-active">진행중</span>
-                                <div class="action-buttons">
-                                    <button type="button" title="수정">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button" title="삭제">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
+  <div class="event-status">
+    <span class="status-badge status-active">진행중</span>
+    <div class="action-buttons">
+        <button type="button" title="수정" onclick="updateEvent(${dto.num})">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button type="button" title="삭제" onclick="deleteEvent(${dto.num})">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</div>
                         </div>
                     </div>
                 </c:forEach>
@@ -372,6 +372,18 @@
             'json' 
         );
     }
+ 
+ // 이벤트 수정 함수
+function updateEvent(num) {
+    location.href = "${pageContext.request.contextPath}/admin/event/update?num=" + num;
+}
+
+// 이벤트 삭제 함수
+function deleteEvent(num) {
+    if(confirm("이벤트를 삭제하시겠습니까?")) {
+        location.href = "${pageContext.request.contextPath}/admin/event/delete?num=" + num;
+    }
+}
     </script>
 </body>
 </html>

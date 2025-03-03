@@ -8,10 +8,11 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.admin.model.NoticeManage;
 import com.sp.app.admin.service.NoticeManageService;
@@ -21,7 +22,6 @@ import com.sp.app.model.SessionInfo;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -249,4 +249,36 @@ public class NoticeManagementController {
 	    
 	    return "redirect:/admin/notice/list?page=" + page;
 	}
+	@PostMapping("deleteList")
+	@ResponseBody
+	public Map<String, Object> deleteList(
+	        @RequestBody Map<String, List<Long>> requestBody,
+	        HttpSession session) {
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+
+	        List<Long> nums = requestBody.get("nums");
+
+	        if (nums == null || nums.isEmpty()) {
+	            response.put("status", "error");
+	            response.put("message", "삭제할 공지사항을 선택해주세요.");
+	            return response;
+	        }
+
+	        // 서비스 계층의 다중 삭제 메서드 호출
+	        service.deleteNotices(nums, uploadPath);
+
+	        response.put("status", "success");
+	        response.put("message", nums.size() + "개의 공지사항이 삭제되었습니다.");
+
+	    } catch (Exception e) {
+	        log.error("Multiple notice deletion failed", e);
+	        response.put("status", "error");
+	        response.put("message", "공지사항 삭제 중 오류가 발생했습니다.");
+	    }
+
+	    return response;
+	}
+	
 }

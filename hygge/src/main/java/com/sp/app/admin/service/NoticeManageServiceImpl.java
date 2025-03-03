@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.app.admin.mapper.NoticeManageMapper;
@@ -173,6 +174,31 @@ public class NoticeManageServiceImpl implements NoticeManageService{
 	        
 	    } catch(Exception e) {
 	        log.error("deleteNotice error", e);
+	        throw e;
+	    }
+	}
+
+	@Override
+	@Transactional
+	public void deleteNotices(List<Long> nums, String pathname) throws Exception {
+	    try {
+	        for (Long num : nums) {
+	            List<NoticeManage> fileList = listNoticeFile(num);
+	            
+	            // 물리적 파일 삭제
+	            for (NoticeManage vo : fileList) {
+	                fileManager.deletePath(pathname + File.separator + vo.getS_FileName());
+	            }
+	            
+	            // 해당 공지사항의 모든 파일 DB 레코드 삭제
+	            mapper.deleteAllNoticeFiles(num);
+	        }
+	        
+	        // 여러 공지사항 삭제
+	        mapper.deleteNotices(nums);
+	        
+	    } catch (Exception e) {
+	        log.error("deleteNotices error", e);
 	        throw e;
 	    }
 	}

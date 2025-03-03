@@ -45,6 +45,39 @@
 .btn-write i {
     font-size: 14px;
 }
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 220px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+.btn-search {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-search:hover {
+  background-color: #2980b9;
+}
 	</style>
 </head>
 <body>
@@ -63,28 +96,29 @@
                 </div>
             </div>
 
-            <div class="filter-section">
-                <div class="filter-wrapper">
-                <form method="get" action="${pageContext.request.contextPath}/admin/vote/list">
-                    <select name="schType">
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                    </select>
-                    <select name="status">
-                        <option value="all">전체 상태</option>
-                        <option value="active">진행중</option>
-                        <option value="ended">종료</option>
-                    </select>
-				      <input class="" type="text" name="kwd" value="${kwd}" placeholder="검색어를 입력하세요">
-				      <button type="submit">검색</button>  
-				 </form>                  
-                    
-                    
-	             <button type="button" class="btn-write" onclick="location.href='${pageContext.request.contextPath}/admin/vote/write';">
-		            <i class="fas fa-pen"></i> 글등록
-		        </button>
-                </div>
-            </div>
+			<div class="filter-section">
+			    <div class="filter-wrapper">
+			        <form method="get" action="${pageContext.request.contextPath}/admin/vote/list">
+			            <select name="schType">
+			                <option value="title">제목</option>
+			                <option value="content">내용</option>
+			            </select>
+			            <select name="status">
+			                <option value="all">전체 상태</option>
+			                <option value="active">진행중</option>
+			                <option value="ended">종료</option>
+			            </select>
+			            <input class="search-input" type="text" name="kwd" value="${kwd}" placeholder="검색어를 입력하세요">
+			            <button type="submit" class="btn-search">
+			                <i class="fas fa-search"></i> 검색
+			            </button>
+			        </form>
+			        
+			        <button type="button" class="btn-write" onclick="location.href='${pageContext.request.contextPath}/admin/vote/write';">
+			            <i class="fas fa-pen"></i> 글등록
+			        </button>
+			    </div>
+			</div>
 
 			<div class="vote-grid">
 			  <c:forEach var="vote" items="${vote}">

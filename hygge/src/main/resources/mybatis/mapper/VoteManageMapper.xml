@@ -5,7 +5,7 @@
 		select pr.num, pr.title 
 		FROM projectRequest pr
 		LEFT JOIN project p ON p.num = pr.num
-		WHERE p.block = 1
+		WHERE p.block = 0
 	</select>
 	
 <select id="voteList" parameterType="map" resultType="com.sp.app.admin.model.VoteManage">

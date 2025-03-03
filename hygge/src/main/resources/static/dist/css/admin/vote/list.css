@@ -121,17 +121,29 @@
 }
 
 /* 필터 섹션 */
+/* 필터 섹션 */
 .filter-section {
     background: white;
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .filter-wrapper {
     display: flex;
     gap: 10px;
     align-items: center;
+    width: 100%; /* 전체 너비 사용 */
+}
+
+.filter-wrapper form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-grow: 1; /* 가능한 많은 공간 차지 */
 }
 
 .filter-wrapper select {

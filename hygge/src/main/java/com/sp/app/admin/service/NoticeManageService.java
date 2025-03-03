@@ -19,4 +19,6 @@ public interface NoticeManageService {
     public void deleteNoticeFile(long num, String pathname) throws Exception;
     public void deleteNotice(long num, String pathname) throws Exception;
     
+    public void deleteNotices(List<Long> nums, String pathname) throws Exception;
+    
 }

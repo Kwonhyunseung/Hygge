@@ -99,8 +99,7 @@ public class VoteManageController {
 	}
 	
 	@GetMapping("write")
-	public String writeForm(@RequestParam(name = "vote_num") Long vote_num,
-			Model model) throws Exception {
+	public String writeForm(Model model) throws Exception {
 		
 		String mode = "write";
 		List<ProjectManage> projects = null;
@@ -110,11 +109,6 @@ public class VoteManageController {
 		try {
 			projects = service.projectList();
 			
-			if(vote_num != null) {
-				mode = "update";
-				dto = service.findVote(vote_num);
-				selectedProjects = service.findVoteCandidates(vote_num);
-			}
 			
 	        model.addAttribute("mode", mode);
 	        model.addAttribute("dto", dto);

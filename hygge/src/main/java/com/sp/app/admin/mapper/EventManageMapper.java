@@ -19,6 +19,7 @@ public interface EventManageMapper {
 	public EventManage readEvent(long num);
 	public void updateEvent(EventManage dto);
 	public void deleteEvent(long num) throws SQLException;
+	public void deleteEventMember (long num) throws SQLException;
 	public void applyEvent(Map<String, Object> map) throws SQLException;
 	public List<EventManage> getEventMembers(Long num) throws SQLException;
 }

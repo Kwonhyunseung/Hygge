@@ -108,11 +108,14 @@ public class EventManageServiceImpl implements EventManageService {
 	public void deleteEvent(long num, String pathname) throws Exception {
 		try {
 			EventManage dto = readEvent(num);
-			if(dto.getPhoto() != null) {
-				storageService.deleteFile(pathname, dto.getPhoto());
-			}
-			
-			mapper.deleteEvent(num);
+	        
+	        deleteEventMember(num);
+	        
+	        mapper.deleteEvent(num);
+	        
+	        if(dto.getPhoto() != null) {
+	            storageService.deleteFile(pathname, dto.getPhoto());
+	        }
 		} catch (Exception e) {
 			log.info("deleteEvent : ", e );
 		}
@@ -133,6 +136,12 @@ public class EventManageServiceImpl implements EventManageService {
 	    List<EventManage> list = mapper.getEventMembers(num);
 	    log.info("조회된 회원 수: {}", list != null ? list.size() : "null");
 	    return list;
+	}
+
+	@Override
+	public void deleteEventMember(long num) throws Exception {
+		mapper.deleteEventMember(num);
+		
 	}
 
 	

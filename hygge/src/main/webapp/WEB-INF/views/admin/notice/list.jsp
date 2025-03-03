@@ -6,6 +6,7 @@
 <html>
 <head>
 <style type="text/css">
+
 /* 페이징 스타일 */
 .pagination-wrapper {
     display: flex;
@@ -122,16 +123,102 @@
 					</div>
 					
 					<div class="content-footer">
-					    <div class="button-group">
-					        <button type="button" class="delete-btn" onclick="deleteList();">선택 삭제</button>
+					    <div class="">
+					   	 <button type="button" class="btn btn-danger" style="white-space: nowrap;" onclick="deleteList();">선택 삭제</button>
 					    </div>
 					    
-<div class="pagination-wrapper">
-        ${paging}
-    </div>						    
+					<div class="pagination-wrapper">
+					        ${paging}
+					    </div>						    
 					</div>
             </div>
         </div>
     </div>
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+    // 전체 체크박스 클릭 이벤트
+    $("#checkAll").click(function() {
+        $("input[name='selectedItems']").prop("checked", this.checked);
+    });
+    
+    // 개별 체크박스가 변경될 때 전체 선택 체크박스 상태 업데이트
+    $(document).on('click', "input[name='selectedItems']", function() {
+        const allChecked = $("input[name='selectedItems']").length === 
+                          $("input[name='selectedItems']:checked").length;
+        $("#checkAll").prop("checked", allChecked);
+    });
+});
+
+function deleteList() {
+    // 선택된 항목 체크
+    const selectedItems = $("input[name='selectedItems']:checked");
+    
+    if (selectedItems.length === 0) {
+        alert("삭제할 항목을 선택해주세요.");
+        return;
+    }
+    
+    if (!confirm("선택한 " + selectedItems.length + "개의 공지사항을 삭제하시겠습니까?")) {
+        return;
+    }
+    
+    // 선택된 항목의 ID 배열 생성
+    const selectedIds = [];
+    selectedItems.each(function() {
+        selectedIds.push(Number($(this).val())); // Number로 타입 변환
+    });
+    
+    // AJAX 요청
+    $.ajax({
+        url: "${pageContext.request.contextPath}/admin/notice/deleteList",
+        type: 'POST',
+        contentType: 'application/json', // 명시적으로 JSON 타입 설정
+        data: JSON.stringify({
+            nums: selectedIds
+        }),
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === "success") {
+                alert("선택한 공지사항이 삭제되었습니다.");
+                location.reload(); // 페이지 새로고침
+            } else {
+                alert("삭제 처리 중 오류가 발생했습니다: " + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("삭제 중 오류가 발생했습니다.");
+            console.error(error);
+        }
+    });
+}
+
+function deleteNotice(num) {
+    if (!confirm("공지사항을 삭제하시겠습니까?")) {
+        return;
+    }
+    
+    $.ajax({
+        url: "${pageContext.request.contextPath}/admin/notice/deleteList",
+        type: 'POST',
+        contentType: 'application/json', // 명시적으로 JSON 타입 설정
+        data: JSON.stringify({
+            nums: [num] // 단일 삭제의 경우 배열로 감싸기
+        }),
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === "success") {
+                alert("공지사항이 삭제되었습니다.");
+                location.href = "${pageContext.request.contextPath}/admin/notice/list";
+            } else {
+                alert("삭제 처리 중 오류가 발생했습니다: " + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("삭제 중 오류가 발생했습니다.");
+            console.error(error);
+        }
+    });
+}
+</script>
 </html>

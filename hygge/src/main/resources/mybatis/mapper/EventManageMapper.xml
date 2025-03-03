@@ -84,4 +84,8 @@
 	JOIN member1 m1 ON m1.memberIdx = er.memberIdx
 	WHERE er.num = #{num}
 	</select>
+	
+	<delete id="deleteEventMember" parameterType="Long">
+	    DELETE FROM event_request WHERE num = #{num}
+	</delete>
 </mapper>
