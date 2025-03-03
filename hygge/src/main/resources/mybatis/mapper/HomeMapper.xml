@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.HomeMapper">
+	<select id="subListCategory" parameterType="long" resultType="com.sp.app.model.Category">
+        SELECT category_num, parent_num, name
+        FROM category
+        WHERE parent_num = #{parent_num}
+        ORDER BY category_num ASC
+    </select>
+</mapper>

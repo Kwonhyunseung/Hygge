@@ -5,28 +5,6 @@
 
 	<!-- 프로젝트 상세화면 - 전반적인 메인 정보들 -->
 	<select id="fundingProduct" parameterType="Long" resultType="com.sp.app.model.Funding">
-		<!-- SELECT DISTINCT
-			p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
-			pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,
-			TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
-			TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date,
-			NVL(payment_summary.total_amount, 0) AS total_amount,
-			(SELECT COUNT(1)
-			FROM follow f
-			WHERE f.following = pr.MEMBERIDX) AS followingCount
-		FROM project p
-		JOIN projectRequest pr ON p.num = pr.num
-		JOIN category c ON pr.category_num = c.category_num
-		JOIN MEMBERAUTHORITY ma ON ma.MEMBERIDX = pr.MEMBERIDX
-		JOIN member1 m ON m.memberidx = ma.MEMBERIDX
-		LEFT JOIN (
-			SELECT pd.num, SUM(s.sum) AS total_amount
-			FROM product pd
-			LEFT JOIN sales s ON pd.product_num = s.product_num
-			WHERE pd.num = #{num}
-			GROUP BY pd.num
-		) payment_summary ON p.num = payment_summary.num
-		WHERE p.num = #{num} AND ma.AUTHORITY = 'MAKER' -->
 		SELECT 
 		    p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
 		    pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,

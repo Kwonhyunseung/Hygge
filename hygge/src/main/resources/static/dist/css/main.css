@@ -115,14 +115,30 @@ body {
 
 /* 이벤트 이미지 */
 .special {
-	margin-top: 200px;	
+  margin-top: 200px;
 }
-.special>img {
-	width: 343px;
-	margin-top: 25px;
-	margin-bottom: 30px;
-	margin-left: 30px;
-	border-radius: 5px;
+
+.special > img {
+  width: 343px;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  margin-left: 30px;
+  border-radius: 5px;
+}
+
+/* 특정 캐러셀에만 적용되도록 선택자를 구체화 */
+.special #carouselExampleFade .carousel-inner img {
+  width: 343px !important;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  margin-left: 30px;
+  border-radius: 5px;
+  height: auto;
+}
+
+/* 특정 캐러셀의 w-100 클래스만 재정의 */
+.special #carouselExampleFade .carousel-inner .w-100 {
+  width: 343px !important;
 }
 
 /* 다시보기 */

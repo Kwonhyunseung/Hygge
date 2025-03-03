@@ -1,13 +1,15 @@
 package com.sp.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sp.app.model.Category;
-import com.sp.app.service.MakerService;
+import com.sp.app.service.HomeService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
-	private final MakerService makerService;
+	/* private final MakerService makerService; */
+	private final HomeService homeService;
+
 
 	@GetMapping("/")
 	public String handleHome(Model model) {
 		try {
+			/*
 			List<Category> parentCategories = makerService.listCategory(0);
 			List<Category> childCategories01 = makerService.listCategory(1);
 			List<Category> childCategories02 = makerService.listCategory(2);
@@ -42,6 +47,22 @@ public class HomeController {
 			model.addAttribute("childCategories07", childCategories07);
 			model.addAttribute("childCategories08", childCategories08);
 			model.addAttribute("childCategories09", childCategories09);
+			*/
+			
+			List<Category> parentCategories = homeService.subListCategory(0);
+            model.addAttribute("parentCategories", parentCategories);
+
+            Map<String, List<Category>> subCategoriesMap = new HashMap<>();
+            
+            for (Category parent : parentCategories) {
+                long categoryNum = parent.getCategory_num();
+                List<Category> subCategories = homeService.subListCategory(categoryNum);
+                
+                subCategoriesMap.put(parent.getName(), subCategories);
+            }
+            
+            model.addAttribute("subCategoriesMap", subCategoriesMap);
+            
 		} catch (Exception e) {
 		}
 		return "main/home";
