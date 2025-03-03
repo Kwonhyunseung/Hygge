@@ -37,13 +37,14 @@ public class TesterManagementController {
 			@RequestParam(name = "page", defaultValue = "1") int current_page,
 			@RequestParam(name = "schType", defaultValue = "all") String schType,
 			@RequestParam(name = "kwd", defaultValue = "") String kwd,
+	        @RequestParam(name = "applicationStatus", defaultValue = "") String applicationStatus,
 			HttpServletRequest req,
 			Model model
 			) {
 		List<TesterManage> member = null;
 		
 		try {
-			int size = 10;
+			int size = 8;
 			int total_page = 0;
 			int dataCount = 0;
 			
@@ -52,8 +53,9 @@ public class TesterManagementController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("schType", schType);
 			map.put("kwd", kwd);
+			map.put("applicationStatus", applicationStatus);
 			
-			dataCount = service.dataCount(map); // dataCount 쿼리 필요
+			dataCount = service.dataCount(map);
 			total_page = paginateUtil.pageCount(dataCount, size);
 			
 			current_page = Math.min(current_page, total_page);
@@ -63,6 +65,7 @@ public class TesterManagementController {
 			
 			map.put("offset", offset);
 			map.put("size", size);
+			
 			
 			member = service.testerList(map);
 			
@@ -76,10 +79,19 @@ public class TesterManagementController {
 				query += "&" + qs;
 			}
 			
+			if(!applicationStatus.isBlank()) {
+			    query += "&applicationStatus=" + applicationStatus;
+			}
+			
+			if((!kwd.isBlank() || !applicationStatus.isBlank())) {
+			    listUrl += "?" + query.substring(query.indexOf("&") + 1);
+			}
+			
 	        Map<String, Object> countMap = service.getStatusCount();
 	        
 			String paging = paginateUtil.paging(current_page, total_page, listUrl);
 			
+			model.addAttribute("applicationStatus", applicationStatus);
 			model.addAttribute("countMap", countMap);
             model.addAttribute("member", member);
             model.addAttribute("dataCount", dataCount);

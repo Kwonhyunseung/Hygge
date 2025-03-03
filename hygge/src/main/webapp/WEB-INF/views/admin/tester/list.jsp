@@ -45,28 +45,38 @@
 		    </div>
 
             <div class="content-body">
-                <div class="filter-section">
-                    <div class="project-filter">
-                        <select name="projectStatus">
-                            <option value="">프로젝트 상태</option>
-                            <option value="recruiting">모집중</option>
-                            <option value="ongoing">진행중</option>
-                            <option value="completed">완료</option>
-                        </select>
-                        <select name="applicationStatus">
-                            <option value="">신청 상태</option>
-                            <option value="pending">대기중</option>
-                            <option value="approved">승인</option>
-                            <option value="rejected">거절</option>
-                        </select>
-                    </div>
-                    <div class="search-wrapper">
-                        <input type="text" placeholder="프로젝트명 또는 신청자 검색">
-                        <button type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+			<div class="filter-section">
+			    <form name="searchForm" action="${pageContext.request.contextPath}/admin/tester/list" method="get">
+			        <div class="search-container">
+			            <div class="status-filter">
+			                <select name="applicationStatus" onchange="searchList()">
+			                    <option value="">신청 상태</option>
+			                    <option value="pending" ${applicationStatus=="pending"?"selected":""}>대기중</option>
+			                    <option value="approved" ${applicationStatus=="approved"?"selected":""}>승인</option>
+			                    <option value="rejected" ${applicationStatus=="rejected"?"selected":""}>거절</option>
+			                </select>
+			            </div>
+			            <div class="search-type">
+			                <select name="schType">
+			                    <option value="all" ${schType=="all"?"selected":""}>전체</option>
+			                    <option value="nickname" ${schType=="nickname"?"selected":""}>신청자</option>
+			                    <option value="title" ${schType=="title"?"selected":""}>프로젝트명</option>
+			                </select>
+			            </div>
+			            <div class="search-input">
+			                <input type="text" name="kwd" value="${kwd}" placeholder="프로젝트명 또는 신청자 검색">
+			                <button type="button" onclick="searchList()">
+			                    <i class="fas fa-search"></i>
+			                </button>
+			            </div>
+			                        <div class="refresh-button">
+                <button type="button" onclick="refreshList()" title="새로고침">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+			        </div>
+			    </form>
+			</div>
 
                 <div class="board-container">
                     <table>
@@ -134,13 +144,7 @@
                         <button type="button" class="bulk-reject">선택 거절</button>
                     </div>
                     <div class="pagination">
-                        <a href="#" class="prev">&lt;</a>
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#" class="next">&gt;</a>
+                    	${paging}
                     </div>
                 </div>
             </div>
@@ -150,6 +154,16 @@
 </body>
 
 <script type="text/javascript">
+function searchList() {
+    const f = document.searchForm;
+    f.submit();
+}
+
+function refreshList() {
+    const currentUrl = window.location.href;
+    window.location.href = "${pageContext.request.contextPath}/admin/tester/list"
+}
+
 function approveTester(memberIdx, num) {
     if(!confirm("체험단 신청을 승인하시겠습니까?")) {
         return;
@@ -190,5 +204,108 @@ function rejectTester(memberIdx, num) {
 	ajaxRequest(url, 'post', query, 'json', fn);
 }
 
+document.getElementById('checkAll').addEventListener('click', function() {
+    const checkboxes = document.getElementsByName('selectedItems');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
+//선택 거절 기능
+document.querySelector('.bulk-reject').addEventListener('click', function() {
+    const selectedItems = getSelectedItems();
+    if (selectedItems.length === 0) {
+        alert('거절할 항목을 선택해주세요.');
+        return;
+    }
+    
+    if (!confirm(selectedItems.length + '개 항목을 거절하시겠습니까?')) {
+        return;
+    }
+    
+    // 선택한 항목 거절 처리
+    rejectSelectedItems(selectedItems);
+});
+
+//선택 승인 기능
+document.querySelector('.bulk-approve').addEventListener('click', function() {
+    const selectedItems = getSelectedItems();
+    if (selectedItems.length === 0) {
+        alert('승인할 항목을 선택해주세요.');
+        return;
+    }
+    
+    if (!confirm(selectedItems.length + '개 항목을 승인하시겠습니까?')) {
+        return;
+    }
+    
+    // 선택한 항목 승인 처리
+    approveSelectedItems(selectedItems);
+});
+
+//선택한 항목 거절 처리
+function rejectSelectedItems(items) {
+    let processedCount = 0;
+    let successCount = 0;
+    
+    items.forEach(item => {
+        const url = "${pageContext.request.contextPath}/admin/tester/reject";
+        const query = "memberIdx=" + item.memberIdx + "&num=" + item.num;
+        
+        const fn = function(data) {
+            processedCount++;
+            if(data.state === "success") {
+                successCount++;
+            }
+            
+            if (processedCount === items.length) {
+                alert(successCount + '개 항목이 거절되었습니다.');
+                location.reload();
+            }
+        };
+        
+        ajaxRequest(url, "post", query, "json", fn);
+    });
+}
+
+function getSelectedItems() {
+    const checkboxes = document.getElementsByName('selectedItems');
+    const selectedItems = [];
+    
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const tr = checkbox.closest('tr');
+            const memberIdx = tr.querySelector('.approve-btn').getAttribute('onclick').match(/'([^']+)'/)[1];
+            const num = checkbox.value;
+            selectedItems.push({memberIdx, num});
+        }
+    });
+    
+    return selectedItems;
+}
+
+function approveSelectedItems(items) {
+    let processedCount = 0;
+    let successCount = 0;
+    
+    items.forEach(item => {
+        const url = "${pageContext.request.contextPath}/admin/tester/approve";
+        const query = "memberIdx=" + item.memberIdx + "&num=" + item.num;
+        
+        const fn = function(data) {
+            processedCount++;
+            if(data.state === "success") {
+                successCount++;
+            }
+            
+            if (processedCount === items.length) {
+                alert(successCount + '개 항목이 승인되었습니다.');
+                location.reload();
+            }
+        };
+        
+        ajaxRequest(url, "post", query, "json", fn);
+    });
+}
 </script>
 </html>
