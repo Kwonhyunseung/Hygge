@@ -34,4 +34,5 @@ public class MyPage {
     private int grade;
     private Long projectNum;
     private Long salesNum;
+    private String profile_img;
 }

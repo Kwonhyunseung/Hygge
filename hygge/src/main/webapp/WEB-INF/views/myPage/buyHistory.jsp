@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +95,18 @@ h2 {
                                 </c:choose>
                             </td>
                             <td><a href="#" class="btn btn-details">보기</a></td>
-                            <td><a href="${pageContext.request.contextPath}/myPage/rwrite?title=${payment.title}&sales_num=${payment.sales_num}&project_num=${payment.project_num}" class="btn btn-details">작성</a></td>
+                           <c:choose>
+						    <c:when test="${payment.review_num == 0}">
+						        <!-- 리뷰가 없을 때, 작성 가능 -->
+						        <td>
+								    <a href="javascript:void(0);" class="btn btn-details" onclick="redirectToRwrite('${payment.title}', ${payment.sales_num}, ${payment.project_num})">작성</a>
+								</td>
+						    </c:when>
+						    <c:otherwise>
+						        <!-- 리뷰가 있을 때, 작성 완료 및 버튼 비활성화 -->
+						        <td><a href="#" class="btn btn-details disabled" style="font-size: 15px; color: red; border: 2px solid red; border-radius: 5px;">완료</a></td>
+						    </c:otherwise>
+						</c:choose>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -112,4 +125,11 @@ h2 {
 <jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 
 </body>
+<script>
+    function redirectToRwrite(title, salesNum, projectNum) {
+        var encodedTitle = encodeURIComponent(title);
+        var url = '${pageContext.request.contextPath}/myPage/rwrite?title=' + encodedTitle + '&sales_num=' + salesNum + '&project_num=' + projectNum;
+        window.location.href = url;
+    }
+</script>
 </html>

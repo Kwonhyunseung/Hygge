@@ -38,4 +38,7 @@
         m2.gender = #{gender}
     WHERE m2.memberIdx = (SELECT m1.memberIdx FROM member1 m1 WHERE m1.id = #{id})
   </update>
+  
+  
+  
 </mapper>

@@ -14,7 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyPageServiceImpl implements MyPageService {
     private final MyPageMapper mapper;
-
+    
+    
     @Override
     public MyPage findById(String id) {
         MyPage dto = null;
@@ -56,4 +57,5 @@ public class MyPageServiceImpl implements MyPageService {
             throw e;
         }
     }
+
 }

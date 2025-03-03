@@ -13,7 +13,11 @@ SELECT
     sh.num AS shipping_state,
     p.product_num,
     s.num AS sales_num,
-    pr.num AS project_num 
+    pr.num AS project_num, 
+    NVL((SELECT r.sales_num
+     FROM review r 
+     WHERE r.sales_num = s.num
+     FETCH FIRST 1 ROWS ONLY),'0') AS review_num
 FROM 
     payment pay
 JOIN 

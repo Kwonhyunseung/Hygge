@@ -8,5 +8,4 @@ public interface MyPageService {
     public void ProfileEdit2(MyPage dto);
     public void updateProfile(MyPage dto);
 
-
 }

@@ -137,7 +137,7 @@ public class MyPageController {
 		HttpServletRequest req) {
 		try {
 			SessionInfo info = Objects.requireNonNull((SessionInfo)session.getAttribute("member"));
-		
+			
 			int size = 10;
 			int total_page;
 			int dataCount;
@@ -160,6 +160,7 @@ public class MyPageController {
 			map.put("offset", offset);
 			map.put("size", size);
 			
+			
 			List<Payment> paymentList = paymentService.paymentList(map);
 			String cp = req.getContextPath();
 			String query = "";
@@ -168,6 +169,7 @@ public class MyPageController {
 			query = "schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "utf-8");
 			listUrl = cp + "/myPage/paymentList?" + query;
 			}
+			
 			
 			String paging = paginateUtil.paging(current_page, total_page, listUrl);
 			System.out.println(dataCount+", "+current_page+", "+size);
@@ -333,13 +335,13 @@ public class MyPageController {
 		log.info("리뷰 작성 페이지 요청");
 		try {
 			
+
 			model.addAttribute("project_num", project_num);
 			model.addAttribute("sales_num", sales_num);
 			model.addAttribute("title", title);
 		} catch (Exception e) {
 			log.error("rwriteForm 오류", e);
 			
-			throw e;
 		}
 		
 		return "myPage/rwrite";

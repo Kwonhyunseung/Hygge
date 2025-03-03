@@ -12,6 +12,13 @@
     WHERE m.memberIdx = #{memberIdx}
   </select>
 
+  <select id="getReivews" resultType="int" parameterType="Long">
+		SELECT r.sales_num
+        FROM review r
+        JOIN sales s ON r.sales_num = s.num
+        JOIN payment p ON s.payment_num = p.payment_num
+        WHERE p.memberIdx = #{memberIdx}
+</select>
 	<!-- 후기 내용 조회 쿼리 -->
 	<select id="reviewList" parameterType="map" resultType="com.sp.app.model.Review">
 	    SELECT 
