@@ -327,7 +327,7 @@ public class MyPageController {
 	}
 	
 	@GetMapping("rwrite")
-	public String rwriteForm(@RequestParam(name="title",required = false) String title,
+	 public String rwriteForm(@RequestParam(name="title",required = false) String title,
 			@RequestParam(name="sales_num") long sales_num,
 			@RequestParam(name="project_num") long project_num,
 			 Model model
