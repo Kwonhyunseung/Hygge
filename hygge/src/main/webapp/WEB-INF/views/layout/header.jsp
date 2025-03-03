@@ -351,7 +351,7 @@
           </c:otherwise>
         </c:choose>
         
-        <button class="btn btn-upload">프로젝트 올리기</button>
+        <button class="btn btn-upload" onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSign'">프로젝트 올리기</button>
       </div>
     </div>
   </nav>

@@ -404,24 +404,28 @@ function check() {
 	if (!value || value == 0) {
 		$('.alert-msg').html(alertmsg);
 		$('.alert-container').css('display', 'flex');
+		console.log('목표금액');
 		return false;
 	}
 	value = '${funding.term}';
 	if (!value || value == 0) {
 		$('.alert-msg').html(alertmsg);
 		$('.alert-container').css('display', 'flex');
+		console.log('목표기간');
 		return false;
 	}
 	value = '${funding.thumbnail}';
 	if (!value || value == '') {
 		$('.alert-msg').html(alertmsg);
 		$('.alert-container').css('display', 'flex');
+		console.log('목표썸네일');
 		return false;
 	}
 	value = '${funding.business}';
 	if (!value || value == 0) {
 		$('.alert-msg').html(alertmsg);
 		$('.alert-container').css('display', 'flex');
+		console.log('목표비지니스');
 		return false;
 	}
 	// 제목 확인
