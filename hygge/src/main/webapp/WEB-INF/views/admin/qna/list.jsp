@@ -26,55 +26,54 @@
                     <h2>1:1 문의 관리</h2>
                 </div>
                 <div class="status-summary">
-                    <div class="status-item new">
-                        <span class="label">신규 문의</span>
-                        <span class="count">12</span>
-                    </div>
                     <div class="status-item pending">
                         <span class="label">답변 대기</span>
-                        <span class="count">25</span>
+                        <span class="count">${pendingCount}</span>
                     </div>
                     <div class="status-item completed">
                         <span class="label">답변 완료</span>
-                        <span class="count">158</span>
+                        <span class="count">${completedCount}</span>
+                    </div>
+                    <div class="status-item total">
+                        <span class="label">전체 문의</span>
+                        <span class="count">${totalCount}</span>
                     </div>
                 </div>
             </div>
 
             <div class="content-body">
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <select name="inquiryType">
-                            <option value="">문의 유형</option>
-                            <option value="account">계정 문의</option>
-                            <option value="payment">결제 문의</option>
-                            <option value="product">상품 문의</option>
-                            <option value="delivery">배송 문의</option>
-                            <option value="refund">환불 문의</option>
-                            <option value="other">기타 문의</option>
-                        </select>
-                        <select name="status">
-                            <option value="">처리 상태</option>
-                            <option value="new">신규</option>
-                            <option value="pending">답변 대기</option>
-                            <option value="completed">답변 완료</option>
-                        </select>
-                        <input type="date" name="startDate">
-                        <span>~</span>
-                        <input type="date" name="endDate">
+                <form name="searchForm" action="${pageContext.request.contextPath}/admin/qna/list" method="get">
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <select name="category">
+                                <option value="0">문의 유형</option>
+                                <c:forEach var="category" items="${categoryList}">
+                                    <option value="${category.category}" ${category.category == category ? "selected" : ""}>${category.name}</option>
+                                </c:forEach>
+                            </select>
+                            <select name="status">
+                                <option value="">처리 상태</option>
+                                <option value="pending" ${status=="pending" ? "selected" : ""}>답변 대기</option>
+                                <option value="completed" ${status=="completed" ? "selected" : ""}>답변 완료</option>
+                            </select>
+                            <input type="date" name="startDate" value="${startDate}">
+                            <span>~</span>
+                            <input type="date" name="endDate" value="${endDate}">
+                        </div>
+                        <div class="search-wrapper">
+                            <select name="schType">
+                                <option value="all" ${schType=="all" ? "selected" : ""}>전체</option>
+                                <option value="content" ${schType=="content" ? "selected" : ""}>문의내용</option>
+                                <option value="writer" ${schType=="writer" ? "selected" : ""}>작성자</option>
+                                <option value="answer" ${schType=="answer" ? "selected" : ""}>답변내용</option>
+                            </select>
+                            <input type="text" name="kwd" value="${kwd}" placeholder="검색어를 입력하세요">
+                            <button type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="search-wrapper">
-                        <select name="searchType">
-                            <option value="content">문의내용</option>
-                            <option value="writer">작성자</option>
-                            <option value="answer">답변내용</option>
-                        </select>
-                        <input type="text" placeholder="검색어를 입력하세요">
-                        <button type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+                </form>
 
                 <div class="board-container">
                     <table>
@@ -91,56 +90,95 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="urgent">
-                                <td>125</td>
-                                <td><span class="type-badge payment">결제</span></td>
-                                <td class="title">
-                                    <span class="urgent-badge">긴급</span>
-                                    <span class="text">결제 오류 발생했습니다.</span>
-                                </td>
-                                <td>user123</td>
-                                <td>2024-02-07 14:23</td>
-                                <td><span class="status-badge new">신규</span></td>
-                                <td>-</td>
-                                <td class="action-buttons">
-                                    <button type="button" onclick="location.href='answer?id=125';" class="answer-btn">
-                                        답변하기
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>124</td>
-                                <td><span class="type-badge delivery">배송</span></td>
-                                <td class="title">
-                                    <span class="text">배송 주소 변경 문의</span>
-                                </td>
-                                <td>user456</td>
-                                <td>2024-02-07 11:15</td>
-                                <td><span class="status-badge completed">답변완료</span></td>
-                                <td>2024-02-07 13:20</td>
-                                <td class="action-buttons">
-                                    <button type="button" onclick="location.href='view?id=124';" class="view-btn">
-                                        조회
-                                    </button>
-                                </td>
-                            </tr>
+                            <c:forEach var="dto" items="${list}" varStatus="status">
+                                <tr>
+                                    <td>${dataCount - (page-1) * size - status.index}</td>
+                                    <td>
+                                        <span class="type-badge ${fn:toLowerCase(dto.category_name)}">
+                                            ${dto.category_name}
+                                        </span>
+                                    </td>
+                                    <td class="title">
+                                        <span class="text">${dto.q_title}</span>
+                                    </td>
+                                    <td>${dto.nickname}</td>
+                                    <td>
+                                        <fmt:parseDate value="${dto.q_date}" var="q_date" pattern="yyyy-MM-dd HH:mm:ss" />
+                                        <fmt:formatDate value="${q_date}" pattern="yyyy-MM-dd HH:mm" />
+                                    </td>
+                                    <td>
+                                        <span class="status-badge ${dto.answer_status == '미답변' ? 'new' : 'completed'}">
+                                            ${dto.answer_status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <c:if test="${not empty dto.a_date}">
+                                            <fmt:parseDate value="${dto.a_date}" var="a_date" pattern="yyyy-MM-dd HH:mm:ss" />
+                                            <fmt:formatDate value="${a_date}" pattern="yyyy-MM-dd HH:mm" />
+                                        </c:if>
+                                        <c:if test="${empty dto.a_date}">-</c:if>
+                                    </td>
+                                    <td class="action-buttons">
+                                        <c:if test="${dto.answer_status == '미답변'}">
+                                            <button type="button" onclick="location.href='answer?num=${dto.num}&page=${page}';" class="answer-btn">
+                                                답변하기
+                                            </button>
+                                        </c:if>
+                                        <c:if test="${dto.answer_status != '미답변'}">
+                                            <button type="button" onclick="location.href='article?num=${dto.num}&page=${page}';" class="view-btn">
+                                                조회
+                                            </button>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            
+                            <c:if test="${dataCount == 0}">
+                                <tr>
+                                    <td colspan="8" class="empty-list">등록된 문의가 없습니다.</td>
+                                </tr>
+                            </c:if>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="content-footer">
                     <div class="pagination">
-                        <a href="#" class="prev">&lt;</a>
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#" class="next">&gt;</a>
+                        ${paging}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+    $(function(){
+        $("form[name=searchForm]").submit(function(){
+            const f = $(this);
+            
+            const schType = f.find("select[name=schType]").val();
+            const kwd = f.find("input[name=kwd]").val().trim();
+            if(schType && !kwd) {
+                alert("검색어를 입력하세요.");
+                f.find("input[name=kwd]").focus();
+                return false;
+            }
+            
+            const startDate = f.find("input[name=startDate]").val();
+            const endDate = f.find("input[name=endDate]").val();
+            if((startDate && !endDate) || (!startDate && endDate)) {
+                alert("검색 기간을 시작일과 종료일 모두 입력하세요.");
+                return false;
+            }
+            
+            if(startDate && endDate && startDate > endDate) {
+                alert("종료일은 시작일 이후 날짜를 선택하세요.");
+                return false;
+            }
+            
+            return true;
+        });
+    });
+    </script>
 </body>
 </html>
