@@ -54,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
 
 			dto.setMemberIdx(mapper.memberSeq());
 
-			if (!dto.getProfile_img_file().isEmpty()) {
+			if (!dto.getProfile_img_file().isEmpty() || dto.getProfile_img_file() != null) {
 				dto.setProfile_img(storageService.uploadFileToServer(dto.getProfile_img_file(), uploadPath));
 			}
 
