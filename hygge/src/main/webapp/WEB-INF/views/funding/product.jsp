@@ -14,15 +14,48 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <style type="text/css">
-/* 버튼 비활성화 스타일 */
-button:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
+.coming-soon-notice {
+    width: 100%;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.coming-soon-text {
+    color: #212529;
+    font-size: 16px;
+    margin: 0;
+}
+
+.coming-soon-badge {
+    display: inline-block;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
 }
 </style>
 
 <!-- js 파일 빼기! -->
 <script type="text/javascript">
+// 공개예정 프로젝트 여부 확인
+const isComingSoon = function() {
+    // 현재 날짜 가져오기
+    const today = new Date();
+    
+    // 프로젝트 시작 날짜 문자열 파싱
+    const startDateStr = "${project.start_date}";
+    const startDate = new Date(startDateStr.replace(/-/g, '/'));
+    
+    // 시작 날짜가 현재 날짜보다 나중인지 확인 (공개예정)
+    return startDate > today;
+};
+
 //프로젝트 후원하기
 function supportProject() {
     <c:if test="${empty sessionScope.member}">
@@ -30,6 +63,12 @@ function supportProject() {
         location.href = "${pageContext.request.contextPath}/member/login";
         return;
     </c:if>
+    
+    // 공개예정 프로젝트인 경우 처리
+    if (isComingSoon()) {
+        alert("공개예정인 프로젝트는 후원할 수 없습니다.");
+        return;
+    }
     
     location.href = "${pageContext.request.contextPath}/buy/productList/${project.num}";
 }
@@ -76,9 +115,16 @@ $(function() {
     $("#plan").addClass("active");
     loadContent('plan');
     
+    // 공개예정 관련 JS는 이제 HTML 내부에서 처리
     
-    // 공개예정이 아닌 경우에만 좋아요 버튼 활성화
+    // 좋아요 버튼 클릭 이벤트
     $('.like-btn').click(function(){
+        // 공개예정 프로젝트인 경우 처리
+        if (isComingSoon()) {
+            alert("공개예정인 프로젝트는 좋아요를 누를 수 없습니다.");
+            return;
+        }
+        
         const $btn = $(this);
         const $i = $btn.find('i');
         const num = $btn.data('num');
@@ -154,6 +200,10 @@ $(function() {
 					<p>${project.name}</p>
 					<!-- 카테고리명 -->
 					<h3>${project.title}</h3>
+					<!-- 공개예정 프로젝트인 경우 표시 -->
+                    <c:if test="${startDate.time > currentDate.time}">
+                        <div class="coming-soon-badge" style="display: inline-block; background-color: #ff6b6b; color: white; padding: 5px 10px; border-radius: 4px; margin-top: 10px; font-weight: bold;">공개예정</div>
+                    </c:if>
 				</div>
 
 				<div class="row">
@@ -212,25 +262,56 @@ $(function() {
 							</div>
 						</div>
 						<div class="row third-info" style="margin: 23px 0 10px 0;">
-							<!-- 좋아요 버튼 부분 -->
-							<div class="col-5">
-                                <div class="like">
-                                    <button type="button" class="like-btn ${isUserLiked ? 'active' : ''}" 
-                                            data-num="${project.num}">
-                                        <i class="bi ${isUserLiked ? 'bi-suit-heart-fill' : 'bi-suit-heart'}"></i>
-                                        <span class="like-count">${likeCount}</span>
-                                    </button>
-                                </div>
-                            </div>
+							<script>
+								// 현재 날짜와 시작일 비교하여 공개예정 여부 결정
+								$(function() {
+									const startDateStr = "${project.start_date}";
+									const startDate = new Date(startDateStr.replace(/-/g, '/'));
+									const today = new Date();
+									
+									if (startDate > today) {
+										// 공개예정 프로젝트인 경우 날짜 표시
+										$("#coming-soon-container").show();
+										$("#normal-buttons-container").hide();
+									} else {
+										// 일반 프로젝트인 경우 버튼 표시
+										$("#coming-soon-container").hide();
+										$("#normal-buttons-container").show();
+									}
+								});
+							</script>
+							
+							<!-- 공개예정 프로젝트인 경우 표시될 영역 -->
+							<div id="coming-soon-container" class="col-12" style="display: none;">
+								<div class="coming-soon-notice">
+									<p class="coming-soon-text">
+										<strong>공개예정일은 <fmt:formatDate value="${startDate}" pattern="yyyy.MM.dd" /> 입니다.</strong>
+									</p>
+								</div>
+							</div>
+							
+							<!-- 일반 프로젝트인 경우 표시될 영역 -->
+							<div id="normal-buttons-container" style="display: flex; width: 100%;">
+								<!-- 좋아요 버튼 부분 -->
+								<div class="col-5">
+									<div class="like">
+										<button type="button" class="like-btn ${isUserLiked ? 'active' : ''}" 
+												data-num="${project.num}">
+											<i class="bi ${isUserLiked ? 'bi-suit-heart-fill' : 'bi-suit-heart'}"></i>
+											<span class="like-count">${likeCount}</span>
+										</button>
+									</div>
+								</div>
 
-                            <!-- 후원 버튼 부분 -->
-                            <div class="col-7">
-                                <div class="projectBuyBtn">
-                                    <button type="button" id="buyBtn" onclick="supportProject()">
-                                        프로젝트 후원하기
-                                    </button>
-                                </div>
-                            </div>
+								<!-- 후원 버튼 부분 -->
+								<div class="col-7">
+									<div class="projectBuyBtn">
+										<button type="button" id="buyBtn" onclick="supportProject()">
+											프로젝트 후원하기
+										</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 

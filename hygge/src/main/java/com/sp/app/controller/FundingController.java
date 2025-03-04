@@ -62,6 +62,8 @@ public class FundingController {
 	        }
 	        
 	        if (project != null) {
+	        	model.addAttribute("currentDate", new java.util.Date());
+	        	
 	            model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
 	            model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
 	            model.addAttribute("project", project);
