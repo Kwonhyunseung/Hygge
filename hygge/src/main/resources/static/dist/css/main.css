@@ -81,11 +81,37 @@ body {
 	font-weight: bold;
 }
 
+.new-project {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.new-project .row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 .newP {
 	padding: 10px;
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: 18px;
+	width: 33.33%; /* col-4에 맞게 33.33% 설정 */
+    box-sizing: border-box;
+}
+
+.newP .image-container {
+    width: 100%;
+    display: block;
+}
+
+.newP .image-container img {
+    width: 100%;
+    height: 190px;
+    border-radius: 5px;
+    object-fit: cover;
 }
 
 .newP>img {

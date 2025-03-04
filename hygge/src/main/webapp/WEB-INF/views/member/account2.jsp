@@ -250,10 +250,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				<label for="email">이메일 <span style="color: red;">*</span></label>
 				<div class="d-flex">
 					<input type="email" class="form-control me-2" name="email1"
-						id="email" placeholder="이메일 앞부분" style="flex: 2;" required>
+						placeholder="이메일 앞부분" style="flex: 2;" required>
 
-					<span class="me-2" style="line-height: 2.3;">@</span> <select
-						class="form-select" name="email2" id="email"
+					<span class="me-2" style="line-height: 2.3;">@</span>
+					<!-- <select
+						class="form-select" name="email3" id="email"
 						onchange="handleDomainChange()" style="flex: 2;">
 						<option value="">선택</option>
 						<option value="naver.com">naver.com</option>
@@ -261,12 +262,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						<option value="hanmail.com">hanmail.com</option>
 						<option value="google.com">google.com</option>
 						<option value="custom">직접 입력</option>
-					</select>
-					<!-- 직접 입력시 -->
-					<input type="text" class="form-control" id="customDomain"
-						placeholder="직접 입력" style="display: none; flex: 2;"
-						onchange="updateEmail()"> <input type="hidden"
-						name="email2" id="emailFull">
+					</select> -->
+					<span>
+					<input type="text" class="form-control" name="email2"
+						placeholder="직접 입력" style="display: none; flex: 2;"></span>
 				</div>
 			</div>
 

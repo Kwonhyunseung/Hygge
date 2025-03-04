@@ -13,6 +13,18 @@
 <style type="text/css">
 .body-container {
 	max-width: 800px;
+    margin: 80px auto;
+    margin-bottom: 150px;
+}
+.btn-primary {
+	background-color: #75A400; 
+}
+.btn-primary:hover {
+	background-color: #678B0C;
+}
+
+.btn-primary:active {
+	background-color: #496404 !important;
 }
 </style>
 </head>
