@@ -7,7 +7,7 @@
             SELECT ROWNUM rnum, tb.* FROM (
                 SELECT 
                     q.num, q.q_title, q.q_content, q.q_date, q.memberIdx,
-                    m.nickname, q.category, qc.name AS category_name,
+                    m.nickname, q.category, qc.name AS "category_name",
                     CASE WHEN q.a_date IS NULL THEN '미답변' ELSE '답변완료' END AS answer_status,
                     q.a_content, q.a_date
                 FROM QnA q
@@ -110,5 +110,10 @@ FROM QnA q
 	    FROM Q_Category 
 	    ORDER BY category
     </select>
-
+    
+<update id="answerQna" parameterType="map">
+UPDATE qna 
+SET a_title = #{answerTitle}, a_content = #{answerContent}, a_date = SYSDATE
+WHERE num = #{num}
+</update>
 </mapper>

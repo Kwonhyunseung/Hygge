@@ -10,8 +10,10 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.app.admin.model.QnaManage;
 import com.sp.app.admin.service.QnaManageService;
@@ -141,6 +143,46 @@ public class QnaManagementController {
 	    }
 
 	    return "admin/qna/list";
+	}
+	
+	@PostMapping("answerQna")
+	@ResponseBody
+	public Map<String, Object> answerQna(
+			@RequestParam(name = "num") long num,
+			@RequestParam(name = "answerTitle") String answerTitle,
+			@RequestParam(name = "answerContent") String answerContent,
+			Model model) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			map.put("num", num);
+			map.put("answerTitle", answerTitle);
+			map.put("answerContent", answerContent);
+			
+			service.answerQna(map);
+			
+			model.addAttribute("success", "success");
+			
+		} catch (Exception e) {
+			log.info(answerContent);
+			model.addAttribute("false", "false");
+		}
+		
+		return map;
+	}
+	
+	@GetMapping("article")
+	public String qnaArticle(
+			@RequestParam(name = "num") long num) throws Exception {
+		
+		try {
+			
+			return "/qna/article?num=" + num;
+		} catch (Exception e) {
+			log.info("qnaArticle : ", e);
+		}
+		
+		return "admin/qna/list";
 	}
 	
 }

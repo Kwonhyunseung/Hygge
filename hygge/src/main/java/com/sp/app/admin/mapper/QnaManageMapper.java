@@ -14,4 +14,5 @@ public interface QnaManageMapper {
     public Map<String, Object> getStatusCounts();
     
     public List<Map<String, Object>> getCategoryList();
+    public void answerQna(Map<String, Object> map);
 }

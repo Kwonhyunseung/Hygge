@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sp.app.admin.mapper.QnaManageMapper;
 import com.sp.app.admin.model.QnaManage;
@@ -35,6 +36,18 @@ public class QnaManageServiceImpl implements QnaManageService{
 	@Override
 	public List<Map<String, Object>> getCategoryList() throws Exception {
 		return mapper.getCategoryList();
+	}
+
+	@Override
+	@Transactional
+	public void answerQna(Map<String, Object> map) throws Exception {
+		 
+		 
+		 try {
+			 mapper.answerQna(map);
+		} catch (Exception e) {
+			log.info("answerQna : ", e);
+		}
 	}
 
 
