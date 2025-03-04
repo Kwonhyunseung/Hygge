@@ -75,12 +75,10 @@ function loadContent(contentType) {
 }
 
 $(function() {
-    // plan 탭 초기 선택
     $(".f-select").removeClass("active");
     $("#plan").addClass("active");
     loadContent('plan');
     
-    // 공개예정 프로젝트 처리
     const startDateStr = "${project.start_date}";
     const startDate = new Date(startDateStr.replace(/-/g, '/'));
     const today = new Date();
@@ -103,7 +101,6 @@ $(function() {
         $(".product-img").css("margin-top", "0"); // 일반 프로젝트는 마진 없음
     }
     
-    // 좋아요 버튼 클릭 이벤트
     $('.like-btn').click(function(){
         if (isComingSoon()) {
             alert("공개예정인 프로젝트는 좋아요를 누를 수 없습니다.");
@@ -180,11 +177,11 @@ $(function() {
 		<div class="main-container">
 
 			<div class="product-main">
-				<!-- 일반 프로젝트 타이틀 (공개예정시 숨김) -->
+				<!-- 일반 프로젝트 -->
 				<div id="normal-title" class="title">
 					<p>${project.name}</p> <!-- 카테고리명 -->
 					<h3>${project.title}</h3>
-					<!-- 공개예정 프로젝트인 경우 표시 -->
+					<!-- 공개예정 프로젝트 -->
                     <c:if test="${startDate.time > currentDate.time}">
                         <div class="coming-soon-badge" style="display: inline-block; background-color: #ff6b6b; color: white; padding: 5px 10px; border-radius: 4px; margin-top: 10px; font-weight: bold;">공개예정</div>
                     </c:if>

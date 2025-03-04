@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FundingProjectServiceImpl implements FundingProjectService {
 	private final FundingProjectMapper mapper;
-	//private final MyUtil myUtil;
 
 	@Override
 	public Funding fundingProduct(long num) {
@@ -59,13 +58,11 @@ public class FundingProjectServiceImpl implements FundingProjectService {
 	// 날짜 파싱
     private static LocalDate parseDate(String dateString) {
         try {
-            // 숫자만 있는 경우 (예: "20240312")
             if (dateString.matches("\\d{8}")) {
                 return LocalDate.parse(dateString.substring(0, 4) + "-" + dateString.substring(4, 6) + "-"
                         + dateString.substring(6, 8), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             }
 
-            // 하이픈, 점, 슬래시 형식 변환
             String normalizedDate = dateString.replace(".", "-").replace("/", "-");
 
             if (normalizedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -85,12 +82,10 @@ public class FundingProjectServiceImpl implements FundingProjectService {
                 try {
                     return LocalDate.parse(dateString, fmt);
                 } catch (Exception e) {
-                    // 이 형식으로 파싱 불가능하면 다음 형식 시도
                     continue;
                 }
             }
 
-            // 모든 형식이 실패하면 현재 날짜 반환
             return LocalDate.now();
         } catch (Exception e) {
             return LocalDate.now();

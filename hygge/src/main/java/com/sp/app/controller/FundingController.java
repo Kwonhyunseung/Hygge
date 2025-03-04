@@ -68,7 +68,6 @@ public class FundingController {
 				isUserFollow = detailService.userFollowing(map) > 0;
 			}
 
-			// 모델에 데이터 추가
 			model.addAttribute("currentDate", new java.util.Date());
 			model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
 			model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());

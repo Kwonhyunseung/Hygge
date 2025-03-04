@@ -11,16 +11,16 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/member/account2.css"
-	type="text/css">
-<script
-	src="${pageContext.request.contextPath}/dist/js/member/account2.js"
-	type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/member/account2.css" type="text/css">
+<script src="${pageContext.request.contextPath}/dist/js/member/account2.js" type="text/javascript"></script>
+
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script type="text/javascript">
 function memberOk() {
-	const f = document.getElementById("accountForm");
+    const f = document.getElementById("accountForm");
     let str;
     
     str = f.userId.value;
@@ -56,6 +56,15 @@ function memberOk() {
         f.pwd.focus();
         return;
     }
+    
+    const email1 = f.email1.value;
+    const email2 = f.email2.value;
+    
+    if (!email1 || !email2) {
+        alert('이메일을 올바르게 입력해주세요.');
+        document.getElementById('emailPrefix').focus();
+        return;
+    }
 
     const genderChecked = document.querySelector('input[name="gender"]:checked');
     if (!genderChecked) {
@@ -63,7 +72,6 @@ function memberOk() {
         return;
     }
 
- 	// 필수 약관 동의 체크 여부 확인
     const requiredCheckboxes = document.querySelectorAll(".terms input[type='checkbox'][required]");
     let allRequiredChecked = Array.from(requiredCheckboxes).every(checkbox => checkbox.checked);
 
@@ -108,22 +116,73 @@ function checkUserId() {
 	
 }
 
-// 이메일2 선택
+function daumPostcode() {
+	new daum.Postcode({
+		oncomplete : function(data) {
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+			// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			var fullAddr = ''; // 최종 주소 변수
+			var extraAddr = ''; // 조합형 주소 변수
+
+			// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+				fullAddr = data.roadAddress;
+
+			} else { // 사용자가 지번 주소를 선택했을 경우(J)
+				fullAddr = data.jibunAddress;
+			}
+
+			// 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+			if (data.userSelectedType === 'R') {
+				//법정동명이 있을 경우 추가한다.
+				if (data.bname !== '') {
+					extraAddr += data.bname;
+				}
+				// 건물명이 있을 경우 추가한다.
+				if (data.buildingName !== '') {
+					extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				}
+				// 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+				fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
+			}
+
+			// 우편번호와 주소 정보를 해당 필드에 넣는다.
+			document.getElementById('postCode').value = data.zonecode; //5자리 새우편번호 사용
+			document.getElementById('address').value = fullAddr;
+
+			// 커서를 상세주소 필드로 이동한다.
+			document.getElementById('detailAddress').focus();
+		}
+	}).open();
+}
+
+/* document.getElementById("accountForm").onsubmit = function(event) {
+    var password = document.getElementById("password").value;
+    var pwdCheck = document.getElementById("pwdCheck").value;
+
+    if (password !== pwdCheck) {
+        alert("비밀번호가 일치하지 않습니다.");
+        event.preventDefault(); // 폼 제출 방지
+    }
+}; */
+
+//이메일 도메인
 function handleDomainChange() {
-    var emailDomainSelect = document.getElementById('emailDomain');
-    var selectedValue = emailDomainSelect.value;
-    var emailDomainContainer = emailDomainSelect.parentNode;
+    const emailDomainSelect = document.getElementById('emailDomain');
+    const selectedValue = emailDomainSelect.value;
+    const emailDomainContainer = emailDomainSelect.parentNode;
 
     if (selectedValue === "custom") {
-        // 입력란으로 변경
-        var customInput = document.createElement('input');
+        const customInput = document.createElement('input');
         customInput.type = "text";
         customInput.className = "form-control";
         customInput.id = "emailDomain";
         customInput.placeholder = "직접 입력";
-        customInput.focus();
         customInput.style.flex = "2";
         customInput.oninput = updateEmail;
+        customInput.focus();
 
         emailDomainContainer.replaceChild(customInput, emailDomainSelect);
     } else {
@@ -132,11 +191,17 @@ function handleDomainChange() {
 }
 
 function updateEmail() {
-    var emailPrefix = document.getElementById('emailPrefix').value;
-    var emailDomain = document.getElementById('emailDomain').value || document.getElementById('customDomain').value;
-
-    if (emailPrefix && emailDomain) {
-        document.getElementById('emailFull').value = `${emailPrefix}@${emailDomain}`;
+    const emailPrefix = document.getElementById('emailPrefix').value;
+    const domainElement = document.getElementById('emailDomain');
+    let domain = domainElement.value || "";
+    
+    document.getElementById('email1').value = emailPrefix;
+    document.getElementById('email2').value = domain;
+    
+    if (emailPrefix && domain) {
+        document.getElementById('emailFull').value = emailPrefix + "@" + domain;
+    } else {
+        document.getElementById('emailFull').value = "";
     }
 }
 
@@ -153,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
         item.addEventListener("click", function () {
             const selectedCategories = document.querySelectorAll(".category-item.selected");
 
-            // 카테고리 선택 해제
             if (this.classList.contains("selected")) {
                 this.classList.remove("selected");
             } else {
@@ -171,16 +235,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-		
 </script>
 </head>
 
 <body>
 	<div class="container">
 		<div class="text-center">
-			<img
-				src="${pageContext.request.contextPath}/dist/images/main/main_logo.png"
-				width="150">
+			<img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" width="150">
 		</div>
 
 		<h2 class="text-start"
@@ -190,25 +251,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		<div class="line" style="margin-bottom: 40px;"></div>
 
-		<form id="accountForm" name="accountForm" method="post"
-			enctype="multipart/form-data">
+		<form id="accountForm" name="accountForm" method="post" enctype="multipart/form-data">
 			<div class="mb-3 checkId">
 				<label for="userId">아이디 <span style="color: red;">*</span></label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" name="id" id="userId"
-						placeholder="아이디를 입력하세요" required>
-					<button type="button" class="btn btn-secondary"
-						onclick="checkUserId();"
-						style="width: 130px; border-radius: 50%; background-color: #ACC569; color: white; font-size: 1rem;">
-						중복확인</button>
+					<input type="text" class="form-control me-2" name="id" id="userId" placeholder="아이디를 입력하세요" required>
+					<button type="button" class="btn btn-secondary" onclick="checkUserId();" style="width: 130px; border-radius: 50%; background-color: #ACC569; color: white; font-size: 1rem;">
+						중복확인
+					</button>
 				</div>
 				<span id="userIdStatus"></span>
 			</div>
 
 			<div class="mb-3">
-				<label for="name">이름 <span style="color: red;">*</span></label> <input
-					type="text" class="form-control" name="name" id="name"
-					placeholder="이름을 입력하세요" required>
+				<label for="name">이름 <span style="color: red;">*</span> </label>
+				<input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요" required>
 			</div>
 
 			<div class="mb-3">
@@ -225,8 +282,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			<div class="mb-3">
 				<label for="pwdCheck">비밀번호 확인 <span style="color: red;">*</span></label>
-				<input type="password" class="form-control" id="pwdCheck" name="pwdCheck"
-					placeholder="비밀번호 확인" required>
+				<input type="password" class="form-control" id="pwdCheck"
+					name="pwdCheck" placeholder="비밀번호 확인" required>
 			</div>
 
 			<div class="mb-3">
@@ -237,56 +294,44 @@ document.addEventListener("DOMContentLoaded", function () {
 			<div class="mb-3">
 				<label for="tel">전화번호 <span style="color: red;">*</span></label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" name="tel1" id="tel"
-						maxlength="3" placeholder="xxx" required> <input
-						type="text" class="form-control me-2" name="tel2" id="tel"
-						maxlength="4" placeholder="xxxx" required> <input
-						type="text" class="form-control me-2" name="tel3" id="tel"
-						maxlength="4" placeholder="xxxx" required>
+					<input type="text" class="form-control me-2" name="tel1" maxlength="3" placeholder="xxx" required>
+					<input type="text" class="form-control me-2" name="tel2" maxlength="4" placeholder="xxxx" required>
+					<input type="text" class="form-control me-2" name="tel3" maxlength="4" placeholder="xxxx" required>
 				</div>
 			</div>
 
 			<div class="mb-3">
-				<label for="email">이메일 <span style="color: red;">*</span></label>
+				<label for="emailPrefix">이메일 <span style="color: red;">*</span></label>
 				<div class="d-flex">
-					<input type="email" class="form-control me-2" name="email1"
-						placeholder="이메일 앞부분" style="flex: 2;" required>
-
-					<span class="me-2" style="line-height: 2.3;">@</span>
-					<!-- <select
-						class="form-select" name="email3" id="email"
-						onchange="handleDomainChange()" style="flex: 2;">
+					<input type="text" class="form-control me-2" id="emailPrefix" placeholder="이메일 앞부분" style="flex: 2;" oninput="updateEmail()" required>
+					<span class="me-2" style="line-height: 2.3;">@</span> <select class="form-select" id="emailDomain" onchange="handleDomainChange()" style="flex: 2;">
 						<option value="">선택</option>
 						<option value="naver.com">naver.com</option>
 						<option value="daum.com">daum.com</option>
 						<option value="hanmail.com">hanmail.com</option>
-						<option value="google.com">google.com</option>
+						<option value="google.com">gmail.com</option>
 						<option value="custom">직접 입력</option>
-					</select> -->
-					<span>
-					<input type="text" class="form-control" name="email2"
-						placeholder="직접 입력" style="display: none; flex: 2;"></span>
+					</select>
 				</div>
+				<input type="hidden" id="email1" name="email1" value="">
+				<input type="hidden" id="email2" name="email2" value="">
+				<input type="hidden" id="emailFull" value="">
 			</div>
 
 			<div class="mb-3">
 				<label for="address">주소 <span style="color: red;">*</span></label>
 				<div class="d-flex">
-					<input type="text" class="form-control me-2" name="addr1"
-						id="address" style="width: 950px;" placeholder="주소 찾기를 해주세요"
-						required readonly> <input type="text"
-						class="form-control me-2" name="postCode" id="postCode"
-						style="width: 100px;" placeholder="우편번호" required readonly>
-					<button type="button" class="btn btn-primary"
-						onclick="daumPostcode()"
-						style="width: 230px; background-color: #b2cc85; color: white; font-size: 1rem;">주소찾기</button>
+					<input type="text" class="form-control me-2" name="addr1" id="address" style="width: 950px;" placeholder="주소 찾기를 해주세요" required readonly>
+					<input type="text" class="form-control me-2" name="postCode" id="postCode" style="width: 100px;" placeholder="우편번호" required readonly>
+					<button type="button" class="btn btn-primary" onclick="daumPostcode()" style="width: 230px; background-color: #ACC569; color: white; font-size: 1rem;">
+						주소찾기
+					</button>
 				</div>
 			</div>
 
 			<div class="mb-3">
 				<label for="detailAddress">상세주소 <span style="color: red;">*</span></label>
-				<input type="text" class="form-control" name="addr2"
-					id="detailAddress" placeholder="상세 주소를 입력하세요" required>
+				<input type="text" class="form-control" name="addr2" id="detailAddress" placeholder="상세 주소를 입력하세요" required>
 			</div>
 
 			<div class="mb-3">
@@ -305,16 +350,16 @@ document.addEventListener("DOMContentLoaded", function () {
 					<input type="hidden" name="category2" id="category2" value="0" />
 					<input type="hidden" name="category3" id="category3" value="0" />
 				</div>
-				<small style="color: #B63122;">선호 카테고리는 최대 3개까지 가능합니다.</small>
+				<small style="color: #B63122; margin-left: 10px;">선호 카테고리는 최대 3개까지 가능합니다.</small>
 			</div>
 
 			<div class="mb-3">
 				<label>성별 <span style="color: red;">*</span></label>
 				<div>
-					<input type="radio" name="gender" id="male" value="1"> <label
-						for="male" class="gender-label">남자</label> <input type="radio"
-						name="gender" id="female" value="2"> <label for="female"
-						class="gender-label">여자</label>
+					<input type="radio" name="gender" id="male" value="1">
+						<label for="male" class="gender-label">남자</label>
+					<input type="radio" name="gender" id="female" value="2">
+						<label for="female" class="gender-label">여자</label>
 				</div>
 			</div>
 			<c:if test="${mode == 'Maker'}">
@@ -338,7 +383,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				</div>
 				<div class="mb-3">
 					<label>메이커 소개</label>
-					<textarea style="resize: none; height: 80px;" name="introduction" class="form-control" required></textarea>
+					<textarea style="resize: none; height: 80px;" name="introduction"
+						class="form-control" required></textarea>
 				</div>
 			</c:if>
 
@@ -350,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				<p>이용약관</p>
 				<div>
 					<input type="checkbox" id="agreeAll"> <label for="agreeAll"
-						style="font-size: 1.2rem; font-weight: bold; margin-bottom: 3px;">
+						style="font-size: 1.2rem; font-weight: bold; margin: 7px 9px;">
 						전체 동의합니다.</label>
 				</div>
 				<div>
@@ -361,22 +407,22 @@ document.addEventListener("DOMContentLoaded", function () {
 					</label>
 				</div>
 				<div>
-					<input type="checkbox" id="privacy" required> <label
-						for="privacy"> 개인정보 수집 이용 동의 (필수)
+					<input type="checkbox" id="privacy" required>
+						<label for="privacy"> 개인정보 수집 이용 동의 (필수)
 						<button type="button" class="btn btn-link p-0"
 							data-bs-toggle="modal" data-bs-target="#modalPrivacy">보기</button>
 					</label>
 				</div>
 				<div>
-					<input type="checkbox" id="age" required> <label for="age">
-						본인은 만 14세 이상입니다.(필수)
+					<input type="checkbox" id="age" required>
+						<label for="age"> 본인은 만 14세 이상입니다.(필수)
 						<button type="button" class="btn btn-link p-0"
 							data-bs-toggle="modal" data-bs-target="#modalAge">보기</button>
 					</label>
 				</div>
 				<div>
-					<input type="checkbox" id="marketing"> <label
-						for="marketing"> 무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
+					<input type="checkbox" id="marketing">
+						<label for="marketing"> 무료배송, 할인쿠폰 등 혜택/정보 수신 동의 (선택)
 						<button type="button" class="btn btn-link p-0"
 							data-bs-toggle="modal" data-bs-target="#modalMarketing">보기</button>
 					</label>
@@ -460,68 +506,16 @@ document.addEventListener("DOMContentLoaded", function () {
 				</div>
 			</div>
 
-			<div class="mb-3" style="display: flex; flex-direction: row;">
-				<button type="button" id="accountBtn" class="btn btn-primary" onclick="memberOk();">가입하기</button>
-				<button type="button" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/';">등록취소</button>
+			<div class="mb-3" style="display: flex; flex-direction: row; gap: 20px;">
+			    <button type="button" id="accountBtn" class="btn btn-primary"
+			        onclick="memberOk();">가입하기</button>
+			    <button type="button" class="btn btn-secondary"
+			        onclick="location.href='${pageContext.request.contextPath}/';">등록취소</button>
 			</div>
 			<input type="hidden" name="authority" value="${mode}">
+			
 		</form>
 	</div>
 </body>
-
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<script>
-	function daumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-				// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-				var fullAddr = ''; // 최종 주소 변수
-				var extraAddr = ''; // 조합형 주소 변수
-
-				// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-				if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-					fullAddr = data.roadAddress;
-
-				} else { // 사용자가 지번 주소를 선택했을 경우(J)
-					fullAddr = data.jibunAddress;
-				}
-
-				// 사용자가 선택한 주소가 도로명 타입일때 조합한다.
-				if (data.userSelectedType === 'R') {
-					//법정동명이 있을 경우 추가한다.
-					if (data.bname !== '') {
-						extraAddr += data.bname;
-					}
-					// 건물명이 있을 경우 추가한다.
-					if (data.buildingName !== '') {
-						extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-					}
-					// 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
-					fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
-				}
-
-				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById('postCode').value = data.zonecode; //5자리 새우편번호 사용
-				document.getElementById('address').value = fullAddr;
-
-				// 커서를 상세주소 필드로 이동한다.
-				document.getElementById('detailAddress').focus();
-			}
-		}).open();
-	}
-	
-	/* document.getElementById("accountForm").onsubmit = function(event) {
-	    var password = document.getElementById("password").value;
-	    var pwdCheck = document.getElementById("pwdCheck").value;
-
-	    if (password !== pwdCheck) {
-	        alert("비밀번호가 일치하지 않습니다.");
-	        event.preventDefault(); // 폼 제출 방지
-	    }
-	}; */
-</script>
 
 </html>

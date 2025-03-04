@@ -23,9 +23,7 @@
 	SELECT member1_seq.NEXTVAL from dual
 </select>
 
-
-<!-- 우리 코드 맞게 재작성 필요함 -->
-
+<!--  -->
 
 <!-- 회원 삭제 -->
 <delete id="deleteMember" parameterType="String">

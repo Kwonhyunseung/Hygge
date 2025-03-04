@@ -30,7 +30,7 @@
 	    FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date + 7 AND pr.accept_date + 14
+	    	AND SYSDATE BETWEEN pr.accept_date + 6 AND pr.accept_date + 13
 	    	AND p.end_date > SYSDATE
 	    ORDER BY pr.accept_date DESC
 	    FETCH FIRST 6 ROWS ONLY
@@ -64,7 +64,7 @@
 	    ) total_sales ON p.num = total_sales.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
 	    	AND p.end_date > SYSDATE
-	    	AND SYSDATE >= pr.accept_date + 7
+	    	AND SYSDATE >= pr.accept_date + 6
 	    ORDER BY total_sales.total_amount DESC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
@@ -73,11 +73,11 @@
 	<select id="listComingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
 		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date,
 		    1 AS isComing,
-		    CEIL(pr.accept_date + 7 - SYSDATE) AS remained_date
+		    CEIL(pr.accept_date + 6 - SYSDATE) AS remained_date
 	    FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 7
+	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 6
 	    ORDER BY pr.accept_date ASC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
@@ -110,7 +110,7 @@
 	    ) total_sales ON p.num = total_sales.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
 	    	AND p.end_date > SYSDATE
-	    	AND SYSDATE >= pr.accept_date + 7
+	    	AND SYSDATE >= pr.accept_date + 6
 	    	AND (
 	        	(p.end_date - SYSDATE &lt;= 3)
 	        	OR 
@@ -128,7 +128,7 @@
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
 	    	AND p.end_date > SYSDATE
-	    	AND SYSDATE >= pr.accept_date + 7
+	    	AND SYSDATE >= pr.accept_date + 6
 	    ORDER BY (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) DESC
 	    FETCH FIRST 7 ROWS ONLY
 	</select>

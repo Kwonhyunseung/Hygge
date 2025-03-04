@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const subCategoryContainer = document.createElement("div");
     subCategoryContainer.classList.add("sub-categories");
 
-    // 서브 카테고리 컨테이너 스타일
     subCategoryContainer.style.display = "none";
     subCategoryContainer.style.position = "absolute";
     subCategoryContainer.style.width = "100%";
@@ -69,14 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             subCategoryContainer.innerHTML = '';
             
-            // 제목 추가 - 카테고리명 + "전체"
             const heading = document.createElement("h4");
             heading.innerText = categoryName + " 전체";
             heading.style.marginBottom = "30px";
             heading.style.fontSize = "20px";
             subCategoryContainer.appendChild(heading);
             
-            // 하위 카테고리 목록 생성
+            // 하위 카테고리 목록
             const list = document.createElement("ul");
             list.style.display = "flex";
             list.style.flexWrap = "wrap";
@@ -85,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
             list.style.margin = "0";
             list.style.listStyle = "none";
 
-            // 각 하위 카테고리 항목 추가
             subCategories[categoryName].forEach(subCategoryName => {
                 const li = document.createElement("li");
                 li.innerText = subCategoryName;
@@ -152,7 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 서브 카테고리 마우스 이벤트
     subCategoryContainer.addEventListener("mouseenter", function() {
         isOverSubCategory = true;
         if (hideTimeout) {
@@ -166,19 +162,16 @@ document.addEventListener("DOMContentLoaded", function () {
         scheduleHideSubCategory();
     });
     
-    // 프로젝트 카드 클릭 이벤트 - 상세 페이지 이동
     setupProjectNavigation();
 });
 
-//프로젝트 카드 클릭 시 상세 페이지로 이동하는 함수
+//프로젝트 카드 클릭 시 상세 페이지로 이동
 function setupProjectNavigation() {
-    // 모든 프로젝트 컨테이너 선택
     const projectItems = document.querySelectorAll(".newP, .popularP, .deadlineP, .releaseP");
     
     projectItems.forEach(function(item) {
-        // 이미지와 제목에 클릭 이벤트 추가
         const img = item.querySelector(".image-container img");
-        const title = item.querySelector("p:last-child");  // 제목은 보통 마지막 p 태그
+        const title = item.querySelector("p:last-child");
         const likeBtn = item.querySelector(".project-like-btn");
         
         // 프로젝트 번호 가져오기 (좋아요 버튼 또는 컨테이너의 data-num 속성에서)
@@ -189,7 +182,6 @@ function setupProjectNavigation() {
             projectNum = item.getAttribute("data-num");
         }
         
-        // 프로젝트 번호가 있는 경우에만 클릭 이벤트 추가
         if (projectNum) {
             // 이미지에 클릭 이벤트 추가
             if (img) {
@@ -210,7 +202,6 @@ function setupProjectNavigation() {
                 });
             }
             
-            // 전체 항목에 클릭 이벤트 추가 (좋아요 버튼 제외)
             item.style.cursor = "pointer";
             item.addEventListener("click", function(e) {
                 // 좋아요 버튼이나 이미 처리된 요소가 아닌 경우만 이동
@@ -223,14 +214,13 @@ function setupProjectNavigation() {
         }
     });
     
-    // 랭킹 프로젝트에도 클릭 이벤트 추가
+    // 랭킹 프로젝트에도 클릭 이벤트
     const rankingRows = document.querySelectorAll(".lanking-bar .row");
     rankingRows.forEach(function(row) {
         const titleElement = row.querySelector(".col-6 p");
         const imgElement = row.querySelector(".lankImg img");
         const likeBtn = row.querySelector(".project-like-btn");
         
-        // 프로젝트 번호 가져오기 - 좋아요 버튼이나 데이터 속성에서
         let projectNum = null;
         if (likeBtn) {
             projectNum = likeBtn.getAttribute("data-num");
@@ -273,14 +263,14 @@ function setupProjectNavigation() {
 $(function() {
     // 페이지 로드 시 서버에서 받은 좋아요 상태 초기화
     function initializeLikeStatus() {
-        // 각 프로젝트 좋아요 버튼 상태 설정
+    	
         $(".project-like-btn").each(function() {
             const projectNum = $(this).data("num");
             
             // 서버에서 설정한 초기 상태
             const serverLiked = $(this).hasClass("bi-heart-fill");
             
-            // 실제 표시될 상태 결정 (서버 상태 사용)
+            // 실제 표시될 상태 결정
             if (serverLiked) {
                 $(this).removeClass("bi-heart").addClass("bi-heart-fill text-danger");
             } else {
@@ -295,7 +285,7 @@ $(function() {
     // 좋아요 버튼 클릭 이벤트
     $(".project-like-btn").click(function(e) {
         e.preventDefault();
-        e.stopPropagation();  // 중요: 이벤트 전파 중지
+        e.stopPropagation();  //이벤트 전파 중지
         
         const $btn = $(this);
         const num = $btn.data("num");
@@ -311,7 +301,6 @@ $(function() {
             dataType: "json",
             success: function(data) {
                 if (data.state === "true") {
-                    // 좋아요 수 업데이트
                     $(".like-count-" + num).text(data.likeCount);
                     
                     // 클릭한 버튼만 업데이트
@@ -472,7 +461,7 @@ $(function() {
 							<div class="pundingBtn">
 								<p>펀딩</p>
 								<div class="goal">
-									<p>30,012% 달성
+									<p>30,12% 달성
 								</div>
 							</div>
 							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
@@ -493,7 +482,7 @@ $(function() {
 			                <div class="pundingBtn">
 			                    <p>인기</p>
 			                    <div class="goal">
-			                        <p>${project.funding_goal}% 달성</p>
+                        			<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
 			                    </div>
 			                </div>
 			                <p>${project.title}</p>
@@ -520,7 +509,7 @@ $(function() {
 			                        <div class="pundingBtn">
 			                            <p>마감일 ${project.end_date}</p>
 			                            <div class="goal">
-			                                <p>${project.funding_goal}% 달성</p>
+                        					<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
 			                            </div>
 			                        </div>
 			                        <p>${project.title}</p>
