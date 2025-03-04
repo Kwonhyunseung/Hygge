@@ -17,4 +17,5 @@ public interface MyPageMapper {
     int reviewCount(String memberIdx);
     List<Review> listReview(Map<String, Object> map);
 	Review findById(long num);
+	public void updateProfile(Map<String, Object> map) throws SQLException;
 }

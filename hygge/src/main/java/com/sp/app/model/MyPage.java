@@ -3,6 +3,8 @@ package com.sp.app.model;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,4 +37,6 @@ public class MyPage {
     private Long projectNum;
     private Long salesNum;
     private String profile_img;
+    
+    private MultipartFile profileImg_File;
 }

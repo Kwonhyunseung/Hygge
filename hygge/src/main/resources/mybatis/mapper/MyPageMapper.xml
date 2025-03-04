@@ -6,7 +6,7 @@
   <select id="findById" resultType="com.sp.app.model.MyPage">
     SELECT m1.memberIdx, m1.id, m1.pwd, m1.name, m2.birth,
            m1.nickName, m2.email1, m2.email2, m2.tel1, m2.tel2, m2.tel3, m2.addr1, m2.addr2,
-           m2.gender, m1.category1, m1.category2, m1.category3, m2.age
+           m2.gender, m1.category1, m1.category2, m1.category3, m2.age, m1.profile_img
     FROM member1 m1
     LEFT OUTER JOIN member2 m2 ON m1.memberIdx = m2.memberIdx
     LEFT OUTER JOIN memberauthority ma ON m1.memberIdx = ma.memberIdx
@@ -15,30 +15,34 @@
 
   <!-- 프로필 수정 쿼리 -->
   <update id="ProfileEdit" parameterType="com.sp.app.model.MyPage">
-    UPDATE member1 m1
+    UPDATE member1
     SET 
-        m1.nickName = #{nickName},
-        m1.name = #{name},
-        m1.category1 = #{category1, jdbcType=NUMERIC},
-        m1.category2 = #{category2, jdbcType=NUMERIC},
-        m1.category3 = #{category3, jdbcType=NUMERIC}
-    WHERE m1.id = #{id}
+        nickName = #{nickName},
+        name = #{name},
+        category1 = #{category1, jdbcType=NUMERIC},
+        category2 = #{category2, jdbcType=NUMERIC},
+        category3 = #{category3, jdbcType=NUMERIC}
+    WHERE id = #{id}
   </update>
 
   <update id="ProfileEdit2" parameterType="com.sp.app.model.MyPage">
-    UPDATE member2 m2
+    UPDATE member2 
     SET 
-        m2.email1 = #{email1},
-        m2.email2 = #{email2},
-        m2.tel1 = #{tel1},
-        m2.tel2 = #{tel2},
-        m2.tel3 = #{tel3},
-        m2.addr1 = #{addr1},
-        m2.addr2 = #{addr2},
-        m2.gender = #{gender}
-    WHERE m2.memberIdx = (SELECT m1.memberIdx FROM member1 m1 WHERE m1.id = #{id})
+        email1 = #{email1},
+        email2 = #{email2},
+        tel1 = #{tel1},
+        tel2 = #{tel2},
+        tel3 = #{tel3},
+        addr1 = #{addr1},
+        addr2 = #{addr2},
+        gender = #{gender}
+    WHERE memberIdx = #{memberIdx}
   </update>
   
-  
+  	<update id="updateProfile" parameterType="map">
+    UPDATE member1 
+    SET profile_img = #{profile_img,jdbcType=VARCHAR} 
+    WHERE id = #{id,jdbcType=VARCHAR}
+	</update>
   
 </mapper>

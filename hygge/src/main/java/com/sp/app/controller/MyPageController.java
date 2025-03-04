@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sp.app.common.PaginateUtil;
@@ -56,11 +57,14 @@ public class MyPageController {
 	
 	private String uploadPath;
 	
+	private String uploadPath2;
+	
 	@PostConstruct
 	public void init() {
 		uploadPath = this.storageService.getRealPath("/uploads/review");
-		
-	}		
+		uploadPath2 = this.storageService.getRealPath("/uploads/profile");
+	}	
+
 	
 	@GetMapping("myPage")
 	public String myPage(Model model, HttpSession session) {
@@ -108,25 +112,47 @@ public class MyPageController {
 	}
 
 	@PostMapping("profileEdit")
-	public String updateProfile(MyPage myPage, HttpSession session, Model model, RedirectAttributes rttr) {
-		try {
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			log.info("프로필 수정 요청: {}", myPage);
-			
-			myPage.setId(info.getId());
-			
-			myPageService.updateProfile(myPage);
-			
-			rttr.addFlashAttribute("msg", "프로필이 수정되었습니다.");
-			return "redirect:/myPage/myPage";
-		
-		} catch (Exception e) {
-			log.error("프로필 수정 오류", e);
-			model.addAttribute("msg", "프로필 수정에 실패했습니다.");
-			model.addAttribute("myPage", myPage);
-			return "myPage/profileEdit"; 
-		}
+	public String updateProfile(
+	    @RequestParam(value = "profileImg_File", required = false) MultipartFile profileImg_File,
+	    MyPage myPage, HttpSession session, Model model, RedirectAttributes rttr) {
+	    try {
+	        SessionInfo info = (SessionInfo) session.getAttribute("member");
+	        myPage.setId(info.getId());  // 먼저 ID를 설정
+
+	        log.info("프로필 수정 요청: {}", myPage);
+	        
+	        if (profileImg_File != null && !profileImg_File.isEmpty()) {
+	           
+	            
+	            String uploadedFile = storageService.uploadFileToServer(profileImg_File, uploadPath2);
+	            myPage.setProfile_img(uploadedFile);
+	            
+	            log.info("파일이 전달되었습니다.");
+	            
+	        } else {
+	            log.info("파일이 전달되지 않았습니다.");
+	            // 기존 이미지 유지 또는 기본 이미지 처리
+	        }
+	        
+	        // DB 업데이트 (필요에 따라 두 개의 메서드를 호출)
+	        myPageService.ProfileEdit(myPage, uploadPath2);
+	        myPageService.ProfileEdit2(myPage);
+	        
+	        // DB에서 최신 회원 정보 조회 후 세션 업데이트
+	        MyPage updatedMyPage = myPageService.findById(info.getId());
+	        session.setAttribute("myPage", updatedMyPage);
+	        
+	        rttr.addFlashAttribute("msg", "프로필이 수정되었습니다.");
+	        return "redirect:/myPage/myPage";
+	    
+	    } catch (Exception e) {
+	        log.error("프로필 수정 오류", e);
+	        model.addAttribute("msg", "프로필 수정에 실패했습니다.");
+	        model.addAttribute("myPage", myPage);
+	        return "myPage/profileEdit"; 
+	    }
 	}
+
 
 	@GetMapping("buyHistory")
 	public String buyHistory(Model model,
@@ -386,4 +412,6 @@ public class MyPageController {
 		}
 		return "redirect:/myPage/review";
 	}
+	
+	
 }

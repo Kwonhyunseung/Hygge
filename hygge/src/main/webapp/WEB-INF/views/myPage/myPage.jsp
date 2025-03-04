@@ -61,6 +61,12 @@ body {
     background-color: #ddd;
     border-radius: 50%;
     margin: 0 auto 3px;
+    overflow: hidden;
+}
+
+.sidebar .profile-icon-wrapper img {
+    width: 100%;
+    height: auto;
 }
 .sidebar .profile-icon {
     font-size: 40px;
@@ -224,10 +230,15 @@ body {
         <div class="sidebar">
             <div class="top-section">
                 <div class="profile-icon-wrapper">
-                    <a href="#">
-                        <i class="bi bi-person profile-icon"></i>
-                    </a>
-                </div>
+					        <c:choose>
+					            <c:when test="${not empty myPage.profile_img}">
+					                <img src="${pageContext.request.contextPath}/uploads/profile/${myPage.profile_img}" alt="Profile Image" class="profile-img" />
+					            </c:when>
+					            <c:otherwise>
+					                    <img src="${pageContext.request.contextPath}/uploads/profile/noimg.png" alt="Profile Image" class="profile-img" />
+					            </c:otherwise>
+					        </c:choose>
+					</div>
                 <h3>${myPage.name}</h3>
             </div>
             <div class="bottom-section">
@@ -262,8 +273,8 @@ body {
                 <div><strong>성별</strong></div> 
 				<div>
 				    <c:choose>
-				        <c:when test="${myPage.gender == 1}">여성</c:when>
-				        <c:when test="${myPage.gender == 2}">남성</c:when>
+				        <c:when test="${myPage.gender == 2}">여성</c:when>
+				        <c:when test="${myPage.gender == 1}">남성</c:when>
 				        <c:otherwise>알 수 없음</c:otherwise>
 				    </c:choose>
 				</div>
