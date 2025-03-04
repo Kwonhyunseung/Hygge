@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.PaymentManageMapper">
+
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT COUNT(*) FROM (
+            SELECT DISTINCT p.payment_num
+            FROM Payment p
+            JOIN member1 m ON p.memberIdx = m.memberIdx
+            JOIN Sales s ON p.payment_num = s.payment_num
+            JOIN Product pd ON s.product_num = pd.product_num
+            <where>
+                <if test="schType=='nickname' and kwd != null and kwd != ''">
+                    m.nickname LIKE '%' || #{kwd} || '%'
+                </if>
+                <if test="schType=='title' and kwd != null and kwd != ''">
+                    pd.title LIKE '%' || #{kwd} || '%'
+                </if>
+                <if test="schType=='payment_date' and kwd != null and kwd != ''">
+                    TO_CHAR(p.payment_date, 'YYYY-MM-DD') = #{kwd}
+                </if>
+                <if test="sort != null and sort != ''">
+                    AND p.sort = #{sort}
+                </if>
+            </where>
+        )
+    </select>
+    
+<select id="listPurchase" parameterType="map" resultType="com.sp.app.admin.model.PaymentManage">
+SELECT * FROM (
+SELECT ROWNUM rnum, tb.* FROM (
+SELECT
+p.payment_num, p.memberIdx, m.nickname, p.payment_date,
+p.total_amount, p.pay_amount, p.coupon, p.pay_way, p.sort,
+p.shipping_state, pd.product_num, pd.title, pd.origin,
+s.amount, s.sum
+FROM Payment p
+JOIN member1 m ON p.memberIdx = m.memberIdx
+JOIN Sales s ON p.payment_num = s.payment_num
+JOIN Product pd ON s.product_num = pd.product_num
+<where>
+<if test="sort != null and sort != ''">
+p.sort = #{sort}
+</if>
+<if test="schType=='nickname' and kwd != null and kwd != ''">
+AND m.nickname LIKE '%' || #{kwd} || '%'
+</if>
+<if test="schType=='title' and kwd != null and kwd != ''">
+AND pd.title LIKE '%' || #{kwd} || '%'
+</if>
+<if test="schType=='payment_date' and kwd != null and kwd != ''">
+AND TO_CHAR(p.payment_date, 'YYYY-MM-DD') = #{kwd}
+</if>
+</where>
+ORDER BY p.payment_date DESC
+) tb WHERE ROWNUM &lt;= #{offset, jdbcType=INTEGER} + #{size, jdbcType=INTEGER} OR (#{offset, jdbcType=INTEGER} IS NULL OR #{size, jdbcType=INTEGER} IS NULL)
+) WHERE rnum &gt; #{offset, jdbcType=INTEGER} OR #{offset, jdbcType=INTEGER} IS NULL
+</select>
+
+        <select id="findByPayment" parameterType="Long" resultType="com.sp.app.admin.model.PaymentManage">
+        SELECT 
+            p.payment_num, p.memberIdx, m.nickname, p.payment_date, 
+            p.total_amount, p.pay_amount, p.shipping_fee, p.coupon, 
+            p.pay_way, p.sort, p.shipping_state,
+            r.num AS refund_num, r.state, r.request_date, r.accept_date, 
+            r.reason, r.fee
+        FROM Payment p
+        JOIN member1 m ON p.memberIdx = m.memberIdx
+        LEFT OUTER JOIN Refund r ON p.payment_num = r.payment_num
+        WHERE p.payment_num = #{payment_num}
+    </select>
+    
+    <select id="listSalesByPayment" parameterType="Long" resultType="com.sp.app.admin.model.PaymentManage">
+        SELECT 
+            s.num, s.product_num, pd.title, pd.origin, pd.price,
+            s.amount, s.sum 
+        FROM Sales s
+        JOIN Product pd ON s.product_num = pd.product_num
+        WHERE s.payment_num = #{payment_num}
+        ORDER BY s.num
+    </select>
+</mapper>

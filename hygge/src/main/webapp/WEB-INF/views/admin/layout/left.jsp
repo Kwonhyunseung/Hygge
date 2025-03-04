@@ -21,6 +21,7 @@
                 <li><a href="${pageContext.request.contextPath}/admin/memberManagement/normal">일반유저 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/memberManagement/maker">메이커 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/memberManagement/makerSubmit">메이커 신청</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/payment/list">결제 내역</a></li>
             </ul>
         </li>
         
@@ -50,6 +51,7 @@
                 <li><a href="${pageContext.request.contextPath}/admin/notice/list">일반공지</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/event/list">이벤트</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/vote/list">투표</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/qna/list">1:1 문의</a></li>
             </ul>
         </li>
         

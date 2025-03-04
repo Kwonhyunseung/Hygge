@@ -125,3 +125,50 @@
 	text-decoration-color: #82B10C;
 	cursor: pointer;
 }
+
+/* 공개예정 프로젝트 */
+.coming-soon-notice {
+    width: 100%;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 18px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.coming-soon-text {
+    color: #212529;
+    font-size: 20px;
+    margin: 0;
+}
+
+.coming-soon-badge {
+    display: inline-block;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+.coming-soon-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.coming-soon-category {
+    color: #000;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 2px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}

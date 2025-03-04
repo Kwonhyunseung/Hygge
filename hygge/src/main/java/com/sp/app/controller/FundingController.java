@@ -41,40 +41,48 @@ public class FundingController {
 
 	@GetMapping("/product/{num}")
 	public String productDetail(@PathVariable("num") long num, Model model, HttpSession session) {
-	    Map<String, Object> map = new HashMap<>();
-	    
-	    try {
-	        SessionInfo info = (SessionInfo) session.getAttribute("member");
-	        Funding project = detailService.fundingProduct(num);
-	        detailService.calculateProject(project);
-	        boolean isUserLiked = false;
-	        boolean isUserFollow = false;
-	        
-	        map.put("num", num);
-	        List<Product> productList = detailService.detailProduct(map);
-	        
-	        int likeCount = detailService.projectLikeCount(num);
-	        if (info != null) {
-	            map.put("memberIdx", info.getMemberidx());
-	            map.put("makerIdx", project.getMemberIdx());
-	            isUserLiked = detailService.userFundingLiked(map) > 0;
-	            isUserFollow = detailService.userFollowing(map) > 0;
-	        }
-	        
-	        if (project != null) {
-	            model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
-	            model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
-	            model.addAttribute("project", project);
-	            model.addAttribute("likeCount", likeCount);
-	            model.addAttribute("isUserLiked", isUserLiked);
-	            model.addAttribute("isUserFollow", isUserFollow);
-	            model.addAttribute("product", productList);
-	        }
-	    } catch (Exception e) {
-	        log.error("Error fetching project details", e);
-	        model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
-	    }
-	    return "funding/product";
+		try {
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			Funding project = detailService.fundingProduct(num);
+
+			if (project == null) {
+				model.addAttribute("error", "프로젝트를 찾을 수 없습니다.");
+				return "funding/product";
+			}
+
+			detailService.calculateProject(project);
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("num", num);
+
+			List<Product> productList = detailService.detailProduct(map);
+			int likeCount = detailService.projectLikeCount(num);
+
+			boolean isUserLiked = false;
+			boolean isUserFollow = false;
+
+			if (info != null) {
+				map.put("memberIdx", info.getMemberidx());
+				map.put("makerIdx", project.getMemberIdx());
+				isUserLiked = detailService.userFundingLiked(map) > 0;
+				isUserFollow = detailService.userFollowing(map) > 0;
+			}
+
+			// 모델에 데이터 추가
+			model.addAttribute("currentDate", new java.util.Date());
+			model.addAttribute("thumbnail", "/uploads/project/" + project.getThumbnail());
+			model.addAttribute("profile_img", "/uploads/profile/" + project.getProfile_img());
+			model.addAttribute("project", project);
+			model.addAttribute("likeCount", likeCount);
+			model.addAttribute("isUserLiked", isUserLiked);
+			model.addAttribute("isUserFollow", isUserFollow);
+			model.addAttribute("product", productList);
+
+		} catch (Exception e) {
+			log.error("Error fetching project details", e);
+			model.addAttribute("error", "데이터를 불러오는 중 오류가 발생했습니다.");
+		}
+		return "funding/product";
 	}
 
 	// 프로젝트 좋아요
@@ -96,6 +104,7 @@ public class FundingController {
 			map.put("num", num);
 			map.put("memberIdx", info.getMemberidx());
 
+			// 좋아요 상태 토글
 			int count = detailService.userFundingLiked(map);
 			boolean newLikeState;
 
@@ -141,6 +150,7 @@ public class FundingController {
 			map.put("memberIdx", info.getMemberidx());
 			map.put("num", num);
 
+			// 팔로우 상태 토글
 			int count = detailService.userFollowing(map);
 			boolean newFollowState;
 
@@ -152,6 +162,7 @@ public class FundingController {
 				newFollowState = true;
 			}
 
+			// 팔로잉 카운트 가져오기
 			int followingCount = 0;
 			if (num > 0) {
 				Funding project = detailService.fundingProduct(num);
@@ -195,7 +206,7 @@ public class FundingController {
 		}
 		return "funding/contentReview";
 	}
-	
+
 	private Map<String, Object> handleUnauthorized(HttpServletResponse resp, Map<String, Object> model) {
 		resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		model.put("message", "로그인이 필요한 서비스입니다.");
