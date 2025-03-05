@@ -16,7 +16,7 @@
     font-weight: 700;
     position: relative;
     display: inline-block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 35px;;
 }
 
 .page-title:after {
@@ -24,7 +24,7 @@
     position: absolute;
     bottom: -8px;
     left: 0;
-    width: 1300px;
+    width: 1175px;
     height: 4px;
     background-color: #5E8400;
     border-radius: 2px;
@@ -201,6 +201,10 @@
 
 a {
 	text-decoration: none;
+}
+
+.container {
+    max-width: 1200px !important; /* 기본 컨테이너 너비를 줄임 */
 }
 
 </style>

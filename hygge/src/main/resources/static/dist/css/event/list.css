@@ -27,7 +27,8 @@ body {
     font-size: 28px;
     font-weight: bold;
     padding: 15px 0;
-    border-bottom: 2px solid #82B10C;
+    border-bottom: 4px solid #82B10C;
+    width: 1200px;
 }
 
 /* 본문 컨테이너 */

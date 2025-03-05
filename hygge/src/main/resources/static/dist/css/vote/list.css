@@ -1,152 +1,239 @@
 @charset "UTF-8";
-
 /* 전체 스타일 */
 body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
 }
 
-/* 메인 컨테이너 */
-.vote-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 50px;
-  padding: 20px 20px 70px;
-  max-width: 1200px;
-  margin: auto;
+.body-main {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
 }
 
-/* 투표 카드 스타일 */
-.vote-card {
-  border-radius: 8px;
-  text-align: center;
-  padding: 15px;
-  position: relative;
-  width: 300px;
-  height: 350px; /* 높이 증가 */
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
+.body-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 70px;
 }
 
-/* 카테고리 스타일 */
-.vote-category {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  z-index: 1;
+/* 제목 스타일 */
+.title {
+    text-align: left;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 15px 0;
+    width: 1200px;
+    border-bottom: 4px solid #82B10C;
 }
 
-/* 이미지 스타일 수정 - 주요 변경 부분 */
-.vote-image {
-  width: 100%;
-  height: 250px; /* 높이 증가 */
-  object-fit: contain; /* 이미지 비율을 유지하면서 컨테이너에 맞춤 */
-  transition: all 0.4s ease;
-  border-radius: 4px;
-  margin: 0 auto 10px;
+/* 본문 컨테이너 - 그리드 레이아웃으로 변경 */
+.body-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin-bottom: 40px;
 }
 
-/* 투표 정보 영역 */
-.vote-info {
-  padding: 10px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* 개별 투표 카드 */
+.event {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    position: relative;
+    border: 1px solid #e0e0e0;
 }
 
-/* 투표 번호 */
-.vote-num {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 5px;
+.event:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* 링크 스타일 */
-.vote-info a {
-  display: block;
-  font-size: 16px;
-  color: #333;
-  font-weight: bold;
-  text-decoration: none;
-  margin-bottom: 5px;
-  transition: color 0.3s;
+/* 기간 표시 */
+.period {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 2;
 }
 
-.vote-info a:hover {
-  color: #82B10C;
+.event-img-div {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
 }
 
-/* 기간 표시 스타일 */
-.vote-period {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: #666;
-  margin: 5px 0;
+/* 개별 사진 스타일 */
+.event-img {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-.vote-period i {
-  margin-right: 5px;
+.event-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-/* 투표 통계 영역 */
-.vote-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+.event-img:hover img {
+    transform: scale(1.08);
 }
 
-/* 투표 수 표시 */
-.vote-count {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: #666;
+/* 투표 제목 링크 */
+.event > a {
+    padding: 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.2s;
+    display: block;
+    flex-grow: 1;
 }
 
-.vote-count i {
-  margin-right: 5px;
-  color: #3498db;
+.event > a:hover {
+    color: #82B10C;
 }
 
-/* 상태 표시 */
-.vote-status {
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 4px;
+/* 페이징 컨테이너 수정 */
+div[style*="text-align: center"] {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 50px;
+    border: none !important;
 }
 
-.status-active {
-  background-color: #2ecc71;
-  color: white;
+/* 페이징 스타일 */
+.paging {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
 }
 
-/* 반응형 디자인 */
+.paginate {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.paginate li {
+    margin: 0 3px;
+}
+
+.paginate a, .paginate span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.paginate a {
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.paginate a:hover {
+    background-color: #f0f0f0;
+    border-color: #aaa;
+}
+
+.paginate span.curBox {
+    background-color: #82B10C;
+    color: white;
+    border: 1px solid #82B10C;
+}
+
+/* 관리자 버튼 */
+.admin-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-add {
+    background-color: #82B10C;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+.btn-add:hover {
+    background-color: #6a9209;
+}
+
+.btn-add i {
+    font-size: 12px;
+}
+
+/* 반응형 디자인 강화 */
+@media (max-width: 992px) {
+    .body-container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
-  .vote-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
+    .body-main {
+        padding: 15px;
+    }
+    
+    .body-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .title {
+        font-size: 24px;
+    }
 }
 
 @media (max-width: 480px) {
-  .vote-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .vote-card {
-    width: 100%;
-  }
+    .body-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+    
+    .event-img-div {
+        height: 180px;
+    }
 }
