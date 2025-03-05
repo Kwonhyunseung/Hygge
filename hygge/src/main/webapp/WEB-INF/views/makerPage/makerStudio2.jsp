@@ -125,11 +125,12 @@ body {
 </head>
 <body>
     <div class="header">
-        <img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" style="width: 100px;">
+	    <a href="${pageContext.request.contextPath}/">
+	        <img src="${pageContext.request.contextPath}/dist/images/main/main_logo.png" style="width: 100px;">
+	    </a>
         <div class="title">메이커 스튜디오</div>
         <div>
-            <button>작성중</button>
-            <button>나가기</button>
+            <button onclick="location.href='${pageContext.request.contextPath}/makerPage/projectSign'">나가기</button>
         </div>
     </div>
     <div class="content">
