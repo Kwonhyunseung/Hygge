@@ -219,6 +219,7 @@ public class FundingController {
 			@RequestParam(name = "kwd", defaultValue = "") String keyword, Model model, HttpSession session) {
 		try {
 			model.addAttribute("menu", Menu);
+			/*
 			List<Category> parentCategories = makerService.listCategory(0);
 			List<Category> childCategories01 = makerService.listCategory(1);
 			List<Category> childCategories02 = makerService.listCategory(2);
@@ -240,6 +241,20 @@ public class FundingController {
 			model.addAttribute("childCategories07", childCategories07);
 			model.addAttribute("childCategories08", childCategories08);
 			model.addAttribute("childCategories09", childCategories09);
+			*/
+	        List<Category> parentCategories = makerService.listCategory(0);
+	        model.addAttribute("parentCategories", parentCategories);
+	        
+	        Map<String, List<Category>> subCategoriesMap = new HashMap<>();
+	        
+	        for (Category parent : parentCategories) {
+	            String parentName = parent.getName();
+	            List<Category> childCategories = makerService.listCategory(parent.getCategory_num());
+	            subCategoriesMap.put(parentName, childCategories);
+	        }
+	        
+	        model.addAttribute("subCategoriesMap", subCategoriesMap);
+	        
 		} catch (Exception e) {
 			log.info("fundingList : ", e);
 		}

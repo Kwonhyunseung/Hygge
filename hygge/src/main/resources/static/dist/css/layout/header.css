@@ -1,2 +1,284 @@
 @charset "UTF-8";
 
+/* 검색바 */
+.navbar-expand-lg {
+	max-width: 1300px;
+	margin: 0 auto;
+}
+
+/* 로그인 / 회원가입 */
+.header-right a {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0 10px;
+	text-decoration: none;
+}
+
+/* 팔로잉 아이콘 */
+.bi-stars {
+	font-size: 16px;
+}
+.bi-stars:hover {
+	color: #F97326;
+}
+/* 알림 아이콘 */
+.bi-bell-fill {
+	font-size: 16px;
+}
+.bi-bell-fill:hover {
+	color: #F8C837;
+}
+/* 위시리스트 아이콘 */
+.bi-bag-heart-fill {
+	font-size: 16px;
+}
+.bi-bag-heart-fill:hover {
+	color: #FA323F;
+}
+
+
+
+.btn-upload {
+	background-color: #82B10C;
+	color: white;
+	font-weight: bold;
+	border-radius: 8px;
+	padding: 5px 18px;
+	margin-left: 15px;
+}
+
+.btn-upload:hover {
+	background-color: #678C09;
+	color: white;
+}
+
+/* @media ( max-width : 768px) {
+	.navbar-brand img {
+		width: 60px;
+	}
+	.nav-item a {
+		font-size: 14px;
+		margin: 0 5px;
+	}
+	.btn-upload {
+		font-size: 14px;
+		padding: 5px 10px;
+	}
+} */
+
+
+/* 더보기 */
+.more-menu-container {
+	display: flex;
+	align-items: center;
+	height: 100%; /* 이 줄 추가 */
+}
+
+.hygge-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(2px);
+	z-index: 999;
+	margin: 0;
+	padding: 0;
+}
+
+.hygge-more-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	max-width: 1200px;
+	background: white;
+	padding: 50px;
+	border-radius: 10px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	z-index: 1001; /* z-index 증가 */
+}
+
+.hygge-menu-items {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 20px;
+	justify-items: center;
+}
+
+.hygge-menu-item {
+	text-decoration: none;
+	text-align: center;
+	transition: transform 0.2s ease;
+}
+
+.hygge-menu-item:hover {
+	transform: translateY(-5px);
+}
+
+.hygge-circle-menu {
+	width: 120px;
+	height: 120px;
+	background-color: #B7D12A;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10px;
+	transition: all 0.3s ease;
+}
+
+.hygge-circle-menu:hover {
+	background-color: #82B10C;
+	box-shadow: 0 4px 12px rgba(131, 177, 12, 0.3);
+}
+
+.hygge-circle-menu span {
+	color: white;
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	padding: 10px;
+}
+
+@media ( max-width : 768px) {
+	.hygge-more-menu {
+		width: 95%;
+		padding: 20px;
+	}
+	.hygge-menu-items {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.hygge-circle-menu {
+		width: 100px;
+		height: 100px;
+	}
+	.hygge-circle-menu span {
+		font-size: 14px;
+	}
+}
+
+@media ( max-width : 480px) {
+	.hygge-menu-items {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.hygge-circle-menu {
+		width: 90px;
+		height: 90px;
+	}
+}
+
+
+.nav-item {
+	height: 100%; /* 이 줄 추가 */
+	display: flex;
+	align-items: center;
+	margin: 0px;
+	padding: 0px;
+}
+
+.nav-item a {
+	padding: 0.5rem 1rem;
+	margin: 0;
+	color: #000;
+	font-weight: 600;
+	font-size: 20px;
+	margin-right: 5px;
+}
+
+.nav-item a:hover {
+	color: #82B10C;
+}
+
+.nav-item a:active {
+	color: #82B10C;
+}
+
+.navbar-nav {
+	margin-left: 20px;
+}
+
+
+/* 로그인 css */
+.logo-container {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.logo-img {
+	width: auto;
+	height: 50px;
+}
+
+.form-control {
+	margin-bottom: 10px;
+}
+
+.btn-primary, .kakao-login {
+	border: none;
+}
+
+.kakao-login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px;
+	background-color: #FEE500;
+	border-radius: 10px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.spacer {
+	height: 10px;
+}
+
+.form-control-plaintext {
+	text-align: center;
+}
+
+.btn-primary, .kakao-login {
+	height: 50px;
+	border-radius: 10px;
+	font-size: 16px;
+}
+
+.btn-primary:hover {
+	color: black !important;
+	border: 1px solid #5C7F00;
+}
+
+.kakao-login:hover {
+	color: white !important;
+	border: 1px solid #E6C200;
+}
+
+.kakao-login:hover i {
+	color: white !important;
+}
+
+.kakao-login i {
+	color: black;
+}
+
+.navbar-collapse {
+	display: flex !important;
+}
+
+.nav-underline {
+	display: flex;
+	align-items: center;
+}
+
+.nav-item.position-relative {
+	display: inline-block; /* 이 줄 추가 */
+}
+
+.nav-item {
+	display: flex;
+	padding: 0px;
+}

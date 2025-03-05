@@ -10,109 +10,153 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function () {
+    // 카테고리 및 서브 카테고리 컨테이너 설정
     const categories = document.querySelectorAll(".categories div");
     const subCategoryContainer = document.createElement("div");
     subCategoryContainer.classList.add("sub-categories");
 
-    // 스타일 수정
     subCategoryContainer.style.display = "none";
-    subCategoryContainer.style.position = "absolute"; // 기존 내용 위에 덮기
-    subCategoryContainer.style.width = "100%"; // 가로 전체 차지
-    subCategoryContainer.style.maxWidth = "1300px"; // 가로 최대 1200px
-    subCategoryContainer.style.backgroundColor = "#ffff"; // 배경색 변경
-    subCategoryContainer.style.padding = "20px"; // 내부 패딩 증가
-    subCategoryContainer.style.zIndex = "10"; // 제일 위로 배치
-    subCategoryContainer.style.minHeight = "150px"; // 세로 길이 증가
-    subCategoryContainer.style.left = "50%"; // 가운데 배치
-    subCategoryContainer.style.transform = "translateX(-50%)"; // 정확히 가운데로 위치 조정
+    subCategoryContainer.style.position = "absolute";
+    subCategoryContainer.style.width = "100%";
+    subCategoryContainer.style.maxWidth = "1300px";
+    subCategoryContainer.style.backgroundColor = "#f7f7f7";
+    subCategoryContainer.style.padding = "22px";
+    subCategoryContainer.style.zIndex = "10";
+    subCategoryContainer.style.minHeight = "150px";
+    subCategoryContainer.style.left = "50%";
+    subCategoryContainer.style.transform = "translateX(-50%)";
+    
+    subCategoryContainer.style.borderRadius = "5px";
+    subCategoryContainer.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px";
+    subCategoryContainer.style.borderTop = "1px solid rgba(255, 255, 255, 0.5)";
+    subCategoryContainer.style.borderLeft = "1px solid rgba(255, 255, 255, 0.5)";
+    subCategoryContainer.style.backdropFilter = "blur(5px)";
+    subCategoryContainer.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    subCategoryContainer.style.opacity = "0";
 
     // hr 아래에 추가
     const hrElement = document.querySelector(".hr");
     hrElement.insertAdjacentElement("afterend", subCategoryContainer);
-    
-    const mainContent = document.querySelector("main"); // 상세카테고리 아래 내용
 
-    const subCategories = {
-        "가전": ["TV", "냉장고", "세탁기", "에어컨", "청소기/건조기", "공기청정기", "전자레인지", "안마물품", "가습기"],
-        "패션": ["의류", "신발", "가방", "언더웨어", "잡화"],
-        "뷰티": ["스킨케어", "바디케어", "헤어케어"],
-        "홈▪리빙": ["침실", "인테리어", "주방", "욕실"],
-        "푸드": ["음료", "과자", "간편식", "밀키트", "비건", "건강식품"],
-        "도서": ["소설", "에세이", "자기계발", "만화", "인문"],
-        "캐릭터▪굿즈": ["피규어", "포스터", "연예인", "애니메이션"],
-        "문화": ["공연 티켓", "전시", "콘서트", "음악", "영화"],
-        "반려동물": ["사료", "용품", "장난감", "건강 관리"]
-    };
+    // 서브 카테고리 데이터 설정
+    const subCategories = {};
+    
+    <c:forEach var="parentCategory" items="${parentCategories}">
+        subCategories["${parentCategory.name}"] = [];
+        
+        <c:forEach var="subCategory" items="${subCategoriesMap[parentCategory.name]}">
+            subCategories["${parentCategory.name}"].push("${subCategory.name}");
+        </c:forEach>
+    </c:forEach>
+
+    let activeCategory = null;
+    let isOverSubCategory = false;
+    let hideTimeout = null;
 
     function showSubCategory(categoryName) {
-        if (subCategories[categoryName]) {
-            subCategoryContainer.innerHTML = ''; // 기존 내용 초기화
+        if (subCategories[categoryName] && subCategories[categoryName].length > 0) {
+            // 이전 타임아웃 취소
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+            }
+
+            subCategoryContainer.innerHTML = '';
             
             const heading = document.createElement("h4");
-            heading.textContent = `${categoryName} 상세 카테고리`;
-            heading.style.marginBottom = "30px"; // 제목 아래 여백 추가
-            heading.style.fontSize = "20px"; // 제목 글씨 크기 설정
+            heading.innerText = categoryName + " 전체";
+            heading.style.marginBottom = "30px";
+            heading.style.fontSize = "20px";
             subCategoryContainer.appendChild(heading);
-
+            
+            // 하위 카테고리 목록
             const list = document.createElement("ul");
             list.style.display = "flex";
             list.style.flexWrap = "wrap";
             list.style.gap = "10px";
+            list.style.padding = "0";
+            list.style.margin = "0";
+            list.style.listStyle = "none";
 
-            subCategories[categoryName].forEach(sub => {
+            subCategories[categoryName].forEach(subCategoryName => {
                 const li = document.createElement("li");
-                li.textContent = sub;
+                li.innerText = subCategoryName;
                 li.style.borderRadius = "5px";
-                li.style.fontSize = "20px"; // 항목 글씨 크기 (기존보다 크게)
-                li.style.textAlign = "center"; // 글씨 가운데 정렬
+                li.style.fontSize = "20px";
+                li.style.textAlign = "center";
+                li.style.textDecoration = "none";
                 li.style.padding = "20px";
-                li.style.marginBottom = "10px"; // 항목 간 간격 추가
-                li.style.textDecoration = "none"; // 밑줄 제거
-                list.appendChild(li);
+                li.style.marginBottom = "10px";
+                li.style.cursor = "pointer";
                 
-             	// 호버시 색상 변경
-                li.addEventListener("mouseenter", function () {
-                    li.style.color = "green"; // 글씨 색상 변경
+                li.addEventListener("mouseenter", function() {
+                    this.style.color = "green";
                 });
-
-                li.addEventListener("mouseleave", function () {
-                    li.style.color = "#000"; // 기본 글씨 색상으로 복원
+                
+                li.addEventListener("mouseleave", function() {
+                    this.style.color = "#000";
                 });
+                
+                list.appendChild(li);
             });
+            
             subCategoryContainer.appendChild(list);
-
+            
             // 상세 카테고리 보이기
             subCategoryContainer.style.display = "block";
+            setTimeout(() => {
+                subCategoryContainer.style.opacity = "1";
+            }, 10);
+            
+            activeCategory = categoryName;
         }
     }
 
+    // 서브 카테고리 숨김
+    function scheduleHideSubCategory() {
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+        }
+        
+        hideTimeout = setTimeout(() => {
+            if (!isOverSubCategory && !activeCategory) {
+                subCategoryContainer.style.opacity = "0";
+                setTimeout(() => {
+                    if (subCategoryContainer.style.opacity === "0") {
+                        subCategoryContainer.style.display = "none";
+                    }
+                }, 200);
+            }
+        }, 150);
+    }
+
+    // 카테고리 마우스 이벤트
     categories.forEach(category => {
-        category.addEventListener("mouseenter", function () {
-            let categoryName = category.querySelector("p").textContent.trim();
+        category.addEventListener("mouseenter", function() {
+            const categoryName = this.querySelector("p").textContent.trim();
+            activeCategory = categoryName;
             showSubCategory(categoryName);
         });
 
-        category.addEventListener("mouseleave", function () {
-            // 카테고리에서 마우스를 빼면 상세 카테고리도 숨김
-            setTimeout(() => {
-                if (!subCategoryContainer.matches(':hover')) {
-                    subCategoryContainer.style.display = "none";
-                }
-            }, 100);
+        category.addEventListener("mouseleave", function() {
+            activeCategory = null;
+            scheduleHideSubCategory();
         });
     });
 
-    // 상세 카테고리 호버 시에도 숨기지 않음
-    subCategoryContainer.addEventListener("mouseenter", function () {
-        subCategoryContainer.style.display = "block";
+    subCategoryContainer.addEventListener("mouseenter", function() {
+        isOverSubCategory = true;
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            hideTimeout = null;
+        }
     });
 
-    // 상세 카테고리에서 마우스를 빼면 숨김
-    subCategoryContainer.addEventListener("mouseleave", function () {
-        subCategoryContainer.style.display = "none";
+    subCategoryContainer.addEventListener("mouseleave", function() {
+        isOverSubCategory = false;
+        scheduleHideSubCategory();
     });
 });
-
 </script>
 
 </head>
