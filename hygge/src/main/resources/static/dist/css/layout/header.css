@@ -1,43 +1,72 @@
 @charset "UTF-8";
 
-/* 검색바 */
+/* 헤더 너비 */
 .navbar-expand-lg {
 	max-width: 1300px;
 	margin: 0 auto;
 }
 
-/* 로그인 / 회원가입 */
+/* 로그인, 회원가입, 사용자 이름, 로그아웃 */
 .header-right a {
-	font-size: 16px;
-	font-weight: bold;
-	margin: 0 10px;
-	text-decoration: none;
+  color: #000 !important;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.header-right a:hover {
+  color: #82B10C !important;
+}
+
+/* 사용자 이름 호버 스타일 */
+.header-right a .nav-link:hover {
+  color: #82B10C !important;
 }
 
 /* 팔로잉 아이콘 */
 .bi-stars {
 	font-size: 16px;
 }
+
 .bi-stars:hover {
-	color: #F97326;
+	color: #F97326 !important;
 }
 /* 알림 아이콘 */
 .bi-bell-fill {
 	font-size: 16px;
 }
+
 .bi-bell-fill:hover {
-	color: #F8C837;
+	color: #F8C837 !important;
 }
 /* 위시리스트 아이콘 */
 .bi-bag-heart-fill {
 	font-size: 16px;
 }
+
 .bi-bag-heart-fill:hover {
-	color: #FA323F;
+	color: #FA323F !important;
+}
+/* 메이커 */
+.bi-person-fill-up {
+	font-size: 18px;
 }
 
+.bi-person-fill-up:hover {
+	color: #82B10C !important;
+}
+/* 관리자 */
+.bi-person-fill-gear {
+	font-size: 18px;
+}
 
+.bi-person-fill-gear:hover {
+	color: #82B10C !important;
+}
 
+/* 프로젝트 올리기 */
 .btn-upload {
 	background-color: #82B10C;
 	color: white;
@@ -52,19 +81,60 @@
 	color: white;
 }
 
-/* @media ( max-width : 768px) {
-	.navbar-brand img {
-		width: 60px;
-	}
-	.nav-item a {
-		font-size: 14px;
-		margin: 0 5px;
-	}
-	.btn-upload {
-		font-size: 14px;
-		padding: 5px 10px;
-	}
-} */
+
+/* 네비게이션 메뉴 아이템 스타일 수정 */
+.nav-underline .nav-item a {
+  padding: 0.5rem 1rem;
+  margin: 0;
+  color: #000;
+  font-weight: 600;
+  font-size: 20px;
+  margin-right: 5px;
+  /* 밑줄 관련 추가 */
+  text-decoration: none !important;
+  position: relative;
+}
+
+/* 부트스트랩 기본 밑줄 스타일 제거 */
+.nav-underline .nav-link {
+  border-bottom: none !important;
+  text-decoration: none !important;
+  color: #000 !important; /* 기본 글자색 검정으로 설정 */
+  transition: color 0.3s ease !important;
+}
+
+/* 부트스트랩 활성 상태 밑줄 제거 */
+.nav-underline .nav-link.active {
+  border-bottom-color: transparent !important;
+  color: #82B10C !important; /* 활성화됐을 때 글자색 */
+}
+
+/* 네비게이션 밑줄 효과 추가 */
+.nav-underline .nav-item a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+/* 호버 시 밑줄 색상과 글자색 변경 */
+.nav-underline .nav-item a:hover {
+  color: #82B10C !important;
+}
+
+.nav-underline .nav-item a:hover::after {
+  background-color: #82B10C;
+}
+
+/* 활성화 상태일 때 밑줄 색상 */
+.nav-underline .nav-item a.active::after {
+  background-color: #82B10C;
+}
+
 
 
 /* 더보기 */
@@ -172,7 +242,6 @@
 	}
 }
 
-
 .nav-item {
 	height: 100%; /* 이 줄 추가 */
 	display: flex;
@@ -201,6 +270,7 @@
 .navbar-nav {
 	margin-left: 20px;
 }
+
 
 
 /* 로그인 css */

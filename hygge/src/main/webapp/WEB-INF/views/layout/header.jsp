@@ -90,10 +90,6 @@
 
 				<c:choose>
 					<c:when test="${not empty member}">
-						<a href="${pageContext.request.contextPath}/myPage/myPage"> <span
-							class="nav-link me-2">${member.name}님</span>
-						</a>
-
 						<c:if test="${member.authority == 'Maker'}">
 							<a
 								href="${pageContext.request.contextPath}/makerPage/projectManager">
@@ -107,6 +103,9 @@
 								class="nav-link me-2"><i class="bi bi-person-fill-gear"></i></span>
 							</a>
 						</c:if>
+						<a href="${pageContext.request.contextPath}/myPage/myPage"> <span
+							class="nav-link me-2">${member.name}님</span>
+						</a>
 
 						<a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
 					</c:when>
