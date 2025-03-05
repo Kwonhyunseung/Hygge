@@ -28,10 +28,10 @@ public class Member {
 	private String email2;
 	private String addr1;
 	private String addr2;
-	private int postCode;
-	private int tel1;
-	private int tel2;
-	private int tel3;
+	private String postCode; //타입변경, 널허용
+	private String tel1; //타입변경, 널허용
+	private String tel2; //타입변경, 널허용
+	private String tel3; //타입변경, 널허용
 	private int age;
 	private int gender;
 	private String profile_img;

@@ -86,7 +86,7 @@ public class MemberController {
 	    	service.insertMember(dto, uploadPath);
 	        
 	        StringBuilder sb = new StringBuilder();
-			sb.append(dto.getName() + "님의 회원 가입이 정상적으로 처리되었습니다.<br>");
+			sb.append(dto.getName() + "님의 회원 가입이 정상 처리되었습니다.<br>");
 			sb.append("메인화면으로 이동하여 로그인 하시기 바랍니다.<br>");
 			
 			// 리다이렉트된 페이지에 값 넘기기
@@ -150,7 +150,6 @@ public class MemberController {
 	    }
 	    
 	}
-
 	
 	
 	

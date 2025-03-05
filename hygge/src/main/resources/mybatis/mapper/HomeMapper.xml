@@ -13,7 +13,7 @@
 
 	<!-- 신규 (승인일+7부터 일주일동안) -->
 	<select id="listNewProjects" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, p.end_date,
+		SELECT p.num, pr.accept_date, p.start_date, p.end_date, pr.title, p.block, pr.thumbnail,
 	        1 AS isNew,
 	        (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS mainLike,
 	        <choose>
@@ -30,13 +30,13 @@
 	    FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date + 7 AND pr.accept_date + 14
+	    	AND SYSDATE BETWEEN pr.accept_date + 6 AND pr.accept_date + 12
 	    	AND p.end_date > SYSDATE
 	    ORDER BY pr.accept_date DESC
 	    FETCH FIRST 6 ROWS ONLY
 	</select>
 	
-	<!-- 인기 (팔린 금액 순) -->
+	<!-- 인기 (팔린 금액 순) , 승인일+7로부터 1일뒤 -->
 	<select id="listPopularProjects" parameterType="map" resultType="com.sp.app.model.Funding">
 		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, pr.target, p.end_date,
 	      	NVL(total_sales.total_amount, 0) AS total_amount,
@@ -63,28 +63,32 @@
 	        GROUP BY pd.num
 	    ) total_sales ON p.num = total_sales.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND p.end_date > SYSDATE
 	    	AND SYSDATE >= pr.accept_date + 7
-	    ORDER BY total_sales.total_amount DESC
+	    	AND p.end_date > SYSDATE
+	    <!-- ORDER BY total_sales.total_amount DESC -->
+	    ORDER BY 
+    		total_sales.total_amount * 
+    		(1 + (14 - LEAST(14, SYSDATE - (pr.accept_date + 7))) / 14) DESC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
 	
 	<!-- 공개 예정 (승인일부터 일주일까지) -->
 	<select id="listComingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date,
-		    1 AS isComing,
-		    CEIL(pr.accept_date + 7 - SYSDATE) AS remained_date
+		SELECT p.num, pr.accept_date, pr.title, pr.thumbnail, p.block,
+		    CEIL(pr.accept_date + 6 - SYSDATE) AS remained_date,
+		    1 AS isComing
 	    FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 7
+	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 6
 	    ORDER BY pr.accept_date ASC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
 	
 	<!-- 마감 임박 프로젝트 (마감일 3일전 또는 펀딩률 85% 이상) -->
 	<select id="listDeadlineProjects" parameterType="map" resultType="com.sp.app.model.Funding">
-	    SELECT p.num, p.block, pr.thumbnail, pr.title, pr.accept_date, TO_CHAR(p.end_date, 'YYYY.MM.DD') AS end_date, pr.target,
+	    SELECT p.num, pr.accept_date, TO_CHAR(p.end_date, 'YYYY.MM.DD') AS end_date,
+	    	pr.title, pr.target, pr.thumbnail, p.block,
     		NVL(total_sales.total_amount, 0) AS total_amount,
     		ROUND(NVL(total_sales.total_amount, 0) / pr.target * 100, 2) AS funding_goal,
     		1 AS isDeadline,
@@ -109,8 +113,8 @@
 	        GROUP BY pd.num
 	    ) total_sales ON p.num = total_sales.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND SYSDATE >= pr.accept_date + 6
 	    	AND p.end_date > SYSDATE
-	    	AND SYSDATE >= pr.accept_date + 7
 	    	AND (
 	        	(p.end_date - SYSDATE &lt;= 3)
 	        	OR 
@@ -122,15 +126,19 @@
 
 	<!-- 실시간 랭킹 (좋아요 순) -->
 	<select id="listRankingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
-	    SELECT p.num, p.block, pr.thumbnail, pr.title,
+	    SELECT p.num, (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS likeCount,
+	    	p.start_date, pr.title, pr.thumbnail, p.block,
 	        1 AS isRanking
 		FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
+	    	AND SYSDATE >= pr.accept_date + 6
 	    	AND p.end_date > SYSDATE
-	    	AND SYSDATE >= pr.accept_date + 7
-	    ORDER BY (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) DESC
-	    FETCH FIRST 7 ROWS ONLY
+	    <!-- ORDER BY (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) DESC -->
+	    ORDER BY 
+  			(SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) * 
+  			(1 + (14 - LEAST(14, SYSDATE - (pr.accept_date + 6))) / 14) DESC
+		FETCH FIRST 7 ROWS ONLY
 	</select>
 	
 </mapper>

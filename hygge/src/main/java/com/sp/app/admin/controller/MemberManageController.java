@@ -49,7 +49,7 @@ public class MemberManageController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("schType", schType);
 			map.put("kwd", kwd);
-			map.put("authority", "USER");
+			map.put("authority", "User");
 			
 			dataCount = service.dataCount(map);
 			total_page = paginateUtil.pageCount(dataCount, size);
@@ -62,7 +62,7 @@ public class MemberManageController {
 			map.put("offset", offset);
 			map.put("size", size);
 			
-			String authority = "USER";
+			String authority = "User";
 			map.put("authority", authority);
 			
 			List<MemberManage> member = service.normalMember(map);
@@ -118,7 +118,7 @@ public class MemberManageController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("schType", schType);
 			map.put("kwd", kwd);
-			map.put("authority", "USER");
+			map.put("authority", "User");
 			
 			dataCount = service.dataCount(map);
 			total_page = paginateUtil.pageCount(dataCount, size);
@@ -131,7 +131,7 @@ public class MemberManageController {
 			map.put("offset", offset);
 			map.put("size", size);
 			
-			String authority = "MAKER";
+			String authority = "Maker";
 			map.put("authority", authority);
 			
 			List<MemberManage> member = service.normalMember(map);
@@ -170,7 +170,7 @@ public class MemberManageController {
 	@GetMapping("reportOver")
 	public String reportOver(Model model) {
 	    try {
-	        String authority = "USER";
+	        String authority = "User";
 	        List<MemberManage> member = service.reportMembers(authority);
 	        
 	        model.addAttribute("member", member);

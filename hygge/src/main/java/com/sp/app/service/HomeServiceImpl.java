@@ -42,25 +42,19 @@ public class HomeServiceImpl implements HomeService {
 		try {
 			list = mapper.listNewProjects(map);
 			
-			// 모든 프로젝트 메소드에 이 코드 적용
 			for (Funding project : list) {
-			    // 초기값으로 무조건 좋아요 상태를 false로 설정
-			    project.setUserLiked(false);
+			    project.setUserLiked(false); //좋아요 초기값
 			    
-			    // 로그인한 사용자의 좋아요 상태 개별 확인
 			    if (map.containsKey("memberIdx")) {
 			        Long memberIdx = (Long) map.get("memberIdx");
 			        
-			        // 개별 프로젝트에 대한 좋아요 확인을 위한 맵
 			        Map<String, Object> likeMap = new HashMap<>();
 			        likeMap.put("num", project.getNum());
 			        likeMap.put("memberIdx", memberIdx);
 			        
-			        // 좋아요 여부 확인 - 명시적으로 boolean으로 변환
 			        int likeCount = projectMapper.userFundingLiked(likeMap);
 			        project.setUserLiked(likeCount > 0);
 			        
-			        // 디버깅 로그 추가
 			        log.info("프로젝트 번호: " + project.getNum() + ", 사용자: " + memberIdx + ", 좋아요 상태: " + (likeCount > 0));
 			    }
 			}
@@ -79,25 +73,19 @@ public class HomeServiceImpl implements HomeService {
         try {
             list = mapper.listPopularProjects(map);
 
-         // 모든 프로젝트 메소드에 이 코드 적용
             for (Funding project : list) {
-                // 초기값으로 무조건 좋아요 상태를 false로 설정
                 project.setUserLiked(false);
                 
-                // 로그인한 사용자의 좋아요 상태 개별 확인
                 if (map.containsKey("memberIdx")) {
                     Long memberIdx = (Long) map.get("memberIdx");
                     
-                    // 개별 프로젝트에 대한 좋아요 확인을 위한 맵
                     Map<String, Object> likeMap = new HashMap<>();
                     likeMap.put("num", project.getNum());
                     likeMap.put("memberIdx", memberIdx);
                     
-                    // 좋아요 여부 확인 - 명시적으로 boolean으로 변환
                     int likeCount = projectMapper.userFundingLiked(likeMap);
                     project.setUserLiked(likeCount > 0);
                     
-                    // 디버깅 로그 추가
                     log.info("프로젝트 번호: " + project.getNum() + ", 사용자: " + memberIdx + ", 좋아요 상태: " + (likeCount > 0));
                 }
             }
@@ -116,25 +104,19 @@ public class HomeServiceImpl implements HomeService {
         try {
             list = mapper.listDeadlineProjects(map);
 
-         // 모든 프로젝트 메소드에 이 코드 적용
             for (Funding project : list) {
-                // 초기값으로 무조건 좋아요 상태를 false로 설정
                 project.setUserLiked(false);
                 
-                // 로그인한 사용자의 좋아요 상태 개별 확인
                 if (map.containsKey("memberIdx")) {
                     Long memberIdx = (Long) map.get("memberIdx");
                     
-                    // 개별 프로젝트에 대한 좋아요 확인을 위한 맵
                     Map<String, Object> likeMap = new HashMap<>();
                     likeMap.put("num", project.getNum());
                     likeMap.put("memberIdx", memberIdx);
                     
-                    // 좋아요 여부 확인 - 명시적으로 boolean으로 변환
                     int likeCount = projectMapper.userFundingLiked(likeMap);
                     project.setUserLiked(likeCount > 0);
                     
-                    // 디버깅 로그 추가
                     log.info("프로젝트 번호: " + project.getNum() + ", 사용자: " + memberIdx + ", 좋아요 상태: " + (likeCount > 0));
                 }
             }

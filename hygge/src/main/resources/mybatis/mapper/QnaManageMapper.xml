@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.admin.mapper.QnaManageMapper">
+    <select id="qnaList" parameterType="map" resultType="com.sp.app.admin.model.QnaManage">
+        SELECT * FROM (
+            SELECT ROWNUM rnum, tb.* FROM (
+                SELECT 
+                    q.num, q.q_title, q.q_content, q.q_date, q.memberIdx,
+                    m.nickname, q.category, qc.name AS "category_name",
+                    CASE WHEN q.a_date IS NULL THEN '미답변' ELSE '답변완료' END AS answer_status,
+                    q.a_content, q.a_date
+                FROM QnA q
+                JOIN member1 m ON q.memberIdx = m.memberIdx
+                JOIN Q_Category qc ON q.category = qc.category
+                <where>
+                    <if test="schType=='title' and kwd != ''">
+                        q.q_title LIKE '%' || #{kwd} || '%'
+                    </if>
+                    <if test="schType=='content' and kwd != ''">
+                        q.q_content LIKE '%' || #{kwd} || '%'
+                    </if>
+                    <if test="schType=='writer' and kwd != ''">
+                        m.nickname LIKE '%' || #{kwd} || '%'
+                    </if>
+                    <if test="schType=='answer' and kwd != ''">
+                        q.a_content LIKE '%' || #{kwd} || '%'
+                    </if>
+                    <if test="schType=='all' and kwd != ''">
+                        (q.q_title LIKE '%' || #{kwd} || '%'
+                        OR q.q_content LIKE '%' || #{kwd} || '%'
+                        OR m.nickname LIKE '%' || #{kwd} || '%'
+                        OR q.a_content LIKE '%' || #{kwd} || '%')
+                    </if>
+                    <if test="category != 0">
+                        AND q.category = #{category}
+                    </if>
+                    <if test="status == 'new'">
+                        AND q.a_date IS NULL
+                    </if>
+                    <if test="status == 'pending'">
+                        AND q.a_date IS NULL
+                    </if>
+                    <if test="status == 'completed'">
+                        AND q.a_date IS NOT NULL
+                    </if>
+                    <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                        AND q.q_date BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                        AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+                    </if>
+                </where>
+                ORDER BY q.q_date DESC
+            ) tb WHERE ROWNUM &lt;= #{offset} + #{size}
+        ) WHERE rnum > #{offset}
+    </select>
+
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT COUNT(*)
+        FROM QnA q
+        JOIN member1 m ON q.memberIdx = m.memberIdx
+        JOIN Q_Category qc ON q.category = qc.category
+        <where>
+            <if test="schType=='title' and kwd != ''">
+                q.q_title LIKE '%' || #{kwd} || '%'
+            </if>
+            <if test="schType=='content' and kwd != ''">
+                q.q_content LIKE '%' || #{kwd} || '%'
+            </if>
+            <if test="schType=='writer' and kwd != ''">
+                m.nickname LIKE '%' || #{kwd} || '%'
+            </if>
+            <if test="schType=='answer' and kwd != ''">
+                q.a_content LIKE '%' || #{kwd} || '%'
+            </if>
+            <if test="schType=='all' and kwd != ''">
+                (q.q_title LIKE '%' || #{kwd} || '%'
+                OR q.q_content LIKE '%' || #{kwd} || '%'
+                OR m.nickname LIKE '%' || #{kwd} || '%'
+                OR q.a_content LIKE '%' || #{kwd} || '%')
+            </if>
+            <if test="category != 0">
+                AND q.category = #{category}
+            </if>
+            <if test="status == 'new'">
+                AND q.a_date IS NULL
+            </if>
+            <if test="status == 'pending'">
+                AND q.a_date IS NULL
+            </if>
+            <if test="status == 'completed'">
+                AND q.a_date IS NOT NULL
+            </if>
+            <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                AND q.q_date BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+            </if>
+        </where>
+    </select>
+    
+<select id="getStatusCounts" resultType="map">
+SELECT
+  SUM(CASE WHEN q.a_date IS NULL THEN 1 ELSE 0 END) AS "pending_count",
+  SUM(CASE WHEN q.a_date IS NOT NULL THEN 1 ELSE 0 END) AS "completed_count",
+  COUNT(*) AS "total_count"
+FROM QnA q
+</select>
+
+    <select id="getCategoryList" resultType="map">
+        SELECT category, name 
+	    FROM Q_Category 
+	    ORDER BY category
+    </select>
+    
+<update id="answerQna" parameterType="map">
+UPDATE qna 
+SET a_title = #{answerTitle}, a_content = #{answerContent}, a_date = SYSDATE
+WHERE num = #{num}
+</update>
+</mapper>

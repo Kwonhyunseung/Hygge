@@ -34,95 +34,31 @@ label {
 	font-size: 1rem;
 }
 
-.btn-check {
-	display: inline-block;
-	padding: 5px 10px;
-	background-color: #b2cc85;
-	border: none;
-	border-radius: 5px;
-	color: #fff;
-	cursor: pointer;
-}
-
-.btn-check:hover,
-.btn-check:checked {
-	background-color: #9ab370;
+.category-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
 }
 
 .category-item {
 	display: inline-block;
-	padding: 6px 10px;
+	background-color: #e0e0e0;
 	margin: 5px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
+	padding: 12px 28px;
+	border-radius: 50px;
 	cursor: pointer;
+	font-size: 1rem;
 	transition: background-color 0.3s ease;
-}
-
-.category-item:hover {
-	background-color: #f1f1f1;
 }
 
 .category-item.selected {
 	background-color: #ACC569;
 	color: white;
 	font-weight: bold;
-	border-color: #ACC569;
-}
-
-.terms {
-	font-size: 0.9rem;
-}
-
-.btn-primary {
-	background-color: #b2cc85;
-	border: none;
-	padding: 10px;
-	width: 100%;
-	font-size: 1.2rem;
-	border-radius: 5px;
-}
-
-.btn-primary:hover {
-	background-color: #9ab370;
-}
-
-.btn-secondary {
-	background-color: #d6d6d6;
-	border: none;
-	padding: 10px;
-	width: 100%;
-	font-size: 1.2rem;
-	border-radius: 5px;
-}
-
-.btn-secondary:hover {
-	background-color: #b5b5b5;
-}
-
-.line {
-	border-bottom: 2.5px solid #000;
-	width: 100%;
-	margin-top: 3px;
-	margin-bottom: 10px;
-}
-
-.category-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-}
-
-.category-item {
-	background-color: #e0e0e0;
-	padding: 12px 25px;
-	border-radius: 50px;
-	cursor: pointer;
-	font-size: 1rem;
 }
 
 .category-item:hover {
-	background-color: #b2cc85;
+	background-color: #B8CD95;
 	color: white;
 }
 
@@ -135,6 +71,47 @@ label {
 	border-top: 1.5px solid #000;
 	margin: 40px 0;
 	width: 100%;
+}
+
+.terms {
+	font-size: 0.9rem;
+}
+
+.btn-primary {
+	background-color: #ACC569;
+	border: none;
+	padding: 10px; width : 100%;
+	font-size: 1.2rem;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.btn-primary:hover {
+	background-color: #9ab370;
+}
+
+.btn:disabled {
+	background-color: #B8CD95;
+}
+
+.btn-secondary {
+	background-color: #d5d5d5;
+	border: none;
+	padding: 10px;
+	width: 100%;
+	font-size: 1.2rem;
+	border-radius: 5px;
+}
+
+.btn-secondary:hover {
+	background-color: #aaaaaa;
+}
+
+.line {
+	border-bottom: 2.5px solid #000;
+	width: 100%;
+	margin-top: 3px;
+	margin-bottom: 10px;
 }
 
 .terms p {
@@ -151,8 +128,4 @@ label {
 .terms label {
 	margin-left: 10px; /* 체크박스와 텍스트 간의 간격 */
 	font-weight: normal; /* 텍스트 굵기 제거 */
-}
-
-.btn:disabled {
-	background-color: #b2cc85;
 }
