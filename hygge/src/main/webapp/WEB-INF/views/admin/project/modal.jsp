@@ -102,8 +102,8 @@
             </li>
           </ul>
           
-          <%-- 탭 컨텐츠 삭제하면 보임 --%>
-          <div class="tab-content" id="projectTabContent">
+          <%-- 탭 컨텐츠 삭제하면 보임 tab-content --%>
+          <div class="" id="projectTabContent">
             <!-- 기본 정보 탭 -->
             <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
               <form id="basicInfoForm">
@@ -480,8 +480,6 @@
       document.getElementById('projectManagementModal').style.display = 'none';
     });
   </script>
-</body>
-</html>
 
 </body>
 </html>
