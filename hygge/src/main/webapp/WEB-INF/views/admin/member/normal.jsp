@@ -306,7 +306,27 @@ $(function(){
     });
 });
 
+// 펀딩 기간 변경 시 펀딩 일수 자동 계산
+function updateFundingDays() {
+  const startDate = new Date(document.getElementById('fundingStartDate').value);
+  const endDate = new Date(document.getElementById('fundingEndDate').value);
+  
+  if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+    const diffTime = Math.abs(endDate - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end days
+    document.getElementById('fundingDays').value = diffDays;
+  }
+}
 
+// 날짜 입력 필드에 이벤트 리스너 추가
+document.getElementById('fundingStartDate').addEventListener('change', updateFundingDays);
+document.getElementById('fundingEndDate').addEventListener('change', updateFundingDays);
+
+// 저장 버튼 클릭 시 처리
+document.getElementById('saveChanges').addEventListener('click', function() {
+  alert('프로젝트 정보가 성공적으로 저장되었습니다.');
+  // 실제로는 여기에 AJAX 요청으로 서버에 데이터를 전송하는 코드가 들어갑니다.
+});
 </script>
 
 </body>

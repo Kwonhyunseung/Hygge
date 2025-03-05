@@ -189,3 +189,84 @@
     background-color: #007bff;
     color: white;
 }
+
+/* 프로젝트 관리 모달 스타일 */
+.modal-xl {
+    max-width: 1140px;
+}
+
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+}
+
+.reward-item {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.project-image {
+    height: 150px;
+    object-fit: cover;
+}
+
+.current-thumbnail-container {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#currentThumbnail {
+    max-height: 200px;
+}
+
+/* 추가 버튼 스타일 */
+#addRewardBtn {
+    margin-bottom: 15px;
+}
+
+/* 입력 필드 스타일 */
+.form-control:focus, .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 필수 입력 필드 표시 */
+.required-field::after {
+    content: "*";
+    color: red;
+    margin-left: 4px;
+}
+
+/* 모달 애니메이션 */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* 탭 내용 스타일 */
+.tab-content {
+    padding: 20px 0;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 768px) {
+    .modal-xl {
+        max-width: 100%;
+        margin: 10px;
+    }
+    
+    .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
