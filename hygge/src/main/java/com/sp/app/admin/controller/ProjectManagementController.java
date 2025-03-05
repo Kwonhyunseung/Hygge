@@ -59,8 +59,8 @@ public class ProjectManagementController {
 				total_page = paginateUtil.pageCount(dataCount, size);
 			}
 			
-			if(total_page > current_page) {
-				current_page = total_page;
+			if(current_page > total_page) {
+			    current_page = total_page;
 			}
 			
 			int offset = (current_page-1) * size;
