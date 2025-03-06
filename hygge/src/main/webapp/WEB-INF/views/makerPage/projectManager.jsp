@@ -13,11 +13,11 @@
         padding: 0;
         box-sizing: border-box;
     }
-    .main-container {
+    .pmain-container {
         font-family: Arial, sans-serif;
         background: white;
     }
-    .container {
+    .pcontainer {
         position: relative; /* 작성 버튼 위치 기준 설정 */
         width: 90%;
         max-width: 1200px;
@@ -249,23 +249,14 @@
         border-radius: 10px;
         margin: 20px 0;
     }
-    
-    /* 현승 추가 */
-    .container{
-    	margin-bottom: 150px;
-    }
-    
-    
 </style>
 </head>
-<body class="main-container">
+<body class="pmain-container">
     <header>
-        <div class="header-container">
             <jsp:include page="/WEB-INF/views/project/layout/header.jsp" />
-        </div>
     </header>
 
-    <div class="container">
+    <div class="pcontainer">
         <h2 style="margin-bottom: 38px;">${sessionScope.member.name}님, 반가워요</h2>
 
         <!-- 탭 영역 -->
@@ -328,6 +319,8 @@
                     </div>
                 </c:forEach>
             </div>
+            <!-- 필터 후 보여줄 '데이터 없음' 메시지 영역 (자바스크립트로 제어) -->
+            <div id="project-no-data" class="no-data" style="display:none;"></div>
             <c:if test="${totalProjects > 1}">
                 <div class="pagination">
                     <button>&lt;</button>
@@ -377,6 +370,8 @@
                     </div>
                 </c:forEach>
             </div>
+            <!-- 게시판 '데이터 없음' 영역 -->
+            <div id="board-no-data" class="no-data" style="display:none;"></div>
             <c:if test="${totalBoards > 1}">
                 <div class="pagination">
                     <button>&lt;</button>
@@ -389,55 +384,45 @@
             <button class="write-btn" onclick="location.href='${pageContext.request.contextPath}/makerPage/mwrite'">+</button>
         </div>
 
-        <!-- 1:1 문의 탭 (임시 데이터 포함) -->
+        <!-- 1:1 문의 탭 -->
         <div class="tab-content ${tab==3?'active':''}" id="inquiry">
             <!-- 필터 버튼 -->
             <div class="filter-buttons" id="inquiry-filter-buttons">
                 <button class="active" data-filter="all">전체</button>
-                <button data-filter="답변대기">답변대기</button>
-                <button data-filter="답변완료">답변완료</button>
+                <button data-filter="#">미완료</button>
+                <button data-filter="#2">답변완료</button>
             </div>
             <div class="board-list">
-                <!-- 임시 데이터 시작 -->
-                <div class="project-card board-card" data-category="답변완료">
-                    <div class="top-section">
-                        <span>문의</span>
-                        <img src="${pageContext.request.contextPath}/uploads/profile/noimg.png" alt="문의 이미지" style="max-width: 100%; height: auto;">
+                <c:if test="${empty makerBoard}">
+                    <div class="no-data">등록된 문의 내역이 없습니다.</div>
+                </c:if>
+                <c:forEach var="board" items="${makerBoard}">
+                    <div class="project-card board-card" data-category="${board.category}">
+                        <div class="top-section">
+                            <span>게시판</span>
+                            <c:choose>
+                                <c:when test="${empty board.thumbnail}">
+                                    <p>대표 이미지 등록 필요</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/uploads/board/${board.thumbnail}" alt="썸네일 이미지" style="max-width: 100%; height: auto;" />
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="middle-section">
+                            <p>${board.title}</p>
+                            <p class="status">${board.category}</p>
+                        </div>
+                        <div class="bottom-section">
+                            <button onclick="location.href='/board/view/${board.id}'">몰라</button>
+                        </div>
                     </div>
-                    <div class="middle-section">
-                        <p>서비스 이용 관련 문의</p>
-                        <p class="status">답변완료</p>
-                    </div>
-                    <div class="bottom-section">
-                        <button onclick="location.href='/board/view/1'">상세보기</button>
-                    </div>
-                </div>
-                <div class="project-card board-card" data-category="답변대기">
-                    <div class="top-section">
-                        <span>문의</span>
-                        <img src="${pageContext.request.contextPath}/uploads/profile/noimg.png" alt="문의 이미지" style="max-width: 100%; height: auto;">
-                    </div>
-                    <div class="middle-section">
-                        <p>결제 오류 문의</p>
-                        <p class="status">답변대기</p>
-                    </div>
-                    <div class="bottom-section">
-                        <button onclick="location.href='/board/view/2'">상세보기</button>
-                    </div>
-                </div>
-                <!-- 임시 데이터 끝 -->
+                </c:forEach>
             </div>
-            <!-- 필터 후 '데이터 없음' 메시지 영역 -->
+            <!-- 1:1 문의 '데이터 없음' 영역 -->
             <div id="inquiry-no-data" class="no-data" style="display:none;"></div>
         </div>
     </div>
-<%-- 
-    <footer>
-        <div class="footer-container">
-            <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-        </div>
-    </footer>
- --%>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 탭 전환 기능
@@ -516,6 +501,8 @@
                     }
                 });
             });
+
+            // (필요하다면 1:1 문의 필터링 기능도 유사하게 추가)
         });
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -531,5 +518,11 @@
             });
         });
     </script>
+    	<footer>
+		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	</footer>
+
+	<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"></jsp:include>
 </body>
+
 </html>
