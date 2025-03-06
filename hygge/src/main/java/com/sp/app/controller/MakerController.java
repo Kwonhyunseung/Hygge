@@ -108,7 +108,7 @@ public class MakerController {
 			}
 			dto.setMemberIdx(info.getMemberidx());
 			long num = service.insertTempProjectRequest(dto, uploadPath);
-			number = num;
+			model.addAttribute("num", num);
 		} catch (Exception e) {
 			log.info("projectSubmit2 : ", e);
 		}

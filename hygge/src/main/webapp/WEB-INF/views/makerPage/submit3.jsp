@@ -111,6 +111,7 @@ $(function() {
 			return false;
 		}
 		let projectNum = '${projectNum}';
+		console.log(projectNum);
 		let out = '';
 		out += '<div class="gift-item">';
 		out += '	<div>';
