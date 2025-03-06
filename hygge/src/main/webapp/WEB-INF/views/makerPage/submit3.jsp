@@ -39,7 +39,6 @@
 					<p>상품을 추가해주세요</p>
 				</div>
 			</div>
-			<input type="hidden" name="num" value="${projectNum}">
 		</form>
 		
 		<div class="gift-form">
@@ -111,6 +110,7 @@ $(function() {
 			$('.gift-form input[name="origin"]').focus();
 			return false;
 		}
+		let projectNum = '${projectNum}';
 		let out = '';
 		out += '<div class="gift-item">';
 		out += '	<div>';
@@ -126,6 +126,7 @@ $(function() {
 		out += '	<input type="hidden" name="stockList" value="' + stock + '">';
 		out += '	<input type="hidden" name="originList" value="' + origin + '">';
 		out += '	<input type="hidden" name="detailList" value="' + detail + '">';
+		out += '	<input type="hidden" name="num" value="' + projectNum + '">';
 		out += '</div>';
 
 		if ($('.gift-item').length > 0) {
