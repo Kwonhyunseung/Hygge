@@ -46,7 +46,7 @@ public class QnaManagementController {
 	                     Model model) {
 
 	    try {
-	        int size = 10;
+	        int size = 13;
 	        int total_page = 0;
 	        int dataCount = 0;
 

@@ -38,7 +38,6 @@
 				</div>
 				<div class="event-content-div">
 				    <p class="event-title"><a href="${pageContext.request.contextPath}/event/article/${dto.num}">${dto.title}</a></p>
-				    <p class="event-content">${dto.content}</p>
 				        <p class="event-period">
 				        <span class="event-date-label">이벤트 기간:</span> 
 				        <fmt:formatDate value="${dto.evt_date}" pattern="yyyy.MM.dd"/> ~ 

@@ -204,7 +204,7 @@ a {
 }
 
 .container {
-    max-width: 1200px !important; /* 기본 컨테이너 너비를 줄임 */
+    max-width: 1300px !important; /* 기본 컨테이너 너비를 줄임 */
 }
 
 </style>

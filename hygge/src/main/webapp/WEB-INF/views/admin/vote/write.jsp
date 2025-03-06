@@ -21,7 +21,7 @@
         <div class="main-content">
             <div class="content-header">
                 <div class="content-title">
-                    <h2>이달의 프로젝트 투표 ${mode=='write' ? '만들기' : '수정하기'}</h2>
+                    <h2>이달의 프로젝트 투표 ${mode=='write' ? '작성' : '수정'}</h2>
                 </div>
             </div>
 

@@ -40,7 +40,7 @@ public class PaymentManageController {
             Model model) throws Exception {
         
         try {
-            int size = 10;
+            int size = 15;
             int total_page;
             int dataCount;
             

@@ -126,7 +126,7 @@
                         <i class="fas fa-plus"></i> 이벤트 등록
                     </a>
                     <a href="#" class="coupon-btn" id="couponBtn">
-                        <i class="fas fa-ticket-alt"></i> 쿠폰 등록
+                        <i class="fas fa-ticket-alt"></i> 쿠폰 발급
                     </a>
                 </div>
             </div>
@@ -187,7 +187,7 @@
 <div id="couponModal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
-        <h2>쿠폰 등록</h2>
+        <h2>쿠폰 발급</h2>
         <form id="couponForm">
             <div class="form-group">
                 <label for="eventId">이벤트 제목</label>

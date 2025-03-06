@@ -172,7 +172,10 @@
         }
         
         .etc {
-            background-color: #9b59b6;
+            background-color: #c1bbc4;
+        }
+        .member {
+        	background-color: #8967f0;
         }
     </style>
 </head>
@@ -265,6 +268,8 @@
                                             <c:when test="${dto.category_name eq '결제'}"><c:set var="categoryClass" value="payment" /></c:when>
                                             <c:when test="${dto.category_name eq '계정'}"><c:set var="categoryClass" value="account" /></c:when>
                                             <c:when test="${dto.category_name eq '환불'}"><c:set var="categoryClass" value="refund" /></c:when>
+                                            <c:when test="${dto.category_name eq '기타'}"><c:set var="categoryClass" value="etc" /></c:when>
+                                            <c:when test="${dto.category_name eq '회원'}"><c:set var="categoryClass" value="member" /></c:when>
                                         </c:choose>
                                         <span class="type-badge ${categoryClass}">
                                             ${dto.category_name}
@@ -416,7 +421,7 @@
             case "결제": categoryClass += "payment"; break;
             case "계정": categoryClass += "account"; break;
             case "환불": categoryClass += "refund"; break;
-            default: categoryClass += "other";
+            default: categoryClass += "etc";
         }
         document.getElementById('questionCategory').className = categoryClass;
         

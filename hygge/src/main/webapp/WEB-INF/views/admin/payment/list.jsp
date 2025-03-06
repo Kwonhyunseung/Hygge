@@ -10,17 +10,46 @@
 
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style>
-/* 컨텐츠 헤더 스타일 */
-.content-header {
+/* 검색 컨테이너 수정 */
+.search-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 }
 
+.search-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex: 1;
+}
+
+.search-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+}
+
+.search-button {
+    padding: 8px 16px;
+    background: #34495e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 탭 버튼 스타일 수정 */
 .tab-buttons {
     display: flex;
     gap: 10px;
+    margin-left: 20px;
 }
 
 .tab-button {
@@ -29,6 +58,7 @@
     background: #fff;
     border-radius: 4px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .tab-button.active {
@@ -124,37 +154,6 @@
     color: white;
 }
 
-/* 검색 컨테이너 */
-.search-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.search-form {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.search-input {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    flex: 1;
-}
-
-.search-button {
-    padding: 8px 16px;
-    background: #34495e;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
 .pagination {
     margin-top: 20px;
     display: flex;
@@ -185,20 +184,11 @@
 <div class="admin-container">
    <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
    <div class="main-content">
-       <div class="content-header">
-           <h2>구매내역 관리</h2>
-           <div class="tab-buttons">
-               <button class="tab-button active" data-tab="all">전체 주문</button>
-               <button class="tab-button" data-tab="project">프로젝트 주문</button>
-               <button class="tab-button" data-tab="used">중고장터 주문</button>
-           </div>
-       </div>
-
        <div class="tab-container">
            <!-- 전체 주문 -->
            <div id="allPurchases" class="tab-content active">
-               <form name="searchForm" action="${pageContext.request.contextPath}/admin/payment/list" method="get">
-                   <div class="row mb-3">
+               <div class="search-container">
+                   <form name="searchForm" action="${pageContext.request.contextPath}/admin/payment/list" method="get" class="search-form">
                        <div class="col-auto">
                            <select name="schType" class="form-select">
                                <option value="all" ${schType=="all"?"selected":""}>전체</option>
@@ -213,8 +203,14 @@
                        <div class="col-auto">
                            <button type="submit" class="btn btn-primary">검색</button>
                        </div>
+                   </form>
+                   
+                   <div class="tab-buttons">
+                       <button class="tab-button active" data-tab="all">전체 주문</button>
+                       <button class="tab-button" data-tab="project">프로젝트 주문</button>
+                       <button class="tab-button" data-tab="used">중고장터 주문</button>
                    </div>
-               </form>
+               </div>
 
                <table class="table table-hover project-table">
                    <thead>
@@ -229,6 +225,7 @@
                            <th>관리</th>
                        </tr>
                    </thead>
+                   <%--
                    <tbody>
                        <c:forEach var="dto" items="${list}" varStatus="status">
                            <tr>
@@ -279,20 +276,367 @@
                                            onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/${dto.payment_num}'">
                                        상세보기
                                    </button>
-                                   <button class="action-button refund-button" 
-                                           onclick="openRefundModal(${dto.payment_num})">
-                                       환불처리
-                                   </button>
                                </td>
                            </tr>
                        </c:forEach>
                    </tbody>
+                   --%>
+                   <!-- 구매내역 하드코딩 데이터 -->
+<tbody>
+    <tr>
+        <td>P2024030001</td>
+        <td>나무꾼</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030001" class="project-link">
+                에코프렌들리 대나무 칫솔 세트
+            </a>
+        </td>
+        <td>2024-03-01 14:25</td>
+        <td>12,500원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-success">배송완료</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030001'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030002</td>
+        <td>블루마린</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030002" class="project-link">
+                올인원 스마트 요가 매트
+            </a>
+        </td>
+        <td>2024-03-02 09:15</td>
+        <td>89,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-info">배송중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030002'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030003</td>
+        <td>핑크퐁</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030003" class="project-link">
+                중고 아이패드 프로 5세대 256GB
+            </a>
+        </td>
+        <td>2024-03-02 11:42</td>
+        <td>580,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-info">배송중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030003'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030004</td>
+        <td>메이커피플</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030004" class="project-link">
+                마이크로 모빌리티 전동킥보드
+            </a>
+        </td>
+        <td>2024-03-02 15:30</td>
+        <td>429,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-pending">배송준비중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030004'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030005</td>
+        <td>디지털노마드</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030005" class="project-link">
+                중고 소니 A7III 카메라 바디
+            </a>
+        </td>
+        <td>2024-03-03 08:52</td>
+        <td>1,200,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-success">배송완료</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030005'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030006</td>
+        <td>오가닉홈</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030006" class="project-link">
+                유기농 면 침구세트 (퀸사이즈)
+            </a>
+        </td>
+        <td>2024-03-03 14:10</td>
+        <td>149,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-success">배송완료</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030006'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030007</td>
+        <td>카페인러버</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030007" class="project-link">
+                스페셜티 커피 정기 구독 (3개월)
+            </a>
+        </td>
+        <td>2024-03-03 17:05</td>
+        <td>45,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-pending">배송준비중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030007'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030008</td>
+        <td>올라운더</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030008" class="project-link">
+                중고 퍼팅 연습기
+            </a>
+        </td>
+        <td>2024-03-03 18:30</td>
+        <td>25,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-info">배송중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030008'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030009</td>
+        <td>캠핑마스터</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030009" class="project-link">
+                올시즌 초경량 백패킹 텐트
+            </a>
+        </td>
+        <td>2024-03-04 09:45</td>
+        <td>235,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-success">배송완료</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030009'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030010</td>
+        <td>레트로게이머</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030010" class="project-link">
+                중고 닌텐도 스위치 라이트
+            </a>
+        </td>
+        <td>2024-03-04 10:20</td>
+        <td>140,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-success">배송완료</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030010'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030011</td>
+        <td>헬시쿡</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030011" class="project-link">
+                스마트 저탄수 밀 프렙 컨테이너
+            </a>
+        </td>
+        <td>2024-03-04 13:15</td>
+        <td>57,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-pending">배송준비중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030011'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030012</td>
+        <td>모닝조깅</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030012" class="project-link">
+                울트라 경량 러닝화
+            </a>
+        </td>
+        <td>2024-03-04 16:40</td>
+        <td>119,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-info">배송중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030012'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030013</td>
+        <td>북러버</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030013" class="project-link">
+                중고 한정판 소설 컬렉션 (15권 세트)
+            </a>
+        </td>
+        <td>2024-03-05 11:30</td>
+        <td>75,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-pending">배송준비중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030013'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>P2024030014</td>
+        <td>음악메이커</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030014" class="project-link">
+                포터블 미디 컨트롤러
+            </a>
+        </td>
+        <td>2024-03-05 15:22</td>
+        <td>189,000원</td>
+        <td>
+            <span class="status-badge status-info">프로젝트</span>
+        </td>
+        <td>
+            <span class="status-badge status-pending">배송준비중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030014'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>U2024030015</td>
+        <td>티타임</td>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030015" class="project-link">
+                중고 티포트 & 찻잔 세트
+            </a>
+        </td>
+        <td>2024-03-05 17:50</td>
+        <td>38,000원</td>
+        <td>
+            <span class="status-badge status-pending">중고장터</span>
+        </td>
+        <td>
+            <span class="status-badge status-info">배송중</span>
+        </td>
+        <td>
+            <button class="action-button detail-button" 
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030015'">
+                상세보기
+            </button>
+        </td>
+    </tr>
+</tbody>
                </table>
                
                <div class="page-navigation">
                    ${dataCount == 0 ? "등록된 구매내역이 없습니다." : paging}
                </div>
            </div>
+
+
 
            <!-- 프로젝트 주문 -->
            <div id="projectPurchases" class="tab-content">
@@ -308,6 +652,12 @@
                        <input type="text" name="kwd" class="search-input" placeholder="검색어...">
                        <button type="submit" class="search-button">검색</button>
                    </form>
+                   
+                   <div class="tab-buttons">
+                       <button class="tab-button" data-tab="all">전체 주문</button>
+                       <button class="tab-button active" data-tab="project">프로젝트 주문</button>
+                       <button class="tab-button" data-tab="used">중고장터 주문</button>
+                   </div>
                </div>
 
                <table class="project-table">
@@ -323,15 +673,14 @@
                        </tr>
                    </thead>
                    <tbody>
-                       <!-- 프로젝트 주문 목록이 여기에 표시됩니다 -->
+                   
                    </tbody>
                </table>
-                   <div class="page-navigation">
-			       	 <!-- 여기에 페이징이 동적으로 삽입됩니다 -->
-			       </div>
+               <div class="page-navigation">
+               
+               </div>
            </div>
 
-           <!-- 중고장터 주문 -->
            <div id="usedPurchases" class="tab-content">
                <div class="search-container">
                    <form class="search-form" action="${pageContext.request.contextPath}/admin/payment/list" method="get">
@@ -345,6 +694,12 @@
                        <input type="text" name="kwd" class="search-input" placeholder="검색어...">
                        <button type="submit" class="search-button">검색</button>
                    </form>
+                   
+                   <div class="tab-buttons">
+                       <button class="tab-button" data-tab="all">전체 주문</button>
+                       <button class="tab-button" data-tab="project">프로젝트 주문</button>
+                       <button class="tab-button active" data-tab="used">중고장터 주문</button>
+                   </div>
                </div>
 
                <table class="project-table">
@@ -363,42 +718,14 @@
                        <!-- 중고장터 주문 목록이 여기에 표시됩니다 -->
                    </tbody>
                </table>
-                   <div class="page-navigation">
-			       	 <!-- 여기에 페이징이 동적으로 삽입됩니다 -->
-			       </div>               
+               <div class="page-navigation">
+                   <!-- 여기에 페이징이 동적으로 삽입됩니다 -->
+               </div>               
            </div>
        </div>
    </div>
 </div>
 
-<!-- 환불 처리 모달 -->
-<div class="modal fade" id="refundModal" tabindex="-1" aria-labelledby="refundModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="refundModalLabel">환불 처리</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="refundForm">
-          <input type="hidden" id="payment_num" name="payment_num">
-          <div class="mb-3">
-            <label for="refund_reason" class="form-label">환불 사유</label>
-            <textarea class="form-control" id="refund_reason" name="reason" rows="3" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="refund_fee" class="form-label">환불 수수료</label>
-            <input type="number" class="form-control" id="refund_fee" name="fee" value="0">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" onclick="processRefund()">환불 처리</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
 // 탭 전환
@@ -448,21 +775,6 @@ function loadPurchaseData(type, page = 1) {
             // 데이터가 없는 경우
             if(!data.list || data.list.length === 0) {
                 const tr = document.createElement('tr');
-                console.log("처리 중인 항목:", item);
-                
-                // 날짜 형식 변환 시도
-                let formattedDate = "날짜 형식 오류";
-                try {
-                    const paymentDate = new Date(item.payment_date);
-                    formattedDate = paymentDate.getFullYear() + '-' + 
-                                 String(paymentDate.getMonth() + 1).padStart(2, '0') + '-' + 
-                                 String(paymentDate.getDate()).padStart(2, '0') + ' ' +
-                                 String(paymentDate.getHours()).padStart(2, '0') + ':' +
-                                 String(paymentDate.getMinutes()).padStart(2, '0');
-                    console.log("변환된 날짜:", formattedDate);
-                } catch (e) {
-                    console.error("날짜 변환 오류:", e);
-                }
                 tr.innerHTML = '<td colspan="7" class="text-center">데이터가 없습니다.</td>';
                 tbody.appendChild(tr);
             } else {
@@ -470,12 +782,21 @@ function loadPurchaseData(type, page = 1) {
                 data.list.forEach(item => {
                     const tr = document.createElement('tr');
                     
-                    const paymentDate = new Date(item.payment_date);
-                    const formattedDate = paymentDate.getFullYear() + '-' + 
+                    console.log("처리 중인 항목:", item);
+                    
+                    // 날짜 형식 변환 시도
+                    let formattedDate = "날짜 형식 오류";
+                    try {
+                        const paymentDate = new Date(item.payment_date);
+                        formattedDate = paymentDate.getFullYear() + '-' + 
                                      String(paymentDate.getMonth() + 1).padStart(2, '0') + '-' + 
                                      String(paymentDate.getDate()).padStart(2, '0') + ' ' +
                                      String(paymentDate.getHours()).padStart(2, '0') + ':' +
                                      String(paymentDate.getMinutes()).padStart(2, '0');
+                        console.log("변환된 날짜:", formattedDate);
+                    } catch (e) {
+                        console.error("날짜 변환 오류:", e);
+                    }
                     
                     const formattedAmount = new Intl.NumberFormat('ko-KR').format(item.pay_amount);
                     
@@ -496,18 +817,24 @@ function loadPurchaseData(type, page = 1) {
                     
                     tr.innerHTML = `
                         <td>${item.payment_num}</td>
-                        <td>테스트 이름</td>
-                        <td>테스트 제목</td>
-                        <td>테스트 날짜</td>
-                        <td>테스트 금액</td>
-                        <td>테스트 상태</td>
+                        <td>${item.nickname || '알 수 없음'}</td>
                         <td>
-                            <button>테스트 버튼</button>
+                            <a href="${pageContext.request.contextPath}/admin/payment/detail/${item.payment_num}" class="project-link">
+                                ${item.title || '알 수 없음'}
+                            </a>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td>${formattedAmount}원</td>
+                        <td>${shippingStatus}</td>
+                        <td>
+                            <button class="action-button detail-button" 
+                                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/${item.payment_num}'">
+                                상세보기
+                            </button>
                         </td>
                     `;
                     
                     tbody.appendChild(tr);
-                    
                 });
             }
             

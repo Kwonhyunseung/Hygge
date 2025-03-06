@@ -55,7 +55,6 @@
 		
        <div class="main-content">
 			<div class="content-header">
-			    <h2>메이커 회원</h2>
 			    <div class="tab-buttons">
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
 			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">

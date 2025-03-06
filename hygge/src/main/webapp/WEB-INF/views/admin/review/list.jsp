@@ -24,7 +24,8 @@
         <div class="main-content">
             <div class="content-header">
                 <h2>후기 관리</h2>
-                <span class="total-count">총 ${dataCount}개의 후기</span>
+                 <span class="total-count">총 7개의 후기</span>
+                <%-- <span class="total-count">총 ${dataCount}개의 후기</span>--%>
             </div>
             <div class="content-body">
                 <div class="filter-section">
@@ -98,8 +99,83 @@
                                 </tr>
                             </c:if>
                         </tbody>
+                        <!-- Replace the empty tbody with this: -->
+<tbody>
+    <tr>
+        <td><input type="checkbox" name="selectedItems" value="1001"></td>
+        <td>23</td>
+        <td>주방용품</td>
+        <td>우아한 티타임: 전통과 현대가 만난 프리미엄 티포트</td>
+        <td>티백장인</td>
+        <td class="review-content">구매 후 매일 사용중입니다. 보온 유지 시간이 생각보다 길어서 만족해요. 색상도 고급스럽고 손잡이 디자인이 잡기 편해서 좋네요. 다만 세척할 때 조금 신경써야 하는 점이 아쉽습니다.</td>
+        <td>2023-11-15</td>
+        <td class="report-count">2</td>
+        <td class="action-buttons">
+            <button type="button" title="상세보기"><i class="fas fa-eye"></i></button>
+            <button type="button" title="차단"><i class="fas fa-ban"></i></button>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="selectedItems" value="1002"></td>
+        <td>22</td>
+        <td>주방용품</td>
+        <td>일상의 작은 행복, 매일의 식사가 특별해지는 접시</td>
+        <td>행복한식탁</td>
+        <td class="review-content">너무 이쁘고 감각적인 디자인이에요! 친구들이 집에 놀러오면 항상 어디서 샀냐고 물어봐요. 다만 생각보다 무게가 있어서 설거지할 때 조금 불편한 점이 있네요. 그래도 인스타 감성 제대로 살릴 수 있어서 대만족입니다!</td>
+        <td>2023-12-03</td>
+        <td class="report-count">0</td>
+        <td class="action-buttons">
+            <button type="button" title="상세보기"><i class="fas fa-eye"></i></button>
+            <button type="button" title="차단"><i class="fas fa-ban"></i></button>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="selectedItems" value="1003"></td>
+        <td>19</td>
+        <td>인테리어</td>
+        <td>[MZ초인기] 무지 팔레트 디자인 액자</td>
+        <td>인테리어덕후</td>
+        <td class="review-content">이 액자 진짜 미쳤습니다. 제 방 분위기가 완전 바뀌었어요! 팔레트 색상 조합이 정말 세련되고 어떤 공간에도 잘 어울리는 것 같아요. 배송도 안전하게 잘 왔고, 액자 프레임 품질도 생각보다 훨씬 좋네요. 친구들 선물용으로도 몇 개 더 구매할 예정입니다.</td>
+        <td>2024-01-17</td>
+        <td class="report-count">1</td>
+        <td class="action-buttons">
+            <button type="button" title="상세보기"><i class="fas fa-eye"></i></button>
+            <button type="button" title="차단"><i class="fas fa-ban"></i></button>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="selectedItems" value="1004"></td>
+        <td>17</td>
+        <td>뷰티</td>
+        <td>[하루 5분의 기적] 라인이 매끈해지는 V컷! 동안 괄사</td>
+        <td>동안피부지킴이</td>
+        <td class="review-content">이거 진짜 효과 있어요!!!! 2주 사용했는데 턱선이 확실히 달라졌어요. 처음엔 힘 조절을 잘 못해서 피부가 좀 빨개졌는데, 익숙해지니 괜찮아졌어요. 무조건 유튜브 영상 보고 따라하세요. 제조사에서 제공하는 괄사 오일도 함께 쓰면 더 좋아요. 역시 입소문난 제품은 이유가 있네요~</td>
+        <td>2024-02-05</td>
+        <td class="report-count">8</td>
+        <td class="action-buttons">
+            <button type="button" title="상세보기"><i class="fas fa-eye"></i></button>
+            <button type="button" title="차단"><i class="fas fa-ban"></i></button>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="selectedItems" value="1005"></td>
+        <td>15</td>
+        <td>가전</td>
+        <td>[헤어드라이기의 혁명] 카이스트 헤어학과 박사들이 개발한 음이온 드라이기</td>
+        <td>머릿결장인</td>
+        <td class="review-content">가격이 좀 비싸서 고민 많이 했는데 정말 돈이 아깝지 않네요. 건조 시간이 절반으로 줄었고, 머릿결도 확실히 달라졌어요. 소음도 기존 드라이기보다 훨씬 적고 손목에 무리가 덜 가는 게 느껴집니다. 음이온 효과가 실제로 있는지는 모르겠지만 머리가 덜 부스스해지는 것 같아요. 다만 AS나 품질보증 관련 안내가 좀 부족한 느낌이에요.</td>
+        <td>2024-03-10</td>
+        <td class="report-count">12</td>
+        <td class="action-buttons">
+            <button type="button" title="상세보기"><i class="fas fa-eye"></i></button>
+            <button type="button" title="차단"><i class="fas fa-ban"></i></button>
+        </td>
+    </tr>
+</tbody>
                     </table>
                 </div>
+                
+                
 
                 <div class="content-footer">
                     <div class="button-group">

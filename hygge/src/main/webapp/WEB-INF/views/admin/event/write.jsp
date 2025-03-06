@@ -9,6 +9,9 @@
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
     <link rel="stylesheet" href="/dist/css/admin/event/write.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Summernote 에디터 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -21,7 +24,6 @@
         <div class="main-content">
             <div class="content-header">
                 <div class="content-title">
-				    <h2>${mode=='update' ? '이벤트 수정' : '이벤트 등록'}</h2>
 				</div>
             </div>
 
@@ -73,7 +75,7 @@
                     <div class="form-group">
                         <label for="event-content">이벤트 내용</label>
                         <div class="editor-container">
-                            <textarea name="content" id="event-content" style="width: 100%; height: 400px;"></textarea>
+                            <textarea name="content" id="event-content" style="width: 100%; height: 400px;">${mode=='update' ? dto.content : ''}</textarea>
                         </div>
                     </div>
 
@@ -86,7 +88,44 @@
         </div>
     </div>
 
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    
+    <!-- Summernote 에디터 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-ko-KR.min.js"></script>
+
     <script>
+        // Summernote 에디터 초기화
+        $(document).ready(function() {
+            $('#event-content').summernote({
+                lang: 'ko-KR',                  // 한국어 설정
+                height: 400,                    // 에디터 높이
+                minHeight: null,                // 최소 높이
+                maxHeight: null,                // 최대 높이
+                focus: false,                   // 에디터 로드 후 포커스 설정
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        // 이미지 업로드 처리 (필요시 구현)
+                        // 서버에 이미지를 업로드하고 URL을 받아와 에디터에 삽입하는 로직
+                    }
+                }
+            });
+        });
+
         // 이미지 미리보기 함수
         document.getElementById('photoFiles').addEventListener('change', function(e) {
             const preview = document.getElementById('preview');
@@ -112,9 +151,14 @@ function sendOk() {
         return false;
     }
     
-    if(!f.content.value.trim()) {
+    if(!$('#event-content').summernote('isEmpty')) {
+        // Summernote 내용 가져오기
+        var content = $('#event-content').summernote('code');
+        // 내용이 비어있지 않으면 내용을 설정
+        f.content.value = content;
+    } else {
         alert("내용을 입력하세요.");
-        f.content.focus();
+        $('#event-content').summernote('focus');
         return false;
     }
     

@@ -90,10 +90,6 @@
         
         <div class="main-content">
             <div class="content-header">
-                <div class="content-title">
-                    <h2>이달의 펀딩 프로젝트 투표</h2>
-                    <span class="total-count">총 12개의 프로젝트</span>
-                </div>
             </div>
 
 			<div class="filter-section">
@@ -119,14 +115,14 @@
 			        </button>
 			    </div>
 			</div>
-
+	
 			<div class="vote-grid">
 			  <c:forEach var="vote" items="${vote}">
 			    <div class="vote-card">
 			      <span class="vote-category">최악의 프로젝트</span>
 			      <img src="${pageContext.request.contextPath}/uploads/project/${vote.thumbnail}" alt="프로젝트 이미지" class="vote-image">
 			      <div class="vote-info">
-			        <div class="vote-num">${vote.vote_num}</div>
+			        <div class="vote-num"></div>
 			        <a href="${pageContext.request.contextPath}/vote/article/${vote.vote_num}?page=${page}">${vote.title}</a>
 			        <div class="vote-period">
 			          <i class="far fa-calendar-alt"></i>

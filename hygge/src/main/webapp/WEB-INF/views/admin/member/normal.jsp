@@ -56,11 +56,10 @@
 		
        <div class="main-content">
 			<div class="content-header">
-			    <h2>일반 회원</h2>
 			    <div class="tab-buttons">
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
 			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">
-			            유저관리
+			            전체
 			        </a>
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/reportOver" 
 			           class="tab-button ${not empty reportOnly ? 'active' : ''}" id="reportMember">
@@ -137,6 +136,8 @@
                     
                 </tbody>
             </table>
+
+
 
 			<div class="pagination">
 			    ${paging}

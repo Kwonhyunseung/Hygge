@@ -9,17 +9,17 @@
 	</select>
 	
 <select id="voteList" parameterType="map" resultType="com.sp.app.admin.model.VoteManage">
-SELECT * 
+SELECT *
 FROM (
-    SELECT ROWNUM rnum, tb.* 
+    SELECT ROWNUM rnum, tb.*
     FROM (
         SELECT v.vote_num, v.content, v.title, v.start_date,
-               (SELECT MIN(p.thumbnail) 
-                FROM ProjectRequest p 
-                JOIN VoteCandidate vc 
-                ON p.num = vc.project_num 
-                WHERE vc.vote_num = v.vote_num) as thumbnail,
-               COUNT(vh.memberIdx) as vote_count
+            (SELECT p.thumbnail
+             FROM ProjectRequest p
+             JOIN VoteCandidate vc ON p.num = vc.project_num
+             WHERE vc.vote_num = v.vote_num
+             AND ROWNUM = 1) as thumbnail,
+            COUNT(vh.memberIdx) as vote_count
         FROM vote v
         LEFT JOIN VoteHistory vh ON v.vote_num = vh.vote_num
         <where>

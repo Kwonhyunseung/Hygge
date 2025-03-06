@@ -21,35 +21,34 @@
    <jsp:include page="/WEB-INF/views/admin/project/modal.jsp"/>
    <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
    <div class="main-content">
-       <div class="content-header">
-           <h2>셀러 프로젝트 관리</h2>
-           <div class="tab-buttons">
-               <button class="tab-button active" data-tab="pending">승인 대기</button>
-               <button class="tab-button" data-tab="reported">신고 누적</button>
-           </div>
+       <div class="search-tab-container">
+           <form name="searchForm" action="${pageContext.request.contextPath}/admin/projectManagement/list" method="get" class="search-form-flex">
+               <div class="search-fields">
+                   <div class="col-auto">
+                       <select name="schType" class="form-select">
+                           <option value="all" ${schType=="all"?"selected":""}>전체</option>
+                           <option value="title" ${schType=="title"?"selected":""}>제목</option>
+                           <option value="request_date" ${schType=="request_date"?"selected":""}>요청일</option>
+                       </select>
+                   </div>
+                   <div class="col-auto search-input-container">
+                       <input type="text" name="kwd" value="${kwd}" class="form-control">
+                   </div>
+                   <div class="col-auto">
+                       <button type="submit" class="btn btn-primary">검색</button>
+                   </div>
+               </div>
+               
+               <div class="tab-buttons">
+                   <button type="button" class="tab-button active" data-tab="pending">승인 대기</button>
+                   <button type="button" class="tab-button" data-tab="reported">신고 누적</button>
+               </div>
+           </form>
        </div>
 
        <div class="tab-container">
            <!-- 승인 대기 프로젝트 -->
            <div id="pendingProjects" class="tab-content active">
-               <form name="searchForm" action="${pageContext.request.contextPath}/admin/projectManagement/list" method="get">
-                   <div class="row mb-3">
-                       <div class="col-auto">
-                           <select name="schType" class="form-select">
-                               <option value="all" ${schType=="all"?"selected":""}>전체</option>
-                               <option value="title" ${schType=="title"?"selected":""}>제목</option>
-                               <option value="request_date" ${schType=="request_date"?"selected":""}>요청일</option>
-                           </select>
-                       </div>
-                       <div class="col-auto">
-                           <input type="text" name="kwd" value="${kwd}" class="form-control">
-                       </div>
-                       <div class="col-auto">
-                           <button type="submit" class="btn btn-primary">검색</button>
-                       </div>
-                   </div>
-               </form>
-
                <table class="table table-hover">
                    <thead>
                        <tr>
@@ -60,8 +59,7 @@
                            <th>상태</th>
                            <th>목표금액</th>
                            <th>기간</th>
-                           <th></th>
-                           <th></th>
+                           <th>관리</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -97,27 +95,25 @@
                                </td>
                                <td>${dto.term}일</td>
                                <td>
-                               <td>
-							    <c:choose>
-							        <c:when test="${empty dto.accept_return}">
-							            <button type="button" class="btn btn-sm btn-success me-1" 
-							                    onclick="approveProject(${dto.num}, ${dto.term})">
-							                수락
-							            </button>
-							            <button type="button" class="btn btn-sm btn-danger" 
-							                    onclick="rejectProject(${dto.num})">
-							                반려
-							            </button>
-							        </c:when>
-							        <c:otherwise>
-<button type="button" class="btn btn-sm btn-primary"
-  onclick="loadProjectDetails(${dto.num}); return false;">
-  관리
-</button>
-							        </c:otherwise>
-							    </c:choose>
-							</td>
-                               </td>
+                                <c:choose>
+                                    <c:when test="${empty dto.accept_return}">
+                                        <button type="button" class="btn btn-sm btn-success me-1" 
+                                                onclick="approveProject(${dto.num}, ${dto.term})">
+                                            수락
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" 
+                                                onclick="rejectProject(${dto.num})">
+                                            반려
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                      onclick="loadProjectDetails(${dto.num}); return false;">
+                                      관리
+                                    </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                            </tr>
                        </c:forEach>
                    </tbody>
@@ -130,20 +126,7 @@
 
            <!-- 신고 누적 프로젝트 -->
            <div id="reportedProjects" class="tab-content">
-               <div class="search-container">
-                   <form class="search-form">
-                       <select class="search-input">
-                           <option>신고 횟수</option>
-                           <option>5회 이상</option>
-                           <option>10회 이상</option>
-                           <option>20회 이상</option>
-                       </select>
-                       <input type="text" class="search-input" placeholder="프로젝트 검색...">
-                       <button type="submit" class="search-button">검색</button>
-                   </form>
-               </div>
-
-               <table class="project-table">
+               <table class="table table-hover">
                    <thead>
                        <tr>
                            <th>번호</th>
@@ -162,10 +145,10 @@
                            <td><a href="#" class="project-link">무선이어폰</a></td>
                            <td class="report-count">8</td>
                            <td>2024-02-05</td>
-                           <td><span class="status-badge status-warning">경고</span></td>
+                           <td><span class="badge bg-danger">경고</span></td>
                            <td>
-                               <button class="action-button detail-button" onclick="showReportDetails(1002)">신고내역</button>
-                               <button class="action-button block-button" onclick="blockProject(1002)">프로젝트 중단</button>
+                               <button class="btn btn-sm btn-info me-1" onclick="showReportDetails(1002)">신고내역</button>
+                               <button class="btn btn-sm btn-danger" onclick="blockProject(1002)">중단</button>
                            </td>
                        </tr>
                    </tbody>
@@ -195,10 +178,16 @@ document.querySelectorAll('.tab-button').forEach(button => {
 
 function showReportDetails(projectId) {
    // 신고 내역 표시 로직
+   const modalElement = document.getElementById('projectManagementModal');
+   const modal = new bootstrap.Modal(modalElement);
+   modal.show();
 }
 
 function blockProject(projectId) {
    // 프로젝트 중단 로직
+   if(confirm("정말 이 프로젝트를 중단시키겠습니까?")) {
+     alert("프로젝트가 중단되었습니다.");
+   }
 }
 
 function approveProject(num, term) {
@@ -213,6 +202,7 @@ function approveProject(num, term) {
 	const fn = function(data) {
 		if(data.state === "success"){
 			alert('프로젝트가 승인되었습니다.');
+			location.reload();
 		} else {
 			alert('프로젝트 승인 처리가 실패했습니다.');
 		}
@@ -248,13 +238,11 @@ function rejectProject(num) {
 }
 
 function loadProjectDetails(projectNum) {
-	  // 직접 모달 표시
-	  var modalElement = document.getElementById('projectManagementModal');
-	  var modal = new bootstrap.Modal(modalElement);
-	  modal.show();
-	}
-
-
+	// 직접 모달 표시
+	var modalElement = document.getElementById('projectManagementModal');
+	var modal = new bootstrap.Modal(modalElement);
+	modal.show();
+}
 </script>
 </body>
 </html>

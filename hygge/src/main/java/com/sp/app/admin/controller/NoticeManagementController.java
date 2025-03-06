@@ -111,7 +111,9 @@ public class NoticeManagementController {
 	}
 	
 	@GetMapping("write")
-	public String WriteForm () throws Exception {
+	public String WriteForm (Model model) throws Exception {
+		
+		model.addAttribute("mode", "write");
 		
 		return "admin/notice/write";
 	}
