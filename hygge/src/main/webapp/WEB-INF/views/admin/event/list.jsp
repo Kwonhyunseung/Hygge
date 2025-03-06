@@ -162,25 +162,24 @@
                                 <fmt:formatDate value="${dto.exp_date}" pattern="yyyy-MM-dd"/>
                             </div>
                             </div>
-  <div class="event-status">
-    <span class="status-badge status-active">진행중</span>
-    <div class="action-buttons">
-        <button type="button" title="수정" onclick="updateEvent(${dto.num})">
-            <i class="fas fa-edit"></i>
-        </button>
-        <button type="button" title="삭제" onclick="deleteEvent(${dto.num})">
-            <i class="fas fa-trash"></i>
-        </button>
-    </div>
-</div>
+							  <div class="event-status">
+							    <span class="status-badge status-active">진행중</span>
+							    <div class="action-buttons">
+							        <button type="button" title="수정" onclick="updateEvent(${dto.num})">
+							            <i class="fas fa-edit"></i>
+							        </button>
+							        <button type="button" title="삭제" onclick="deleteEvent(${dto.num})">
+							            <i class="fas fa-trash"></i>
+							        </button>
+							    </div>
+							</div>
                         </div>
                     </div>
                 </c:forEach>
             </div>
             
-            <div class="page-navigation">
                 <a class="pagination">${paging}</a>
-            </div>                
+                      
         </div>
     </div>
         

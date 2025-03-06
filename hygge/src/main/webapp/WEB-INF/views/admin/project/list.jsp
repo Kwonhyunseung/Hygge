@@ -9,7 +9,7 @@
 <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/project/list.css">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
@@ -18,6 +18,7 @@
 </header>
 
 <div class="admin-container">
+   <jsp:include page="/WEB-INF/views/admin/project/modal.jsp"/>
    <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
    <div class="main-content">
        <div class="content-header">
@@ -109,10 +110,10 @@
 							            </button>
 							        </c:when>
 							        <c:otherwise>
-							            <button type="button" class="btn btn-sm btn-primary" 
-							                    onclick="location.href='${pageContext.request.contextPath}/admin/projectManagement/update/${dto.num}'">
-							                관리
-							            </button>
+<button type="button" class="btn btn-sm btn-primary"
+  onclick="loadProjectDetails(${dto.num}); return false;">
+  관리
+</button>
 							        </c:otherwise>
 							    </c:choose>
 							</td>
@@ -173,6 +174,7 @@
        </div>
    </div>
 </div>
+
 
 <script>
 // 탭 전환
@@ -245,6 +247,12 @@ function rejectProject(num) {
 	ajaxRequest(url, 'post', query, 'json', fn);
 }
 
+function loadProjectDetails(projectNum) {
+	  // 직접 모달 표시
+	  var modalElement = document.getElementById('projectManagementModal');
+	  var modal = new bootstrap.Modal(modalElement);
+	  modal.show();
+	}
 
 
 </script>

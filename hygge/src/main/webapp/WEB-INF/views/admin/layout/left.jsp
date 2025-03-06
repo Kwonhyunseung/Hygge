@@ -54,9 +54,11 @@
                 <li><a href="${pageContext.request.contextPath}/admin/qna/list">1:1 문의</a></li>
             </ul>
         </li>
-        
-        <a href="${pageContext.request.contextPath}/">메인</a>
     </ul>
+    
+      <div class="main-link">
+    <a href="${pageContext.request.contextPath}/">메인</a>
+  </div>
 </div>
 
 </body>

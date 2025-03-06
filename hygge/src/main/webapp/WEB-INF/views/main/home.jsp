@@ -355,13 +355,13 @@ $(function() {
 					<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
 						<div class="carousel-inner">
 							<div class="carousel-item active">
-								<img src="/dist/images/main/ad1.jpg" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
+								<img src="/dist/images/main/ad1.png" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
 							</div>
 							<div class="carousel-item">
-								<img src="/dist/images/main/ad2.jpg" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
+								<img src="/dist/images/main/ad2.png" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
 							</div>
 							<div class="carousel-item">
-								<img src="/dist/images/main/ad3.jpg" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
+								<img src="/dist/images/main/ad3.png" class="d-block w-100" style="width: 80%; height: 400px; margin-top: 30px;">
 							</div>
 						</div>
 						<button class="carousel-control-prev" type="button"
