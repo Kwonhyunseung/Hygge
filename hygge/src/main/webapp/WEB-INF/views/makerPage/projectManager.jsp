@@ -249,6 +249,13 @@
         border-radius: 10px;
         margin: 20px 0;
     }
+    
+    /* 현승 추가 */
+    .container{
+    	margin-bottom: 150px;
+    }
+    
+    
 </style>
 </head>
 <body class="main-container">
@@ -424,13 +431,13 @@
             <div id="inquiry-no-data" class="no-data" style="display:none;"></div>
         </div>
     </div>
-
+<%-- 
     <footer>
         <div class="footer-container">
             <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
         </div>
     </footer>
-
+ --%>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 탭 전환 기능

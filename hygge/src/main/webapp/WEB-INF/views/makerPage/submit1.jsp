@@ -34,8 +34,7 @@
                 </div>
 
                 <input type="text" name="target" class="input-field" placeholder="500만원 미만의 금액을 입력하세요" value="${funding.target}">
-                
-                <div class="amount-info">
+                <!-- <div class="amount-info">
                     <div class="amount-row">
                         <span>목표 금액</span>
                         <span class="amount-value">500,000원</span>
@@ -44,7 +43,7 @@
                         <span>최소 목표 금액</span>
                         <span class="amount-value">456,000원</span>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="form-section">
