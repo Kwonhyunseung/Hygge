@@ -387,6 +387,9 @@ $(function() {
 										    <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" 
 										       data-num="${project.num}"></i>
 										</div>
+										<div class="goal">
+			                       			<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
+					                    </div>
 										<p>${project.title}</p>
 					                </div>
 					            </c:forEach>
@@ -455,16 +458,33 @@ $(function() {
 					<div class="row">
 						<div class="col-3 localP">
 							<div class="image-container">
-								<img src="/dist/images/main/p.jpg">
-								<i class="bi bi-suit-heart"></i>
+								<img src="/dist/images/main/dish.jpg">
+								<i class="bi bi-heart"></i>
 							</div>
-							<div class="pundingBtn">
-								<p>펀딩</p>
-								<div class="goal">
-									<p>30,12% 달성
-								</div>
+							<div class="goal">
+								<p>52% 달성
 							</div>
-							<p>[발렌타인 전 도착!] 용량 두 배!, 더 뚱뚱해진 '오예스 보조배터리'</p>
+							<p>평범한 일상 속 가장 소중한 순간, 식사 시간을 더욱 특별하게 만들어줄 접시 프로젝트입니다</p>
+						</div>
+						<div class="col-3 localP">
+							<div class="image-container">
+								<img src="/dist/images/main/fresh.png">
+								<i class="bi bi-heart"></i>
+							</div>
+							<div class="goal">
+								<p>25% 달성
+							</div>
+							<p>🍋클린 디톡스 ⁝ 자연의 신선함을 담은 그린 주스</p>
+						</div>
+						<div class="col-3 localP">
+							<div class="image-container">
+								<img src="/dist/images/main/pet.jpg">
+								<i class="bi bi-heart"></i>
+							</div>
+							<div class="goal">
+								<p>70% 달성
+							</div>
+							<p>"바크티비티" 반려견이 직접 선택한 No.1 친환경 장난감</p>
 						</div>
 					</div>
 				</div>
@@ -479,12 +499,9 @@ $(function() {
 			                    <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
 			                    <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" data-num="${project.num}"></i>
 			                </div>
-			                <div class="pundingBtn">
-			                    <p>인기</p>
-			                    <div class="goal">
-                        			<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
-			                    </div>
-			                </div>
+		                    <div class="goal">
+                       			<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
+		                    </div>
 			                <p>${project.title}</p>
 			            </div>
 			        </c:forEach>
@@ -493,9 +510,6 @@ $(function() {
 
 			<div class="deadline-project">
 			    <h3>마감임박! 마지막 기회</h3>
-			    <h5 style="font-size: 22px;">
-			        <strong style="color: #ED2323;">06:15:16 </strong>남았어요
-			    </h5>
 			    <div class="row">
 			        <c:choose>
 			            <c:when test="${not empty deadlineProjects}">
@@ -506,12 +520,10 @@ $(function() {
 			                            <i class="bi ${project.userLiked ? 'bi-heart-fill text-danger' : 'bi-heart'} project-like-btn" 
 			                                data-num="${project.num}"></i>
 			                        </div>
-			                        <div class="pundingBtn">
-			                            <p>마감일 ${project.end_date}</p>
-			                            <div class="goal">
-                        					<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
-			                            </div>
-			                        </div>
+		                            <div class="goal">
+                       					<p><fmt:formatNumber value="${project.funding_goal}" pattern="#,###" />% 달성</p>
+                       					<span> ~ ${project.end_date}</span>
+		                            </div>
 			                        <p>${project.title}</p>
 			                    </div>
 			                </c:forEach>
@@ -535,12 +547,9 @@ $(function() {
 			                        <div class="image-container">
 			                            <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
 			                        </div>
-			                        <div class="pundingBtn">
-			                            <p>공개예정</p>
-			                            <div class="goal">
-			                                <p>개시까지 ${project.remained_date}일 남음</p>
-			                            </div>
-			                        </div>
+		                            <div class="goal">
+										<p style="color: #878787;">개시까지 <span class="highlight-days" style="color: red;">${project.remained_date}</span>일 남음</p>
+									</div>
 			                        <p>${project.title}</p>
 			                    </div>
 			                </c:forEach>
