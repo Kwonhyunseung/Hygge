@@ -6,6 +6,7 @@
     SELECT num, memberIdx, request_date, accept_date, title, business, content, target, 
            term, thumbnail, category_num, accept_return, return_reason
     FROM projectRequest
+    WHERE submit = 1
     <where>
         <if test="kwd != null and kwd != ''">
             <choose>
