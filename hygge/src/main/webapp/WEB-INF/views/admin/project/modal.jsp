@@ -102,8 +102,8 @@
             </li>
           </ul>
           
-          <%-- 탭 컨텐츠 삭제하면 보임 tab-content --%>
-          <div class="" id="projectTabContent">
+          <%-- 탭 컨텐츠 클래스를 삭제하면 모달이 보임 tab-content --%>
+          <div class="tab-content" id="projectTabContent">
             <!-- 기본 정보 탭 -->
             <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
               <form id="basicInfoForm">

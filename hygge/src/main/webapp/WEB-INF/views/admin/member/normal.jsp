@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normal.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin/member/normalModal.css" type="text/css">
 <style type="text/css">
+
+.content-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
 .pagination {
     display: flex;
     justify-content: center;
@@ -56,6 +62,7 @@
 		
        <div class="main-content">
 			<div class="content-header">
+			<div class="content-title">일반 유저</div>
 			    <div class="tab-buttons">
 			        <a href="${pageContext.request.contextPath}/admin/memberManagement/normal" 
 			           class="tab-button ${empty reportOnly ? 'active' : ''}" id="accountWait">

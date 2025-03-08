@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- 추가 CSS 스타일 -->
     <style>
+    .content-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
         /* 관리 버튼 스타일 */
         .action-buttons {
             display: flex;
@@ -72,7 +78,7 @@
     <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
     <div class="main-content">
-        
+        <div class="content-title">메이커 신청</div>
         <div class="search-container">
             <form class="search-form">
                 <select class="search-input">

@@ -137,7 +137,7 @@ public class ProjectManagementController {
 		
 		try {
 			service.rejectProject(num, reason);
-			model.put("state", "failure");
+			model.put("state", "success");
 		} catch (Exception e) {
 			model.put("state", "failure");
 		}

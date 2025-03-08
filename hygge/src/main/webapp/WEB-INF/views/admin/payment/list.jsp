@@ -11,6 +11,14 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style>
 /* 검색 컨테이너 수정 */
+.content-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+
 .search-container {
     background: #fff;
     padding: 20px;
