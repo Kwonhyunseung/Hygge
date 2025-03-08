@@ -28,7 +28,6 @@ $(function() {
                         $item.fadeOut(300, function() {
                             $(this).remove();
                             
-                            // 팔로잉 메이커가 없는 경우 메시지 표시
                             if($(".maker-item").length === 0) {
                                 $(".maker-list").html('<div class="empty-follow">팔로잉한 메이커가 없습니다.</div>');
                             }
@@ -45,7 +44,6 @@ $(function() {
         }
     });
     
-    // 메이커 이름 클릭 시 메이커 페이지로 이동
     $(".maker-name").click(function() {
         let makerIdx = $(this).attr("data-maker");
         location.href = "${pageContext.request.contextPath}/maker/detail/" + makerIdx;
@@ -59,13 +57,11 @@ $(function() {
 </header>
 
 <div class="maker-container">
-    <!-- 메이커 목록 헤더 -->
     <div class="maker-header">
-        <i class="bi bi-people-fill"></i>
-        <h3>팔로잉 메이커 (${followCount})</h3>
+        <i class="bi bi-person-heart"></i>
+        <h3>FOLLOWING MAKER (${followCount})</h3>
     </div>
 
-    <!-- 메이커 목록 -->
     <div class="maker-list">
         <c:if test="${empty list}">
             <div class="empty-follow">팔로잉한 메이커가 없습니다.</div>

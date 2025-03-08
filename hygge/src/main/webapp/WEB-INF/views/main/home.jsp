@@ -436,8 +436,9 @@ $(function() {
 					</div>
 
 					<div class="special">
-						<img src="/dist/images/main/special.png">
-						<div id="carouselExampleFade" class="carousel slide carousel-fade"
+						<img src="/dist/images/main/s1.png">
+						<img src="/dist/images/main/s2.png">
+						<!-- <div id="carouselExampleFade" class="carousel slide carousel-fade"
 							data-bs-ride="carousel">
 							<div class="carousel-inner">
 								<div class="carousel-item active">
@@ -447,7 +448,7 @@ $(function() {
 									<img src="/dist/images/main/s2.png" class="d-block w-100">
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

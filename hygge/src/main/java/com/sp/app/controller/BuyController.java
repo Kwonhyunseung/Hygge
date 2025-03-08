@@ -46,7 +46,6 @@ public class BuyController {
             
             map.put("num", num);
             
-            // 상품 리스트 조회
             List<Product> list = service.productList(map);
             
             if (list != null && !list.isEmpty()) {
@@ -193,7 +192,6 @@ public class BuyController {
     // 결제 완료
     @GetMapping("complete")
     public String complete(Model model, HttpSession session) {
-        // 로그인 체크
         SessionInfo info = (SessionInfo) session.getAttribute("member");
         if(info == null) {
             return "redirect:/member/login";
@@ -205,12 +203,10 @@ public class BuyController {
         Payment payment = (Payment) session.getAttribute("paymentInfo");
         Map<String, Object> deliveryInfo = (Map<String, Object>) session.getAttribute("deliveryInfo");
         
-        // 완료 정보 검증
         if (product == null || member == null || payment == null || deliveryInfo == null) {
             return "redirect:/";
         }
         
-        // 모델에 정보 추가
         model.addAttribute("product", product);
         model.addAttribute("member", member);
         model.addAttribute("payment", payment);

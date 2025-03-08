@@ -174,8 +174,8 @@
 
 	<!-- 실시간 랭킹 (판매금액 순) -->
 	<select id="listRankingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT NVL(total_sales.total_amount, 0) AS total_amount,
-			p.start_date, pr.title, pr.thumbnail, p.block,
+		SELECT p.num, p.start_date, pr.title, pr.thumbnail, p.block,
+			NVL(total_sales.total_amount, 0) AS total_amount,
 			1 AS isRanking
 		FROM Project p
 		JOIN ProjectRequest pr ON p.num = pr.num

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/buy/productChoice.css" type="text/css">
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 <script type="text/javascript">
 //숫자 포맷팅 함수
@@ -64,12 +65,10 @@ $(function() {
                 discountAmount = maxDiscount;
             }
         } 
-        // 정액 할인인 경우
         else if (maxDiscount > 0) {
             discountAmount = maxDiscount;
         }
         
-        // 할인 금액이 상품 금액보다 클 수 없음
         if (discountAmount > productSum) {
             discountAmount = productSum;
         }
@@ -77,7 +76,6 @@ $(function() {
         // 최종 결제 금액 계산 (상품 금액 - 할인 금액 + 배송비)
         const finalAmount = productSum - discountAmount + deliveryFee;
         
-        // 화면에 표시
         $('#couponDiscount').text(numberWithCommas(discountAmount) + '원');
         $('#totalPrice').text(numberWithCommas(finalAmount) + '원');
         
@@ -86,6 +84,7 @@ $(function() {
         $('#discountAmount').val(discountAmount);
         $('#finalPaymentAmount').val(finalAmount);
     }
+    
     
     // 상품 구성 레이아웃 조정
     const detailItems = $('.detail-item').length;
@@ -106,7 +105,6 @@ $(function() {
         // 클래스 추가
         stockInfo.addClass('stock-below');
     }
-    // 4개 이상인 경우 스크롤 적용
     else {
         const itemHeight = 45; // 각 항목의 높이 (픽셀)
         const visibleItems = 3; // 보이는 항목 수
@@ -156,10 +154,6 @@ function newAddr() {
 function daumPostcode() {
 	new daum.Postcode({
 		oncomplete : function(data) {
-			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-			// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-			// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 			var fullAddr = ''; // 최종 주소 변수
 			var extraAddr = ''; // 조합형 주소 변수
 
@@ -195,21 +189,18 @@ function daumPostcode() {
 	}).open();
 }
 
-// 결제 처리
+//결제 처리
 function finalBuy() {
-    // 1. 약관 동의 확인
     if(!$('#agreeAll').is(':checked')) {
         alert('필수 약관에 동의해주세요.');
         return;
     }
     
-    // 2. 결제 수단 선택 확인
     if(!$('input[name="payMethod"]:checked').val()) {
         alert('결제 수단을 선택해주세요.');
         return;
     }
     
-    // 3. 배송지 정보 확인
     if(!$('#receiver').val().trim()) {
         alert('받는 사람 이름을 입력해주세요.');
         $('#receiver').focus();
@@ -224,7 +215,7 @@ function finalBuy() {
         return;
     }
     
-    // 4. 폼 데이터 수집
+    // 폼 데이터 수집
     const paymentData = {
         product_num: ${product.product_num},
         amount: ${product.amount},
@@ -241,23 +232,88 @@ function finalBuy() {
         pay_way: $('input[name="payMethod"]:checked').val() || '1'
     };
     
-    // 5. AJAX 요청 실행
-    $.ajax({
-        url: "${pageContext.request.contextPath}/buy/processPayment",
-        type: "POST",
-        data: paymentData,
-        success: function(response) {
-            if(response.success) {
-                alert('결제가 완료되었습니다.');
-                // 서버에서 제공하는 리다이렉션 URL로 이동
-                location.href = "${pageContext.request.contextPath}" + response.redirectUrl;
-            } else {
-                alert(response.message || '결제 처리 중 오류가 발생했습니다.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("결제 처리 오류:", error);
-            alert('결제 처리 중 오류가 발생했습니다.');
+    // 결제 API 파라미터 설정
+    let memberIdx = ${sessionScope.member.memberidx};
+    let merchant_uid = 'ORDER_' + new Date().getTime();
+    let amount = Number(paymentData.finalAmount); // 문자열을 숫자로 변환
+    let pay_method = $('input[name="payMethod"]:checked').val() === '1' ? 'card' : 'trans';
+    
+    // 구매자 정보
+    let buyer_email = '${member.email1}@${member.email2}';
+    let buyer_name = '${member.name}';
+    let buyer_tel = '${member.tel1}' + '${member.tel2}' + '${member.tel3}'.replace(/ /g, '');
+    let buyer_addr = '${member.addr1} ${member.addr2}';
+    let buyer_postcode = '${member.postCode}';
+    
+    // IMP 초기화
+    var IMP = window.IMP;
+    IMP.init("imp25337544");
+    
+    //
+    console.log("결제 정보:", {
+        pay_method: pay_method,
+        merchant_uid: merchant_uid,
+        name: '${product.title}',
+        amount: amount,
+        buyer_email: buyer_email,
+        buyer_name: buyer_name,
+        buyer_tel: buyer_tel,
+        buyer_addr: buyer_addr,
+        buyer_postcode: buyer_postcode
+    });
+ 
+    // 결제 요청
+    IMP.request_pay({
+    	channelKey: "channel-key-1f19b1f6-fa6e-400f-8745-355b6c86cb30",
+        pay_method: pay_method,
+        merchant_uid: merchant_uid,
+        name: '${product.title}',
+        amount: 10, // 실제 결제 금액
+        buyer_email: buyer_email,
+        buyer_name: buyer_name,
+        buyer_tel: buyer_tel,
+        buyer_addr: buyer_addr,
+        buyer_postcode: buyer_postcode
+    }, function(resp) {
+        if(resp.success) {
+            console.log("결제 성공:", resp);
+            
+            // 결제 정보 추가
+            paymentData.imp_uid = resp.imp_uid;
+            paymentData.merchant_uid = resp.merchant_uid;
+            paymentData.paid_amount = resp.paid_amount;
+            paymentData.pay_method = resp.pay_method;
+            paymentData.pg_provider = resp.pg_provider;
+            paymentData.paid_at = resp.paid_at;
+            
+            // 서버에 결제 정보 전송
+            $.ajax({
+                url: "${pageContext.request.contextPath}/buy/processPayment",
+                type: "POST",
+                data: paymentData,
+                success: function(response) {
+                    try {
+                        if(typeof response === 'string') {
+                            response = JSON.parse(response);
+                        }
+                        
+                        if(response.success) {
+                            alert('결제가 완료되었습니다.');
+                            location.href = "${pageContext.request.contextPath}/buy/complete";
+                        } else {
+                            alert(response.message || '결제 처리 중 오류가 발생했습니다.');
+                        }
+                    } catch(e) {
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("결제 처리 오류:", error);
+                    console.log("응답 내용:", xhr.responseText);
+                }
+            });
+        } else {
+            alert('결제에 실패했습니다: ' + resp.error_msg);
+            console.log("결제 실패:", resp);
         }
     });
 }
@@ -273,178 +329,196 @@ function finalBuy() {
 
 		<div class="row tow-circle">
 			<div class="col-2 circle">
-				<p>리워드<br>선택</p>
+				<p>
+					리워드<br>선택
+				</p>
 			</div>
 			<div class="connecting-line" style="width: 63px;"></div>
 			<div class="col-2 circle">
-				<p>결제<br>예약</p>
+				<p>
+					결제<br>예약
+				</p>
 			</div>
 		</div>
-		
+
 		<h3>
-			리워드 결제
-			<img src="${pageContext.request.contextPath}/dist/images/buy/2.png" alt="온라인 상점 아이콘">
+			리워드 결제 <img
+				src="${pageContext.request.contextPath}/dist/images/buy/2.png"
+				alt="온라인 상점 아이콘">
 		</h3>
-		
+
 		<div class="choicedProduct">
-			
+
 			<div class="row mainInfo">
 				<div class="col-5 thumbnail">
-				    <img src="${pageContext.request.contextPath}/uploads/project/${product.thumbnail}">
+					<img
+						src="${pageContext.request.contextPath}/uploads/project/${product.thumbnail}">
 				</div>
 				<div class="col-7 productInfo">
 					<h4>상품 정보</h4>
 					<br>
 					<div class="product-title-container">
-			            <div class="product-title">${product.title}</div>
-			            <div class="product-price"><fmt:formatNumber value="${product.price}" pattern="#,###"/>원</div>
-			        </div>
-			        <div class="product-details-container">
-			            <c:forEach var="details" items="${fn:split(product.detail, '💚')}">
-			                <c:if test="${!empty details}">
-			                    <p class="detail-item">💚${details}</p>
-			                </c:if>
-			            </c:forEach>
-			        </div>
-			        <p class="stock">
-			            구매 수량
-			            <span class="stock">${product.amount}개</span>
-			        </p>
+						<div class="product-title">${product.title}</div>
+						<div class="product-price">
+							<fmt:formatNumber value="${product.price}" pattern="#,###" />
+							원
+						</div>
+					</div>
+					<div class="product-details-container">
+						<c:forEach var="details" items="${fn:split(product.detail, '💚')}">
+							<c:if test="${!empty details}">
+								<p class="detail-item">💚${details}</p>
+							</c:if>
+						</c:forEach>
+					</div>
+					<p class="stock">
+						구매 수량 <span class="stock">${product.amount}개</span>
+					</p>
 				</div>
 			</div>
-			
+
 			<div class="supporterInfo">
-			<h4>서포터 정보</h4>
-			    <p class="name">
-			        이름
-			        <span class="name">${member.name}</span>
-			    </p>
-			    <p class="email">
-			        이메일
-			        <span class="email">${member.email1}@${member.email2}</span>
-			    </p>
-			    <p class="phone">
-			        핸드폰 번호
-			        <span class="phone">${member.tel1}-${member.tel2}-${member.tel3}</span>
-			    </p>
+				<h4>서포터 정보</h4>
+				<p class="name">
+					이름 <span class="name">${member.name}</span>
+				</p>
+				<p class="email">
+					이메일 <span class="email">${member.email1}@${member.email2}</span>
+				</p>
+				<p class="phone">
+					핸드폰 번호 <span class="phone">${member.tel1}-${member.tel2}-${member.tel3}</span>
+				</p>
 			</div>
-				
+
 			<div class="deliveryInfo">
-			<h4>배송 정보</h4>
-			    <!-- 디폴트는 자동으로 정보 기입 -->
-			    <!-- 신규배송지 누를경우, readonly풀리면서 받는사람, 주소 새로 입력할거임-->
-			    <input type="button" id="addrBtn" value="신규 배송지 입력" onclick="newAddr();">
-			    <input type="text" id="receiver" value="${member.name}" placeholder="받는 사람" readonly>
-			    <div>
-			        <input type="text" id="address" value="${member.addr1}" placeholder="주소" readonly>
-			        <input type="text" id="postCode" value="${member.postCode}" placeholder="우편번호" readonly>
-			        <input type="button" onclick="daumPostcode();" value="주소 찾기" id="postFind">
-			    </div>
-			    <input type="text" id="detailAddr" value="${member.addr2}" placeholder="상세주소를 입력해주세요" readonly>
-			    <input type="text" id="aInfo" placeholder="주문 요청 사항을 입력해주세요(선택)">
+				<h4>배송 정보</h4>
+				<!-- 디폴트는 자동으로 정보 기입 -->
+				<!-- 신규배송지 누를경우, readonly풀리면서 받는사람, 주소 새로 입력할거임-->
+				<input type="button" id="addrBtn" value="신규 배송지 입력"
+					onclick="newAddr();"> <input type="text" id="receiver"
+					value="${member.name}" placeholder="받는 사람" readonly>
+				<div>
+					<input type="text" id="address" value="${member.addr1}"
+						placeholder="주소" readonly> <input type="text"
+						id="postCode" value="${member.postCode}" placeholder="우편번호"
+						readonly> <input type="button" onclick="daumPostcode();"
+						value="주소 찾기" id="postFind">
+				</div>
+				<input type="text" id="detailAddr" value="${member.addr2}"
+					placeholder="상세주소를 입력해주세요" readonly> <input type="text"
+					id="aInfo" placeholder="주문 요청 사항을 입력해주세요(선택)">
 			</div>
-			
-			
+
+
 			<div class="coupon">
-			<h4>쿠폰</h4>
-		        <c:choose>
-		            <c:when test="${empty coupons}">
-		                <div class="no-coupon-message">
-		                    <i class="bi bi-ticket-perforated"></i> 사용 가능한 쿠폰이 없습니다.
-		                </div>
-		            </c:when>
-		            <c:otherwise>
-		                <select id="couponSelect" class="couponSelect">  
-		                    <option value="0" data-discount="0" data-rate="0">쿠폰을 선택해주세요</option>
-		                    <c:forEach var="coupon" items="${coupons}">
-		                        <option value="${coupon.num}" 
-		                         	data-discount="${coupon.discount}" 
-	                                data-rate="${coupon.discount_Rate}">
-		                            ${coupon.title} 
-		                            <c:if test="${coupon.discount_Rate > 0}">
+				<h4>쿠폰</h4>
+				<c:choose>
+					<c:when test="${empty coupons}">
+						<div class="no-coupon-message">
+							<i class="bi bi-ticket-perforated"></i> 사용 가능한 쿠폰이 없습니다.
+						</div>
+					</c:when>
+					<c:otherwise>
+						<select id="couponSelect" class="couponSelect">
+							<option value="0" data-discount="0" data-rate="0">쿠폰을
+								선택해주세요</option>
+							<c:forEach var="coupon" items="${coupons}">
+								<option value="${coupon.num}" data-discount="${coupon.discount}"
+									data-rate="${coupon.discount_Rate}">${coupon.title}
+									<c:if test="${coupon.discount_Rate > 0}">
 		                                (${coupon.discount_Rate}% 할인
 		                                <c:if test="${coupon.discount > 0}">
-		                                    , 최대 <fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원
+		                                    , 최대 <fmt:formatNumber
+												value="${coupon.discount}" pattern="#,###" />원
 		                                </c:if>)
 		                            </c:if>
-		                            <c:if test="${coupon.discount_Rate == 0 && coupon.discount > 0}">
-		                                (<fmt:formatNumber value="${coupon.discount}" pattern="#,###"/>원 정액 할인)
-		                            </c:if>
-		                            - ~<fmt:formatDate value="${coupon.exp_date}" pattern="yyyy-MM-dd"/>
-		                        </option>
-		                    </c:forEach>
-		                    <option value="0" data-discount="0" data-rate="0">쿠폰 선택 안함</option>
-		                </select>
-	            	</c:otherwise>
-	        	</c:choose>
+									<c:if
+										test="${coupon.discount_Rate == 0 && coupon.discount > 0}">
+		                                (<fmt:formatNumber
+											value="${coupon.discount}" pattern="#,###" />원 정액 할인)
+		                            </c:if> - ~
+									<fmt:formatDate value="${coupon.exp_date}" pattern="yyyy-MM-dd" />
+								</option>
+							</c:forEach>
+							<option value="0" data-discount="0" data-rate="0">쿠폰 선택
+								안함</option>
+						</select>
+					</c:otherwise>
+				</c:choose>
 			</div>
-			
+
 			<div class="col paymentMethod">
-			    <h4>결제 수단 <span class="required-mark">*</span></h4>
-			    <div class="payment-methods">
-			        <div class="payment-method-item">
-			            <input id="card" name="payMethod" type="radio" value="1" checked>
-			            <label for="card">신용카드 / 체크카드</label>
-			        </div>
-			        <!-- 다른 결제 수단? -->
-			        <!-- <div class="payment-method-item">
+				<h4>
+					결제 수단 <span class="required-mark">*</span>
+				</h4>
+				<div class="payment-methods">
+					<div class="payment-method-item">
+						<input id="card" name="payMethod" type="radio" value="1" checked>
+						<label for="card">신용카드 / 체크카드</label>
+					</div>
+					<!-- 다른 결제 수단? -->
+					<!-- <div class="payment-method-item">
 			            <input id="cash" name="payMethod" type="radio" value="2">
 			            <label for="cash">계좌이체</label>
 			        </div> -->
-			    </div>
+				</div>
 			</div>
-			
+
 			<div class="finalPayment">
-			<h4>결제 금액</h4>
+				<h4>결제 금액</h4>
 				<p class="productPrice">
-					리워드 금액
-					<span class="productPrice"><fmt:formatNumber value="${product.sum}" pattern="#,###"/>원</span>
+					리워드 금액 <span class="productPrice"><fmt:formatNumber
+							value="${product.sum}" pattern="#,###" />원</span>
 				</p>
 				<p class="couponPrice">
-					쿠폰 금액
-					<span class="couponPrice" id="couponDiscount">0원</span>
-				</p> 
+					쿠폰 금액 <span class="couponPrice" id="couponDiscount">0원</span>
+				</p>
 				<p class="deliveryFee">
-					배송비
-					<span class="deliveryFee"><fmt:formatNumber value="${product.delivery_fee}" pattern="#,###"/>원</span>  
+					배송비 <span class="deliveryFee"><fmt:formatNumber
+							value="${product.delivery_fee}" pattern="#,###" />원</span>
 				</p>
 				<hr>
 				<p class="totalPrice">
-			        총 결제 금액
-			        <span class="totalPrice" id="totalPrice"><fmt:formatNumber value="${product.sum + product.delivery_fee}" pattern="#,###"/>원</span>
-			    </p>
-			    <!-- 실제 form 제출 시 사용할 hidden 필드 -->
-			    <input type="hidden" id="selectedCouponNum" name="couponNum" value="0">
-			    <input type="hidden" id="discountAmount" name="discountAmount" value="0">
-			    <input type="hidden" id="finalPaymentAmount" name="finalPaymentAmount" value="${product.sum + product.delivery_fee}">
+					총 결제 금액 <span class="totalPrice" id="totalPrice"><fmt:formatNumber
+							value="${product.sum + product.delivery_fee}" pattern="#,###" />원</span>
+				</p>
+				<!-- 실제 form 제출 시 사용할 hidden 필드 -->
+				<input type="hidden" id="selectedCouponNum" name="couponNum"
+					value="0"> <input type="hidden" id="discountAmount"
+					name="discountAmount" value="0"> <input type="hidden"
+					id="finalPaymentAmount" name="finalPaymentAmount"
+					value="${product.sum + product.delivery_fee}">
 			</div>
-			
+
 			<div class="payNote">
 				<h4>결제 유의사항</h4>
-				<p>예약 결제의 경우 결제 실행일에 결제자 귀책사유(한도초과, 이용정지 등)로 인하여 결제가 실패할 수 있으니, 결제수단이 유효한지 확인해주세요.</p>
+				<p>예약 결제의 경우 결제 실행일에 결제자 귀책사유(한도초과, 이용정지 등)로 인하여 결제가 실패할 수 있으니,
+					결제수단이 유효한지 확인해주세요.</p>
 				<p>예약 결제 이후, 결제 정보를 변경하려면 마이페이지 > 참여 내역 상세에서 결제 정보를 변경해주세요.</p>
 				<p>지금 결제를 한 경우에도 프로젝트가 종료되기 전까지 언제든 결제를 취소할 수 있어요.</p>
 			</div>
-			
+
 			<div class="payAgree">
-			    <h4>약관 동의 <span class="required-mark">*</span></h4>
-			    <div class="agreeAll">
-			        <input type="checkbox" id="agreeAll" required>
-			        <label for="agreeAll">결제 진행 필수 동의</label>
-			    </div>
-			    <hr>
-			    <div class="agree">
-			        <input type="checkbox" id="agree1" required>
-			        <label for="agree1">구매조건, 결제 진행 및 결제 대행 서비스 동의</label>
-			    </div>
-			    <div class="agree">
-			        <input type="checkbox" id="agree2" required>
-			        <label for="agree2">개인정보 제3자 제공 동의</label>
-			    </div>
+				<h4>
+					약관 동의 <span class="required-mark">*</span>
+				</h4>
+				<div class="agreeAll">
+					<input type="checkbox" id="agreeAll" required> <label
+						for="agreeAll">결제 진행 필수 동의</label>
+				</div>
+				<hr>
+				<div class="agree">
+					<input type="checkbox" id="agree1" required> <label
+						for="agree1">구매조건, 결제 진행 및 결제 대행 서비스 동의</label>
+				</div>
+				<div class="agree">
+					<input type="checkbox" id="agree2" required> <label
+						for="agree2">개인정보 제3자 제공 동의</label>
+				</div>
 			</div>
-			
+
 		</div>
-		
+
 		<button type="button" class="buyBtn" onclick="finalBuy()">결제하기</button>
 
 	</div>

@@ -45,16 +45,14 @@ $(function() {
 	    }
 	});
     
-    // 구매하기 버튼 클릭 시 구매 페이지로 이동
-    $(".buyBtn").click(function() {
-        let num = $(this).attr("data-num");
-        location.href = "${pageContext.request.contextPath}/buy/productList/" + num;
-    });
-    
-    // 상품 클릭 시 상세 페이지로 이동
     $(".item-info, .item-image").click(function() {
         let num = $(this).closest(".wishlist-item").find(".buyBtn").attr("data-num");
         location.href = "${pageContext.request.contextPath}/funding/product/" + num;
+    });
+    
+    $(".buyBtn").click(function() {
+        let num = $(this).attr("data-num");
+        location.href = "${pageContext.request.contextPath}/buy/productList/" + num;
     });
 });
 </script>
