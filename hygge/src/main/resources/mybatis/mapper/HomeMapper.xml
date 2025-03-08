@@ -36,9 +36,7 @@
 	        LEFT JOIN sales s ON pd.product_num = s.product_num
 	        GROUP BY pd.num
 	    ) total_sales ON p.num = total_sales.num
-	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date + 6 AND pr.accept_date + 12
-	    	AND p.end_date > SYSDATE
+	    WHERE p.block = 0 AND SYSDATE BETWEEN p.start_date AND p.end_date
 	    ORDER BY pr.accept_date DESC
 	    FETCH FIRST 6 ROWS ONLY
 	</select>
@@ -70,25 +68,25 @@
 	        GROUP BY pd.num
 	    ) total_sales ON p.num = total_sales.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE >= pr.accept_date + 7
+	    	AND SYSDATE >= p.start_date
 	    	AND p.end_date > SYSDATE
 	    <!-- ORDER BY total_sales.total_amount DESC -->
 	    ORDER BY 
     		total_sales.total_amount * 
-    		(1 + (14 - LEAST(14, SYSDATE - (pr.accept_date + 7))) / 14) DESC
+    		(1 + (14 - LEAST(14, SYSDATE - (p.start_date))) / 14) DESC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
 	
 	<!-- 공개 예정 (승인일부터 일주일까지) -->
 	<select id="listComingProjects" parameterType="map" resultType="com.sp.app.model.Funding">
 		SELECT p.num, pr.accept_date, pr.title, pr.thumbnail, p.block,
-		    CEIL(pr.accept_date + 6 - SYSDATE) AS remained_date,
+		    CEIL(p.start_date - SYSDATE) AS remained_date,
 		    1 AS isComing
 	    FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
 	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE BETWEEN pr.accept_date AND pr.accept_date + 6
-	    ORDER BY pr.accept_date ASC
+	    	AND SYSDATE BETWEEN p.start_date - 7 AND p.start_date
+	    ORDER BY p.start_date ASC
 	    FETCH FIRST 4 ROWS ONLY
 	</select>
 	
@@ -119,8 +117,7 @@
 	        LEFT JOIN sales s ON pd.product_num = s.product_num
 	        GROUP BY pd.num
 	    ) total_sales ON p.num = total_sales.num
-	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE >= pr.accept_date + 6
+	    WHERE p.block = 0 AND SYSDATE >= p.start_date
 	    	AND p.end_date > SYSDATE
 	    	AND (
 	        	(p.end_date - SYSDATE &lt;= 3)
@@ -138,13 +135,11 @@
 	        1 AS isRanking
 		FROM Project p
 	    JOIN ProjectRequest pr ON p.num = pr.num
-	    WHERE pr.accept_return = 1 AND p.block = 0
-	    	AND SYSDATE >= pr.accept_date + 6
-	    	AND p.end_date > SYSDATE
+	    WHERE p.block = 0 AND SYSDATE >= p.start_date AND p.end_date > SYSDATE
 	    <!-- ORDER BY (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) DESC -->
 	    ORDER BY 
   			(SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) * 
-  			(1 + (14 - LEAST(14, SYSDATE - (pr.accept_date + 6))) / 14) DESC
+  			(1 + (14 - LEAST(14, SYSDATE - (p.start_date))) / 14) DESC
 		FETCH FIRST 7 ROWS ONLY
 	</select>
 	
