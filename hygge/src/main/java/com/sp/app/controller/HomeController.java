@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 	/* private final MakerService makerService; */
 	private final HomeService service;
+	/* private final PaginateUtil paginateUtil; */
 
 	@GetMapping("/")
 	public String handleHome(HttpSession session, Model model) {
