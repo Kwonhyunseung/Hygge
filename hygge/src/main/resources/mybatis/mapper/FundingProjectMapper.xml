@@ -8,8 +8,7 @@
 		SELECT 
 		    p.num, c.name, m.block, pr.title, pr.target, pr.term, pr.thumbnail,
 		    pr.delivery_info, m.nickname, m.memberIdx, m.profile_img,
-		    TO_CHAR(pr.accept_date + 7, 'YYYY-MM-DD') AS start_date,
-		    TO_CHAR(pr.accept_date + 7 + pr.term, 'YYYY-MM-DD') AS end_date,
+		    p.start_date, p.end_date,
 		    NVL(payment_summary.total_amount, 0) AS total_amount,
 		    (SELECT COUNT(1)
 		     FROM follow f

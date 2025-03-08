@@ -17,7 +17,7 @@
 			(sub.total_amount / target * 100 &gt;= 85 OR p.end_date - SYSDATE &lt;= 5) 
 		</if>
 		<if test="menu == 'comingsoon'">
-			(p.start_date - SYSDATE &gt;= 0 AND p.start_date - SYSDATE &lt;= 7)
+			(p.start_date &gt; SYSDATE AND p.start_date - SYSDATE &lt;= 7)
 		</if>
 	</sql>
 	<sql id="order-list">

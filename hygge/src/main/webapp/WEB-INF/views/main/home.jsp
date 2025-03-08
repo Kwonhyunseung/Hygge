@@ -339,7 +339,7 @@ $(function() {
 
 		<div class="categories">
 			<c:forEach var="category" items="${parentCategories}">
-				<div data-categoryNum="${category.category_num}">
+				<div data-categoryNum="${category.category_num}" onclick="location.href='${pageContext.request.contextPath}/funding/category0${category.category_num}'">
 					<img src="/dist/images/main/category/${category.category_num}.png">
 					<p>${category.name}</p>
 				</div>
