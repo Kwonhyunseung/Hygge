@@ -17,4 +17,8 @@ public class Maker {
 	private String profile_img;
 
 	private MultipartFile profileImg_File;
+	
+	//TODO: 현승추가
+	private int projectCount;
+    private int followerCount;
 }
