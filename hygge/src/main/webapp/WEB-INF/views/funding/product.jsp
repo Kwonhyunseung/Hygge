@@ -14,17 +14,21 @@
 <jsp:include page="/WEB-INF/views/layout/headerResources.jsp" />
 
 <script type="text/javascript">
-// 공개예정 프로젝트 여부 확인
+//공개예정 프로젝트 여부 확인
 const isComingSoon = function() {
     const today = new Date();
     
     const startDateStr = "${project.start_date}";
     const startDate = new Date(startDateStr.replace(/-/g, '/'));
     
-    return startDate > today;
+    // 날짜만 비교하기 위해 시간 정보 제거
+    const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    return startDateOnly > todayOnly;
 };
 
-//프로젝트 후원하기
+// 프로젝트 후원하기
 function supportProject() {
     <c:if test="${empty sessionScope.member}">
         alert("로그인이 필요한 서비스입니다.");
@@ -62,6 +66,7 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
     $.ajax(url, settings);
 }
 
+// 콘텐츠 로드 함수
 function loadContent(contentType) {
     let url = '${pageContext.request.contextPath}/funding/';
     let num = '${project.num}';
@@ -74,33 +79,93 @@ function loadContent(contentType) {
     });
 }
 
-$(function() {
-    $(".f-select").removeClass("active");
-    $("#plan").addClass("active");
-    loadContent('plan');
-    
+// 프로젝트 상태 체크 및 UI 업데이트
+function checkProjectStatus() {
     const startDateStr = "${project.start_date}";
     const startDate = new Date(startDateStr.replace(/-/g, '/'));
-    const today = new Date();
+    const now = new Date();
     
-    if (startDate > today) {
+    // 날짜만 비교하기 위해 시간 정보 제거
+    const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    
+    if (startDateOnly > todayOnly) {
         // 공개예정 프로젝트인 경우
         $("#normal-project-info").hide();
         $("#coming-soon-project-info").show();
         $("#normal-buttons-container").hide();
         $("#coming-soon-notice").show();
-        $("#normal-title").hide(); // 썸네일 위 제목 숨기기
-        $(".product-img").css("margin-top", "130px"); // 썸네일에 상단 마진 추가
+        $("#normal-title").hide();
+        $(".product-img").css("margin-top", "130px");
+        
+        // 남은 시간 계산 및 표시
+        const diffTime = startDateOnly.getTime() - todayOnly.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // 다음 자정까지의 시간 계산 (밀리초)
+        const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        nextMidnight.setHours(0, 0, 0, 0);
+        const timeToMidnight = nextMidnight.getTime() - now.getTime();
+        
+        // 자정이 지나면 페이지 자동 새로고침
+        if (diffDays <= 1) {
+            console.log("다음 자정에 새로고침 예약됨: " + (timeToMidnight / 1000) + "초 후");
+            setTimeout(function() {
+                location.reload();
+            }, timeToMidnight + 1000); // 자정 직후 1초 후 새로고침
+        }
     } else {
         // 일반 프로젝트인 경우
         $("#normal-project-info").show();
         $("#coming-soon-project-info").hide();
         $("#normal-buttons-container").show();
         $("#coming-soon-notice").hide();
-        $("#normal-title").show(); // 썸네일 위 제목 표시
-        $(".product-img").css("margin-top", "0"); // 일반 프로젝트는 마진 없음
+        $("#normal-title").show();
+        $(".product-img").css("margin-top", "0");
+        
+        // 일반 프로젝트일 때는 남은 시간 업데이트
+        updateRemainingTime();
     }
+}
+
+// 남은 시간 업데이트 함수
+function updateRemainingTime() {
+    const endDateStr = "${project.end_date}";
+    const now = new Date();
     
+    // 일반 프로젝트는 종료일까지 남은 시간 계산
+    const targetDate = new Date(endDateStr.replace(/-/g, '/'));
+    
+    // 날짜만 비교하기 위해 시간 정보 제거
+    const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+    const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    
+    // 남은 일수 계산
+    const diffTime = targetDateOnly.getTime() - todayOnly.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    // 남은 일수 표시 업데이트
+    const displayElement = $("#period strong");
+    if (diffDays > 0) {
+        displayElement.text(diffDays);
+    } else {
+        displayElement.text('0');
+    }
+}
+
+// 페이지 로드 시 초기화
+$(function() {
+    $(".f-select").removeClass("active");
+    $("#plan").addClass("active");
+    loadContent('plan');
+    
+    // 초기 상태 설정
+    checkProjectStatus();
+    
+    // 1분마다 상태 체크 (자정이 지났는지 확인)
+    setInterval(checkProjectStatus, 60000);
+    
+    // 좋아요 버튼 클릭 이벤트
     $('.like-btn').click(function(){
         if (isComingSoon()) {
             alert("공개예정인 프로젝트는 좋아요를 누를 수 없습니다.");
@@ -156,6 +221,7 @@ $(function() {
         });
     });
     
+    // 프로젝트 계획/후기 탭 클릭 이벤트
     $(document).on("click", ".f-select", function() {
         const contentType = $(this).attr('id');
         
@@ -214,27 +280,27 @@ $(function() {
 						    <h2 class="coming-soon-title">${project.title}</h2>
 						</div>
 						
-						<hr style="margin: 10px 0 40px 0;">
+						<hr style="margin: 10px 0 35px 0;">
 						<div class="row second-info">
 							<div class="col-5">
-								<p class="d">
+								<p class="d" id="qainfo">
 									<strong>목표 금액</strong>
 								</p>
-								<p class="d">
+								<p class="d" id="qainfo">
 									<strong>펀딩 기간</strong>
 								</p>
-								<p class="d">
+								<!-- <p class="d">
 									<strong>결제</strong>
-								</p>
-								<p class="d" style="margin-top: 50px;">
+								</p> -->
+								<p class="d" id="qainfo">
 									<strong>예상 발송 시작일</strong>
 								</p>
 							</div>
 							<div class="col-7">
-								<p class="d">
+								<p class="d" id="qainfo">
 									<fmt:formatNumber value="${project.target}" pattern="#,###" />원
 								</p>
-								<p class="d">
+								<p class="d" id="qainfo">
 									<fmt:parseDate value="${project.start_date}"
 										pattern="yyyy-MM-dd" var="startDate" />
 									<fmt:parseDate value="${project.end_date}" pattern="yyyy-MM-dd"
@@ -243,10 +309,10 @@ $(function() {
 									~
 									<fmt:formatDate value="${endDate}" pattern="yyyy.MM.dd" />
 								</p>
-								<p class="d">
+								<%-- <p class="d">
 									목표금액 달성시 <br> <span style="margin-left: 113px;">${project.payment_date}</span>
-								</p>
-								<p class="d">
+								</p> --%>
+								<p class="d" id="qainfo">
 									${project.delivery_info}
 									<fmt:formatDate value="${deliveryDate}" pattern="yyyy.MM.dd" />
 								</p>

@@ -172,3 +172,12 @@
     text-overflow: ellipsis;
     max-width: 100%;
 }
+
+
+/* 추가 */
+.second-info p.d:last-child {
+    margin-top: 35px; /* 마지막 항목(발송 시작일)에 상단 여백 추가 */
+}
+#qainfo {
+	margin-bottom: 40px !important;
+}

@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
         scheduleHideSubCategory();
     });
     
+    
     setupProjectNavigation();
+    
 });
 
 //프로젝트 카드 클릭 시 상세 페이지로 이동
@@ -549,7 +551,7 @@ $(function() {
 			                            <img src="${pageContext.request.contextPath}/uploads/project/${project.thumbnail}">
 			                        </div>
 		                            <div class="goal">
-										<p style="color: #878787;">개시까지 <span class="highlight-days" style="color: red;">${project.remained_date}</span>일 남음</p>
+										<p style="color: #878787;">개시까지 <span class="highlight-days" style="color: red;">${project.remained_date}</span> 남음</p>
 									</div>
 			                        <p>${project.title}</p>
 			                    </div>
