@@ -80,9 +80,9 @@ public class UsedBoardController {
 			String articleUrl = cp + "/usedBoard/article";
 			if (!keyword.isBlank()) {
 				String qs = "schType=" + searchType + "&kwd=" + URLDecoder.decode(keyword, "utf-8");
+				listUrl += "?" + qs;
 				query += "&" + qs;
 			}
-			listUrl += "?" + query;
 			articleUrl += "?" + query;
 			String paging = paginateUtil.paging(current_page, total_page, listUrl);
 
