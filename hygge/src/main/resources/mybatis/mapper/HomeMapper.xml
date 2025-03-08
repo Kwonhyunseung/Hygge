@@ -190,11 +190,11 @@
 			AND p.end_date > SYSDATE
 			AND NVL(total_sales.total_amount, 0) > 0
 		ORDER BY
-			CASE
-			  WHEN SYSDATE - (p.start_date &lt; 7) THEN total_sales.total_amount * 1.5
-			  WHEN SYSDATE - (p.start_date &lt; 14) THEN total_sales.total_amount * 1.2
-			  ELSE total_sales.total_amount
-			END DESC
+		CASE
+			WHEN (SYSDATE - p.start_date) &lt; 7 THEN total_sales.total_amount * 1.5
+			WHEN (SYSDATE - p.start_date) &lt; 14 THEN total_sales.total_amount * 1.2
+			ELSE total_sales.total_amount
+		END DESC
 		FETCH FIRST 7 ROWS ONLY
 		<!-- 좋아요순
 		SELECT p.num, (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) AS likeCount,
