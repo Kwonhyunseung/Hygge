@@ -75,16 +75,17 @@
 			<div class="header-right d-flex align-items-center">
 				<div class="nav-item">
 					<a class="nav-link"
-						href="${pageContext.request.contextPath}/following"><i
+						href="${pageContext.request.contextPath}/follow/list"><i
 						class="bi bi-stars"></i></a>
 				</div>
+				<%-- 알림 아이콘
 				<div class="nav-item">
 					<a class="nav-link" href="${pageContext.request.contextPath}/alarm"><i
 						class="bi bi-bell-fill"></i></a>
-				</div>
+				</div> --%>
 				<div class="nav-item">
 					<a class="nav-link"
-						href="${pageContext.request.contextPath}/wishlist"><i
+						href="${pageContext.request.contextPath}/wish/list"><i
 						class="bi bi-bag-heart-fill"></i></a>
 				</div>
 
@@ -122,7 +123,6 @@
 		</div>
 	</nav>
 </header>
-
 
 
 <!-- 네비게이션 및 더보기 메뉴 관련 스크립트 -->
@@ -181,8 +181,6 @@
 </script>
 
 
-
-
 <!-- Login Modal -->
 <script type="text/javascript">
 	function dialogLogin() {
@@ -222,7 +220,6 @@
 		});
 	});
 </script>
-
 
 
 <div class="modal fade" id="loginModal" tabindex="-1"

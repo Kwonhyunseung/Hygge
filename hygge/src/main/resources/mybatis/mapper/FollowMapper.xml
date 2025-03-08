@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.FollowMapper">
+    <select id="followingList" parameterType="Long" resultType="com.sp.app.model.Maker">
+        SELECT m.memberIdx, m.makerName, m.introduction,
+               mem.profile_img,
+               (SELECT COUNT(*) FROM project p JOIN projectRequest pr ON p.num = pr.num WHERE pr.memberIdx = m.memberIdx) AS projectCount,
+               (SELECT COUNT(*) FROM follow WHERE following = m.memberIdx) AS followerCount
+        FROM follow f
+        JOIN maker m ON f.following = m.memberIdx
+        JOIN member1 mem ON m.memberIdx = mem.memberIdx
+        WHERE f.follower = #{memberIdx}
+        ORDER BY makerName
+    </select>
+
+    <select id="followCount" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*)
+        FROM follow
+        WHERE follower = #{memberIdx}
+    </select>
+
+    <delete id="unfollow" parameterType="map">
+        DELETE FROM follow
+        WHERE following = #{makerIdx} AND follower = #{memberIdx}
+    </delete>
+</mapper>
