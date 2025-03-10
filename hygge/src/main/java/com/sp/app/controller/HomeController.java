@@ -15,6 +15,7 @@ import com.sp.app.model.Category;
 import com.sp.app.model.Funding;
 import com.sp.app.model.SessionInfo;
 import com.sp.app.service.HomeService;
+import com.sp.app.service.MakerService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
-	/* private final MakerService makerService; */
+	private final MakerService makerService;
 	private final HomeService service;
 	private final PaginateUtil paginateUtil;
 
@@ -82,6 +83,18 @@ public class HomeController {
 			@RequestParam(name = "kwd", defaultValue = "") String keyword,
 			Model model, HttpSession session) {
 		try {
+	        List<Category> parentCategories = makerService.listCategory(0);
+	        model.addAttribute("parentCategories", parentCategories);
+	        
+	        Map<String, List<Category>> subCategoriesMap = new HashMap<>();
+	        
+	        for (Category parent : parentCategories) {
+	            String parentName = parent.getName();
+	            List<Category> childCategories = makerService.listCategory(parent.getCategory_num());
+	            subCategoriesMap.put(parentName, childCategories);
+	        }
+	        
+	        model.addAttribute("subCategoriesMap", subCategoriesMap);
 			model.addAttribute("keyword", keyword);
 		} catch (Exception e) {
 			log.info("search : ", e);
