@@ -119,6 +119,7 @@ function writeForm() {
 function searchList() {
 	const f = document.searchForm;
 	if (!f.kwd.value.trim()) {
+		f.kwd.focus();
 		return;
 	}
 	const formData = new FormData(f);

@@ -1,11 +1,14 @@
 package com.sp.app.service;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.sp.app.mapper.FundingMainMapper;
 import com.sp.app.mapper.FundingProjectMapper;
 import com.sp.app.mapper.HomeMapper;
 import com.sp.app.model.Category;
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeServiceImpl implements HomeService {
 	private final HomeMapper mapper;
 	private final FundingProjectMapper projectMapper;
+	private final FundingMainMapper mainmapper;
 	/* private final FundingProjectServiceImpl service; */
 
 	@Override
@@ -153,6 +157,44 @@ public class HomeServiceImpl implements HomeService {
 			log.info("listRankingProjects: ", e);
 		}
 
+		return list;
+	}
+
+	@Override
+	public int dataCount(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = mapper.searchDataCount(map);
+		} catch (Exception e) {
+			log.info("dataCount : ", e);
+		}
+		return result;
+	}
+
+	@Override
+	public List<Funding> listFunding(Map<String, Object> map) {
+		List<Funding> list = null;
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
+		try {
+			list = mapper.listSearchFunding(map);
+			for (Funding dto : list) {
+				dto.setFunding_goal(numberFormat.format(dto.getTotal_amount()));
+				dto.setProgress((int)((float)dto.getTotal_amount() / (float)dto.getTarget() * 100));
+			}
+			if (map.get("memberIdx") == null) {
+				return list;
+			}
+			for (Funding dto : list) {
+				map.put("num", dto.getNum());
+				if (mainmapper.isUserLiked(map) != 0) {
+					dto.setUserLiked(true);
+				} else {
+					dto.setUserLiked(false);
+				}
+			}
+		} catch (Exception e) {
+			log.info("listFunding : ", e);
+		}
 		return list;
 	}
 

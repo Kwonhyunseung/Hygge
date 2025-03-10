@@ -327,6 +327,19 @@ $(function() {
         });
     });
 });
+
+$(function() {
+	$('input[name="kwd"]').keydown(function(evt) {
+		if (evt.key === 'Enter') {
+			if (!$('input[name="kwd"]').val()) {
+				$('input[name="kwd"]').focus();
+				return false;
+			}
+			const f = document.searchForm;
+			f.submit();
+		}
+	});
+});
 </script>
 </head>
 <body>
@@ -335,9 +348,11 @@ $(function() {
 	</header>
 
 	<main>
-		<div class="search-bar">
-			<input type="text" placeholder=" 검색어를 입력해주세요!">
-		</div>
+		<form action="${pageContext.request.contextPath}/search" name="searchForm">
+			<div class="search-bar">
+				<input type="text" placeholder="검색어를 입력해주세요!" name="kwd">
+			</div>
+		</form>
 
 		<div class="categories">
 			<c:forEach var="category" items="${parentCategories}">

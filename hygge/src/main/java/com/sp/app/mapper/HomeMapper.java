@@ -16,11 +16,15 @@ public interface HomeMapper {
 	public List<Funding> listPopularProjects(Map<String, Object> map);
 	public List<Funding> listDeadlineProjects(Map<String, Object> map);
 	public List<Funding> listComingProjects(Map<String, Object> map);
-
+	
 	public List<Funding> listRankingProjects(Map<String, Object> map);
 	
 	// 카테고리별 프로젝트 목록
-    public int getCategoryProjectsCount(Map<String, Object> map);
-    public List<Funding> listCategoryProjectsPaging(Map<String, Object> map);
-    public List<Funding> listCategoryProjects(Map<String, Object> map);
+	public int getCategoryProjectsCount(Map<String, Object> map);
+	public List<Funding> listCategoryProjectsPaging(Map<String, Object> map);
+	public List<Funding> listCategoryProjects(Map<String, Object> map);
+
+	// 검색
+	public int searchDataCount(Map<String, Object> map);
+	public List<Funding> listSearchFunding(Map<String, Object> map);
 }

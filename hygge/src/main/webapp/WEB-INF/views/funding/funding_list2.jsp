@@ -181,7 +181,7 @@ $(function() {
 <main>
 	<form action="${pageContext.request.contextPath}/search" name="searchForm">
 		<div class="search-bar">
-			<input type="text" placeholder="검색어를 입력해주세요!" name="kwd">
+			<input type="text" placeholder="검색어를 입력해주세요!" name="kwd" value="${keyword}">
 		</div>
 	</form>
 
@@ -221,8 +221,8 @@ const listNode = document.querySelector('.funding-list-container');
 const sentinelNode = document.querySelector('.sentinel');
 
 function loadContent(page, order) {
-	let url = '${pageContext.request.contextPath}/funding/${menu}/fundingList';
-	let query = 'page=' + page + '&order=' + order;
+	let url = '${pageContext.request.contextPath}/search/fundingList';
+	let query = 'page=' + page + '&order=' + order + '&kwd=${keyword}';
 	const fn = function(data) {
 		addNewContent(data);
 	};
@@ -325,8 +325,8 @@ $(function() {
 	// select onchange 이벤트 등록
 	$('.order-select').change(function() {
 		$('.funding-list-container').empty();
-		let url = '${pageContext.request.contextPath}/funding/${menu}/fundingList';
-		let query = 'page=1&order=' + $(this).val();
+		let url = '${pageContext.request.contextPath}/search/fundingList';
+		let query = 'page=1&order=' + $(this).val() + '&kwd=${keyword}';
 		const fn = function(data) {
 			$('.funding-list-container').empty();
 			addNewContent(data);

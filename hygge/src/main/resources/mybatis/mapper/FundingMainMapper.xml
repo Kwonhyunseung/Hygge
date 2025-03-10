@@ -33,17 +33,15 @@
 	</sql>
 
 	<select id="listFunding" parameterType="map" resultType="com.sp.app.model.Funding">
-		SELECT p.num num, title, thumbnail, project_info, target, sub.total_amount total_amount, p.end_date end_date
+		SELECT p.num num, title, thumbnail, project_info, target, payment_summary.total_amount total_amount, p.end_date end_date
 		FROM project p
 		JOIN projectRequest pr ON p.num = pr.num
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
 		LEFT OUTER JOIN
-			(SELECT NVL(SUM(total_amount), 0) total_amount, project.num num
-    		FROM PROJECT
-    		LEFT OUTER JOIN product ON project.num = product.num
-    		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
-    		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
-    		GROUP BY project.num) sub ON sub.num = p.num
+			(SELECT pd.num, SUM(s.sum) AS total_amount
+		    FROM product pd
+		    LEFT JOIN sales s ON pd.product_num = s.product_num
+		    GROUP BY pd.num) payment_summary ON p.num = payment_summary.num
     	LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
 		<where>
 			<if test="menu != null and menu != ''">
@@ -62,12 +60,10 @@
 		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
 		LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
 		LEFT OUTER JOIN
-			(SELECT NVL(SUM(total_amount), 0) total_amount, project.num num
-    		FROM PROJECT
-    		LEFT OUTER JOIN product ON project.num = product.num
-    		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
-    		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
-    		GROUP BY project.num) sub ON sub.num = p.num
+			(SELECT pd.num, SUM(s.sum) AS total_amount
+		    FROM product pd
+		    LEFT JOIN sales s ON pd.product_num = s.product_num
+		    GROUP BY pd.num) payment_summary ON p.num = payment_summary.num
 		<where>
 			<if test="menu != null and menu != ''">
 				<include refid="where-list"/>

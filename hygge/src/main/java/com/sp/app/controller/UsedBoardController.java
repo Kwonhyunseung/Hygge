@@ -56,7 +56,7 @@ public class UsedBoardController {
 			int total_page = 0;
 			int dataCount = 0;
 
-			keyword = URLEncoder.encode(keyword, "utf-8");
+			keyword = URLDecoder.decode(keyword, "utf-8");
 
 			// 전체 페이지 수
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -79,7 +79,7 @@ public class UsedBoardController {
 			String listUrl = cp + "/usedBoard/list";
 			String articleUrl = cp + "/usedBoard/article";
 			if (!keyword.isBlank()) {
-				String qs = "schType=" + searchType + "&kwd=" + URLDecoder.decode(keyword, "utf-8");
+				String qs = "schType=" + searchType + "&kwd=" + URLEncoder.encode(keyword, "utf-8");
 				listUrl += "?" + qs;
 				query += "&" + qs;
 			}

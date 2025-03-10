@@ -3,6 +3,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.app.mapper.HomeMapper">
 
+	<sql id="order-list">
+		<if test="order == 'latest'">
+			p.start_date DESC, p.num DESC
+		</if>
+		<if test="order == 'popular'">
+			total_amount DESC
+		</if>
+		<if test="order == 'deadline'">
+			total_amount DESC, end_date ASC
+		</if>
+	</sql>
+
 	<!-- 카테고리 -->
 	<select id="subListCategory" parameterType="long" resultType="com.sp.app.model.Category">
 		SELECT category_num, parent_num, name
@@ -168,6 +180,53 @@
 			ELSE total_sales.total_amount
 		END DESC
 		FETCH FIRST 7 ROWS ONLY
+	</select>
+	
+	<select id="listSearchFunding" parameterType="map" resultType="com.sp.app.model.Funding">
+		SELECT p.num num, title, thumbnail, project_info, target, sub.total_amount total_amount, p.end_date end_date
+		FROM project p
+		JOIN projectRequest pr ON p.num = pr.num
+		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		LEFT OUTER JOIN
+			(SELECT NVL(SUM(total_amount), 0) total_amount, project.num num
+    		FROM PROJECT
+    		LEFT OUTER JOIN product ON project.num = product.num
+    		LEFT OUTER JOIN sales ON product.product_num = sales.product_num
+    		LEFT OUTER JOIN payment ON payment.payment_num = sales.payment_num
+    		GROUP BY project.num) sub ON sub.num = p.num
+    	LEFT OUTER JOIN (SELECT num, COUNT(*) likeCount FROM projectLike GROUP BY num) pl ON pl.num = p.num
+		<where>
+			<if test="kwd != null and kwd != ''">
+				INSTR(pr.title, #{kwd}) &gt; 0
+				OR
+				INSTR(c.name, #{kwd}) &gt; 0
+				OR
+				INSTR(pr.project_info, #{kwd}) &gt; 0
+				OR
+				DBMS_LOB.INSTR(pr.content, #{kwd}) &gt; 0
+			</if>
+			AND p.end_date > SYSDATE AND p.block = 0
+		</where>
+		ORDER BY <include refid="order-list"/>
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+	
+	<select id="searchDataCount">
+		SELECT COUNT(*)
+		FROM projectRequest pr
+		JOIN project p ON pr.num = p.num
+		LEFT OUTER JOIN category c ON pr.category_num = c.category_num
+		<where>
+			<if test="kwd != null and kwd != ''">
+				INSTR(pr.title, #{kwd}) &gt; 0
+				OR
+				INSTR(c.name, #{kwd}) &gt; 0
+				OR
+				INSTR(pr.project_info, #{kwd}) &gt; 0
+				OR
+				DBMS_LOB.INSTR(pr.content, #{kwd}) &gt; 0
+			</if>
+		</where>
 	</select>
 
 </mapper>

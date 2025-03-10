@@ -16,4 +16,6 @@ public interface HomeService {
 	
 	public List<Funding> listRankingProjects(Map<String, Object> map);
 
+	public List<Funding> listFunding(Map<String, Object> map);
+	public int dataCount(Map<String, Object> map);
 }
