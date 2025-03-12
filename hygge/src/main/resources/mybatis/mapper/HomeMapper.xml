@@ -86,7 +86,7 @@
 		  AND SYSDATE >= p.start_date + 1 <!-- 시작일로부터 1일 후부터 적용 -->
 		  AND p.end_date > SYSDATE + 3 <!-- 종료일이 현재로부터 3일 이상 남은 경우만 -->
 		  AND ROUND(NVL(total_sales.total_amount, 0) / pr.target * 100, 2) &lt; 85 <!-- 펀딩률 85% 미만만 -->
-		  AND (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) >= 10 <!-- 좋아요 10개 이상 -->
+		  AND (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) >= 3 <!-- 좋아요 개 이상 -->
 		ORDER BY
 		  (SELECT COUNT(*) FROM ProjectLike WHERE num = p.num) *
 		  (1 + (14 - LEAST(14, SYSDATE - (pr.accept_date + 7))) / 14) DESC

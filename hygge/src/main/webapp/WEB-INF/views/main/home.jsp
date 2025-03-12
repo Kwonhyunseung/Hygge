@@ -504,6 +504,16 @@ $(function() {
 							</div>
 							<p>"바크티비티" 반려견이 직접 선택한 No.1 친환경 장난감</p>
 						</div>
+						<div class="col-3 localP">
+							<div class="image-container">
+								<img src="/dist/images/main/cup.png">
+								<i class="bi bi-heart"></i>
+							</div>
+							<div class="goal">
+								<p>81% 달성
+							</div>
+							<p>자연의 속삭임: 💜보랏빛 정원에서 피어나는 도자기 이야기</p>
+						</div>
 					</div>
 				</div>
 			</div>
