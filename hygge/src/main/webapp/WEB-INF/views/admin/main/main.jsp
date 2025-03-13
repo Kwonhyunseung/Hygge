@@ -178,17 +178,17 @@
   <div class="stat-cards">
     <div class="stat-card">
       <h3><i class="fas fa-won-sign"></i> 오늘 매출</h3>
-      <div class="value">₩1,245,000</div>
+      <div class="value">₩278900</div>
       <div class="change"><i class="fas fa-arrow-up"></i> +12.5% 어제 대비</div>
     </div>
     <div class="stat-card">
       <h3><i class="fas fa-calendar-alt"></i> 이번 달 총 매출</h3>
-      <div class="value">₩32,450,000</div>
+      <div class="value">₩1700000</div>
       <div class="change"><i class="fas fa-arrow-up"></i> +8.3% 전월 대비</div>
     </div>
     <div class="stat-card">
       <h3><i class="fas fa-users"></i> 오늘 방문자</h3>
-      <div class="value">1,876</div>
+      <div class="value">21</div>
       <div class="change negative"><i class="fas fa-arrow-down"></i> -3.2% 어제 대비</div>
     </div>
     <div class="stat-card">

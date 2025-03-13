@@ -290,16 +290,17 @@
                    </tbody>
                    --%>
                    <!-- 구매내역 하드코딩 데이터 -->
+<!-- 구매내역 하드코딩 데이터 -->
 <tbody>
     <tr>
-        <td>P2024030001</td>
-        <td>나무꾼</td>
+        <td>P2025030001</td>
+        <td>김선웅</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030001" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030001" class="project-link">
                 에코프렌들리 대나무 칫솔 세트
             </a>
         </td>
-        <td>2024-03-01 14:25</td>
+        <td>2025-03-01 14:25</td>
         <td>12,500원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -309,20 +310,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030001'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030001'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030002</td>
-        <td>블루마린</td>
+        <td>P2025030002</td>
+        <td>유현수</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030002" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030002" class="project-link">
                 올인원 스마트 요가 매트
             </a>
         </td>
-        <td>2024-03-02 09:15</td>
+        <td>2025-03-02 09:15</td>
         <td>89,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -332,20 +333,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030002'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030002'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030003</td>
-        <td>핑크퐁</td>
+        <td>U2025030003</td>
+        <td>방찬희</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030003" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030003" class="project-link">
                 중고 아이패드 프로 5세대 256GB
             </a>
         </td>
-        <td>2024-03-02 11:42</td>
+        <td>2025-03-02 11:42</td>
         <td>580,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -355,20 +356,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030003'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030003'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030004</td>
-        <td>메이커피플</td>
+        <td>P2025030004</td>
+        <td>김건수</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030004" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030004" class="project-link">
                 마이크로 모빌리티 전동킥보드
             </a>
         </td>
-        <td>2024-03-02 15:30</td>
+        <td>2025-03-02 15:30</td>
         <td>429,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -378,20 +379,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030004'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030004'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030005</td>
-        <td>디지털노마드</td>
+        <td>U2025030005</td>
+        <td>신상훈</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030005" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030005" class="project-link">
                 중고 소니 A7III 카메라 바디
             </a>
         </td>
-        <td>2024-03-03 08:52</td>
+        <td>2025-03-03 08:52</td>
         <td>1,200,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -401,20 +402,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030005'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030005'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030006</td>
-        <td>오가닉홈</td>
+        <td>P2025030006</td>
+        <td>김비비</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030006" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030006" class="project-link">
                 유기농 면 침구세트 (퀸사이즈)
             </a>
         </td>
-        <td>2024-03-03 14:10</td>
+        <td>2025-03-03 14:10</td>
         <td>149,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -424,20 +425,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030006'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030006'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030007</td>
-        <td>카페인러버</td>
+        <td>P2025030007</td>
+        <td>김꽃비</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030007" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030007" class="project-link">
                 스페셜티 커피 정기 구독 (3개월)
             </a>
         </td>
-        <td>2024-03-03 17:05</td>
+        <td>2025-03-03 17:05</td>
         <td>45,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -447,20 +448,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030007'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030007'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030008</td>
-        <td>올라운더</td>
+        <td>U2025030008</td>
+        <td>김누누</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030008" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030008" class="project-link">
                 중고 퍼팅 연습기
             </a>
         </td>
-        <td>2024-03-03 18:30</td>
+        <td>2025-03-03 18:30</td>
         <td>25,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -470,20 +471,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030008'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030008'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030009</td>
-        <td>캠핑마스터</td>
+        <td>P2025030009</td>
+        <td>권현승</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030009" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030009" class="project-link">
                 올시즌 초경량 백패킹 텐트
             </a>
         </td>
-        <td>2024-03-04 09:45</td>
+        <td>2025-03-04 09:45</td>
         <td>235,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -493,20 +494,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030009'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030009'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030010</td>
-        <td>레트로게이머</td>
+        <td>U2025030010</td>
+        <td>김성수</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030010" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030010" class="project-link">
                 중고 닌텐도 스위치 라이트
             </a>
         </td>
-        <td>2024-03-04 10:20</td>
+        <td>2025-03-04 10:20</td>
         <td>140,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -516,20 +517,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030010'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030010'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030011</td>
-        <td>헬시쿡</td>
+        <td>P2025030011</td>
+        <td>최이준</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030011" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030011" class="project-link">
                 스마트 저탄수 밀 프렙 컨테이너
             </a>
         </td>
-        <td>2024-03-04 13:15</td>
+        <td>2025-03-04 13:15</td>
         <td>57,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -539,20 +540,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030011'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030011'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030012</td>
-        <td>모닝조깅</td>
+        <td>P2025030012</td>
+        <td>김선웅</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030012" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030012" class="project-link">
                 울트라 경량 러닝화
             </a>
         </td>
-        <td>2024-03-04 16:40</td>
+        <td>2025-03-04 16:40</td>
         <td>119,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -562,20 +563,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030012'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030012'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030013</td>
-        <td>북러버</td>
+        <td>U2025030013</td>
+        <td>유현수</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030013" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030013" class="project-link">
                 중고 한정판 소설 컬렉션 (15권 세트)
             </a>
         </td>
-        <td>2024-03-05 11:30</td>
+        <td>2025-03-05 11:30</td>
         <td>75,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -585,20 +586,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030013'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030013'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>P2024030014</td>
-        <td>음악메이커</td>
+        <td>P2025030014</td>
+        <td>방찬희</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2024030014" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/P2025030014" class="project-link">
                 포터블 미디 컨트롤러
             </a>
         </td>
-        <td>2024-03-05 15:22</td>
+        <td>2025-03-05 15:22</td>
         <td>189,000원</td>
         <td>
             <span class="status-badge status-info">프로젝트</span>
@@ -608,20 +609,20 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2024030014'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/P2025030014'">
                 상세보기
             </button>
         </td>
     </tr>
     <tr>
-        <td>U2024030015</td>
-        <td>티타임</td>
+        <td>U2025030015</td>
+        <td>김건수</td>
         <td>
-            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2024030015" class="project-link">
+            <a href="${pageContext.request.contextPath}/admin/payment/detail/U2025030015" class="project-link">
                 중고 티포트 & 찻잔 세트
             </a>
         </td>
-        <td>2024-03-05 17:50</td>
+        <td>2025-03-05 17:50</td>
         <td>38,000원</td>
         <td>
             <span class="status-badge status-pending">중고장터</span>
@@ -631,7 +632,7 @@
         </td>
         <td>
             <button class="action-button detail-button" 
-                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2024030015'">
+                    onclick="location.href='${pageContext.request.contextPath}/admin/payment/detail/U2025030015'">
                 상세보기
             </button>
         </td>

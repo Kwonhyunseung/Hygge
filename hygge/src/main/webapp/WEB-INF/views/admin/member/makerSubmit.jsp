@@ -109,10 +109,10 @@
             <tbody>
                 <!-- 하드코딩된 샘플 데이터 -->
                 <tr data-project-num="1001">
-                    <td>10001</td>
-                    <td>김창작</td>
-                    <td>create.kim@example.com</td>
-                    <td>2023-09-15</td>
+                    <td>60</td>
+                    <td>유현수</td>
+                    <td>yhs5910@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10001)">
                             <i class="fas fa-eye"></i>
@@ -134,10 +134,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1002">
-                    <td>10002</td>
-                    <td>박디자인</td>
-                    <td>design.park@example.com</td>
-                    <td>2023-09-16</td>
+                    <td>59</td>
+                    <td>신상훈</td>
+                    <td>shin123@naver.com.com</td>
+                    <td>2023-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10002)">
                             <i class="fas fa-eye"></i>
@@ -153,10 +153,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1003">
-                    <td>10003</td>
-                    <td>이혁신</td>
-                    <td>innovation.lee@example.com</td>
-                    <td>2023-09-17</td>
+                    <td>61</td>
+                    <td>김건수</td>
+                    <td>kunsu123@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10003)">
                             <i class="fas fa-eye"></i>
@@ -172,10 +172,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1004">
-                    <td>10004</td>
-                    <td>정아트</td>
-                    <td>art.jung@example.com</td>
-                    <td>2023-09-18</td>
+                    <td>56</td>
+                    <td>김마루</td>
+                    <td>maru@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10004)">
                             <i class="fas fa-eye"></i>
@@ -197,10 +197,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1005">
-                    <td>10005</td>
-                    <td>최개발</td>
-                    <td>dev.choi@example.com</td>
-                    <td>2023-09-19</td>
+                    <td>67</td>
+                    <td>차승범</td>
+                    <td>chaduri@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10005)">
                             <i class="fas fa-eye"></i>
@@ -216,10 +216,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1006">
-                    <td>10006</td>
-                    <td>한프로젝트</td>
-                    <td>project.han@example.com</td>
-                    <td>2023-09-20</td>
+                    <td>64</td>
+                    <td>방찬희</td>
+                    <td>bang29@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10006)">
                             <i class="fas fa-eye"></i>
@@ -241,10 +241,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1007">
-                    <td>10007</td>
-                    <td>윤크리에이터</td>
-                    <td>creator.yoon@example.com</td>
-                    <td>2023-09-21</td>
+                    <td>63</td>
+                    <td>세영</td>
+                    <td>seyong2@hanmail.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10007)">
                             <i class="fas fa-eye"></i>
@@ -260,10 +260,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1008">
-                    <td>10008</td>
-                    <td>송메이커</td>
-                    <td>maker.song@example.com</td>
-                    <td>2023-09-22</td>
+                    <td>58</td>
+                    <td>오정식</td>
+                    <td>ohjung33@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10008)">
                             <i class="fas fa-eye"></i>
@@ -279,10 +279,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1009">
-                    <td>10009</td>
-                    <td>조스타트</td>
-                    <td>startup.jo@example.com</td>
-                    <td>2023-09-23</td>
+                    <td>78</td>
+                    <td>지우진</td>
+                    <td>woojin67@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10009)">
                             <i class="fas fa-eye"></i>
@@ -304,10 +304,10 @@
                     </td>
                 </tr>
                 <tr data-project-num="1010">
-                    <td>10010</td>
-                    <td>강펀딩</td>
-                    <td>funding.kang@example.com</td>
-                    <td>2023-09-24</td>
+                    <td>33</td>
+                    <td>김꽃비</td>
+                    <td>flower12@naver.com</td>
+                    <td>2025-03-02</td>
                     <td>
                         <button class="view-button" onclick="viewPortfolio(10010)">
                             <i class="fas fa-eye"></i>
@@ -323,99 +323,11 @@
                     </td>
                 </tr>
                 
-				<tr data-project-num="1011">
-				    <td>10011</td>
-				    <td>장기획</td>
-				    <td>planner.jang@example.com</td>
-				    <td>2023-09-25</td>
-				    <td>
-				        <button class="view-button" onclick="viewPortfolio(10011)">
-				            <i class="fas fa-eye"></i>
-				        </button>
-				    </td>
-				    <td>
-				        <span class="status-badge status-pending">대기중</span>
-				    </td>
-				    <td class="action-buttons">
-				        <button type="button" class="detail-btn" title="상세보기" onclick="viewDetails(10011)">
-				            <i class="fas fa-info-circle"></i>
-				        </button>
-				        <button type="button" class="approve-btn" title="승인" onclick="approveMaker(10011)">
-				            <i class="fas fa-check"></i>
-				        </button>
-				        <button type="button" class="reject-btn" title="거절" onclick="rejectMaker(10011,1011)">
-				            <i class="fas fa-times"></i>
-				        </button>
-				    </td>
-				</tr>
-				<tr data-project-num="1012">
-				    <td>10012</td>
-				    <td>오크리에이티브</td>
-				    <td>creative.oh@example.com</td>
-				    <td>2023-09-26</td>
-				    <td>
-				        <button class="view-button" onclick="viewPortfolio(10012)">
-				            <i class="fas fa-eye"></i>
-				        </button>
-				    </td>
-				    <td>
-				        <span class="status-badge status-approved">승인완료</span>
-				    </td>
-				    <td class="action-buttons">
-				        <button type="button" class="detail-btn" title="상세보기" onclick="viewDetails(10012)">
-				            <i class="fas fa-info-circle"></i>
-				        </button>
-				    </td>
-				</tr>
-				<tr data-project-num="1013">
-				    <td>10013</td>
-				    <td>임기술</td>
-				    <td>tech.lim@example.com</td>
-				    <td>2023-09-27</td>
-				    <td>
-				        <button class="view-button" onclick="viewPortfolio(10013)">
-				            <i class="fas fa-eye"></i>
-				        </button>
-				    </td>
-				    <td>
-				        <span class="status-badge status-rejected">승인거절</span>
-				    </td>
-				    <td class="action-buttons">
-				        <button type="button" class="detail-btn" title="상세보기" onclick="viewDetails(10013)">
-				            <i class="fas fa-info-circle"></i>
-				        </button>
-				    </td>
-				</tr>
-				<tr data-project-num="1014">
-				    <td>10014</td>
-				    <td>하디자이너</td>
-				    <td>designer.ha@example.com</td>
-				    <td>2023-09-28</td>
-				    <td>
-				        <button class="view-button" onclick="viewPortfolio(10014)">
-				            <i class="fas fa-eye"></i>
-				        </button>
-				    </td>
-				    <td>
-				        <span class="status-badge status-pending">대기중</span>
-				    </td>
-				    <td class="action-buttons">
-				        <button type="button" class="detail-btn" title="상세보기" onclick="viewDetails(10014)">
-				            <i class="fas fa-info-circle"></i>
-				        </button>
-				        <button type="button" class="approve-btn" title="승인" onclick="approveMaker(10014)">
-				            <i class="fas fa-check"></i>
-				        </button>
-				        <button type="button" class="reject-btn" title="거절" onclick="rejectMaker(10014,1014)">
-				            <i class="fas fa-times"></i>
-				        </button>
-				    </td>
-				</tr>
 				<tr data-project-num="1015">
 				    <td>10015</td>
 				    <td>배신상품</td>
 				    <td>product.bae@example.com</td>
-				    <td>2023-09-29</td>
+				    <td>2025-03-02</td>
 				    <td>
 				        <button class="view-button" onclick="viewPortfolio(10015)">
 				            <i class="fas fa-eye"></i>
@@ -433,7 +345,7 @@
             </tbody>
         </table>     
         
-           <%-- 
+           
 			<tbody>
 			    <c:forEach var="maker" items="${makers}">
 			        <tr data-project-num="${maker.projectNum}">
@@ -479,7 +391,6 @@
 			</tbody>
 			
         </table>
---%>
  
         <div class="pagination">
         	${paging}

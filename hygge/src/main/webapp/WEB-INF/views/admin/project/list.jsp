@@ -71,7 +71,7 @@
                                         <td><input type="checkbox" name="selectedItems" value="${dto.num}"></td>
                                         <td>${dataCount - (page-1) * size - status.index}</td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin/projectManagement/detail/${dto.num}">
+                                            <a href="${pageContext.request.contextPath}/funding/product/${dto.num}">
                                                 ${dto.title}
                                             </a>
                                         </td>
