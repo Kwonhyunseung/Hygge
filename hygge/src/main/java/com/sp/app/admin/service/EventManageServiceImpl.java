@@ -132,9 +132,7 @@ public class EventManageServiceImpl implements EventManageService {
 	}
 
 	public List<EventManage> getEventMembers(Long num) throws Exception {
-	    log.info("getEventMembers 서비스 호출: num={}", num);
 	    List<EventManage> list = mapper.getEventMembers(num);
-	    log.info("조회된 회원 수: {}", list != null ? list.size() : "null");
 	    return list;
 	}
 
@@ -146,4 +144,5 @@ public class EventManageServiceImpl implements EventManageService {
 
 	
 	
+
 }
