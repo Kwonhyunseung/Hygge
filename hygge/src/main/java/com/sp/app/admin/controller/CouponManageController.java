@@ -29,8 +29,6 @@ public class CouponManageController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            log.info("쿠폰 등록 요청: {}", dto);
-            
             // 쿠폰 등록 서비스 호출
             service.insertCoupon(dto);
             
@@ -57,3 +55,4 @@ public class CouponManageController {
     	return "admin/coupon/list";
     }
 }
+
