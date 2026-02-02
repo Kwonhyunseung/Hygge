@@ -183,11 +183,6 @@ public class EventManageController {
             // 이벤트 번호로 해당 이벤트에 참여한 회원 목록 조회
             List<EventManage> list = service.getEventMembers(num);
             
-            log.info("조회된 회원 수: {}", list.size());
-            for (EventManage em : list) {
-                log.info("회원 정보: memberIdx={}, name={}", em.getMemberIdx(), em.getName());
-            }
-            
             return list;
         } catch (Exception e) {
             log.error("getEventMembers : ", e);
@@ -197,3 +192,4 @@ public class EventManageController {
     
 
 }
+
